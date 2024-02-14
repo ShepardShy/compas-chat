@@ -4,21 +4,21 @@ const { resolve } = createResolver(import.meta.url)
 
 export default defineNuxtConfig({
 
-    modules: [
-        '@pinia/nuxt',
-        '@nuxtjs/eslint-module',
-        '@vueuse/nuxt',
-        '@vee-validate/nuxt',
-    ],
+  modules: [
+    '@pinia/nuxt',
+    '@nuxtjs/eslint-module',
+    '@vueuse/nuxt',
+    '@vee-validate/nuxt'
+  ],
 
-    css: [
-        "normalize.css/normalize.css",
-        resolve('./assets/styles/_variables.scss'),
-        resolve('./assets/styles/main.scss'),
-    ],
-    vite: {
-        plugins: [
-            svgLoader({})
-        ],
-    }
+  css: [
+    'normalize.css/normalize.css',
+    resolve('./assets/styles/_variables.scss'),
+    resolve('./assets/styles/main.scss')
+  ],
+  vite: {
+    plugins: [
+      svgLoader({})
+    ]
+  }
 })
