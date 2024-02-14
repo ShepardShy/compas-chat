@@ -1,0 +1,148 @@
+@use '@/assets/variables.scss' as variables;
+@use '@/assets/mixins.scss' as mixins;
+
+.table__item {
+    min-width: 50px;
+    overflow: hidden;
+    text-align: start;
+    position: relative;
+    width: var(--defaultWidth);
+    max-width: var(--defaultWidth);
+    min-width: var(--defaultWidth);
+    @include mixins.sortableGhost();
+    
+    &.table__item_fixed {
+        z-index: 3;
+        position: sticky;
+        left: var(--fixTarget);
+        background: variables.$color-white;
+    }
+
+    &.table__item_hidden {
+        display: none;
+    }
+
+    &.table__item_updated {
+        background: #fffbe280;
+    }
+
+    &.table__item_required {
+        .table-item__content {
+            .table-item__title {
+                gap: 5px;
+                display: flex;
+                flex-wrap: wrap;
+
+                &::after {
+                    content: url('/public/icons/require.svg');
+                    position: relative;
+                    top: -7px;
+                }
+            }
+        }
+    }
+
+    &.table__item_readonly {
+        color: variables.$color-grey;
+    }
+
+    &.table__item_clicked {
+        z-index: 10;
+        overflow: visible;
+    }
+
+    &.table__item_sticky {
+        z-index: 20;
+        background: #f9f9fa;
+
+        &.table__item_clicked {
+            z-index: 30;
+        }
+    }
+
+    .table-item__content {
+        color: var(--colorItem);
+        padding: 10px;
+        @include mixins.flexBlock($vertical: center, $horizontal: space-between, $gap: 5px);
+    }
+
+    .table-item__title {
+        gap: 5px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .table-item__drag-area {
+        height: 100%;
+        position: absolute;
+        width: calc(100% - 10px);
+        @include mixins.elemPositionOptions(0px, 5px);
+        z-index: 3;
+    }
+
+    .table-item__border {
+        top: 0px; 
+        right: 0px; 
+        position: absolute; 
+        cursor: col-resize; 
+        
+        @include mixins.userSelect($value: none);
+        @include mixins.elemResolutionOptions(5px, 100%);
+    
+        &:hover, &.table-item__border_changing {
+            border-right: 1px solid #bcbcbc;
+        }
+    }
+}
+
+.table__body {
+    .table__row {
+        .table__item {
+            width: auto;
+            min-width: auto;
+            vertical-align: top;
+            
+            &.sortable-ghost {
+                border-radius: 0px;
+                border-top: none;
+                border-bottom: none;
+            }
+
+            .table-item__content {
+                .form-item__title, .relation__actions {
+                    display: none;
+                }
+
+                & > * {
+                    width: 100%;
+                }
+
+                .form-item__value_empty {
+                    display: none;
+                }
+
+                .form-item__relation {
+                    .relation__item {
+                        &.relation__item_empty {
+                            display: none;
+                        }
+
+                        border: none;
+                        background: inherit;
+                        padding: 0px 0px 10px;
+                    }
+                }
+
+                .form-item__select, .relation__item {
+                    .popup {
+                        &.popup_up {
+                            .popup__content {
+                                bottom: 45px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

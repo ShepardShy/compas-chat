@@ -1,0 +1,59 @@
+@use '@/assets/variables.scss' as variables;
+@use '@/assets/mixins.scss' as mixins;
+
+.autocomplete__popup {
+    &[open] {
+        .autocomplete__active-option {
+            filter: opacity(0.5);
+        }
+
+        .form-item__substring {
+            &::after {
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    .popup__summary {
+        width: 100%;
+        @include mixins.flexBlock($vertical: center, $horizontal: flex-start, $gap: 10px);
+
+        .form-item__input {
+            width: 100%;
+            overflow: hidden;
+            min-width: 120px;
+            
+            input {
+                padding: 10px 90px 10px 15px;
+            }
+
+            .form-item__substring {
+                @include mixins.flexBlock($vertical: center, $horizontal: flex-start, $gap: 10px);
+                right: 10px;
+                top: 11px;
+                pointer-events: none;
+                color: variables.$color-grey;
+
+                &::after {
+                    content: url('/public/icons/arrow.svg');
+                }
+            }
+        }
+    }
+
+    .popup__content {
+        top: 45px;
+        width: 100%;
+    }
+}
+
+.autocomplete__active-option {
+    top: 0px;
+    overflow: hidden;
+    position: absolute;
+    padding: 10px 15px;
+    white-space: nowrap;
+    pointer-events: none;
+    @include mixins.elemResolutionOptions(calc(100% - 90px), 40px);
+    @include mixins.flexBlock($vertical: center, $horizontal: flex-start);
+}

@@ -1,0 +1,26 @@
+@use '@/assets/variables.scss' as variables;
+@use '@/assets/mixins.scss' as mixins;
+
+.form-item__value {
+    &.form-item__value_empty {
+        color: variables.$color-grey;
+    
+        &::before {
+            content: 'не заполнено';
+        }
+    }
+    
+    &.form-item__value_html {
+        white-space: break-spaces;
+    }
+
+    &.form-item__value-link {
+        cursor: pointer;
+        text-decoration: underline;
+        color: variables.$color-blue;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}

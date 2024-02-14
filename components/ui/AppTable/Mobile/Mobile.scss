@@ -1,0 +1,47 @@
+@use '@/assets/variables.scss' as variables;
+@use '@/assets/mixins.scss' as mixins;
+
+.table-mobile {
+    min-height: 70vh;
+
+    &.table-mobile_empty {
+        &::after {
+            content: 'Нет данных';
+            position: absolute;
+            display: grid;
+            place-items: center;
+            color: variables.$color-blue-grey;
+            @include mixins.elemPositionOptions(0px, 0px);
+            @include mixins.elemResolutionOptions(100%, 100%);
+        }
+    }
+
+    .table__item {
+        overflow: visible;
+
+        .form-item__checkbox {
+            flex-direction: column;
+            align-items: flex-start;
+    
+            .form-item__title {
+                font-size: 12px;
+            }
+        }
+    }
+    
+}
+
+.table-mobile__row {
+    border-bottom: 1px solid #eeeff1;
+    padding: 15px;
+
+    &:nth-child(even) {
+        background: #f7fbff;
+    }
+}
+
+.table-mobile__field {
+    &:not(:last-child) {
+        margin-bottom: 15px;
+    }
+}

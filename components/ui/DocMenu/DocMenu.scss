@@ -1,0 +1,60 @@
+@use '@/assets/variables.scss' as variables;
+@use '@/assets/mixins.scss' as mixins;
+
+.menu-doc {
+    .menu__container {
+        &:not(:last-child) {
+            margin-bottom: 30px;
+        }
+    }
+    
+    .menu__title {
+        padding: 0px 15px;
+        margin-bottom: 15px;
+    }
+    .menu__list {
+    }
+    
+    .menu__item {
+        cursor: pointer;
+        padding: 10px 15px;
+    
+        &.menu__item_active {
+            color: variables.$color-white;
+            background: linear-gradient(90deg, rgba(0, 133, 255, 0.51) 34.29%, rgba(0, 156, 244, 0.00) 100.89%);
+    
+            &:hover {
+                &::before {
+                    content: none;
+                }
+                &::after {
+                    content: none;
+                }
+            }
+        }
+    
+        &:hover {
+            position: relative;
+    
+            &::before {
+                content: '';
+                top: 0px;
+                position: absolute;
+                height: 1px;
+                left: 0px;
+                width: 100%;
+                background: variables.$color-black;
+            }
+    
+            &::after {
+                content: '';
+                bottom: 0px;
+                left: 0px;
+                position: absolute;
+                height: 1px;
+                width: 100%;
+                background: variables.$color-black;
+            }
+        }
+    }
+}

@@ -1,0 +1,264 @@
+@use '@/assets/variables.scss' as variables;
+@use '@/assets/mixins.scss' as mixins;
+
+.menu {
+    &.menu_desktop {
+        display: grid;
+        grid-template-rows: auto 1fr auto auto;
+        @include mixins.elemResolutionOptions(230px, 100%);
+        background-image: radial-gradient(circle at 29% 0,variables.$color-black,#1c2734 21%);
+    
+        &:hover {
+            .menu__settings {
+                .popup {
+                        opacity: 1;
+                    }
+                }
+        }
+    
+        &.menu_draggable {
+            .menu__item {
+                &:hover {
+                    background: inherit;
+    
+                    .icon__draggable {
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+    
+        .icon__logo {
+            @include mixins.flexBlock($vertical: center);
+        }
+    
+        .menu__logo {
+            display: block;
+            margin: 30px auto;
+            width: max-content;
+        }
+    
+        .menu__item {
+            cursor: pointer;
+            line-height: 120%;
+            position: relative;
+            padding: 10px 30px 10px 25px;
+            color: variables.$color-white;
+            @include mixins.sortableGhost();
+            @include mixins.userSelect(none);
+            @include mixins.flexBlock($vertical: center, $gap: 0px);
+    
+            &:hover {
+                background: variables.$color-dark;
+    
+                .icon__draggable {
+                    opacity: 1;
+                }
+            }
+    
+            &.menu__item_active {
+                color: variables.$color-orange;
+    
+                &::before { 
+                    content: '';
+                    position: absolute;
+                    background: variables.$color-orange;
+                    @include mixins.elemPositionOptions(0px, 0px);
+                    @include mixins.elemResolutionOptions(3px, 100%);
+                }
+            }
+    
+            &.sortable-ghost {
+                height: 42px;
+                font-size: 0;
+                background: variables.$color-dark;
+    
+                * {
+                    opacity: 0;
+                }
+    
+                &::before {
+                    content: none;
+                }
+            }
+
+            .icon__draggable {
+                left: 8px;
+                opacity: 0;
+            }
+        }
+    
+        .menu__item-details {
+            &[open] {
+                summary {
+                    padding: 10px 15px 10px 15px;
+    
+                    &:hover {
+                        background: inherit;
+                    }
+    
+                    &::after {
+                        content: none;
+                    }
+
+                    .menu__item-subtitle {
+                        display: none;
+                    }
+    
+                    .menu__item-hide {
+                        display: flex;
+    
+                        .menu__item-subtitle {
+                            display: block;
+                        }
+                    }
+                }
+    
+                .menu__item-close {
+                    display: flex
+                }
+            }
+    
+            summary {
+                padding: 10px 20px 10px 25px;
+                @include mixins.flexBlock($vertical: center, $horizontal: space-between, $gap: 10px);
+    
+                .menu__item-hide {
+                    display: none;
+                }
+
+                &::after {
+                    content: url('/public/icons/arrow.svg');
+                }
+            }
+        }
+    
+        .menu__item-hide {
+            font-size: variables.$font-size-label;
+            @include mixins.flexBlock($vertical: center, $horizontal: center, $gap: 10px);
+            @include mixins.elemResolutionOptions(100%, 22px);
+    
+            &::after, &::before {
+                content: '';
+                height: 1px;
+                width: 100%;
+                position: relative;
+                background-color: #2c3d51;
+            }
+
+            .menu__item-subtitle {
+                padding: 5px 15px;
+                border-radius: 16px;
+                color: variables.$color-white;
+                background-color: #2c3d51;
+            }
+        }
+    
+        .menu__item-close {
+            @include mixins.flexBlock($vertical: center, $horizontal: space-between);
+            display: none;
+            padding: 10px 20px 10px 25px;
+    
+            &::after {
+                transform: rotate(180deg);
+                content: url('/public/icons/arrow.svg');
+            }
+        }
+    
+        .popup__menu {
+            .popup__content {
+                bottom: 60px;
+                width: calc(100% - 20px);
+                @include mixins.elemPositionOptions(auto, 10px);
+            }
+        }
+        
+        .menu-user {
+            &.menu__item {
+                border-top: 1px solid variables.$color-grey;
+                @include mixins.flexBlock($vertical: center, $gap: 10px);
+            }
+        
+            .menu-user__title {
+                font-size: 14px;
+            }
+        }
+        
+        .menu-user__icon {
+            overflow: hidden;
+            border-radius: 50%;
+            @include mixins.elemResolutionOptions(30px, 30px);
+        
+            img {
+                object-fit: contain;
+            }
+        }
+        
+        .menu__settings {
+            padding: 10px 30px 10px 25px;
+            @include mixins.flexBlock($vertical: center, $gap: 10px);
+        
+            .icon__save {
+                display: flex;
+            }
+        
+            .popup {
+                opacity: 0;
+    
+                &[open] {
+                    opacity: 1;
+                }
+    
+                .popup__content {
+                    top: auto;
+                    bottom: 30px;
+                }
+            }
+        }
+        
+        .popup__settings {
+            &.popup {
+                &[open] {
+                    svg {
+                        * {
+                            fill: variables.$color-blue-grey;
+                        }
+                    }
+                }
+        
+                .popup__content {
+                    .popup-option__draggable {
+                        .popup__option {
+                            padding: 10px 10px 10px 20px;
+            
+                            .icon__draggable {
+                                left: 5px;
+                            }
+            
+                            &.sortable-ghost {
+                                height: 37px;
+                            }
+                        }
+                    }
+                }
+            }
+        
+            .menu__item-hide {
+                margin: 10px 0px;
+                padding: 0px 10px;
+        
+                .menu__item-subtitle, &::after, &::before {
+                    background-color: variables.$color-blue-grey;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 650px) {
+    .menu {
+        &.menu_desktop {
+            display: none;
+        }
+    }
+}
