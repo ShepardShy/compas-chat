@@ -1,7 +1,7 @@
-import TimeRangeScripts from "./TimeRangeScripts"
+import TimeRangeScripts from './TimeRangeScripts'
 
 export default {
-    setTimeRange(range, isRange) {
-        return TimeRangeScripts(range, isRange)
-    }
+  setTimeRange (range, isRange) {
+    return TimeRangeScripts(range, isRange)
+  }
 }

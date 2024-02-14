@@ -1,10 +1,10 @@
 <template>
-    <div class="popup__option popup-option">
-        <slot></slot>
-    </div>
+  <div class="popup__option popup-option">
+    <slot />
+  </div>
 </template>
 
 <script setup>
-    import './PopupOption.scss';
+import './PopupOption.scss'
 
 </script>

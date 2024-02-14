@@ -1,18 +1,18 @@
 <template>
-    <button :disabled="props.disabled">
-        <span>
-            <slot> </slot>
-        </span>
-    </button>
+  <button :disabled="props.disabled">
+    <span>
+      <slot />
+    </span>
+  </button>
 </template>
 
 <script setup>
-    import './AppButton.scss';
-    
-    const props = defineProps({
-        disabled: {
-            default: false,
-            type: Boolean
-        }
-    })
+import './AppButton.scss'
+
+const props = defineProps({
+  disabled: {
+    default: false,
+    type: Boolean
+  }
+})
 </script>

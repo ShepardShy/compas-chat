@@ -1,10 +1,10 @@
 <template>
-    <div class="button-text">
-        <slot></slot>
-    </div>
+  <div class="button-text">
+    <slot />
+  </div>
 </template>
 
 <script setup>
-    import './ButtonText.scss';
+import './ButtonText.scss'
 
 </script>

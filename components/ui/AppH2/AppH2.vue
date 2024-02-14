@@ -1,10 +1,10 @@
 <template>
-    <h2>
-        <slot></slot>
-    </h2>
+  <h2>
+    <slot />
+  </h2>
 </template>
 
 <script setup>
-    import './AppH2.scss';
-    
+import './AppH2.scss'
+
 </script>

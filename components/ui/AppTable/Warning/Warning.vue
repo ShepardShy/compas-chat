@@ -1,26 +1,26 @@
 <template>
-    <WarningDelete 
-        v-if="isShow.state && isShow.type == 'delete'"
-    />
+  <WarningDelete
+    v-if="isShow.state && isShow.type == 'delete'"
+  />
 
-    <WarningRestore 
-        v-else-if="isShow.state && isShow.type == 'restore'"
-    />
+  <WarningRestore
+    v-else-if="isShow.state && isShow.type == 'restore'"
+  />
 
-    <WarningValidation 
-        v-else-if="isShow.state && isShow.type == 'validation'"
-    />
+  <WarningValidation
+    v-else-if="isShow.state && isShow.type == 'validation'"
+  />
 </template>
 
 <script setup>
-    import './Warning.scss';
-    
-    import { inject } from 'vue'
+import './Warning.scss'
 
-    import WarningDelete from './Delete/Delete.vue'
-    import WarningRestore from './Restore/Restore.vue'
-    import WarningValidation from './Validation/Validation.vue'
+import { inject } from 'vue'
 
-    const isShow = inject('isShow')
+import WarningDelete from './Delete/Delete.vue'
+import WarningRestore from './Restore/Restore.vue'
+import WarningValidation from './Validation/Validation.vue'
+
+const isShow = inject('isShow')
 
 </script>

@@ -1,8 +1,8 @@
 <template>
-    
+  <div />
 </template>
 
 <script setup>
-    import './Date.scss';
-    
+import './Date.scss'
+
 </script>

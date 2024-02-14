@@ -1,17 +1,17 @@
 <template>
-    <section ref="sectionRef">
-        <slot></slot>
-    </section>
+  <section ref="sectionRef">
+    <slot />
+  </section>
 </template>
 
 <script setup>
-    import './AppSection.scss';
+import './AppSection.scss'
 
-    import { ref } from 'vue'
- 
-    const sectionRef = ref()
-    
-    defineExpose({
-        sectionRef
-    })
+import { ref } from 'vue'
+
+const sectionRef = ref()
+
+defineExpose({
+  sectionRef
+})
 </script>

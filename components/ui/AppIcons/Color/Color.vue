@@ -1,10 +1,10 @@
 <template>
-    <div class="form-item__color-icon">
-        <slot> </slot>
-    </div>
+  <div class="form-item__color-icon">
+    <slot />
+  </div>
 </template>
 
 <script setup>
-    import './Color.scss';
-    
+import './Color.scss'
+
 </script>

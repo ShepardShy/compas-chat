@@ -1,10 +1,10 @@
 <template>
-    <form @click.prevent>
-        <slot></slot>
-    </form>
+  <form @click.prevent>
+    <slot />
+  </form>
 </template>
 
 <script setup>
-    import './AppForm.scss';
-    
+import './AppForm.scss'
+
 </script>

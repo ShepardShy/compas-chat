@@ -1,35 +1,39 @@
 <template>
-    <div class="form__item" ref="formItemRef" :class="setClasses">
-        <slot></slot>
-    </div>
+  <div
+    ref="formItemRef"
+    class="form__item"
+    :class="setClasses"
+  >
+    <slot />
+  </div>
 </template>
 
 <script setup>
-    import './FormItem.scss';
-    
-    import { ref, computed } from 'vue'
-    
-    const formItemRef = ref(null) 
+import './FormItem.scss'
 
-    const props = defineProps({
-        required: {
-            default: false,
-            type: Boolean
-        },
-        isReadOnly: {
-            default: false,
-            type: Boolean
-        }
-    })
+import { ref, computed } from 'vue'
 
-    const setClasses = computed(() => {
-        return [
-            props.required ? 'form-item_required' : '',
-            props.isReadOnly ? 'form-item_readonly' : ''
-        ]
-    })
+const formItemRef = ref(null)
 
-    defineExpose({
-        formItemRef
-    })
+const props = defineProps({
+  required: {
+    default: false,
+    type: Boolean
+  },
+  isReadOnly: {
+    default: false,
+    type: Boolean
+  }
+})
+
+const setClasses = computed(() => {
+  return [
+    props.required ? 'form-item_required' : '',
+    props.isReadOnly ? 'form-item_readonly' : ''
+  ]
+})
+
+defineExpose({
+  formItemRef
+})
 </script>

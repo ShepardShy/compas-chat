@@ -1,90 +1,95 @@
 <template>
-    <div class="warning" v-if="props.isShow" ref="warningRef">
-        <div 
-            class="warning__background" 
-            @mousedown="event => modalAction({action: 'mouseDown', event: event})" 
-            @mouseup="event => modalAction({action: 'closeModal', event: event})"
-        >
-            <div class="warning__content">
-                <IconDelete class="warning__close" @click="() => emit('closeModal', true)"/>
+  <div
+    v-if="props.isShow"
+    ref="warningRef"
+    class="warning"
+  >
+    <div
+      class="warning__background"
+      @mousedown="event => modalAction({action: 'mouseDown', event: event})"
+      @mouseup="event => modalAction({action: 'closeModal', event: event})"
+    >
+      <div class="warning__content">
+        <IconDelete
+          class="warning__close"
+          @click="() => emit('closeModal', true)"
+        />
 
-                <AppH3 class="warning__title">
-                    <slot name="title"></slot>
-                </AppH3>
+        <AppH3 class="warning__title">
+          <slot name="title" />
+        </AppH3>
 
-                <div class="warning__body">
-                    <slot name="body"></slot>
-                </div>
-            </div>
+        <div class="warning__body">
+          <slot name="body" />
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup>
-    import './AppWarning.scss';
-    
-    import { ref, watch, onMounted, onUnmounted} from 'vue'
+import './AppWarning.scss'
 
-    import AppH3 from '@/components/AppH3/AppH3.vue';
-    import IconDelete from '@/components/AppIcons/Delete/Delete.vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 
-    const props = defineProps({
-        isShow: {
-            default: false,
-            type: Boolean
-        }
-    })
+import AppH3 from '@/components/AppH3/AppH3.vue'
+import IconDelete from '@/components/AppIcons/Delete/Delete.vue'
 
-    const emit = defineEmits([
-        'closeModal'
-    ])
+const props = defineProps({
+  isShow: {
+    default: false,
+    type: Boolean
+  }
+})
 
-    const warningRef = ref(null)
-    let mouseEventDown = ref(null)
+const emit = defineEmits([
+  'closeModal'
+])
 
-    // Действия с модальным окном
-    const modalAction = (data) => {
-        // Закрытие модального окна
-        const closeModal = (event) => {
-            if (event.target.classList.contains('warning__background') && mouseEventDown.value.classList.contains('warning__background')) {
-                emit('closeModal', false)
-            }
-        }
+const warningRef = ref(null)
+const mouseEventDown = ref(null)
 
-        switch (data.action) {
-            //Определение где была нажата кнопка мыши
-            case 'mouseDown':
-                mouseEventDown.value = data.event.target
-                break;
-
-            // Закрытие модального окна
-            case 'closeModal':
-                closeModal(data.event)
-        
-            default:
-                break;
-        }
+// Действия с модальным окном
+const modalAction = (data) => {
+  // Закрытие модального окна
+  const closeModal = (event) => {
+    if (event.target.classList.contains('warning__background') && mouseEventDown.value.classList.contains('warning__background')) {
+      emit('closeModal', false)
     }
+  }
 
-    watch(() => props.isShow, () => {
-        if (props.isShow) {
-            document.body.parentNode.classList.add('body_uncscroll')
-        } else {
-            if (document.querySelector('.modal-container') == null) {
-                document.body.parentNode.classList.remove('body_uncscroll')
-            }
-        }
-    }, {
-        deep: true
-    })
+  switch (data.action) {
+    // Определение где была нажата кнопка мыши
+    case 'mouseDown':
+      mouseEventDown.value = data.event.target
+      break
 
-    onMounted(() => {
-        document.body.parentNode.classList.add('body_uncscroll')
-    })
+      // Закрытие модального окна
+    case 'closeModal':
+      closeModal(data.event)
 
-    onUnmounted(() => {
-        if (document.querySelector('.modal-container') == null) {
-            document.body.parentNode.classList.remove('body_uncscroll')
-        }
-    })
+    default:
+      break
+  }
+}
+
+watch(() => props.isShow, () => {
+  if (props.isShow) {
+    document.body.parentNode.classList.add('body_uncscroll')
+  } else if (document.querySelector('.modal-container') == null) {
+    document.body.parentNode.classList.remove('body_uncscroll')
+  }
+}, {
+  deep: true
+})
+
+onMounted(() => {
+  document.body.parentNode.classList.add('body_uncscroll')
+})
+
+onUnmounted(() => {
+  if (document.querySelector('.modal-container') == null) {
+    document.body.parentNode.classList.remove('body_uncscroll')
+  }
+})
 </script>

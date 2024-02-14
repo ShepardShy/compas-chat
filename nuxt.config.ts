@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   css: [
     'normalize.css/normalize.css',
     resolve('./assets/styles/_variables.scss'),
-    resolve('./assets/styles/main.scss'),
+    resolve('./assets/styles/main.scss')
   ],
   vite: {
     plugins: [

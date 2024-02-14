@@ -38,6 +38,8 @@
           "max": 1
         }
       }
-    ]
+    ],
+    "eqeqeq": "off",
+    "no-console": "off"
   }
 }

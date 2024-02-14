@@ -1,9 +1,9 @@
 <template>
-    <div class="pagination__list">
-        <slot></slot>
-    </div>
+  <div class="pagination__list">
+    <slot />
+  </div>
 </template>
 
 <script setup>
-    import './PaginationList.scss';
+import './PaginationList.scss'
 </script>
