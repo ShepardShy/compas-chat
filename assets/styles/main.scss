@@ -1,0 +1,84 @@
+//@import url("_fonts.scss");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  color: #2a2c2f;
+  font-family: Geologica, sans-serif;
+  font-size: 1rem;
+  min-width: 320px;
+}
+
+a {
+  &:link,
+  &:hover &:visited {
+    text-decoration: none;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+ul,
+ul li {
+  list-style: none;
+}
+
+img,
+svg {
+  height: auto;
+  max-width: 100%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  appearance: textfield;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 100rem;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: normal;
+}
+
+h2 {
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: normal;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: normal;
+}
