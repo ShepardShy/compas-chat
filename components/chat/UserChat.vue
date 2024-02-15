@@ -2,20 +2,22 @@
 import ViewedMessage from '~/assets/icons/viewed-message-icon.svg'
 import ReceivedMessage from '~/assets/icons/recieved-message-icon.svg'
 import PinnedIcon from '~/assets/icons/pin-icon.svg'
-import { useUsersStore } from '~/store/users'
+import MuteOff from '~/assets/icons/mute-off-icon.svg'
+import {useUsersStore} from '~/store/users'
 
 interface PropsType {
   userData: {}
 }
 
 const props = defineProps<PropsType>()
-const { userData, pinned } = toRefs(props)
+const {userData, pinned} = toRefs(props)
 
 const usersStore = useUsersStore()
-const { openedChatId } = storeToRefs(usersStore)
+const {openedChatId} = storeToRefs(usersStore)
 
 const userFullName = computed(() => userData.value.firstName + ' ' + userData.value.secondName)
 const lastMessage = computed(() => userData.value.messages[userData.value.messages.length - 1])
+const unreadMessagesLength = computed(() => userData.value.messages.filter(message => message.isUnread).length)
 
 const messageTimeInfo = computed(() => {
   const dateParts = lastMessage.value.date.slice(0, 10).split('.')
@@ -42,24 +44,28 @@ const messageTimeInfo = computed(() => {
 const unpinUser = async () => {
   await usersStore.unpinUser(userData.value.id)
 }
+
+const toggleMute = async () => {
+  await usersStore.toggleUserMuted(userData.value.id)
+}
 </script>
 
 <template>
   <div
-    class="user"
-    :class="{
+      class="user"
+      :class="{
       'user__chat_open': openedChatId === userData.id
     }"
   >
     <div
-      class="user__photo"
-      :style="{
+        class="user__photo"
+        :style="{
         backgroundImage: userData.photo ? `url(${userData.photo})` : 'linear-gradient(to bottom, #71d2fc 2%, #9490ff 100%)',
       }"
     >
       <div
-        v-if="!userData.photo"
-        class="user__photo-name"
+          v-if="!userData.photo"
+          class="user__photo-name"
       >
         {{ userData.firstName[0] }}
       </div>
@@ -72,9 +78,9 @@ const unpinUser = async () => {
         </div>
 
         <div class="user__message-status">
-          <ViewedMessage v-if="userData.id === lastMessage.userId && lastMessage.isViewed" />
+          <ViewedMessage v-if="userData.id === lastMessage.userId && lastMessage.isViewed"/>
           <ReceivedMessage
-            v-if="userData.id === lastMessage.userId && lastMessage.isReceived && !lastMessage.isViewed"
+              v-if="userData.id === lastMessage.userId && lastMessage.isReceived && !lastMessage.isViewed"
           />
 
           {{ messageTimeInfo }}
@@ -88,11 +94,23 @@ const unpinUser = async () => {
         <span v-else> {{ lastMessage.message }} </span>
       </div>
 
-      <PinnedIcon
-        v-if="userData.isPinned"
-        class="user__pinned"
-        @click="unpinUser"
-      />
+      <div class="user__chat-info">
+        <MuteOff
+            v-if="userData.isMutedOff"
+            class="user__muted"
+            @click="toggleMute"
+        />
+
+        <div
+            class="user__unread-msg"
+            v-if="unreadMessagesLength"> {{ unreadMessagesLength }}</div>
+
+        <PinnedIcon
+            v-if="userData.isPinned"
+            class="user__pinned"
+            @click="unpinUser"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -168,20 +186,36 @@ const unpinUser = async () => {
   width: 85%;
 }
 
-.user__pinned {
+.user__chat-info{
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user__pinned,
+.user__muted{
   height: 15px;
   cursor: pointer;
+}
+
+.user__unread-msg {
+  padding: 1px 5px;
+  border-radius: 9px;
+  font-family: MyriadPro;
+  font-size: 12px;
+  color: #fff;
+  font-weight: 400;
+  background-color: variables.$color-blue-grey;
 }
 
 .user__chat_open {
   background-color: #eef3f9;
 }
 
-.user__user-message-last{
+.user__user-message-last {
   font-weight: 600;
   color: variables.$color-black;
 }
