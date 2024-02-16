@@ -3,9 +3,9 @@
 </script>
 
 <template>
-  <div />
+  <div>DialogBody</div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>

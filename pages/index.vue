@@ -2,8 +2,8 @@
 
 import { ERouteName } from '~/shared/routes'
 
-import ChatUsers from '~/components/chat/ChatUsers.vue'
-import ChatWindow from '~/components/chat/ChatWindow.vue'
+import AllUsersChats from '~/components/chat/AllUsersChats/AllUsersChats.vue'
+import ChatWindow from '~/components/chat/ChatWindow/ChatWindow.vue'
 
 definePageMeta({
   name: ERouteName.PAGE_HOME
@@ -13,7 +13,7 @@ definePageMeta({
 
 <template>
   <div class="chat">
-    <ChatUsers class="chat__users" />
+    <AllUsersChats class="chat__users" />
     <ChatWindow class="chat__window" />
   </div>
 </template>

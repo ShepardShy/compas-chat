@@ -1,0 +1,53 @@
+@use '~/assets/styles/_variables.scss' as variables;
+
+.users {
+  padding-right: 2px;
+  border-right: 1px solid #bcbcbc;
+}
+
+.users__wrapper {
+  height: 100vh;
+  overflow-y: scroll;
+  padding: 25px 10px 25px 15px;
+  background-color: #fbfcfd;
+  &::-webkit-scrollbar {
+    width: 3px;
+    height: 122px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: variables.$color-blue-grey;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}
+
+.users::-webkit-scrollbar-button {
+  display: none;
+}
+
+.users__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.users__title {
+  color: variables.$color-black;
+}
+
+.users__add-chat {
+  cursor: pointer;
+}
+
+.users__input {
+  margin-bottom: 25px;
+}
+
+.users__pinned {
+  margin-bottom: 10px;
+}

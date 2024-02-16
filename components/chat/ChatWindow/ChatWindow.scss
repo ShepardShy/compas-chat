@@ -1,0 +1,49 @@
+@use '~/assets/styles/_variables.scss' as variables;
+
+.window {
+  padding: 15px 50px 15px 25px;
+  background-color: #ffffff;
+  flex: 1 1 auto;
+}
+
+.window__top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.window__user-data {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.user__name-status {
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
+  margin-bottom: 5px;
+}
+
+.user__name {
+  font-size: 16px;
+  font-weight: 400;
+  color: variables.$color-active;
+  text-decoration: underline;
+}
+
+.user__status {
+  font-size: 12px;
+  font-weight: 400;
+  color: variables.$color-dark-grey;
+}
+
+.window__actions {
+  display: flex;
+  gap: 40px;
+}
+
+.user__position {
+  font-size: 12px;
+  font-weight: 400;
+  color: variables.$color-dark-grey;
+}

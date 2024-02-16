@@ -30,16 +30,15 @@ const emit = defineEmits<{
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 @use '~/assets/styles/_variables.scss' as variables;
 
 .input__body {
-  font-family: MyriadPro;
   font-size: 14px;
   font-weight: 400;
 
   &::placeholder {
-    color: variables .$color-dark-grey;
+    color: variables.$color-dark-grey;
   }
 }
 
