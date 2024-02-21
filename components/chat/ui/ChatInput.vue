@@ -195,6 +195,6 @@ const onChangeChooseFiles = (event: unknown) => {
 }
 
 .files__image {
-  
+
 }
 </style>
