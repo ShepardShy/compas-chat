@@ -3,22 +3,22 @@ import ViewedMessageIcon from 'assets/icons/viewed-message-icon.svg'
 import ReceivedMessageIcon from 'assets/icons/recieved-message-icon.svg'
 import PinnedIcon from 'assets/icons/pin-icon.svg'
 import MuteOffIcon from 'assets/icons/mute-off-icon.svg'
-import {useUsersStore} from '~/store/users'
-import type {MessageType, UserChatType} from '~/types/messages'
+import { useUsersStore } from '~/store/users'
+import type { MessageType, UserChatType } from '~/types/messages'
 
 import ChatPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
 import ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'
-import {getDistanceToViewport, messageTimeInfo} from '~/composables/chats'
+import { getDistanceToViewport, messageTimeInfo } from '~/composables/chats'
 
 interface PropsType {
   chatData: UserChatType
 }
 
 const props = defineProps<PropsType>()
-const {chatData} = toRefs(props)
+const { chatData } = toRefs(props)
 
 const usersStore = useUsersStore()
-const {openedChatId, userId, chatsWithPinnedUsers, chatsWithoutPinned} = storeToRefs(usersStore)
+const { openedChatId, userId, chatsWithPinnedUsers, chatsWithoutPinned } = storeToRefs(usersStore)
 
 const isDetailedChatOpen = ref(false)
 
@@ -95,23 +95,23 @@ const toggleMenuOpen = () => isDetailedChatOpen.value = !isDetailedChatOpen.valu
 
 <template>
   <div
-      class="user"
-      :class="{
+    class="user"
+    :class="{
       'user__chat_open': openedChatId === chatData.id
     }"
-      :style="{
+    :style="{
       'border-bottom': chatData.isPinned ? 'none' : 'solid 1px #eeeff1',
       'borderRadius': borderRadiusForActiveChat,
     }"
-      @mousedown.prevent="onMouseClickUserChat($event)"
+    @mousedown.prevent="onMouseClickUserChat($event)"
   >
     <ChatPhoto
-        :is-active="chatData.isActive"
-        :is-pinned="chatData.isPinned"
-        :chat-name="chatData.firstName"
-        :photo="chatData.photo"
-        :user-id="chatData.id"
-        :is-group-chat="chatData.isGroupChat"
+      :is-active="chatData.isActive"
+      :is-pinned="chatData.isPinned"
+      :chat-name="chatData.firstName"
+      :photo="chatData.photo"
+      :user-id="chatData.id"
+      :is-group-chat="chatData.isGroupChat"
     />
 
     <div class="user__data">
@@ -122,10 +122,10 @@ const toggleMenuOpen = () => isDetailedChatOpen.value = !isDetailedChatOpen.valu
 
         <div class="user__message-status">
           <ViewedMessageIcon
-              v-if="isMessageViewed"
+            v-if="isMessageViewed"
           />
           <ReceivedMessageIcon
-              v-if="isMessageReceived"
+            v-if="isMessageReceived"
           />
 
           {{ messageTimeInfo(lastMessage) }}
@@ -133,8 +133,8 @@ const toggleMenuOpen = () => isDetailedChatOpen.value = !isDetailedChatOpen.valu
       </div>
 
       <div
-          v-if="!chatData.isTyping"
-          class="user__last-message"
+        v-if="!chatData.isTyping"
+        class="user__last-message"
       >
         <span v-if="lastMessage?.id && lastMessage?.userId === chatData.id">
           <span class="user__user-message-last"> Вы: </span> {{ lastMessage.message }}
@@ -143,58 +143,58 @@ const toggleMenuOpen = () => isDetailedChatOpen.value = !isDetailedChatOpen.valu
       </div>
 
       <div
-          v-if="chatData.isTyping"
-          class="user__is-typing"
+        v-if="chatData.isTyping"
+        class="user__is-typing"
       >
         печатает
 
         <span class="type__circles">
-          <span class="type__circle"/>
-          <span class="type__circle"/>
-          <span class="type__circle"/>
+          <span class="type__circle" />
+          <span class="type__circle" />
+          <span class="type__circle" />
         </span>
       </div>
 
       <div class="user__chat-info icon">
         <MuteOffIcon
-            v-if="chatData.isMutedOff"
-            class="user__muted icon"
-            @click="toggleMute"
+          v-if="chatData.isMutedOff"
+          class="user__muted icon"
+          @click="toggleMute"
         />
 
         <div
-            v-if="unreadMessagesLength"
-            class="user__unread-msg"
+          v-if="unreadMessagesLength"
+          class="user__unread-msg"
         >
           {{ unreadMessagesLength }}
         </div>
 
         <PinnedIcon
-            v-if="chatData.isPinned"
-            class="user__pinned icon"
-            @click="togglePinUser"
+          v-if="chatData.isPinned"
+          class="user__pinned icon"
+          @click="togglePinUser"
         />
       </div>
     </div>
 
     <div
-        v-if="isDetailedChatOpen"
-        class="user__menu-bg"
-        @click="toggleMenuOpen"
+      v-if="isDetailedChatOpen"
+      class="user__menu-bg"
+      @click="toggleMenuOpen"
     />
 
     <ChatMenu
-        v-if="isDetailedChatOpen"
-        v-model:is-detailed-chat-open="isDetailedChatOpen"
-        :style="{
+      v-if="isDetailedChatOpen"
+      v-model:is-detailed-chat-open="isDetailedChatOpen"
+      :style="{
         top: distanceToViewport.bottom < 240 ? '-172px' : '30px',
         right: '10px',
       }"
-        :chat-id="chatData.id"
-        :is-pinned="chatData.isPinned"
-        :is-muted-off="chatData.isMutedOff"
-        :is-user-chat-left="true"
-        @close-chat="toggleMenuOpen"
+      :chat-id="chatData.id"
+      :is-pinned="chatData.isPinned"
+      :is-muted-off="chatData.isMutedOff"
+      :is-user-chat-left="true"
+      @close-chat="toggleMenuOpen"
     />
   </div>
 </template>

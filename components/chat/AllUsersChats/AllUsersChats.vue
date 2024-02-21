@@ -4,18 +4,18 @@ import CrossIcon from 'assets/icons/cross-icon.svg'
 import ChatInput from '~/components/chat/ui/ChatInput.vue'
 import ChatsWithPinnedUsers from '~/components/chat/ChatsWithPinnedUsers/ChatsWithPinnedUsers.vue'
 import ChatsWithoutPinnedUsers from '~/components/chat/ChatsWithoutPinnedUsers/ChatsWithoutPinnedUsers.vue'
-import {useUsersStore} from '~/store/users'
+import { useUsersStore } from '~/store/users'
 
 const usersStore = useUsersStore()
-const {chatsWithPinnedUsers, chatsWithoutPinned} = storeToRefs(usersStore)
+const { chatsWithPinnedUsers, chatsWithoutPinned } = storeToRefs(usersStore)
 
 const searchUserValue = ref<string | undefined>()
 
 watch(
-    () => searchUserValue.value,
-    async () => {
-      await usersStore.filterChats(searchUserValue.value)
-    }
+  () => searchUserValue.value,
+  async () => {
+    await usersStore.filterChats(searchUserValue.value)
+  }
 )
 </script>
 
@@ -26,24 +26,24 @@ watch(
         <AppH1 class="users__title">
           Чат
         </AppH1>
-        <CrossIcon class="users__add-chat"/>
+        <CrossIcon class="users__add-chat" />
       </div>
 
       <ChatInput
-          v-model:inputValue="searchUserValue"
-          class="users__input"
-          placeholder="Поиск"
+        v-model:inputValue="searchUserValue"
+        class="users__input"
+        placeholder="Поиск"
       />
 
       <ChatsWithPinnedUsers
-          v-if="chatsWithPinnedUsers.length"
-          :chats-with-pinned-users="chatsWithPinnedUsers"
-          class="users__pinned"
+        v-if="chatsWithPinnedUsers.length"
+        :chats-with-pinned-users="chatsWithPinnedUsers"
+        class="users__pinned"
       />
 
       <ChatsWithoutPinnedUsers
-          v-if="chatsWithoutPinned.length"
-          :chats-without-pinned-users="chatsWithoutPinned"
+        v-if="chatsWithoutPinned.length"
+        :chats-without-pinned-users="chatsWithoutPinned"
       />
     </div>
   </div>

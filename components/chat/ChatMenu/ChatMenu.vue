@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {chatMenuItems} from '~/shared/const'
+import { chatMenuItems } from '~/shared/const'
 
-import {useUsersStore} from '~/store/users'
+import { useUsersStore } from '~/store/users'
 import MuteOffIcon from '~/assets/icons/mute-off-icon.svg'
 import MuteIcon from '~/assets/icons/mute-icon.svg'
 import PinIcon from '~/assets/icons/pin-icon.svg'
-import type {ChatMenuType} from "~/types/messages";
+import type { ChatMenuType } from '~/types/messages'
 
 interface PropsType {
   isDetailedChatOpen: boolean
@@ -16,7 +16,7 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
-const {isDetailedChatOpen, chatId, isPinned, isMutedOff, isUserChatLeft} = toRefs(props)
+const { isDetailedChatOpen, chatId, isPinned, isMutedOff, isUserChatLeft } = toRefs(props)
 
 const emit = defineEmits<{
   (emit: 'update:isDetailedChatOpen', value: boolean): void
@@ -76,31 +76,31 @@ useEventListener(document, 'contextmenu', (event) => {
 <template>
   <div class="menu">
     <div
-        v-for="item in chatMenuItems"
-        :key="item.title"
-        class="menu__item"
-        :class="{
+      v-for="item in chatMenuItems"
+      :key="item.title"
+      class="menu__item"
+      :class="{
         'menu__item_active': item.title === activeMenuItem
       }"
-        @click="onClickDoMenuAction(item)"
+      @click="onClickDoMenuAction(item)"
     >
       <div
-          v-if="item.icon"
-          class="menu__item-icon"
+        v-if="item.icon"
+        class="menu__item-icon"
       >
         <MuteOffIcon
-            v-if="item.action == 'muteChat' && !isMutedOff"
-            class="menu__item-img"
+          v-if="item.action == 'muteChat' && !isMutedOff"
+          class="menu__item-img"
         />
 
         <MuteIcon
-            v-if="item.action == 'muteChat' && isMutedOff"
-            class="menu__item-img"
+          v-if="item.action == 'muteChat' && isMutedOff"
+          class="menu__item-img"
         />
 
         <PinIcon
-            v-if="item.action == 'pinChat'"
-            class="menu__item-img"
+          v-if="item.action == 'pinChat'"
+          class="menu__item-img"
         />
       </div>
 

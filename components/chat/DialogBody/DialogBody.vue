@@ -20,9 +20,9 @@ const setMessageType = () => {
   }
 }
 
-const $dialogBody = ref<HTMLDivElement>();
-const $dialogWrapper = ref<HTMLDivElement>();
-const $dialogActions = ref<HTMLDivElement>();
+const $dialogBody = ref<HTMLDivElement>()
+const $dialogWrapper = ref<HTMLDivElement>()
+const $dialogActions = ref<HTMLDivElement>()
 
 const isDialogBodyHeightsLessThenVH = ref()
 
@@ -38,13 +38,23 @@ const checkIfDialogBodyHeightsLessThenVH = async () => {
   isDialogBodyHeightsLessThenVH.value = (dialogBodyHeight < dialogWrapperHeight)
 }
 
-const dialogWrapperHeight = ref()
+const isMakingAVoiceMessage = ref(false)
+const setVoiceMessageStatus = (isStarted: boolean) => isMakingAVoiceMessage.value = isStarted
+
+const sendTextMessage = () => {
+}
+
+const handleMessage = (): void => {
+  if (messageType.value === 'text') {
+    sendTextMessage()
+  } else if (messageType.value === 'voice') {
+    setVoiceMessageStatus(true)
+  }
+}
 
 onMounted(async () => {
-
   await checkIfDialogBodyHeightsLessThenVH()
   scrollToDialogWrapperBottom()
-
 })
 
 watch(
@@ -68,15 +78,15 @@ const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
 <template>
   <div class="dialog">
     <div
+        ref="$dialogWrapper"
         class="dialog__wrapper"
         :class="{
-          'dialog__wrapper_flex': isDialogBodyHeightsLessThenVH
-        }"
-        ref="$dialogWrapper"
+        'dialog__wrapper_flex': isDialogBodyHeightsLessThenVH
+      }"
     >
       <div
-          class="dialog__body"
           ref="$dialogBody"
+          class="dialog__body"
       >
         <div
             v-for="(message, idx) in openedChatData.messages"
@@ -103,23 +113,37 @@ const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
     </div>
 
     <div
-        class="dialog__actions"
         ref="$dialogActions"
+        class="dialog__actions"
     >
       <ChatInput
           v-model:input-value="messageValue"
           placeholder="Напишите сообщение…"
           :add-documents="true"
           style="flex: 1 1 auto"
+          :is-making-a-voice-message="isMakingAVoiceMessage"
       />
 
       <div
           class="dialog__send-msg"
+          :class="{
+            'dialog__send-msg_active': isMakingAVoiceMessage,
+          }"
           @dblclick="setMessageType"
+          @click="handleMessage"
       >
         <SendMsgIcon v-if="messageType === 'text'"/>
+
         <MicrophoneIcon v-if="messageType === 'voice'"/>
+
+        <div
+            v-if="isMakingAVoiceMessage"
+            class="dialog__voice-bg"
+            @click.stop="setVoiceMessageStatus(false)"
+        />
       </div>
+
+
     </div>
   </div>
 </template>

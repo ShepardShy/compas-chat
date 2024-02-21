@@ -8,10 +8,10 @@ import DialogBody from '~/components/chat/DialogBody/DialogBody.vue'
 import ChatWindowDialogData from '~/components/chat/ChatWindowDialogData/ChatWindowDialogData.vue'
 import ChatInput from '~/components/chat/ui/ChatInput.vue'
 import ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'
-import {useUsersStore} from '~/store/users'
+import { useUsersStore } from '~/store/users'
 
 const usersStore = useUsersStore()
-const {openedChatId, openedChatData} = storeToRefs(usersStore)
+const { openedChatId, openedChatData } = storeToRefs(usersStore)
 
 const isSearchInDialogOpen = ref<boolean>(false)
 const isMenuOpen = ref<boolean>(false)
@@ -37,66 +37,66 @@ const toggleIsCalling = () => {
 }
 
 watch(
-    () => openedChatId.value,
-    () => {
-      isMenuOpen.value = false
-    }
+  () => openedChatId.value,
+  () => {
+    isMenuOpen.value = false
+  }
 )
 </script>
 
 <template>
   <div class="window">
     <div
-        class="window__top"
-        ref="$dialogHeadHeight"
+      ref="$dialogHeadHeight"
+      class="window__top"
     >
       <div class="window__user-data">
-        <ChatWindowDialogData v-if="!isSearchInDialogOpen"/>
+        <ChatWindowDialogData v-if="!isSearchInDialogOpen" />
         <ChatInput
-            v-if="isSearchInDialogOpen"
-            v-model:input-value="searchInDialogValue"
-            placeholder="Поиск по чату"
-            width="100%"
+          v-if="isSearchInDialogOpen"
+          v-model:input-value="searchInDialogValue"
+          placeholder="Поиск по чату"
+          width="100%"
         />
       </div>
 
       <div class="window__actions">
         <SearchIcon
-            :style="{
+          :style="{
             color: isSearchInDialogOpen ? '#1253a2' : '#8BABD8',
           }"
-            class="window__icon"
-            @click="toggleSearchInput"
+          class="window__icon"
+          @click="toggleSearchInput"
         />
         <CallIcon
-            :style="{
+          :style="{
             color: isMakingACall ? '#1253a2' : '#8BABD8',
           }"
-            class="window__icon"
-            @click="toggleIsCalling"
+          class="window__icon"
+          @click="toggleIsCalling"
         />
         <MoreIcon
-            :style="{
+          :style="{
             color: isMenuOpen ? '#1253a2' : '#8BABD8',
           }"
-            class="window__icon"
-            @click="toggleMenuOpen"
+          class="window__icon"
+          @click="toggleMenuOpen"
         />
       </div>
 
       <ChatMenu
-          v-if="isMenuOpen"
-          v-model:is-detailed-chat-open="isDetailedChatOpen"
-          class="window__menu"
-          :chat-id="openedChatId"
-          :is-pinned="openedChatData.isPinned"
-          :is-muted-off="openedChatData.isMutedOff"
-          @close-chat="toggleMenuOpen"
+        v-if="isMenuOpen"
+        v-model:is-detailed-chat-open="isDetailedChatOpen"
+        class="window__menu"
+        :chat-id="openedChatId"
+        :is-pinned="openedChatData.isPinned"
+        :is-muted-off="openedChatData.isMutedOff"
+        @close-chat="toggleMenuOpen"
       />
     </div>
 
     <div class="window__body">
-      <DialogBody/>
+      <DialogBody  />
     </div>
   </div>
 </template>

@@ -24,8 +24,8 @@ const setUserFullName = (
   userIdx: number | string,
   usersNumbers: number):string => {
   const fullName = chatData?.firstName
-      ? chatData?.firstName + ' ' + chatData?.secondName
-      : chatData?.secondName
+    ? chatData?.firstName + ' ' + chatData?.secondName
+    : chatData?.secondName
 
   if (usersNumbers == userIdx + 1) {
     return fullName!
