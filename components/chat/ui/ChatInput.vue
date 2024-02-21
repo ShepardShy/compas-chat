@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AddDocuments from '~/assets/icons/add-doc-icon.svg'
-import {inputFilesTypes} from "~/shared/const";
+import {docTypes, imagesTypes, inputFilesTypes} from "~/shared/const";
 
 interface PropsType {
   placeholder?: string
@@ -21,9 +21,11 @@ const isFilesTypesMenuOpen = ref<boolean>(false)
 const activeFileType = ref()
 
 const toggleFilesMenuType = () => isFilesTypesMenuOpen.value = !isFilesTypesMenuOpen.value
-const setActiveFileType = (fileType: typeof inputFilesTypes) => {
+const setActiveFileType = async (fileType: typeof inputFilesTypes) => {
   activeFileType.value = fileType
   toggleFilesMenuType()
+  await nextTick()
+  $uploadDocuments.value.click()
 }
 
 const setBorderRadiusForFirstAndLastItem = (itemIdx) => {
@@ -33,50 +35,103 @@ const setBorderRadiusForFirstAndLastItem = (itemIdx) => {
     return '0 0 5px 5px'
   }
 }
+
+const documentsType = computed(() => {
+  if (activeFileType.value == 'Фото') {
+    return imagesTypes.join(',')
+  }
+  if (activeFileType.value == 'Файл') {
+    return docTypes.join(',');
+  }
+});
+
+const $uploadDocuments = ref<HTMLInputElement>()
+const uploadedImages = ref([])
+
+const onChangeChooseFiles = (event: unknown) => {
+  const files = event.target.files
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+    const imageUrl = URL.createObjectURL(file)
+    uploadedImages.value = [
+      ...uploadedImages.value,
+      {
+        id: i,
+        url: imageUrl,
+      }]
+  }
+}
 </script>
 
 <template>
   <div
-      class="input"
-      :style="{
+      class="files"
+      v-if="uploadedImages.length"
+  >
+    <div
+        class="files__images"
+        v-if="uploadedImages.length">
+        <div
+            v-for="image in uploadedImages"
+            :key="image.id"
+            class="files__image"
+        >
+          <img :src="image.url" alt="Uploaded Image"/>
+        </div>
+    </div>
+
+    <div
+        class="input"
+        :style="{
       width: width
     }"
-  >
-    <input
-        :value="inputValue"
-        class="input__body"
-        :placeholder="placeholder"
-        :style="{
+    >
+      <input
+          :value="inputValue"
+          class="input__body"
+          :placeholder="placeholder"
+          :style="{
         width: width,
         paddingLeft: addDocuments && '48px',
       }"
-        @input="$emit('update:inputValue', $event.currentTarget.value)"
-    >
-    <AddDocuments
-        v-if="addDocuments"
-        class="input__add-doc-icon"
-        :class="{
+          @input="$emit('update:inputValue', $event.currentTarget.value)"
+      >
+      <AddDocuments
+          v-if="addDocuments"
+          class="input__add-doc-icon"
+          :class="{
           'input__add-doc-icon_active': isFilesTypesMenuOpen || filesData,
         }"
-        @click="toggleFilesMenuType"
-    />
+          @click="toggleFilesMenuType"
+      />
 
-    <div
-        class="doc__menu"
-        v-if="isFilesTypesMenuOpen"
-    >
+      <input
+          class="input__documents"
+          ref="$uploadDocuments"
+          type="file"
+          multiple
+          :accept="documentsType"
+          @change="onChangeChooseFiles($event)"
+      />
+
       <div
-          v-for="(fileType, idx) in inputFilesTypes"
-          class="doc__item"
-          :class="{
+          class="doc__menu"
+          v-if="isFilesTypesMenuOpen"
+      >
+        <div
+            v-for="(fileType, idx) in inputFilesTypes"
+            class="doc__item"
+            :class="{
             'doc__item_active': activeFileType === fileType
           }"
-          :style="{
+            :style="{
             borderRadius: setBorderRadiusForFirstAndLastItem(idx)
           }"
-          @click="setActiveFileType(fileType)"
-      >
-        {{ fileType }}
+            @click="setActiveFileType(fileType)"
+        >
+          {{ fileType }}
+        </div>
       </div>
     </div>
   </div>
@@ -110,6 +165,10 @@ const setBorderRadiusForFirstAndLastItem = (itemIdx) => {
   color: #1253a2;
 }
 
+.input__documents {
+  display: none;
+}
+
 .doc__menu {
   position: absolute;
   left: 15px;
@@ -128,5 +187,14 @@ const setBorderRadiusForFirstAndLastItem = (itemIdx) => {
 .doc__item:hover,
 .doc__item_active {
   background-color: variables.$color-light-grey;
+}
+
+.files__images {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.files__image {
+  
 }
 </style>
