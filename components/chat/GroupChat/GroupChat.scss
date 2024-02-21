@@ -5,6 +5,7 @@
   gap: 10px;
   padding: 10px 15px;
   cursor: pointer;
+  position: relative;
 }
 
 .group__data {
@@ -27,11 +28,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: flex;
+  align-items: flex-end;
   gap: 5px;
 }
 
 .group__title-icon {
-
+  transform: scale(0.8);
 }
 
 .group__message-status {
@@ -108,4 +110,18 @@
 .group__user-message-last {
   font-weight: 600;
   color: variables.$color-black;
+}
+
+.icon {
+  color: #a6b7d4
+}
+
+.group__menu-bg {
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent;
 }

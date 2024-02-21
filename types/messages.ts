@@ -10,6 +10,7 @@ export interface MessageType {
 
 export interface UserChatType {
     id: number
+    userId: number
     isGroupChat: boolean
     firstName: string
     secondName: string
@@ -26,7 +27,7 @@ export interface GroupChatType {
     id: number
     isGroupChat: boolean
     title: string
-    img: string
+    photo: string
     isPinned: boolean
     isTyping: boolean
     isMutedOff: boolean
@@ -51,4 +52,11 @@ export interface GroupChatMessageType {
     secondName: string
     message: string
     date: string
+}
+
+export interface ChatMenuType {
+    title: string
+    icon: string
+    action: 'detailedChatInfo' | 'editChat' | 'pinChat' | 'muteChat' | 'deleteChat'
+    alternativeTitle?: string
 }

@@ -2,7 +2,7 @@
 <svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>Frame 21</title>
     <g id="--Чат" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="Чат---огистика-Copy-44" transform="translate(-1562, -28)" stroke="#8BABD8" stroke-width="2">
+        <g id="Чат---огистика-Copy-44" transform="translate(-1562, -28)" stroke="currentColor" stroke-width="2">
             <g id="Frame-21" transform="translate(1563, 29)">
                 <line x1="13.3335407" y1="13.3333185" x2="20.0002" y2="19.9999778" id="Path"></line>
                 <circle id="Oval" cx="7.77776914" cy="7.77776914" r="7.77776914"></circle>

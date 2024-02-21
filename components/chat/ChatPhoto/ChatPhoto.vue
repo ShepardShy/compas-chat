@@ -1,24 +1,22 @@
 <script setup lang="ts">
-
-import {useUsersStore} from '~/store/users'
-import './ChatPhoto.scss'
+import { useUsersStore } from '~/store/users'
 
 interface PropsType {
   userId: number | string
   isPinned: boolean
-  isActive: boolean
+  isActive?: boolean
   photo: string | undefined
-  userName: string
+  chatName: string
   isGroupChat: boolean
 }
 
 const usersStore = useUsersStore()
-const {openedChatId} = storeToRefs(usersStore)
+const { openedChatId } = storeToRefs(usersStore)
 
 const props = defineProps<PropsType>()
-const {userId, isPinned, isActive, photo, userName, isGroupChat} = toRefs(props)
+const { userId, isPinned, isActive, photo, chatName, isGroupChat } = toRefs(props)
 
-const activeCircleBackgroundColor = computed(() => {
+const activeCircleBackgroundColor = computed<string>(() => {
   if (userId.value === openedChatId.value) {
     return '#eef3f9'
   } else if (isPinned.value) {
@@ -28,8 +26,8 @@ const activeCircleBackgroundColor = computed(() => {
   }
 })
 
-const chatPhoto = computed(() => {
-  if ( photo.value ) {
+const chatPhoto = computed<string>(() => {
+  if (photo.value) {
     return `url(${photo.value})`
   }
 
@@ -43,29 +41,33 @@ const chatPhoto = computed(() => {
 
 <template>
   <div
-      class="user__photo"
-      :class="{
-        'group__photo': isGroupChat
+    class="user__photo"
+    :class="{
+      'group__photo': isGroupChat
     }"
-      :style="{
-        backgroundImage: chatPhoto
+    :style="{
+      backgroundImage: chatPhoto
     }"
   >
     <div
-        v-if="!photo"
-        class="user__photo-name"
+      v-if="!photo"
+      class="user__photo-name"
     >
-      {{ userName[0] }}
+      {{ chatName ? chatName[0] : '' }}
     </div>
 
     <div
-        v-if="isActive"
-        class="user__active"
-        :style="{
+      v-if="isActive"
+      class="user__active"
+      :style="{
         backgroundColor: activeCircleBackgroundColor
       }"
     >
-      <div class="user__active-circle"/>
+      <div class="user__active-circle" />
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+@import './ChatPhoto.scss';
+</style>

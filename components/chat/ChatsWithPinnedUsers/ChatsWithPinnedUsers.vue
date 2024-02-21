@@ -1,9 +1,7 @@
 <script setup lang="ts">
-
 import UserChat from '~/components/chat/UserChat/UserChat.vue'
 import type { UserChatType, GroupChatType } from '~/types/messages'
 
-import './ChatsWithPinnedUsers.scss'
 import GroupChat from '~/components/chat/GroupChat/GroupChat.vue'
 
 interface PropsType {
@@ -17,7 +15,10 @@ const { chatsWithPinnedUsers } = toRefs(props)
 
 <template>
   <div class="pinned">
-    <div v-for="chat in chatsWithPinnedUsers">
+    <div
+      v-for="chat in chatsWithPinnedUsers"
+      :key="chat.id"
+    >
       <UserChat
         v-if="!chat.isGroupChat"
         :chat-data="chat as UserChatType"
@@ -25,8 +26,12 @@ const { chatsWithPinnedUsers } = toRefs(props)
 
       <GroupChat
         v-if="chat.isGroupChat"
-        :chat-data="chat as UserChatType"
+        :chat-data="chat as GroupChatType"
       />
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+@import './ChatsWithPinnedUsers.scss';
+</style>

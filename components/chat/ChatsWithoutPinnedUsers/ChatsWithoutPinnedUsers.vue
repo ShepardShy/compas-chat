@@ -4,10 +4,8 @@ import GroupChat from '~/components/chat/GroupChat/GroupChat.vue'
 
 import type { UserChatType, GroupChatType } from '~/types/messages'
 
-import './ChatsWithoutPinnedUsers.scss'
-
 interface PropsType {
-  chatsWithoutPinnedUsers: Array< UserChatType | GroupChatType>
+  chatsWithoutPinnedUsers: Array<UserChatType | GroupChatType>
 }
 
 const props = defineProps<PropsType>()
@@ -16,7 +14,10 @@ const { chatsWithoutPinnedUsers } = toRefs(props)
 
 <template>
   <div class="not-pinned">
-    <div v-for="chat in chatsWithoutPinnedUsers">
+    <div
+      v-for="chat in chatsWithoutPinnedUsers"
+      :key="chat.id"
+    >
       <UserChat
         v-if="!chat.isGroupChat"
         :chat-data="chat as UserChatType"
@@ -24,8 +25,12 @@ const { chatsWithoutPinnedUsers } = toRefs(props)
 
       <GroupChat
         v-if="chat.isGroupChat"
-        :chat-data="chat as UserChatType"
+        :chat-data="chat as GroupChatType"
       />
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+@import './ChatsWithoutPinnedUsers.scss';
+</style>

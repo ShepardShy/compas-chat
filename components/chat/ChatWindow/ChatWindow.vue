@@ -3,65 +3,104 @@ import MoreIcon from '~/assets/icons/more-icon.svg'
 import SearchIcon from '~/assets/icons/search-icon.svg'
 import CallIcon from '~/assets/icons/call-icon.svg'
 
-import UserPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
 import DialogBody from '~/components/chat/DialogBody/DialogBody.vue'
 
-import './ChatWindow.scss'
-
-import { useUsersStore } from '~/store/users'
+import ChatWindowDialogData from '~/components/chat/ChatWindowDialogData/ChatWindowDialogData.vue'
+import ChatInput from '~/components/chat/ui/ChatInput.vue'
+import ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'
+import {useUsersStore} from '~/store/users'
 
 const usersStore = useUsersStore()
-const { openedChatData } = storeToRefs(usersStore)
+const {openedChatId, openedChatData} = storeToRefs(usersStore)
 
-const userFullName = computed<string>(() => {
-  if (openedChatData.value.isGroupChat) {
-    return openedChatData.value.title
-  } else {
-    return openedChatData.value.firstName + ' ' + openedChatData.value.secondName
-  }
-})
+const isSearchInDialogOpen = ref<boolean>(false)
+const isMenuOpen = ref<boolean>(false)
+const isMakingACall = ref<boolean>(false)
+const isDetailedChatOpen = ref<boolean>(false)
+
+const searchInDialogValue = ref<string>()
+
+const toggleSearchInput = () => {
+  isSearchInDialogOpen.value = !isSearchInDialogOpen.value
+  isMenuOpen.value = false
+  isMakingACall.value = false
+}
+const toggleMenuOpen = () => {
+  isMenuOpen.value = !isMenuOpen.value
+  isMakingACall.value = false
+  isSearchInDialogOpen.value = false
+}
+const toggleIsCalling = () => {
+  isMakingACall.value = !isMakingACall.value
+  isSearchInDialogOpen.value = false
+  isMenuOpen.value = false
+}
+
+watch(
+    () => openedChatId.value,
+    () => {
+      isMenuOpen.value = false
+    }
+)
 </script>
 
 <template>
   <div class="window">
-    <div class="window__top">
+    <div
+        class="window__top"
+        ref="$dialogHeadHeight"
+    >
       <div class="window__user-data">
-        <UserPhoto
-          :is-pinned="openedChatData.isPinned"
-          :photo="openedChatData.photo"
-          :is-active="openedChatData.isActive"
-          :user-name="openedChatData.firstName"
-          :user-id="openedChatData.id"
+        <ChatWindowDialogData v-if="!isSearchInDialogOpen"/>
+        <ChatInput
+            v-if="isSearchInDialogOpen"
+            v-model:input-value="searchInDialogValue"
+            placeholder="Поиск по чату"
+            width="100%"
         />
-
-        <div class="user__user data">
-          <div class="user__name-status">
-            <div class="user__name">
-              {{ userFullName }}
-            </div>
-            <div class="user__status">
-              {{ openedChatData.isActive ? 'В сети' : 'Не в сети' }}
-            </div>
-          </div>
-
-          <div
-            v-if="!openedChatData.isGroupChat"
-            class="user__position"
-          >
-            {{ openedChatData.position ?? '' }}
-          </div>
-        </div>
       </div>
 
       <div class="window__actions">
-        <SearchIcon />
-        <CallIcon />
-        <MoreIcon />
+        <SearchIcon
+            :style="{
+            color: isSearchInDialogOpen ? '#1253a2' : '#8BABD8',
+          }"
+            class="window__icon"
+            @click="toggleSearchInput"
+        />
+        <CallIcon
+            :style="{
+            color: isMakingACall ? '#1253a2' : '#8BABD8',
+          }"
+            class="window__icon"
+            @click="toggleIsCalling"
+        />
+        <MoreIcon
+            :style="{
+            color: isMenuOpen ? '#1253a2' : '#8BABD8',
+          }"
+            class="window__icon"
+            @click="toggleMenuOpen"
+        />
       </div>
+
+      <ChatMenu
+          v-if="isMenuOpen"
+          v-model:is-detailed-chat-open="isDetailedChatOpen"
+          class="window__menu"
+          :chat-id="openedChatId"
+          :is-pinned="openedChatData.isPinned"
+          :is-muted-off="openedChatData.isMutedOff"
+          @close-chat="toggleMenuOpen"
+      />
     </div>
 
     <div class="window__body">
-      <DialogBody />
+      <DialogBody/>
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+  @import './ChatWindow.scss';
+</style>

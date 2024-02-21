@@ -8,6 +8,7 @@ export const useUsersStore = defineStore('users', {
       chats: [
         {
           id: 1,
+          userId: 1,
           firstName: 'Тимур',
           secondName: 'Киселев',
           isPinned: true,
@@ -35,6 +36,78 @@ export const useUsersStore = defineStore('users', {
               isViewed: true,
               isUnread: false,
               date: '14.02.2024 15:12'
+            },
+            {
+              id: 1,
+              message: 'Привет',
+              userId: 1,
+              isReceived: true,
+              isViewed: true,
+              isUnread: false,
+              date: '14.02.2024 15:12'
+            },
+            {
+              id: 2,
+              message: 'Принимаете заказ?',
+              userId: 1,
+              isReceived: true,
+              isViewed: true,
+              isUnread: false,
+              date: '14.02.2024 15:12'
+            },
+            {
+              id: 1,
+              message: 'Привет',
+              userId: 1,
+              isReceived: true,
+              isViewed: true,
+              isUnread: false,
+              date: '14.02.2024 15:12'
+            },
+            {
+              id: 2,
+              message: 'Принимаете заказ?',
+              userId: 1,
+              isReceived: true,
+              isViewed: true,
+              isUnread: false,
+              date: '14.02.2024 15:12'
+            },
+            {
+              id: 3,
+              message: 'Привет',
+              userId: 2,
+              isReceived: true,
+              isViewed: true,
+              isUnread: false,
+              date: '14.02.2024 15:12'
+            },
+            {
+              id: 4,
+              message: 'Принимаете заказ?',
+              userId: 2,
+              isReceived: true,
+              isViewed: true,
+              isUnread: false,
+              date: '14.02.2024 15:12'
+            },
+            {
+              id: 5,
+              message: 'Привет',
+              userId: 1,
+              isReceived: true,
+              isViewed: false,
+              isUnread: false,
+              date: '14.02.2024 15:12'
+            },
+            {
+              id: 6,
+              message: 'Принимаете заказ?',
+              userId: 1,
+              isReceived: false,
+              isViewed: false,
+              isUnread: false,
+              date: '14.02.2024 15:12'
             }
           ]
         },
@@ -42,7 +115,7 @@ export const useUsersStore = defineStore('users', {
           id: 11,
           isGroupChat: true,
           title: 'Логистика',
-          img: '',
+          photo: '',
           isPinned: true,
           isTyping: false,
           isMutedOff: false,
@@ -58,6 +131,141 @@ export const useUsersStore = defineStore('users', {
             },
             {
               id: 3,
+              firstName: 'Вася',
+              secondName: 'Петров',
+              isActive: false,
+              isTyping: false,
+              photo: '',
+              position: 'Менеджер'
+            },
+            {
+              id: 4,
+              firstName: 'Илья',
+              secondName: 'Петров',
+              isActive: true,
+              isTyping: false,
+              photo: '/photo.png',
+              position: 'Менеджер по работе с клиентами'
+            },
+            {
+              id: 5,
+              firstName: 'Вася',
+              secondName: 'Петров',
+              isActive: false,
+              isTyping: false,
+              photo: '',
+              position: 'Менеджер'
+            },
+            {
+              id: 6,
+              firstName: 'Илья',
+              secondName: 'Петров',
+              isActive: true,
+              isTyping: false,
+              photo: '/photo.png',
+              position: 'Менеджер по работе с клиентами'
+            },
+            {
+              id: 7,
+              firstName: 'Вася',
+              secondName: 'Петров',
+              isActive: false,
+              isTyping: false,
+              photo: '',
+              position: 'Менеджер'
+            },
+            {
+              id: 8,
+              firstName: 'Илья',
+              secondName: 'Петров',
+              isActive: true,
+              isTyping: false,
+              photo: '/photo.png',
+              position: 'Менеджер по работе с клиентами'
+            },
+            {
+              id: 9,
+              firstName: 'Вася',
+              secondName: 'Петров',
+              isActive: false,
+              isTyping: false,
+              photo: '',
+              position: 'Менеджер'
+            },
+            {
+              id: 10,
+              firstName: 'Илья',
+              secondName: 'Петров',
+              isActive: true,
+              isTyping: false,
+              photo: '/photo.png',
+              position: 'Менеджер по работе с клиентами'
+            },
+            {
+              id: 11,
+              firstName: 'Вася',
+              secondName: 'Петров',
+              isActive: false,
+              isTyping: false,
+              photo: '',
+              position: 'Менеджер'
+            },
+            {
+              id: 12,
+              firstName: 'Илья',
+              secondName: 'Петров',
+              isActive: true,
+              isTyping: false,
+              photo: '/photo.png',
+              position: 'Менеджер по работе с клиентами'
+            },
+            {
+              id: 13,
+              firstName: 'Вася',
+              secondName: 'Петров',
+              isActive: false,
+              isTyping: false,
+              photo: '',
+              position: 'Менеджер'
+            },
+            {
+              id: 14,
+              firstName: 'Илья',
+              secondName: 'Петров',
+              isActive: true,
+              isTyping: false,
+              photo: '/photo.png',
+              position: 'Менеджер по работе с клиентами'
+            },
+            {
+              id: 15,
+              firstName: 'Вася',
+              secondName: 'Петров',
+              isActive: false,
+              isTyping: false,
+              photo: '',
+              position: 'Менеджер'
+            },
+            {
+              id: 13,
+              firstName: 'Вася',
+              secondName: 'Петров',
+              isActive: false,
+              isTyping: false,
+              photo: '',
+              position: 'Менеджер'
+            },
+            {
+              id: 14,
+              firstName: 'Илья',
+              secondName: 'Петров',
+              isActive: true,
+              isTyping: false,
+              photo: '/photo.png',
+              position: 'Менеджер по работе с клиентами'
+            },
+            {
+              id: 15,
               firstName: 'Вася',
               secondName: 'Петров',
               isActive: false,
@@ -87,6 +295,7 @@ export const useUsersStore = defineStore('users', {
         },
         {
           id: 2,
+          userId: 2,
           firstName: 'Илья',
           secondName: 'Петров',
           isPinned: true,
@@ -119,6 +328,7 @@ export const useUsersStore = defineStore('users', {
         },
         {
           id: 3,
+          userId: 3,
           firstName: 'Вася',
           secondName: 'Петров',
           isPinned: false,
@@ -151,6 +361,7 @@ export const useUsersStore = defineStore('users', {
         },
         {
           id: 4,
+          userId: 4,
           firstName: 'Тимур',
           secondName: 'Киселев',
           isPinned: false,
@@ -183,6 +394,7 @@ export const useUsersStore = defineStore('users', {
         },
         {
           id: 6,
+          userId: 6,
           firstName: 'Тимур',
           secondName: 'Киселев',
           isPinned: false,
@@ -215,6 +427,7 @@ export const useUsersStore = defineStore('users', {
         },
         {
           id: 7,
+          userId: 7,
           firstName: 'Тимур',
           secondName: 'Киселев',
           isPinned: false,
@@ -226,12 +439,11 @@ export const useUsersStore = defineStore('users', {
           isGroupChat: false,
           messages: []
         },
-        ,
         {
           id: 12,
           isGroupChat: true,
           title: 'Праздники 🤩',
-          img: '',
+          photo: '',
           isPinned: false,
           isTyping: false,
           isMutedOff: false,
@@ -276,6 +488,7 @@ export const useUsersStore = defineStore('users', {
         },
         {
           id: 8,
+          userId: 8,
           firstName: 'Тимур',
           secondName: 'Киселев',
           isPinned: false,
@@ -289,6 +502,7 @@ export const useUsersStore = defineStore('users', {
         },
         {
           id: 9,
+          userId: 9,
           firstName: 'Тимур',
           secondName: 'Киселев',
           isPinned: false,
@@ -321,6 +535,7 @@ export const useUsersStore = defineStore('users', {
         },
         {
           id: 10,
+          userId: 10,
           firstName: 'Тимур',
           secondName: 'Киселев',
           isPinned: false,
@@ -351,7 +566,8 @@ export const useUsersStore = defineStore('users', {
             }
           ]
         }
-      ] as Array< UserChatType | GroupChatType>,
+      ] as Array<UserChatType | GroupChatType>,
+      filteredChats: [] as Array<UserChatType | GroupChatType> | [],
       openedChatId: 4 as undefined | number
     }
   },
@@ -359,17 +575,17 @@ export const useUsersStore = defineStore('users', {
   getters: {
     chatsWithPinnedUsers: state => state.chats.filter(chat => chat.isPinned),
     chatsWithoutPinned: state => state.chats.filter(chat => !chat.isPinned),
-    openedChatData: state => state.chats.find(chat => chat.id === state.openedChatId)
+    openedChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find(chat => chat.id === state.openedChatId)
   },
 
   actions: {
-    async unpinUser (userId: string | number) {
+    async togglePinUser (userId: string | number) {
       try {
         this.chats = this.chats.map((chatData) => {
           if (chatData.id == userId) {
             return {
               ...chatData,
-              isPinned: false
+              isPinned: !chatData.isPinned
             }
           } else {
             return chatData
@@ -395,6 +611,24 @@ export const useUsersStore = defineStore('users', {
       } catch (e) {
         console.log(e)
       }
+    },
+
+    async filterChats (chatName: string) {
+      try {
+        console.log(chatName)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async deleteChat (userId: string | number) {
+      try {
+        this.chats = this.chats.filter(chat => chat.id !== userId)
+        this.openedChatId = this.chats[0].id ?? undefined
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
-})
+}
+)
