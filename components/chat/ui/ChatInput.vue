@@ -99,7 +99,7 @@ const placeholderValue = computed(() => {
 
 <template>
   <div
-      class="input"
+      class="custom-input"
   >
     <div
         v-if="uploadedImages.length || uploadedDocuments.length"

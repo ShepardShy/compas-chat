@@ -49,6 +49,10 @@
   align-items: flex-end;
 }
 
+.dialog__input {
+  flex: 1 1 auto;
+}
+
 .dialog__send-msg {
   flex: 0 0 40px;
   width: 40px;
@@ -60,10 +64,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  z-index: 550;
+  transition: 0.5s all;
+}
+
+.dialog__send-msg:active {
+  background-color: variables.$color-blue-grey;
+  opacity: 0.6;
 }
 
 .dialog__send-msg_active {
   background-color: variables.$color-red;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .dialog__voice-bg {
@@ -72,6 +97,6 @@
   bottom: 0;
   right: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 500;
   background-color: transparent;
 }

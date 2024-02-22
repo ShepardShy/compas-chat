@@ -12,12 +12,21 @@ const {openedChatData, userId, openedChatId} = storeToRefs(usersStore)
 const messageValue = ref<string>()
 
 const messageType = ref<'text' | 'voice'>('text')
+
 const setMessageType = () => {
+
+  // чтобы разделить срабатывание click и dbclick
+  clearTimeout(oneClickTimer)
+  clearTimeout(oneClickTimer - 1)
+
+  if (isMakingAVoiceMessage.value) return
+
   if (messageType.value === 'text') {
     messageType.value = 'voice'
   } else if (messageType.value === 'voice') {
     messageType.value = 'text'
   }
+
 }
 
 const $dialogBody = ref<HTMLDivElement>()
@@ -38,18 +47,94 @@ const checkIfDialogBodyHeightsLessThenVH = async () => {
   isDialogBodyHeightsLessThenVH.value = (dialogBodyHeight < dialogWrapperHeight)
 }
 
+const constraints = { audio: true, video: false }
+let stream = null
+
+
 const isMakingAVoiceMessage = ref(false)
-const setVoiceMessageStatus = (isStarted: boolean) => isMakingAVoiceMessage.value = isStarted
+const voiceMessage = ref()
+const setVoiceMessage = (isStarted: boolean, cleanMessage?: boolean) => {
+  isMakingAVoiceMessage.value = isStarted
+  if (cleanMessage) {
+    voiceMessage.value = undefined
+  }
+  if (isStarted) {
+   // startRecord()
+    return
+  }
+}
+
+let chunks = []
+let mediaRecorder = null
+let audioBlob = null
+
+async function startRecord() {
+  if (!navigator.mediaDevices && !navigator.mediaDevices.getUserMedia) {
+    return console.warn('Not supported')
+  }
+
+  // если запись не запущена
+  if (!mediaRecorder) {
+    try {
+      // получаем поток аудио-данных
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true
+      })
+      // создаем экземпляр `MediaRecorder`, передавая ему поток в качестве аргумента
+      mediaRecorder = new MediaRecorder(stream)
+      // запускаем запись
+      mediaRecorder.start()
+      // по окончанию записи и наличии данных добавляем эти данные в соответствующий массив
+      mediaRecorder.ondataavailable = (e) => {
+        chunks.push(e.data)
+      }
+      // обработчик окончания записи (см. ниже)
+      mediaRecorder.onstop = mediaRecorderStop
+    } catch (e) {
+      console.error(e)
+    }
+  } else {
+    // если запись запущена, останавливаем ее
+    mediaRecorder.stop()
+  }
+}
+
+
+  function mediaRecorderStop() {
+
+    // создаем объект `Blob` с помощью соответствующего конструктора,
+    // передавая ему `blobParts` в виде массива и настройки с типом создаваемого объекта
+
+    audioBlob = new Blob(chunks, { type: 'audio/mp3' })
+    // метод `createObjectURL()` может использоваться для создания временных ссылок на файлы
+    // данный метод "берет" `Blob` и создает уникальный `URL` для него в формате `blob:<origin>/<uuid>`
+    const src = URL.createObjectURL(audioBlob)
+
+    console.log(src)
+
+    // выполняем очистку
+    mediaRecorder = null
+    chunks = []
+  }
 
 const sendTextMessage = () => {
 }
 
-const handleMessage = (): void => {
-  if (messageType.value === 'text') {
-    sendTextMessage()
-  } else if (messageType.value === 'voice') {
-    setVoiceMessageStatus(true)
-  }
+let oneClickTimer
+
+const handleMessage = () => {
+  oneClickTimer = setTimeout(() => {
+    if (messageType.value === 'text') {
+      sendTextMessage()
+    } else if (messageType.value === 'voice') {
+
+      if (isMakingAVoiceMessage.value) {
+        setVoiceMessage(false)
+      } else {
+        setVoiceMessage(true)
+      }
+    }
+  }, 300)
 }
 
 onMounted(async () => {
@@ -73,6 +158,7 @@ const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
     return true
   }
 }
+
 </script>
 
 <template>
@@ -117,10 +203,10 @@ const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
         class="dialog__actions"
     >
       <ChatInput
+          class="dialog__input"
           v-model:input-value="messageValue"
           placeholder="Напишите сообщение…"
           :add-documents="true"
-          style="flex: 1 1 auto"
           :is-making-a-voice-message="isMakingAVoiceMessage"
       />
 
@@ -132,19 +218,19 @@ const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
           @dblclick="setMessageType"
           @click="handleMessage"
       >
-        <SendMsgIcon v-if="messageType === 'text'"/>
+        <SendMsgIcon v-if="messageType === 'text' || isMakingAVoiceMessage"/>
 
-        <MicrophoneIcon v-if="messageType === 'voice'"/>
-
-        <div
-            v-if="isMakingAVoiceMessage"
-            class="dialog__voice-bg"
-            @click.stop="setVoiceMessageStatus(false)"
-        />
+        <MicrophoneIcon v-if="messageType === 'voice' && !isMakingAVoiceMessage"/>
       </div>
 
 
     </div>
+
+    <div
+        v-if="isMakingAVoiceMessage"
+        class="dialog__voice-bg"
+        @click.stop="setVoiceMessage(false, true)"
+    />
   </div>
 </template>
 
