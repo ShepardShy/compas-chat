@@ -2,19 +2,18 @@
 import ChatInput from '~/components/chat/ui/ChatInput.vue'
 import SendMsgIcon from '~/assets/icons/send-msg-icon.svg'
 import MicrophoneIcon from '~/assets/icons/microphone-icon.svg'
-import {useUsersStore} from '~/store/users'
+import { useUsersStore } from '~/store/users'
 import OwnMessage from '~/components/chat/OwnMessage/OwnMessage.vue'
 import OtherMessage from '~/components/chat/OtherMessage/OtherMessage.vue'
 
 const usersStore = useUsersStore()
-const {openedChatData, userId, openedChatId} = storeToRefs(usersStore)
+const { openedChatData, userId, openedChatId } = storeToRefs(usersStore)
 
 const messageValue = ref<string>()
 
 const messageType = ref<'text' | 'voice'>('text')
 
 const setMessageType = () => {
-
   // чтобы разделить срабатывание click и dbclick
   clearTimeout(oneClickTimer)
   clearTimeout(oneClickTimer - 1)
@@ -26,7 +25,6 @@ const setMessageType = () => {
   } else if (messageType.value === 'voice') {
     messageType.value = 'text'
   }
-
 }
 
 const $dialogBody = ref<HTMLDivElement>()
@@ -48,8 +46,7 @@ const checkIfDialogBodyHeightsLessThenVH = async () => {
 }
 
 const constraints = { audio: true, video: false }
-let stream = null
-
+const stream = null
 
 const isMakingAVoiceMessage = ref(false)
 const voiceMessage = ref()
@@ -59,8 +56,8 @@ const setVoiceMessage = (isStarted: boolean, cleanMessage?: boolean) => {
     voiceMessage.value = undefined
   }
   if (isStarted) {
-   // startRecord()
-    return
+    // startRecord()
+
   }
 }
 
@@ -68,7 +65,7 @@ let chunks = []
 let mediaRecorder = null
 let audioBlob = null
 
-async function startRecord() {
+async function startRecord () {
   if (!navigator.mediaDevices && !navigator.mediaDevices.getUserMedia) {
     return console.warn('Not supported')
   }
@@ -99,23 +96,21 @@ async function startRecord() {
   }
 }
 
+function mediaRecorderStop () {
+  // создаем объект `Blob` с помощью соответствующего конструктора,
+  // передавая ему `blobParts` в виде массива и настройки с типом создаваемого объекта
 
-  function mediaRecorderStop() {
+  audioBlob = new Blob(chunks, { type: 'audio/mp3' })
+  // метод `createObjectURL()` может использоваться для создания временных ссылок на файлы
+  // данный метод "берет" `Blob` и создает уникальный `URL` для него в формате `blob:<origin>/<uuid>`
+  const src = URL.createObjectURL(audioBlob)
 
-    // создаем объект `Blob` с помощью соответствующего конструктора,
-    // передавая ему `blobParts` в виде массива и настройки с типом создаваемого объекта
+  console.log(src)
 
-    audioBlob = new Blob(chunks, { type: 'audio/mp3' })
-    // метод `createObjectURL()` может использоваться для создания временных ссылок на файлы
-    // данный метод "берет" `Blob` и создает уникальный `URL` для него в формате `blob:<origin>/<uuid>`
-    const src = URL.createObjectURL(audioBlob)
-
-    console.log(src)
-
-    // выполняем очистку
-    mediaRecorder = null
-    chunks = []
-  }
+  // выполняем очистку
+  mediaRecorder = null
+  chunks = []
+}
 
 const sendTextMessage = () => {
 }
@@ -127,7 +122,6 @@ const handleMessage = () => {
     if (messageType.value === 'text') {
       sendTextMessage()
     } else if (messageType.value === 'voice') {
-
       if (isMakingAVoiceMessage.value) {
         setVoiceMessage(false)
       } else {
@@ -143,11 +137,11 @@ onMounted(async () => {
 })
 
 watch(
-    () => openedChatId.value,
-    async () => {
-      await checkIfDialogBodyHeightsLessThenVH()
-      scrollToDialogWrapperBottom()
-    }
+  () => openedChatId.value,
+  async () => {
+    await checkIfDialogBodyHeightsLessThenVH()
+    scrollToDialogWrapperBottom()
+  }
 )
 
 const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
@@ -164,72 +158,70 @@ const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
 <template>
   <div class="dialog">
     <div
-        ref="$dialogWrapper"
-        class="dialog__wrapper"
-        :class="{
+      ref="$dialogWrapper"
+      class="dialog__wrapper"
+      :class="{
         'dialog__wrapper_flex': isDialogBodyHeightsLessThenVH
       }"
     >
       <div
-          ref="$dialogBody"
-          class="dialog__body"
+        ref="$dialogBody"
+        class="dialog__body"
       >
         <div
-            v-for="(message, idx) in openedChatData.messages"
-            :key="message.id"
-            class="dialog__message"
-            :style="{
+          v-for="(message, idx) in openedChatData.messages"
+          :key="message.id"
+          class="dialog__message"
+          :style="{
             alignSelf: message.userId == userId ? 'flex-end' : 'flex-start',
             marginBottom: openedChatData.messages.length - 1 === idx && '5px'
           }"
         >
           <OwnMessage
-              v-if="message.userId === userId"
-              :message="message"
-              :last-of-several-msgs="checkIfLastOfSeveralMessages(idx)"
+            v-if="message.userId === userId"
+            :message="message"
+            :last-of-several-msgs="checkIfLastOfSeveralMessages(idx)"
           />
 
           <OtherMessage
-              v-else
-              :message="message"
-              :last-of-several-msgs="checkIfLastOfSeveralMessages(idx)"
+            v-else
+            :message="message"
+            :last-of-several-msgs="checkIfLastOfSeveralMessages(idx)"
           />
         </div>
       </div>
     </div>
 
     <div
-        ref="$dialogActions"
-        class="dialog__actions"
+      ref="$dialogActions"
+      class="dialog__actions"
     >
       <ChatInput
-          class="dialog__input"
-          v-model:input-value="messageValue"
-          placeholder="Напишите сообщение…"
-          :add-documents="true"
-          :is-making-a-voice-message="isMakingAVoiceMessage"
+        v-model:input-value="messageValue"
+        class="dialog__input"
+        placeholder="Напишите сообщение…"
+        :add-documents="true"
+        :is-making-a-voice-message="isMakingAVoiceMessage"
       />
 
       <div
-          class="dialog__send-msg"
-          :class="{
-            'dialog__send-msg_active': isMakingAVoiceMessage,
-          }"
-          @dblclick="setMessageType"
-          @click="handleMessage"
+        class="dialog__send-msg"
+        :class="{
+          'dialog__send-msg_active': isMakingAVoiceMessage,
+        }"
+        @dblclick="setMessageType"
+        @click="handleMessage"
       >
-        <SendMsgIcon v-if="messageType === 'text' || isMakingAVoiceMessage"/>
+        <SendMsgIcon v-if="messageType === 'text' || isMakingAVoiceMessage" />
 
-        <MicrophoneIcon v-if="messageType === 'voice' && !isMakingAVoiceMessage"/>
+        <MicrophoneIcon v-if="messageType === 'voice' && !isMakingAVoiceMessage" />
       </div>
-
-
     </div>
 
     <div
-        v-if="isMakingAVoiceMessage"
-        class="dialog__voice-bg"
-        @click.stop="setVoiceMessage(false, true)"
+      v-if="isMakingAVoiceMessage"
+      class="dialog__voice-bg"
+      @click.stop="setVoiceMessage(false, true)"
     />
   </div>
 </template>

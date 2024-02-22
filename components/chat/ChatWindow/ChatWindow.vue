@@ -96,7 +96,7 @@ watch(
     </div>
 
     <div class="window__body">
-      <DialogBody  />
+      <DialogBody />
     </div>
   </div>
 </template>

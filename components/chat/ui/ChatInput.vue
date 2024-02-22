@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AddDocuments from '~/assets/icons/add-doc-icon.svg'
 import DeleteIcon from '~/assets/icons/delete-icon.svg'
-import {docTypes, imagesTypes, inputFilesTypes} from '~/shared/const'
+import { docTypes, imagesTypes, inputFilesTypes } from '~/shared/const'
 
 interface PropsType {
   placeholder?: string
@@ -12,7 +12,7 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
-const {placeholder, addDocuments, inputValue, width, isMakingAVoiceMessage} = toRefs(props)
+const { placeholder, addDocuments, inputValue, width, isMakingAVoiceMessage } = toRefs(props)
 
 const emit = defineEmits<{
   (emit: 'update:inputValue', inputValue: string): void
@@ -64,7 +64,7 @@ const onChangeChooseFiles = (event: unknown) => {
         ...uploadedImages.value,
         {
           id: i,
-          url: imageUrl,
+          url: imageUrl
         }]
     } else {
       uploadedDocuments.value = [
@@ -72,11 +72,9 @@ const onChangeChooseFiles = (event: unknown) => {
         {
           id: i,
           url: imageUrl,
-          name: fileName,
+          name: fileName
         }]
     }
-
-
   }
 }
 
@@ -99,99 +97,105 @@ const placeholderValue = computed(() => {
 
 <template>
   <div
-      class="custom-input"
+    class="custom-input"
   >
     <div
-        v-if="uploadedImages.length || uploadedDocuments.length"
-        class="files"
+      v-if="uploadedImages.length || uploadedDocuments.length"
+      class="files"
     >
-
-      <div v-if="uploadedImages.length" class="files__images">
+      <div
+        v-if="uploadedImages.length"
+        class="files__images"
+      >
         <div
-            v-for="image in uploadedImages"
-            :key="image.id"
-            class="files__image-wrapper"
+          v-for="image in uploadedImages"
+          :key="image.id"
+          class="files__image-wrapper"
         >
           <div
-              class="files__delete"
-              @click="deleteImage(image.url)"
+            class="files__delete"
+            @click="deleteImage(image.url)"
           >
-            <DeleteIcon class="files__delete-icon"/>
+            <DeleteIcon class="files__delete-icon" />
           </div>
           <img
-              :src="image.url"
-              class="files__image"
-          />
+            :src="image.url"
+            class="files__image"
+          >
         </div>
       </div>
 
-      <div v-if="uploadedDocuments.length" class="files__documents">
+      <div
+        v-if="uploadedDocuments.length"
+        class="files__documents"
+      >
         <div
-            v-for="document in uploadedDocuments"
-            :key="document.id"
-            class="files__document-wrapper"
+          v-for="document in uploadedDocuments"
+          :key="document.id"
+          class="files__document-wrapper"
         >
           <div
-              class="files__delete"
-              @click="deleteDocument(document.url)"
+            class="files__delete"
+            @click="deleteDocument(document.url)"
           >
-            <DeleteIcon class="files__delete-icon"/>
+            <DeleteIcon class="files__delete-icon" />
           </div>
 
-          <div class="files__document"> {{ document.name }}</div>
+          <div class="files__document">
+            {{ document.name }}
+          </div>
         </div>
       </div>
-
     </div>
 
     <div
-        class="input"
-        :style="{
+      class="input"
+      :style="{
         width: width
       }"
     >
       <input
-          :value="inputValue"
-          class="input__body"
-          :class="{
-            'input__body_document': addDocuments  && !isMakingAVoiceMessage,
-            'input__body_voice': isMakingAVoiceMessage
-          }"
-          :placeholder="placeholderValue"
-          :style="{
-            width: width,
+        :value="inputValue"
+        class="input__body"
+        :class="{
+          'input__body_document': addDocuments && !isMakingAVoiceMessage,
+          'input__body_voice': isMakingAVoiceMessage
         }"
-          @input="$emit('update:inputValue', $event.currentTarget.value)"
+        :placeholder="placeholderValue"
+        :style="{
+          width: width,
+        }"
+        @input="$emit('update:inputValue', $event.currentTarget.value)"
       >
       <AddDocuments
-          v-if="addDocuments && !isMakingAVoiceMessage"
-          class="input__add-doc-icon"
-          :class="{
+        v-if="addDocuments && !isMakingAVoiceMessage"
+        class="input__add-doc-icon"
+        :class="{
           'input__add-doc-icon_active': isFilesTypesMenuOpen || filesData,
         }"
-          @click="toggleFilesMenuType"
+        @click="toggleFilesMenuType"
       />
 
       <input
-          ref="$uploadDocuments"
-          class="input__documents"
-          type="file"
-          multiple
-          :accept="documentsType"
-          @change="onChangeChooseFiles($event)"
+        ref="$uploadDocuments"
+        class="input__documents"
+        type="file"
+        multiple
+        :accept="documentsType"
+        @change="onChangeChooseFiles($event)"
       >
 
       <div
-          v-if="isFilesTypesMenuOpen"
-          class="doc__menu"
+        v-if="isFilesTypesMenuOpen"
+        class="doc__menu"
       >
         <div
-            v-for="(fileType, idx) in inputFilesTypes"
-            class="doc__item"
-            :style="{
+          v-for="(fileType, idx) in inputFilesTypes"
+          class="doc__item"
+          :style="{
             borderRadius: setBorderRadiusForFirstAndLastItem(idx)
           }"
-            @click="setActiveFileType(fileType)"
+          @click="setActiveFileType(fileType)"
         >
           {{ fileType }}
         </div>
