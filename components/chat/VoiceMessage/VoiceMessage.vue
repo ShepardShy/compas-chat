@@ -197,7 +197,7 @@ const deleteMessage = () => emit('deleteMessage')
       class="audio-msg__delete"
       @click="deleteMessage"
     >
-      <DeleteIcon class="files__delete-icon" />
+      <DeleteIcon class="audio-msg__delete-icon" />
     </div>
   </div>
 </template>
