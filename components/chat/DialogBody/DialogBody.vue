@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { nextTick } from 'vue'
 import ChatInput from '~/components/chat/ui/ChatInput.vue'
 import SendMsgIcon from '~/assets/icons/send-msg-icon.svg'
 import MicrophoneIcon from '~/assets/icons/microphone-icon.svg'
 import { useUsersStore } from '~/store/users'
 import OwnMessage from '~/components/chat/OwnMessage/OwnMessage.vue'
 import OtherMessage from '~/components/chat/OtherMessage/OtherMessage.vue'
+import VoiceMessage from '~/components/chat/VoiceMessage/VoiceMessage.vue'
 
 const usersStore = useUsersStore()
 const { openedChatData, userId, openedChatId } = storeToRefs(usersStore)
@@ -31,7 +33,7 @@ const $dialogBody = ref<HTMLDivElement>()
 const $dialogWrapper = ref<HTMLDivElement>()
 const $dialogActions = ref<HTMLDivElement>()
 
-const isDialogBodyHeightsLessThenVH = ref()
+const isDialogBodyHeightsLessThenVH = ref(true)
 
 const scrollToDialogWrapperBottom = () => {
   $dialogWrapper.value.scrollTop = $dialogWrapper.value.scrollHeight
@@ -45,69 +47,68 @@ const checkIfDialogBodyHeightsLessThenVH = async () => {
   isDialogBodyHeightsLessThenVH.value = (dialogBodyHeight < dialogWrapperHeight)
 }
 
-const constraints = { audio: true, video: false }
-const stream = null
-
 const isMakingAVoiceMessage = ref(false)
-const voiceMessage = ref()
-const setVoiceMessage = (isStarted: boolean, cleanMessage?: boolean) => {
-  isMakingAVoiceMessage.value = isStarted
-  if (cleanMessage) {
-    voiceMessage.value = undefined
-  }
-  if (isStarted) {
-    // startRecord()
+const voiceMessage = ref([])
+let doNotSaveVoiceMessage = false
 
+const setVoiceMessage = async (isStarted: boolean, cleanMessage: boolean = false) => {
+  if (cleanMessage) {
+    doNotSaveVoiceMessage = true
   }
+
+  isMakingAVoiceMessage.value = isStarted
+  await startRecord()
 }
 
 let chunks = []
 let mediaRecorder = null
 let audioBlob = null
+let startTime
+const messageDuration = ref(0)
+let messageIntervalId
 
 async function startRecord () {
   if (!navigator.mediaDevices && !navigator.mediaDevices.getUserMedia) {
     return console.warn('Not supported')
   }
 
-  // если запись не запущена
   if (!mediaRecorder) {
     try {
-      // получаем поток аудио-данных
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: true
       })
-      // создаем экземпляр `MediaRecorder`, передавая ему поток в качестве аргумента
       mediaRecorder = new MediaRecorder(stream)
-      // запускаем запись
       mediaRecorder.start()
-      // по окончанию записи и наличии данных добавляем эти данные в соответствующий массив
+
+      startTime = new Date().getTime()
+
       mediaRecorder.ondataavailable = (e) => {
         chunks.push(e.data)
       }
-      // обработчик окончания записи (см. ниже)
+
+      messageIntervalId = setInterval(() => messageDuration.value = (new Date().getTime() - startTime) / 1000, 1000)
+
       mediaRecorder.onstop = mediaRecorderStop
     } catch (e) {
       console.error(e)
     }
   } else {
-    // если запись запущена, останавливаем ее
     mediaRecorder.stop()
+    clearInterval(messageIntervalId)
+    messageDuration.value = 0
   }
 }
 
 function mediaRecorderStop () {
-  // создаем объект `Blob` с помощью соответствующего конструктора,
-  // передавая ему `blobParts` в виде массива и настройки с типом создаваемого объекта
-
   audioBlob = new Blob(chunks, { type: 'audio/mp3' })
-  // метод `createObjectURL()` может использоваться для создания временных ссылок на файлы
-  // данный метод "берет" `Blob` и создает уникальный `URL` для него в формате `blob:<origin>/<uuid>`
   const src = URL.createObjectURL(audioBlob)
 
-  console.log(src)
+  if (doNotSaveVoiceMessage) {
+    voiceMessage.value = []
+  } else {
+    voiceMessage.value = [src]
+  }
 
-  // выполняем очистку
   mediaRecorder = null
   chunks = []
 }
@@ -153,6 +154,9 @@ const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
   }
 }
 
+const deleteMessage = (messageIdx) => {
+  voiceMessage.value = voiceMessage.value.splice(messageIdx, -1)
+}
 </script>
 
 <template>
@@ -192,6 +196,17 @@ const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
       </div>
     </div>
 
+    <VoiceMessage
+      v-if="voiceMessage.length"
+      class="dialog__voice"
+      :is-own-message="true"
+      date="12:01:2024 14:15"
+      :is-received="true"
+      :is-viewed="true"
+      :audio-message="voiceMessage[0]"
+      @delete-message="deleteMessage(0)"
+    />
+
     <div
       ref="$dialogActions"
       class="dialog__actions"
@@ -202,6 +217,7 @@ const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
         placeholder="Напишите сообщение…"
         :add-documents="true"
         :is-making-a-voice-message="isMakingAVoiceMessage"
+        :message-duration="messageDuration"
       />
 
       <div
@@ -221,7 +237,7 @@ const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
     <div
       v-if="isMakingAVoiceMessage"
       class="dialog__voice-bg"
-      @click.stop="setVoiceMessage(false, true)"
+      @click="setVoiceMessage(false, true)"
     />
   </div>
 </template>

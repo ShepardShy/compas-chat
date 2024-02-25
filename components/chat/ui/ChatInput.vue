@@ -9,10 +9,11 @@ interface PropsType {
   inputValue: string | undefined
   width?: string
   isMakingAVoiceMessage?: boolean
+  messageDuration?: number
 }
 
 const props = defineProps<PropsType>()
-const { placeholder, addDocuments, inputValue, width, isMakingAVoiceMessage } = toRefs(props)
+const { placeholder, addDocuments, inputValue, width, isMakingAVoiceMessage, messageDuration } = toRefs(props)
 
 const emit = defineEmits<{
   (emit: 'update:inputValue', inputValue: string): void
@@ -92,6 +93,39 @@ const placeholderValue = computed(() => {
   } else {
     return placeholder.value
   }
+})
+
+const voiceMessageLengthTransformer = computed(() => {
+  if (!messageDuration.value) {
+    return '00:00:00'
+  }
+
+  const oneMinuteInSeconds = 60
+  const oneHourInSeconds = 60 * 60
+
+  const messageDurationSeconds = messageDuration.value.toFixed(0)
+
+  const hours = Math.floor(messageDurationSeconds / oneHourInSeconds)
+  const minutes = Math.floor((messageDurationSeconds - hours * oneHourInSeconds) / oneMinuteInSeconds)
+  const seconds = Math.floor(messageDurationSeconds % oneMinuteInSeconds)
+
+  let finalDuration = ''
+
+  function addTime (time: number, isSeconds: boolean = false) {
+    if (time < 10) {
+      finalDuration += '0' + time
+    } else {
+      finalDuration += time
+    }
+
+    !isSeconds && (finalDuration += ':')
+  }
+
+  addTime(hours)
+  addTime(minutes)
+  addTime(seconds, true)
+
+  return finalDuration
 })
 </script>
 
@@ -176,6 +210,18 @@ const placeholderValue = computed(() => {
         @click="toggleFilesMenuType"
       />
 
+      <div
+        v-if="isMakingAVoiceMessage"
+        class="input__voice-msg-circle"
+      />
+
+      <div
+        v-if="isMakingAVoiceMessage"
+        class="input__voice-msg-length"
+      >
+        {{ voiceMessageLengthTransformer }}
+      </div>
+
       <input
         ref="$uploadDocuments"
         class="input__documents"
@@ -232,12 +278,29 @@ const placeholderValue = computed(() => {
   text-align: center;
 }
 
-.input__add-doc-icon {
+.input__add-doc-icon,
+.input__voice-msg-length,
+.input__voice-msg-circle {
   position: absolute;
   top: 14px;
   left: 15px;
   color: #A6B7D4;
   cursor: pointer;
+}
+
+.input__voice-msg-length {
+  color: variables.$color-black;
+  left: 42px;
+  top: 12px;
+}
+
+.input__voice-msg-circle {
+  width: 12px;
+  height: 12px;
+  margin: 1px 15px 3px 0;
+  border-radius: 12px;
+  box-shadow: 0 0 5px 0 rgba(199, 73, 35, 0.5);
+  background-color: #c74923;
 }
 
 .input__add-doc-icon_active {
