@@ -1,4 +1,4 @@
-import type { ChatMenuType } from '~/types/messages'
+import type { ChatMenuType, DetailedInfoMenuItem } from '~/types/messages'
 
 export const daysOfWeek = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб']
 
@@ -41,3 +41,56 @@ export const docTypes = [
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'application / pdf',
   'application / vnd.ms - excel']
+
+export const detailedInfoMenuItems: DetailedInfoMenuItem[] = [
+  {
+    titleOne: 'текстовое сообщение',
+    titleTwo: 'текстовых сообщений',
+    titleThree: 'текстовых сообщений',
+    icon: 'text-messages-icon',
+    action: 'text-messages'
+  },
+  {
+    titleOne: 'фотография',
+    titleTwo: 'фотографии',
+    titleThree: 'фотографий',
+    icon: 'images-messages-icon',
+    action: 'images-messages'
+  },
+  {
+    titleOne: 'видео',
+    titleTwo: 'видео',
+    titleThree: 'видео',
+    icon: 'video-messages-icon',
+    action: 'video-messages'
+  },
+  {
+    titleOne: 'файл',
+    titleTwo: 'файла',
+    titleThree: 'файлов',
+    icon: 'file-messages-icon',
+    action: 'file-messages'
+  },
+  {
+    titleOne: 'голосовое сообщение',
+    titleTwo: 'голосовых сообщений',
+    titleThree: 'голосовых сообщений',
+    icon: 'voice-messages-icon',
+    action: 'voice-messages'
+  },
+  {
+    titleOne: 'ссылка',
+    titleTwo: 'ссылки',
+    titleThree: 'ссылок',
+    icon: 'link-messages-icon',
+    action: 'link-messages'
+  },
+  {
+    titleOne: 'Удалить чат',
+    titleTwo: 'Удалить чат',
+    titleThree: 'Удалить чат',
+    icon: 'delete-icon',
+    action: 'delete-messages'
+  }
+
+] as const

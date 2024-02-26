@@ -18,6 +18,12 @@ export const useUsersStore = defineStore('users', {
           isMutedOff: false,
           position: 'Менеджер по работе с клиентами',
           isGroupChat: false,
+          totalTextMessages: 200,
+          totalPhotoMessages: 404,
+          totalVideoMessages: 23,
+          totalFileMessages: 19,
+          totalVoiceMessages: 5,
+          totalLinksMessages: 66,
           messages: [
             {
               id: 1,
@@ -305,6 +311,12 @@ export const useUsersStore = defineStore('users', {
           isMutedOff: true,
           position: 'Менеджер по работе с клиентами',
           isGroupChat: false,
+          totalTextMessages: 200,
+          totalPhotoMessages: 404,
+          totalVideoMessages: 23,
+          totalFileMessages: 19,
+          totalVoiceMessages: 5,
+          totalLinksMessages: 66,
           messages: [
             {
               id: 1,
@@ -338,6 +350,12 @@ export const useUsersStore = defineStore('users', {
           isMutedOff: false,
           position: 'Менеджер по работе с клиентами',
           isGroupChat: false,
+          totalTextMessages: 200,
+          totalPhotoMessages: 404,
+          totalVideoMessages: 23,
+          totalFileMessages: 19,
+          totalVoiceMessages: 5,
+          totalLinksMessages: 66,
           messages: [
             {
               id: 1,
@@ -371,6 +389,12 @@ export const useUsersStore = defineStore('users', {
           isMutedOff: false,
           position: '',
           isGroupChat: false,
+          totalTextMessages: 200,
+          totalPhotoMessages: 404,
+          totalVideoMessages: 23,
+          totalFileMessages: 19,
+          totalVoiceMessages: 5,
+          totalLinksMessages: 66,
           messages: [
             {
               id: 1,
@@ -404,6 +428,12 @@ export const useUsersStore = defineStore('users', {
           isMutedOff: false,
           position: '',
           isGroupChat: false,
+          totalTextMessages: 200,
+          totalPhotoMessages: 404,
+          totalVideoMessages: 23,
+          totalFileMessages: 19,
+          totalVoiceMessages: 5,
+          totalLinksMessages: 66,
           messages: [
             {
               id: 1,
@@ -437,6 +467,12 @@ export const useUsersStore = defineStore('users', {
           isMutedOff: true,
           position: 'Менеджер по работе с клиентами',
           isGroupChat: false,
+          totalTextMessages: 200,
+          totalPhotoMessages: 404,
+          totalVideoMessages: 23,
+          totalFileMessages: 19,
+          totalVoiceMessages: 5,
+          totalLinksMessages: 66,
           messages: []
         },
         {
@@ -447,6 +483,12 @@ export const useUsersStore = defineStore('users', {
           isPinned: false,
           isTyping: false,
           isMutedOff: false,
+          totalTextMessages: 200,
+          totalPhotoMessages: 404,
+          totalVideoMessages: 23,
+          totalFileMessages: 19,
+          totalVoiceMessages: 5,
+          totalLinksMessages: 66,
           users: [
             {
               id: 2,
@@ -498,6 +540,12 @@ export const useUsersStore = defineStore('users', {
           isMutedOff: false,
           position: 'Менеджер',
           isGroupChat: false,
+          totalTextMessages: 200,
+          totalPhotoMessages: 404,
+          totalVideoMessages: 23,
+          totalFileMessages: 19,
+          totalVoiceMessages: 5,
+          totalLinksMessages: 66,
           messages: []
         },
         {
@@ -512,6 +560,12 @@ export const useUsersStore = defineStore('users', {
           isMutedOff: false,
           position: 'Менеджер',
           isGroupChat: false,
+          totalTextMessages: 200,
+          totalPhotoMessages: 404,
+          totalVideoMessages: 23,
+          totalFileMessages: 19,
+          totalVoiceMessages: 5,
+          totalLinksMessages: 66,
           messages: [
             {
               id: 1,
@@ -545,6 +599,12 @@ export const useUsersStore = defineStore('users', {
           isMutedOff: false,
           position: 'Менеджер',
           isGroupChat: false,
+          totalTextMessages: 200,
+          totalPhotoMessages: 404,
+          totalVideoMessages: 23,
+          totalFileMessages: 19,
+          totalVoiceMessages: 5,
+          totalLinksMessages: 66,
           messages: [
             {
               id: 1,
@@ -568,14 +628,16 @@ export const useUsersStore = defineStore('users', {
         }
       ] as Array<UserChatType | GroupChatType>,
       filteredChats: [] as Array<UserChatType | GroupChatType> | [],
-      openedChatId: 4 as undefined | number
+      openedChatId: 4 as undefined | number,
+      chatIdForOpenModal: 1 as undefined | number
     }
   },
 
   getters: {
     chatsWithPinnedUsers: state => state.chats.filter(chat => chat.isPinned),
     chatsWithoutPinned: state => state.chats.filter(chat => !chat.isPinned),
-    openedChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find(chat => chat.id === state.openedChatId)
+    openedChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find(chat => chat.id === state.openedChatId),
+    openModalChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find(chat => chat.id === state.chatIdForOpenModal)
   },
 
   actions: {

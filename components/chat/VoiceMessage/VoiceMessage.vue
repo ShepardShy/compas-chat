@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import ReceivedIcon from '~/assets/icons/recieved-message-icon.svg'
 import ViewedIcon from '~/assets/icons/viewed-message-icon.svg'
 import DeleteIcon from 'assets/icons/delete-icon.svg'
@@ -23,7 +22,7 @@ const isMessageReceived = computed<boolean>(() => {
 
 const isMessageViewed = computed<boolean>(() => isViewed.value)
 
-const $visualization = ref(null)
+const $visualizationContainer = ref(null)
 const $audioElement = ref(null)
 
 const audioDuration = ref(0)
@@ -31,14 +30,16 @@ const audioDuration = ref(0)
 const fileSizeInBytes = ref()
 const fileSizeInKilobytes = computed(() => fileSizeInBytes.value / 1024)
 
-const voiceMessageLengthTransformer = computed(() => {
+const voiceMessageLengthTransformer = () => {
   if (!audioDuration.value) {
     return '00:00'
   }
 
   const oneMinuteInSeconds = 60
 
-  const messageDurationSeconds = audioDuration.value.toFixed(0)
+  const messageDurationSeconds = currentCallNumber.value > 0
+    ? (currentCallNumber.value * speedToCallFunction).toFixed(0)
+    : audioDuration.value.toFixed(0)
 
   const minutes = Math.floor(messageDurationSeconds / oneMinuteInSeconds)
   const seconds = Math.floor(messageDurationSeconds % oneMinuteInSeconds)
@@ -59,41 +60,20 @@ const voiceMessageLengthTransformer = computed(() => {
   addTime(seconds, true)
 
   return finalDuration
-})
+}
 
-onMounted(() => {
-  fetch(audioMessage.value)
-    .then(response => response.blob())
-    .then((blob) => {
-      fileSizeInBytes.value = blob.size
-
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        const arrayBuffer = reader.result
-        const audioContext = new AudioContext()
-        audioContext.decodeAudioData(arrayBuffer, (audioBuffer) => {
-          audioData = audioBuffer.getChannelData(0)
-
-          audioDuration.value = audioBuffer.duration
-
-          visualizeAudioData()
-        })
-      }
-      reader.readAsArrayBuffer(blob)
-    })
-})
+const voiceMessageLength = ref()
 
 let audioData
 
 function visualizeAudioData () {
-  const visualizationDiv = $visualization.value
+  const visualizationDiv = $visualizationContainer.value
   visualizationDiv.innerHTML = ''
 
-  const numBars = 64
   const barWidth = 3
   const barSpacing = 1
 
-  const maxBarHeight = 19 // Максимальная высота столбика
+  const maxBarHeight = 19
 
   for (let i = 0; i < numBars; i++) {
     const startIndex = Math.floor((i / numBars) * audioData.length)
@@ -126,6 +106,43 @@ function visualizeAudioData () {
   }
 }
 
+const numBars = 64
+const currentCallNumber = ref(0)
+let speedToCallFunction
+let visualizationTimeoutId // Переменная для хранения идентификатора таймера
+let isVoiceMessageShouldBeRestarted = true
+
+watch(
+  () => currentCallNumber.value,
+  () => {
+    voiceMessageLength.value = voiceMessageLengthTransformer()
+  }
+)
+
+function updateVisualizationColors () {
+  const visualizationDiv = $visualizationContainer.value
+  const bars = visualizationDiv.querySelectorAll('div')
+
+  bars.forEach((bar, index) => {
+    if (index <= currentCallNumber.value) {
+      // Закрашиваем столбики, которые уже завершены
+      bar.style.backgroundColor = '#1152a1'
+    } else {
+      // Оставляем незавершенные столбики без цвета
+      bar.style.backgroundColor = '#8babd8'
+    }
+  })
+
+  if (currentCallNumber.value < numBars) {
+    isVoiceMessageShouldBeRestarted = false
+    currentCallNumber.value += 1
+    visualizationTimeoutId = setTimeout(() => updateVisualizationColors(), speedToCallFunction * 1000)
+  } else {
+    isVoiceMessageActive.value = false
+    isVoiceMessageShouldBeRestarted = true
+  }
+}
+
 const isVoiceMessageActive = ref(false)
 const toggleVoiceMessageActive = () => {
   isVoiceMessageActive.value = !isVoiceMessageActive.value
@@ -134,15 +151,54 @@ const toggleVoiceMessageActive = () => {
 // Запуск обновления заливки фона столбиков
 const onClickStartVoiceMessage = () => {
   if (isVoiceMessageActive.value) {
-    $audioElement.value.pause()
-    toggleVoiceMessageActive()
+    isVoiceMessageShouldBeRestarted = false
+    pauseVoiceMessage()
   } else {
-    $audioElement.value.play()
-    toggleVoiceMessageActive()
+    if (isVoiceMessageShouldBeRestarted) {
+      currentCallNumber.value = 0
+    }
+    startVoiceMessage()
   }
 }
 
+const startVoiceMessage = () => {
+  $audioElement.value.play()
+  toggleVoiceMessageActive()
+  updateVisualizationColors()
+}
+
+const pauseVoiceMessage = () => {
+  $audioElement.value.pause()
+  toggleVoiceMessageActive()
+  clearTimeout(visualizationTimeoutId)
+}
+
 const deleteMessage = () => emit('deleteMessage')
+
+onMounted(() => {
+  fetch(audioMessage.value)
+    .then(response => response.blob())
+    .then((blob) => {
+      fileSizeInBytes.value = blob.size
+
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const arrayBuffer = reader.result
+        const audioContext = new AudioContext()
+        audioContext.decodeAudioData(arrayBuffer, (audioBuffer) => {
+          audioData = audioBuffer.getChannelData(0)
+
+          audioDuration.value = audioBuffer.duration
+          speedToCallFunction = audioDuration.value / numBars
+
+          voiceMessageLength.value = voiceMessageLengthTransformer()
+
+          visualizeAudioData()
+        })
+      }
+      reader.readAsArrayBuffer(blob)
+    })
+})
 </script>
 
 <template>
@@ -164,13 +220,13 @@ const deleteMessage = () => emit('deleteMessage')
       </div>
       <div class="audio-msg__data">
         <div
-          ref="$visualization"
+          ref="$visualizationContainer"
           class="audio-msg__columns"
         />
 
         <div class="audio-msg__info">
           <div class="audio-msg__length">
-            {{ voiceMessageLengthTransformer }},
+            {{ voiceMessageLength }},
           </div>
           <div class="audio-msg__weight">
             {{ fileSizeInKilobytes.toFixed(2) }} KB

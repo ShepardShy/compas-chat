@@ -132,6 +132,9 @@ const voiceMessageLengthTransformer = computed(() => {
 <template>
   <div
     class="custom-input"
+    :style="{
+      width: width
+    }"
   >
     <div
       v-if="uploadedImages.length || uploadedDocuments.length"

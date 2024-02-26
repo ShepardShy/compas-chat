@@ -6,6 +6,7 @@ import MuteOffIcon from '~/assets/icons/mute-off-icon.svg'
 import MuteIcon from '~/assets/icons/mute-icon.svg'
 import PinIcon from '~/assets/icons/pin-icon.svg'
 import type { ChatMenuType } from '~/types/messages'
+import UserAdditionalInfoModal from '~/components/chat/DetailedInfo/UserAdditionalInfoModal/UserAdditionalInfoModal.vue'
 
 interface PropsType {
   isDetailedChatOpen: boolean
@@ -31,6 +32,8 @@ const onClickDoMenuAction = async (menuItem: ChatMenuType) => {
   activeMenuItem.value = menuItem.title
   switch (menuItem.action) {
     case 'detailedChatInfo': {
+      usersStore.$patch(state => state.chatIdForOpenModal = chatId)
+      toggleDetailedModalOpen()
       emit('update:isDetailedChatOpen', !isDetailedChatOpen.value)
       break
     }
@@ -71,6 +74,9 @@ const showMenuItem = (menuItem: ChatMenuType) => {
 useEventListener(document, 'contextmenu', (event) => {
   event.preventDefault()
 })
+
+const isDetailedModalOpen = ref(false)
+const toggleDetailedModalOpen = () => isDetailedModalOpen.value = !isDetailedModalOpen.value
 </script>
 
 <template>
@@ -106,6 +112,11 @@ useEventListener(document, 'contextmenu', (event) => {
 
       {{ showMenuItem(item) }}
     </div>
+
+    <UserAdditionalInfoModal
+      v-if="isDetailedModalOpen"
+      v-model:is-detailed-modal-open="isDetailedModalOpen"
+    />
   </div>
 </template>
 
