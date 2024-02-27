@@ -16,6 +16,13 @@
 .user__photo_big {
   width: 120px;
   height: 120px;
+  flex: 0 0 120px;
+}
+
+.user__photo_mobile {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
 }
 
 .group__photo {
@@ -27,6 +34,10 @@
   font-size: 25px;
   color: #fff;
   font-weight: 400;
+}
+
+.user__photo-name_mobile {
+  font-size: 16px;
 }
 
 .user__photo-name_big {
@@ -45,9 +56,16 @@
   align-items: center;
 }
 
+.user__active-mobile {
+  width: 10px;
+  height: 10px;
+}
+
 .user__active-big {
   width: 24px;
   height: 24px;
+  bottom: 0;
+  right: 10px;
 }
 
 .user__active-circle {
@@ -57,6 +75,10 @@
   border-radius: 50%;
 }
 
+.user__active-circle-mobile {
+  width: 7px;
+  height: 7px;
+}
 
 .user__active-circle-big {
   width: 18px;

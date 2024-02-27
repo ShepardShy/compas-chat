@@ -11,6 +11,7 @@ import GroupChatIcon from '~/assets/icons/group-chat-icon.svg'
 import type { GroupChatMessageType, GroupChatType } from '~/types/messages'
 import ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'
 import { getDistanceToViewport, messageTimeInfo } from '~/composables/chats'
+import { useSettingsStore } from '~/store/settings'
 
 interface PropsType {
   chatData: GroupChatType
@@ -20,7 +21,10 @@ const props = defineProps<PropsType>()
 const { chatData } = toRefs(props)
 
 const usersStore = useUsersStore()
-const { openedChatId, userId, chatsWithPinnedUsers, chatsWithoutPinned } = storeToRefs(usersStore)
+const { openedChatId, userId, chatsWithPinnedUsers } = storeToRefs(usersStore)
+
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
 
 const isDetailedChatOpen = ref(false)
 
@@ -62,6 +66,7 @@ const onMouseClickUserChat = (event: MouseEvent) => {
   if (!iconsComponents.includes(event.target.closest('.icon'))) {
     if (event.button === 0) {
       // при нажатии ЛКМ открыть чат
+      settingsStore.$patch(state => state.isChatsShown = false)
       usersStore.$patch(state => state.openedChatId = chatData.value.id)
     } else if (event.button === 2) {
       //  при нажатии ПКМ открыть модалку для действий с диалогом пользователя

@@ -2,6 +2,7 @@
 import MoreIcon from '~/assets/icons/more-icon.svg'
 import SearchIcon from '~/assets/icons/search-icon.svg'
 import CallIcon from '~/assets/icons/call-icon.svg'
+import BackIcon from '~/assets/icons/back-icon.svg'
 
 import DialogBody from '~/components/chat/DialogBody/DialogBody.vue'
 
@@ -9,9 +10,13 @@ import ChatWindowDialogData from '~/components/chat/ChatWindowDialogData/ChatWin
 import ChatInput from '~/components/chat/ui/ChatInput.vue'
 import ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'
 import { useUsersStore } from '~/store/users'
+import { useSettingsStore } from '~/store/settings'
 
 const usersStore = useUsersStore()
 const { openedChatId, openedChatData } = storeToRefs(usersStore)
+
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
 
 const isSearchInDialogOpen = ref<boolean>(false)
 const isMenuOpen = ref<boolean>(false)
@@ -42,6 +47,8 @@ watch(
     isMenuOpen.value = false
   }
 )
+
+const openAllChats = () => settingsStore.$patch(state => state.isChatsShown = true)
 </script>
 
 <template>
@@ -49,7 +56,16 @@ watch(
     <div
       ref="$dialogHeadHeight"
       class="window__top"
+      :class="{
+        'window__top_mobile': isMobileSize
+      }"
     >
+      <BackIcon
+        v-if="isMobileSize"
+        class="window__back-icon"
+        @click="openAllChats"
+      />
+
       <div class="window__user-data">
         <ChatWindowDialogData v-if="!isSearchInDialogOpen" />
         <ChatInput
@@ -60,8 +76,14 @@ watch(
         />
       </div>
 
-      <div class="window__actions">
+      <div
+        class="window__actions"
+        :class="{
+          'window__actions_mobile': isMobileSize
+        }"
+      >
         <SearchIcon
+          v-if="!isMobileSize"
           :style="{
             color: isSearchInDialogOpen ? '#1253a2' : '#8BABD8',
           }"
@@ -102,5 +124,5 @@ watch(
 </template>
 
 <style scoped lang="scss">
-  @import './ChatWindow.scss';
+@import './ChatWindow.scss';
 </style>

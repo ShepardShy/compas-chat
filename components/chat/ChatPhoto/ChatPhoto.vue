@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useUsersStore } from '~/store/users'
+import { useSettingsStore } from '~/store/settings'
 
 interface PropsType {
   userId: number | string
@@ -9,15 +10,23 @@ interface PropsType {
   chatName: string
   isGroupChat: boolean
   isDetailedMenu?: boolean
+  isOpenDialogImage?: boolean
 }
 
 const usersStore = useUsersStore()
 const { openedChatId } = storeToRefs(usersStore)
 
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
+
 const props = defineProps<PropsType>()
-const { userId, isPinned, isActive, photo, chatName, isGroupChat, isDetailedMenu } = toRefs(props)
+const { userId, isPinned, isActive, photo, chatName, isGroupChat, isDetailedMenu, isOpenDialogImage } = toRefs(props)
 
 const activeCircleBackgroundColor = computed<string>(() => {
+  if (isDetailedMenu.value) {
+    return '#fff'
+  }
+
   if (userId.value === openedChatId.value) {
     return '#eef3f9'
   } else if (isPinned.value) {
@@ -45,7 +54,8 @@ const chatPhoto = computed<string>(() => {
     class="user__photo"
     :class="{
       'group__photo': isGroupChat,
-      'user__photo_big': isDetailedMenu
+      'user__photo_big': isDetailedMenu,
+      'user__photo_mobile': isMobileSize && isOpenDialogImage
     }"
     :style="{
       backgroundImage: chatPhoto
@@ -55,7 +65,8 @@ const chatPhoto = computed<string>(() => {
       v-if="!photo"
       class="user__photo-name"
       :class="{
-        'user__photo-name_big':isDetailedMenu
+        'user__photo-name_big':isDetailedMenu,
+        'user__photo-name_mobile': isMobileSize && isOpenDialogImage
       }"
     >
       {{ chatName ? chatName[0] : '' }}
@@ -65,7 +76,8 @@ const chatPhoto = computed<string>(() => {
       v-if="isActive"
       class="user__active"
       :class="{
-        'user__active-big': isDetailedMenu
+        'user__active-big': isDetailedMenu,
+        'user__active-mobile': isMobileSize && isOpenDialogImage
       }"
       :style="{
         backgroundColor: activeCircleBackgroundColor
@@ -74,7 +86,8 @@ const chatPhoto = computed<string>(() => {
       <div
         class="user__active-circle"
         :class="{
-          'user__active-circle-big':isDetailedMenu
+          'user__active-circle-big':isDetailedMenu,
+          'user__active-circle-mobile':isMobileSize && isOpenDialogImage
         }"
       />
     </div>

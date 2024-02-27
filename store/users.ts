@@ -27,7 +27,7 @@ export const useUsersStore = defineStore('users', {
           messages: [
             {
               id: 1,
-              message: 'Привет',
+              message: 'Привет Привет ПриветПриветПривет ПриветПривет ПриветПриветПривет Привет Привет ПриветПривет Привет',
               userId: 1,
               isReceived: true,
               isViewed: true,

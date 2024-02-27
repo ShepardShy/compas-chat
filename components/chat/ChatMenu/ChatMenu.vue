@@ -7,6 +7,7 @@ import MuteIcon from '~/assets/icons/mute-icon.svg'
 import PinIcon from '~/assets/icons/pin-icon.svg'
 import type { ChatMenuType } from '~/types/messages'
 import UserAdditionalInfoModal from '~/components/chat/DetailedInfo/UserAdditionalInfoModal/UserAdditionalInfoModal.vue'
+import { useSettingsStore } from '~/store/settings'
 
 interface PropsType {
   isDetailedChatOpen: boolean
@@ -18,6 +19,8 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const { isDetailedChatOpen, chatId, isPinned, isMutedOff, isUserChatLeft } = toRefs(props)
+
+const settingsStore = useSettingsStore()
 
 const emit = defineEmits<{
   (emit: 'update:isDetailedChatOpen', value: boolean): void
@@ -44,6 +47,7 @@ const onClickDoMenuAction = async (menuItem: ChatMenuType) => {
     }
     case 'deleteChat': {
       await usersStore.deleteChat(chatId.value!)
+      settingsStore.$patch(state => state.isChatsShown = true)
       emit('closeChat')
       isUserChatLeft.value && emit('update:isDetailedChatOpen', !isDetailedChatOpen.value)
       break

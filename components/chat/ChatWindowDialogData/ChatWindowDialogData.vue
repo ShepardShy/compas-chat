@@ -3,9 +3,13 @@ import GroupChatIcon from 'assets/icons/group-chat-icon.svg'
 import UserPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
 
 import { useUsersStore } from '~/store/users'
+import { useSettingsStore } from '~/store/settings'
 
 const usersStore = useUsersStore()
 const { openedChatData } = storeToRefs(usersStore)
+
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
 
 const userFullName = computed<string>(() => {
   if (openedChatData.value.isGroupChat) {
@@ -41,10 +45,16 @@ const setUsersQuantity = computed(() => {
       :chat-name="userFullName"
       :user-id="openedChatData.id"
       :is-group-chat="openedChatData.isGroupChat"
+      :is-open-dialog-image="true"
     />
 
     <div class="user__user-data">
-      <div class="user__name-status">
+      <div
+        class="user__name-status"
+        :class="{
+          'user__name-status_mobile': isMobileSize
+        }"
+      >
         <GroupChatIcon
           v-if="openedChatData.isGroupChat"
           class="group__title-icon"

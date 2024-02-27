@@ -18,9 +18,14 @@ import DeleteIcon from 'assets/icons/delete-icon.svg'
 import CloseIcon from 'assets/icons/close-icon.svg'
 
 import ChatPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
+import { useSettingsStore } from '~/store/settings'
+import BackIcon from 'assets/icons/back-icon.svg'
 
 const usersStore = useUsersStore()
 const { openModalChatData } = storeToRefs(usersStore)
+
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
 
 interface PropsType {
   isDetailedModalOpen: boolean
@@ -127,13 +132,29 @@ const detailedMenuActiveDataType = ref()
 
 <template>
   <div class="add-info">
-    <div class="add-info__modal">
+    <div
+      class="add-info__modal"
+      :class="{
+        'add-info__modal_mobile':isMobileSize}"
+    >
+      <BackIcon
+        v-if="isMobileSize"
+        class="add-info__back-icon"
+        @click="closeModal"
+      />
+
       <CloseIcon
+        v-if="!isMobileSize"
         class="add-info__close-icon"
         @click="closeModal"
       />
 
-      <AppH3 class="add-info__title">
+      <AppH3
+        class="add-info__title"
+        :class="{
+          'add-info__title_mobile': isMobileSize
+        }"
+      >
         Подробная информация
       </AppH3>
 
@@ -245,6 +266,21 @@ const detailedMenuActiveDataType = ref()
   overflow: hidden;
 }
 
+.add-info__modal_mobile {
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 0;
+  height: 100%;
+}
+
+.add-info__back-icon {
+  height: 25px;
+  position: absolute;
+  top: 25px;
+  left: 10px;
+  cursor: pointer;
+}
+
 .add-info__title {
   font-size: 20px;
   font-weight: 400;
@@ -252,6 +288,10 @@ const detailedMenuActiveDataType = ref()
   margin-bottom: 25px;
   padding-left: 25px;
   padding-right: 25px;
+}
+
+.add-info__title_mobile {
+  padding-left: 45px;
 }
 
 .menu__active {
