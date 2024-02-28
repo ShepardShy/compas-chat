@@ -27,18 +27,9 @@ export interface UserChatType {
     totalFileMessages: number
     totalVoiceMessages: number
     totalLinksMessages: number
-}
+    isMenuOpen: boolean
+    isDetailedInfoOpen: boolean
 
-export interface GroupChatType {
-    id: number
-    isGroupChat: boolean
-    title: string
-    photo: string
-    isPinned: boolean
-    isTyping: boolean
-    isMutedOff: boolean
-    users: GroupChatUserType[]
-    messages: GroupChatMessageType[]
 }
 
 export interface GroupChatUserType {
@@ -58,6 +49,20 @@ export interface GroupChatMessageType {
     secondName: string
     message: string
     date: string
+}
+
+export interface GroupChatType {
+    id: number
+    isGroupChat: boolean
+    title: string
+    photo: string
+    isPinned: boolean
+    isTyping: boolean
+    isMutedOff: boolean
+    isMenuOpen: boolean
+    isDetailedInfoOpen: boolean
+    users: GroupChatUserType[]
+    messages: GroupChatMessageType[]
 }
 
 export interface ChatMenuType {

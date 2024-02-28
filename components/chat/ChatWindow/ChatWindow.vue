@@ -11,6 +11,7 @@ import ChatInput from '~/components/chat/ui/ChatInput.vue'
 import ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'
 import { useUsersStore } from '~/store/users'
 import { useSettingsStore } from '~/store/settings'
+import UserPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
 
 const usersStore = useUsersStore()
 const { openedChatId, openedChatData } = storeToRefs(usersStore)
@@ -48,7 +49,10 @@ watch(
   }
 )
 
-const openAllChats = () => settingsStore.$patch(state => state.isChatsShown = true)
+const openAllChats = () => {
+  settingsStore.$patch(state => state.isChatsShown = true)
+  settingsStore.$patch(state => state.chatIdForOpenModal = undefined)
+}
 </script>
 
 <template>
@@ -113,6 +117,7 @@ const openAllChats = () => settingsStore.$patch(state => state.isChatsShown = tr
         :chat-id="openedChatId"
         :is-pinned="openedChatData.isPinned"
         :is-muted-off="openedChatData.isMutedOff"
+        :is-group-chat="openedChatData.isGroupChat"
         @close-chat="toggleMenuOpen"
       />
     </div>

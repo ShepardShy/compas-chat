@@ -59,10 +59,12 @@ const distanceToViewport = ref<{ top: string, bottom: string } | {}>({})
 
 const onMouseClickUserChat = (event: MouseEvent) => {
   const iconsComponents = [...document.querySelectorAll('.icon')]
+  const chatMenuComponent = [...document.querySelectorAll('.menu')]
 
   // Чтобы при нажатии на иконку не открывалось меню, а срабатывало событие нажатия на иконку
-
-  if (!iconsComponents.includes(event.target.closest('.icon'))) {
+  console.log(isDetailedChatOpen.value)
+  if (!iconsComponents.includes(event.target.closest('.icon')) &&
+      !chatMenuComponent.includes(event.target.closest('.menu'))) {
     if (event.button === 0) {
       // при нажатии ПКМ открыть чат
       settingsStore.$patch(state => state.isChatsShown = false)
@@ -182,25 +184,26 @@ const toggleMenuOpen = () => isDetailedChatOpen.value = !isDetailedChatOpen.valu
       </div>
     </div>
 
-    <div
-      v-if="isDetailedChatOpen"
-      class="user__menu-bg"
-      @click="toggleMenuOpen"
-    />
+    <!--    <div-->
+    <!--      v-if="isDetailedChatOpen"-->
+    <!--      class="user__menu-bg"-->
+    <!--      @click="toggleMenuOpen"-->
+    <!--    />-->
 
-    <ChatMenu
-      v-if="isDetailedChatOpen"
-      v-model:is-detailed-chat-open="isDetailedChatOpen"
-      :style="{
-        top: distanceToViewport.bottom < 240 ? '-172px' : '30px',
-        right: '10px',
-      }"
-      :chat-id="chatData.id"
-      :is-pinned="chatData.isPinned"
-      :is-muted-off="chatData.isMutedOff"
-      :is-user-chat-left="true"
-      @close-chat="toggleMenuOpen"
-    />
+    <!--    <ChatMenu-->
+    <!--      v-if="isDetailedChatOpen"-->
+    <!--      v-model:is-detailed-chat-open="isDetailedChatOpen"-->
+    <!--      :style="{-->
+    <!--        top: distanceToViewport.bottom < 240 ? '-172px' : '30px',-->
+    <!--        right: '10px',-->
+    <!--      }"-->
+    <!--      :chat-id="chatData.id"-->
+    <!--      :is-pinned="chatData.isPinned"-->
+    <!--      :is-muted-off="chatData.isMutedOff"-->
+    <!--      :is-user-chat-left="true"-->
+    <!--      :is-group-chat="chatData.isGroupChat"-->
+    <!--      @close-chat="toggleMenuOpen"-->
+    <!--    />-->
   </div>
 </template>
 

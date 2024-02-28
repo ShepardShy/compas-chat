@@ -50,5 +50,5 @@ watch(
 </template>
 
 <style scoped lang="scss">
-@import './AllUsersChats.scss';
+@import './AllChats';
 </style>
