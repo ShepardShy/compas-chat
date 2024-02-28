@@ -21,6 +21,12 @@ export interface UserChatType {
     isMutedOff: boolean
     position: string
     messages: MessageType[]
+    totalTextMessages: number
+    totalPhotoMessages: number
+    totalVideoMessages: number
+    totalFileMessages: number
+    totalVoiceMessages: number
+    totalLinksMessages: number
 }
 
 export interface GroupChatType {
@@ -59,4 +65,12 @@ export interface ChatMenuType {
     icon: string
     action: 'detailedChatInfo' | 'editChat' | 'pinChat' | 'muteChat' | 'deleteChat'
     alternativeTitle?: string
+}
+
+export interface DetailedInfoMenuItem {
+    titleOne: string
+    titleTwo: string
+    titleThree: string
+    icon: string
+    action: 'text-messages' | 'images-messages' | 'video-messages' | 'file-messages' | 'voice-messages' | 'link-messages' | 'delete-messages'
 }

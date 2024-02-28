@@ -8,13 +8,14 @@ interface PropsType {
   photo: string | undefined
   chatName: string
   isGroupChat: boolean
+  isDetailedMenu?: boolean
 }
 
 const usersStore = useUsersStore()
 const { openedChatId } = storeToRefs(usersStore)
 
 const props = defineProps<PropsType>()
-const { userId, isPinned, isActive, photo, chatName, isGroupChat } = toRefs(props)
+const { userId, isPinned, isActive, photo, chatName, isGroupChat, isDetailedMenu } = toRefs(props)
 
 const activeCircleBackgroundColor = computed<string>(() => {
   if (userId.value === openedChatId.value) {
@@ -43,7 +44,8 @@ const chatPhoto = computed<string>(() => {
   <div
     class="user__photo"
     :class="{
-      'group__photo': isGroupChat
+      'group__photo': isGroupChat,
+      'user__photo_big': isDetailedMenu
     }"
     :style="{
       backgroundImage: chatPhoto
@@ -52,6 +54,9 @@ const chatPhoto = computed<string>(() => {
     <div
       v-if="!photo"
       class="user__photo-name"
+      :class="{
+        'user__photo-name_big':isDetailedMenu
+      }"
     >
       {{ chatName ? chatName[0] : '' }}
     </div>
@@ -59,11 +64,19 @@ const chatPhoto = computed<string>(() => {
     <div
       v-if="isActive"
       class="user__active"
+      :class="{
+        'user__active-big': isDetailedMenu
+      }"
       :style="{
         backgroundColor: activeCircleBackgroundColor
       }"
     >
-      <div class="user__active-circle" />
+      <div
+        class="user__active-circle"
+        :class="{
+          'user__active-circle-big':isDetailedMenu
+        }"
+      />
     </div>
   </div>
 </template>

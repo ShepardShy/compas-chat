@@ -4,8 +4,6 @@ import UserPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
 
 import { useUsersStore } from '~/store/users'
 
-import type { GroupChatUserType } from '~/types/messages'
-
 const usersStore = useUsersStore()
 const { openedChatData } = storeToRefs(usersStore)
 
@@ -19,21 +17,6 @@ const userFullName = computed<string>(() => {
   }
 })
 
-const setUserFullName = (
-  chatData: GroupChatUserType,
-  userIdx: number | string,
-  usersNumbers: number): string => {
-  const fullName = chatData?.firstName
-    ? chatData?.firstName + ' ' + chatData?.secondName
-    : chatData?.secondName
-
-  if (usersNumbers == userIdx + 1) {
-    return fullName!
-  }
-
-  return fullName!.length ? fullName! + ', ' : fullName!
-}
-
 const setUsersQuantity = computed(() => {
   const totalChatUsers = openedChatData.value.users?.length.toString()
 
@@ -46,6 +29,7 @@ const setUsersQuantity = computed(() => {
   }
 }
 )
+
 </script>
 
 <template>
@@ -89,13 +73,6 @@ const setUsersQuantity = computed(() => {
         v-if="openedChatData.isGroupChat"
         class="user__chat-users"
       >
-        <!--        <div-->
-        <!--            v-for="(user, idx) in openedChatData.users"-->
-        <!--            class="user__chat-user"-->
-        <!--        >-->
-        <!--          {{ setUserFullName(user, idx, openedChatData.users.length) }}-->
-        <!--        </div>-->
-
         {{ setUsersQuantity }}
       </div>
     </div>
