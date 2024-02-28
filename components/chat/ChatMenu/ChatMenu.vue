@@ -8,6 +8,7 @@ import PinIcon from '~/assets/icons/pin-icon.svg'
 import type { ChatMenuType } from '~/types/messages'
 import AdditionalInfoModal from '~/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue'
 import { useSettingsStore } from '~/store/settings'
+import { getDistanceToViewport } from '~/composables/chats'
 
 interface PropsType {
   isDetailedChatOpen: boolean
@@ -91,6 +92,12 @@ const chatItems = computed(() => {
     return chatMenuItems.filter(menuItems => menuItems.action !== 'editChat')
   }
 })
+
+// onMounted(() => {
+//   if (chatIdForOpenModal.value) {
+//     isDetailedModalOpen.value = true
+//   }
+// })
 </script>
 
 <template>

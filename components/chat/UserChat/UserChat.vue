@@ -19,7 +19,7 @@ const props = defineProps<PropsType>()
 const { chatData } = toRefs(props)
 
 const usersStore = useUsersStore()
-const { openedChatId, userId, chatsWithPinnedUsers, chatsWithoutPinned } = storeToRefs(usersStore)
+const { openedChatId, userId, chatsWithPinnedUsers, chatIdForOpenModal } = storeToRefs(usersStore)
 
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
@@ -98,10 +98,20 @@ useEventListener(document, 'contextmenu', (event) => {
 })
 
 const toggleMenuOpen = () => isDetailedChatOpen.value = !isDetailedChatOpen.value
+
+const $menuItem = ref()
+
+// onMounted(() => {
+//   if (chatIdForOpenModal.value === chatData.value.id) {
+//     distanceToViewport.value = getDistanceToViewport($menuItem.value).bottom
+//     isDetailedChatOpen.value = true
+//   }
+// })
 </script>
 
 <template>
   <div
+    ref="$menuItem"
     class="user"
     :class="{
       'user__chat_open': openedChatId === chatData.id
@@ -208,5 +218,5 @@ const toggleMenuOpen = () => isDetailedChatOpen.value = !isDetailedChatOpen.valu
 </template>
 
 <style scoped lang="scss">
-  @import './UserChat.scss';
+@import './UserChat.scss';
 </style>

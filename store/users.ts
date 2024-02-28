@@ -657,7 +657,7 @@ export const useUsersStore = defineStore('users', {
       ] as Array<UserChatType | GroupChatType>,
       filteredChats: [] as Array<UserChatType | GroupChatType> | [],
       openedChatId: 4 as undefined | number,
-      chatIdForOpenModal: 1 as undefined | number
+      chatIdForOpenModal: undefined as undefined | number
     }
   },
 

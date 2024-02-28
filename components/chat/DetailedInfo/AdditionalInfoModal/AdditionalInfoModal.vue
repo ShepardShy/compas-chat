@@ -118,6 +118,7 @@ const showModalMenuItemTitle = (item: DetailedInfoMenuItem) => {
 
 const closeModal = () => {
   emit('update:isDetailedModalOpen', !isDetailedModalOpen.value)
+  usersStore.$patch(state => state.chatIdForOpenModal = -1)
 }
 
 const onClickDetailedInfoMenuItem = async (item: DetailedInfoMenuItem) => {

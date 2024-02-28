@@ -103,16 +103,20 @@ const toggleMenuOpen = () => {
   isDetailedChatOpen.value = !isDetailedChatOpen.value
 }
 
-const isMenuOpen = computed(() => {
-  if (chatIdForOpenModal.value === chatData.value.id) {
-    isDetailedChatOpen.value = true
-    return true
-  }
-})
+const $menuItem = ref()
+
+// onMounted(() => {
+//   if (chatIdForOpenModal.value === chatData.value.id) {
+//     distanceToViewport.value = getDistanceToViewport($menuItem.value).bottom
+//     isDetailedChatOpen.value = true
+//   }
+// })
+
 </script>
 
 <template>
   <div
+    ref="$menuItem"
     class="group"
     :class="{
       'group__chat_open': openedChatId === chatData.id,
@@ -202,11 +206,11 @@ const isMenuOpen = computed(() => {
       </div>
     </div>
 
-    <div
-      v-if="isDetailedChatOpen"
-      class="group__menu-bg"
-      @click="toggleMenuOpen"
-    />
+    <!--    <div-->
+    <!--      v-if="isDetailedChatOpen"-->
+    <!--      class="group__menu-bg"-->
+    <!--      @click="toggleMenuOpen"-->
+    <!--    />-->
 
     <!--    <ChatMenu-->
     <!--      v-if="isDetailedChatOpen"-->
