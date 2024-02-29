@@ -2,6 +2,7 @@
 
 import type { GroupChatMessageType, MessageType, UserChatType } from '~/types/messages'
 import { useUsersStore } from '~/store/users'
+import { useSettingsStore } from '~/store/settings'
 
 interface PropsType {
   message: GroupChatMessageType | MessageType
@@ -11,10 +12,13 @@ interface PropsType {
 const usersStore = useUsersStore()
 const { chats } = storeToRefs(usersStore)
 
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
+
 const props = defineProps<PropsType>()
 const { message, lastOfSeveralMsgs } = toRefs(props)
 
-const messageTime = ():string => {
+const messageTime = (): string => {
   return message.value.date.slice(-5)
 }
 
@@ -32,9 +36,17 @@ const chatPhoto = computed<string>(() => {
 </script>
 
 <template>
-  <div class="other-msg">
+  <div
+    class="other-msg"
+    :class="{
+      'other-msg_mobile': isMobileSize,
+    }"
+  >
     <div
       class="other-msg__photo"
+      :class="{
+        'other-msg__photo_mobile': isMobileSize
+      }"
       :style="{
         backgroundImage: chatPhoto
       }"

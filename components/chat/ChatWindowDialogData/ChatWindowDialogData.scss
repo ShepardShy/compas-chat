@@ -14,6 +14,10 @@
   margin-bottom: 5px;
 }
 
+.user__name-status_mobile {
+  margin-bottom: 2px;
+}
+
 .user__name {
   font-size: 16px;
   font-weight: 400;
@@ -22,6 +26,13 @@
 }
 
 .user__status {
+  font-size: 12px;
+  font-weight: 400;
+  color: variables.$color-dark-grey;
+  margin-bottom: 1px;
+}
+
+.user__position {
   font-size: 12px;
   font-weight: 400;
   color: variables.$color-dark-grey;

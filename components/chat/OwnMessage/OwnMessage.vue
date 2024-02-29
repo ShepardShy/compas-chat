@@ -3,11 +3,15 @@
 import type { GroupChatMessageType, MessageType } from '~/types/messages'
 import ViewedMessageIcon from 'assets/icons/viewed-message-icon.svg'
 import ReceivedMessageIcon from 'assets/icons/recieved-message-icon.svg'
+import { useSettingsStore } from '~/store/settings'
 
 interface PropsType {
   message: GroupChatMessageType | MessageType
   lastOfSeveralMsgs: boolean
 }
+
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
 
 const props = defineProps<PropsType>()
 const { message, lastOfSeveralMsgs } = toRefs(props)
@@ -30,7 +34,8 @@ const messageTime = ():string => {
   <div
     class="own-msg"
     :class="{
-      'own-msg__triangle ': lastOfSeveralMsgs
+      'own-msg__triangle ': lastOfSeveralMsgs,
+      'own-msg_mobile': isMobileSize
     }"
   >
     <div class="owm-msg__message">

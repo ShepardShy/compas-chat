@@ -7,9 +7,13 @@ import { useUsersStore } from '~/store/users'
 import OwnMessage from '~/components/chat/OwnMessage/OwnMessage.vue'
 import OtherMessage from '~/components/chat/OtherMessage/OtherMessage.vue'
 import VoiceMessage from '~/components/chat/VoiceMessage/VoiceMessage.vue'
+import { useSettingsStore } from '~/store/settings'
 
 const usersStore = useUsersStore()
 const { openedChatData, userId, openedChatId } = storeToRefs(usersStore)
+
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
 
 const messageValue = ref<string>()
 
@@ -160,7 +164,12 @@ const deleteMessage = (messageIdx) => {
 </script>
 
 <template>
-  <div class="dialog">
+  <div
+    class="dialog"
+    :class="{
+      'dialog_mobile': isMobileSize
+    }"
+  >
     <div
       ref="$dialogWrapper"
       class="dialog__wrapper"

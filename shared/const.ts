@@ -4,7 +4,7 @@ export const daysOfWeek = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб
 
 export const chatMenuItems: ChatMenuType[] = [
   {
-    title: 'Подбробная информация',
+    title: 'Подробная информация',
     icon: '',
     action: 'detailedChatInfo'
   },

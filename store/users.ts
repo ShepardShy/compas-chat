@@ -24,10 +24,12 @@ export const useUsersStore = defineStore('users', {
           totalFileMessages: 19,
           totalVoiceMessages: 5,
           totalLinksMessages: 66,
+          isMenuOpen: false,
+          isDetailedInfoOpen: false,
           messages: [
             {
               id: 1,
-              message: 'Привет',
+              message: 'Привет Привет ПриветПриветПривет ПриветПривет ПриветПриветПривет Привет Привет ПриветПривет Привет',
               userId: 1,
               isReceived: true,
               isViewed: true,
@@ -125,6 +127,14 @@ export const useUsersStore = defineStore('users', {
           isPinned: true,
           isTyping: false,
           isMutedOff: false,
+          totalTextMessages: 200,
+          totalPhotoMessages: 404,
+          totalVideoMessages: 23,
+          totalFileMessages: 19,
+          totalVoiceMessages: 5,
+          totalLinksMessages: 66,
+          isMenuOpen: false,
+          isDetailedInfoOpen: false,
           users: [
             {
               id: 2,
@@ -317,6 +327,8 @@ export const useUsersStore = defineStore('users', {
           totalFileMessages: 19,
           totalVoiceMessages: 5,
           totalLinksMessages: 66,
+          isMenuOpen: false,
+          isDetailedInfoOpen: false,
           messages: [
             {
               id: 1,
@@ -356,6 +368,8 @@ export const useUsersStore = defineStore('users', {
           totalFileMessages: 19,
           totalVoiceMessages: 5,
           totalLinksMessages: 66,
+          isMenuOpen: false,
+          isDetailedInfoOpen: false,
           messages: [
             {
               id: 1,
@@ -395,6 +409,8 @@ export const useUsersStore = defineStore('users', {
           totalFileMessages: 19,
           totalVoiceMessages: 5,
           totalLinksMessages: 66,
+          isMenuOpen: false,
+          isDetailedInfoOpen: false,
           messages: [
             {
               id: 1,
@@ -434,6 +450,8 @@ export const useUsersStore = defineStore('users', {
           totalFileMessages: 19,
           totalVoiceMessages: 5,
           totalLinksMessages: 66,
+          isMenuOpen: false,
+          isDetailedInfoOpen: false,
           messages: [
             {
               id: 1,
@@ -473,6 +491,8 @@ export const useUsersStore = defineStore('users', {
           totalFileMessages: 19,
           totalVoiceMessages: 5,
           totalLinksMessages: 66,
+          isMenuOpen: false,
+          isDetailedInfoOpen: false,
           messages: []
         },
         {
@@ -489,6 +509,8 @@ export const useUsersStore = defineStore('users', {
           totalFileMessages: 19,
           totalVoiceMessages: 5,
           totalLinksMessages: 66,
+          isMenuOpen: false,
+          isDetailedInfoOpen: false,
           users: [
             {
               id: 2,
@@ -546,6 +568,8 @@ export const useUsersStore = defineStore('users', {
           totalFileMessages: 19,
           totalVoiceMessages: 5,
           totalLinksMessages: 66,
+          isMenuOpen: false,
+          isDetailedInfoOpen: false,
           messages: []
         },
         {
@@ -566,6 +590,8 @@ export const useUsersStore = defineStore('users', {
           totalFileMessages: 19,
           totalVoiceMessages: 5,
           totalLinksMessages: 66,
+          isMenuOpen: false,
+          isDetailedInfoOpen: false,
           messages: [
             {
               id: 1,
@@ -605,6 +631,8 @@ export const useUsersStore = defineStore('users', {
           totalFileMessages: 19,
           totalVoiceMessages: 5,
           totalLinksMessages: 66,
+          isMenuOpen: false,
+          isDetailedInfoOpen: false,
           messages: [
             {
               id: 1,
@@ -629,7 +657,7 @@ export const useUsersStore = defineStore('users', {
       ] as Array<UserChatType | GroupChatType>,
       filteredChats: [] as Array<UserChatType | GroupChatType> | [],
       openedChatId: 4 as undefined | number,
-      chatIdForOpenModal: 1 as undefined | number
+      chatIdForOpenModal: undefined as undefined | number
     }
   },
 
@@ -641,10 +669,10 @@ export const useUsersStore = defineStore('users', {
   },
 
   actions: {
-    async togglePinUser (userId: string | number) {
+    async togglePinUser (chatId: string | number) {
       try {
         this.chats = this.chats.map((chatData) => {
-          if (chatData.id == userId) {
+          if (chatData.id == chatId) {
             return {
               ...chatData,
               isPinned: !chatData.isPinned
@@ -658,10 +686,10 @@ export const useUsersStore = defineStore('users', {
       }
     },
 
-    async toggleUserMuted (userId: string | number) {
+    async toggleUserMuted (chatId: string | number) {
       try {
         this.chats = this.chats.map((chatData) => {
-          if (chatData.id == userId) {
+          if (chatData.id == chatId) {
             return {
               ...chatData,
               isMutedOff: !chatData.isMutedOff

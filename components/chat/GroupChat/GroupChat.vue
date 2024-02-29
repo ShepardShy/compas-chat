@@ -11,6 +11,7 @@ import GroupChatIcon from '~/assets/icons/group-chat-icon.svg'
 import type { GroupChatMessageType, GroupChatType } from '~/types/messages'
 import ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'
 import { getDistanceToViewport, messageTimeInfo } from '~/composables/chats'
+import { useSettingsStore } from '~/store/settings'
 
 interface PropsType {
   chatData: GroupChatType
@@ -20,7 +21,10 @@ const props = defineProps<PropsType>()
 const { chatData } = toRefs(props)
 
 const usersStore = useUsersStore()
-const { openedChatId, userId, chatsWithPinnedUsers, chatsWithoutPinned } = storeToRefs(usersStore)
+const { openedChatId, userId, chatsWithPinnedUsers, chatIdForOpenModal } = storeToRefs(usersStore)
+
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
 
 const isDetailedChatOpen = ref(false)
 
@@ -56,12 +60,16 @@ const distanceToViewport = ref()
 
 const onMouseClickUserChat = (event: MouseEvent) => {
   const iconsComponents = [...document.querySelectorAll('.icon')]
+  const chatMenuComponent = [...document.querySelectorAll('.menu')]
 
   // Чтобы при нажатии на иконку не открывалось меню, а срабатывало событие нажатия на иконку
 
-  if (!iconsComponents.includes(event.target.closest('.icon'))) {
+  if (!iconsComponents.includes(event.target.closest('.icon')) &&
+      !chatMenuComponent.includes(event.target.closest('.menu'))
+  ) {
     if (event.button === 0) {
       // при нажатии ЛКМ открыть чат
+      settingsStore.$patch(state => state.isChatsShown = false)
       usersStore.$patch(state => state.openedChatId = chatData.value.id)
     } else if (event.button === 2) {
       //  при нажатии ПКМ открыть модалку для действий с диалогом пользователя
@@ -91,11 +99,24 @@ useEventListener(document, 'contextmenu', (event) => {
   }
 })
 
-const toggleMenuOpen = () => isDetailedChatOpen.value = !isDetailedChatOpen.value
+const toggleMenuOpen = () => {
+  isDetailedChatOpen.value = !isDetailedChatOpen.value
+}
+
+const $menuItem = ref()
+
+// onMounted(() => {
+//   if (chatIdForOpenModal.value === chatData.value.id) {
+//     distanceToViewport.value = getDistanceToViewport($menuItem.value).bottom
+//     isDetailedChatOpen.value = true
+//   }
+// })
+
 </script>
 
 <template>
   <div
+    ref="$menuItem"
     class="group"
     :class="{
       'group__chat_open': openedChatId === chatData.id,
@@ -185,25 +206,26 @@ const toggleMenuOpen = () => isDetailedChatOpen.value = !isDetailedChatOpen.valu
       </div>
     </div>
 
-    <div
-      v-if="isDetailedChatOpen"
-      class="group__menu-bg"
-      @click="toggleMenuOpen"
-    />
+    <!--    <div-->
+    <!--      v-if="isDetailedChatOpen"-->
+    <!--      class="group__menu-bg"-->
+    <!--      @click="toggleMenuOpen"-->
+    <!--    />-->
 
-    <ChatMenu
-      v-if="isDetailedChatOpen"
-      v-model:is-detailed-chat-open="isDetailedChatOpen"
-      :style="{
-        top: distanceToViewport.bottom < 240 ? '-172px' : '30px',
-        right: '10px',
-      }"
-      :chat-id="chatData.id"
-      :is-pinned="chatData.isPinned"
-      :is-muted-off="chatData.isMutedOff"
-      :is-user-chat-left="true"
-      @close-chat="toggleMenuOpen"
-    />
+    <!--    <ChatMenu-->
+    <!--      v-if="isDetailedChatOpen"-->
+    <!--      v-model:is-detailed-chat-open="isDetailedChatOpen"-->
+    <!--      :style="{-->
+    <!--        top: distanceToViewport.bottom < 240 ? '-172px' : '30px',-->
+    <!--        right: '10px',-->
+    <!--      }"-->
+    <!--      :chat-id="chatData.id"-->
+    <!--      :is-pinned="chatData.isPinned"-->
+    <!--      :is-muted-off="chatData.isMutedOff"-->
+    <!--      :is-user-chat-left="true"-->
+    <!--      :is-group-chat="chatData.isGroupChat"-->
+    <!--      @close-chat="toggleMenuOpen"-->
+    <!--    />-->
   </div>
 </template>
 

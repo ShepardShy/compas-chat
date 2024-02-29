@@ -6,7 +6,7 @@ import { chatMenuItems, detailedInfoMenuItems } from '~/shared/const'
 import type { ChatMenuType, DetailedInfoMenuItem } from '~/types/messages'
 
 import MuteOffIcon from 'assets/icons/mute-off-icon.svg'
-import MuteIcon from 'assets/icons/mute-icon.svg'
+
 import PinIcon from 'assets/icons/pin-icon.svg'
 import FileMessagesIcon from 'assets/icons/file-messages-icon.svg'
 import LinkMessagesIcon from 'assets/icons/link-messages-icon.svg'
@@ -18,20 +18,30 @@ import DeleteIcon from 'assets/icons/delete-icon.svg'
 import CloseIcon from 'assets/icons/close-icon.svg'
 
 import ChatPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
+import { useSettingsStore } from '~/store/settings'
+import BackIcon from 'assets/icons/back-icon.svg'
 
 const usersStore = useUsersStore()
 const { openModalChatData } = storeToRefs(usersStore)
 
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
+
 interface PropsType {
   isDetailedModalOpen: boolean
+  isGroupChat: boolean
 }
 
 const props = defineProps<PropsType>()
-const { isDetailedModalOpen } = toRefs(props)
+const { isDetailedModalOpen, isGroupChat } = toRefs(props)
 
 const emit = defineEmits<{(emit: 'update:isDetailedModalOpen', value: boolean): void }>()
 
-const userFullName = computed<string>(() => {
+const chatFullName = computed<string>(() => {
+  if (isGroupChat.value) {
+    return openModalChatData.value?.title
+  }
+
   if (openModalChatData.value.firstName) {
     return openModalChatData.value?.firstName + ' ' + openModalChatData.value?.secondName
   } else {
@@ -55,11 +65,13 @@ const onClickDoAction = async (menuItem: ChatMenuType) => {
 }
 
 const showMenuItem = (menuItem: ChatMenuType) => {
-  if (menuItem.action === 'pinChat') {
-    return !openModalChatData.value.isPinned ? menuItem.title : menuItem.alternativeTitle
-  } else if (menuItem.action === 'muteChat') {
-    return !openModalChatData.value.isMutedOff ? menuItem.title : menuItem.alternativeTitle
-  }
+  // if (menuItem.action === 'pinChat') {
+  //   return !openModalChatData.value.isPinned ? menuItem.title : menuItem.alternativeTitle
+  // } else if (menuItem.action === 'muteChat') {
+  //   return !openModalChatData.value.isMutedOff ? menuItem.title : menuItem.alternativeTitle
+  // }
+
+  return menuItem.title
 }
 
 const showModalMenuItemTitle = (item: DetailedInfoMenuItem) => {
@@ -106,6 +118,7 @@ const showModalMenuItemTitle = (item: DetailedInfoMenuItem) => {
 
 const closeModal = () => {
   emit('update:isDetailedModalOpen', !isDetailedModalOpen.value)
+  usersStore.$patch(state => state.chatIdForOpenModal = -1)
 }
 
 const onClickDetailedInfoMenuItem = async (item: DetailedInfoMenuItem) => {
@@ -123,17 +136,48 @@ const onClickDetailedInfoMenuItem = async (item: DetailedInfoMenuItem) => {
 }
 
 const detailedMenuActiveDataType = ref()
+
+const groupChatUsersTotal = computed(() => {
+  if (!openModalChatData.value?.users) return
+
+  const totalUsers = openModalChatData.value?.users.length
+  const lastDigit = toString().slice(-1)
+  if (+lastDigit === 1) {
+    return totalUsers + ' ' + 'участник'
+  } else if (+lastDigit >= 2 && +lastDigit <= 4) {
+    return totalUsers + ' ' + 'участника'
+  } else {
+    return totalUsers + ' ' + 'участников'
+  }
+})
+
 </script>
 
 <template>
   <div class="add-info">
-    <div class="add-info__modal">
+    <div
+      class="add-info__modal"
+      :class="{
+        'add-info__modal_mobile':isMobileSize}"
+    >
+      <BackIcon
+        v-if="isMobileSize"
+        class="add-info__back-icon"
+        @click="closeModal"
+      />
+
       <CloseIcon
+        v-if="!isMobileSize"
         class="add-info__close-icon"
         @click="closeModal"
       />
 
-      <AppH3 class="add-info__title">
+      <AppH3
+        class="add-info__title"
+        :class="{
+          'add-info__title_mobile': isMobileSize
+        }"
+      >
         Подробная информация
       </AppH3>
 
@@ -143,21 +187,44 @@ const detailedMenuActiveDataType = ref()
         :is-pinned="openModalChatData.isPinned"
         :is-active="openModalChatData.isActive"
         :photo="openModalChatData.photo"
-        :chat-name="userFullName"
-        :is-group-chat="false"
+        :chat-name="chatFullName"
+        :is-group-chat="isGroupChat"
         :is-detailed-menu="true"
       />
 
-      <div class="menu__active">
+      <div
+        v-if="!isGroupChat"
+        class="menu__active"
+      >
         {{ openModalChatData.isActive ? 'В сети' : 'Не в сети' }}
       </div>
 
-      <div class="menu__name">
-        {{ userFullName }}
+      <div
+        v-if="!isGroupChat"
+        class="menu__name"
+      >
+        {{ chatFullName }}
       </div>
 
-      <div class="menu__position">
+      <div
+        v-if="isGroupChat"
+        class="menu__title"
+      >
+        {{ chatFullName }}
+      </div>
+
+      <div
+        v-if="!isGroupChat"
+        class="menu__position"
+      >
         {{ openModalChatData.position ?? '' }}
+      </div>
+
+      <div
+        v-if="isGroupChat"
+        class="menu__participants"
+      >
+        {{ groupChatUsersTotal }}
       </div>
 
       <div
@@ -172,19 +239,17 @@ const detailedMenuActiveDataType = ref()
         <div
           v-if="item.icon"
           class="menu__item-icon"
+          :class="{
+            'menu__item-icon_not-selected': (item.action == 'muteChat' && !openModalChatData.isMutedOff) || (item.action == 'pinChat' && !openModalChatData.isPinned)
+          }"
         >
           <MuteOffIcon
-            v-if="item.action == 'muteChat' && !openModalChatData.isMutedOff"
-            class="menu__item-img"
-          />
-
-          <MuteIcon
             v-if="item.action == 'muteChat' && openModalChatData.isMutedOff"
             class="menu__item-img"
           />
 
           <PinIcon
-            v-if="item.action == 'pinChat'"
+            v-if="item.action == 'pinChat' && openModalChatData.isPinned"
             class="menu__item-img"
           />
         </div>
@@ -245,6 +310,21 @@ const detailedMenuActiveDataType = ref()
   overflow: hidden;
 }
 
+.add-info__modal_mobile {
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 0;
+  height: 100%;
+}
+
+.add-info__back-icon {
+  height: 25px;
+  position: absolute;
+  top: 25px;
+  left: 10px;
+  cursor: pointer;
+}
+
 .add-info__title {
   font-size: 20px;
   font-weight: 400;
@@ -254,16 +334,20 @@ const detailedMenuActiveDataType = ref()
   padding-right: 25px;
 }
 
+.add-info__title_mobile {
+  padding-left: 45px;
+}
+
 .menu__active {
   font-size: 12px;
   font-weight: 400;
   color: variables.$color-dark-grey;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
   text-align: center;
 }
 
 .menu__name {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   text-align: center;
   font-size: 21px;
   font-weight: 400;
@@ -271,7 +355,23 @@ const detailedMenuActiveDataType = ref()
   color: variables.$color-active;
 }
 
+.menu__title {
+  margin-bottom: 5px;
+  text-align: center;
+  font-size: 21px;
+  font-weight: 400;
+  color: variables.$color-black;
+}
+
 .menu__position {
+  margin-bottom: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+  color: variables.$color-dark-grey;
+}
+
+.menu__participants {
   margin-bottom: 5px;
   font-size: 12px;
   font-weight: 400;
@@ -318,6 +418,11 @@ const detailedMenuActiveDataType = ref()
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.menu__item-icon_not-selected {
+  background-color: transparent;
+  border: 1px solid #0584fe;
 }
 
 .menu__item-img {

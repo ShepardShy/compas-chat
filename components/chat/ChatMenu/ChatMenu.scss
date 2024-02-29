@@ -24,12 +24,18 @@
 .menu__item-icon {
   border-radius: 5px;
   background-color: #0584fe;
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
   margin: 1px;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 0.2s all;
+}
+
+.menu__item-icon_not-selected {
+  background-color: transparent;
+  border: 1px solid #0584fe;
 }
 
 .menu__item-img {
