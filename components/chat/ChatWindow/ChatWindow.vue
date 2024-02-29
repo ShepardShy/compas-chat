@@ -4,14 +4,13 @@ import SearchIcon from '~/assets/icons/search-icon.svg'
 import CallIcon from '~/assets/icons/call-icon.svg'
 import BackIcon from '~/assets/icons/back-icon.svg'
 
-import DialogBody from '~/components/chat/DialogBody/DialogBody.vue'
+import DialogBody from '~/components/chat/ChatWindow/DialogBody/DialogBody.vue'
 
-import ChatWindowDialogData from '~/components/chat/ChatWindowDialogData/ChatWindowDialogData.vue'
+import ChatWindowHeader from '~/components/chat/ChatWindow/ChatWindowData/ChatWindowData.vue'
 import ChatInput from '~/components/chat/ui/ChatInput.vue'
 import ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'
 import { useUsersStore } from '~/store/users'
 import { useSettingsStore } from '~/store/settings'
-import UserPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
 
 const usersStore = useUsersStore()
 const { openedChatId, openedChatData } = storeToRefs(usersStore)
@@ -71,7 +70,7 @@ const openAllChats = () => {
       />
 
       <div class="window__user-data">
-        <ChatWindowDialogData v-if="!isSearchInDialogOpen" />
+        <ChatWindowHeader v-if="!isSearchInDialogOpen" />
         <ChatInput
           v-if="isSearchInDialogOpen"
           v-model:input-value="searchInDialogValue"

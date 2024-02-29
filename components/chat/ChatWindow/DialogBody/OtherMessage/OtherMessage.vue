@@ -79,5 +79,5 @@ const chatPhoto = computed<string>(() => {
 </template>
 
 <style scoped lang="scss">
-@import './OtherMessage.scss';
+@import 'OtherMessage';
 </style>

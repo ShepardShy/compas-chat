@@ -90,5 +90,5 @@ const setUsersQuantity = computed(() => {
 </template>
 
 <style scoped lang="scss">
-@import './ChatWindowDialogData.scss';
+@import 'ChatWindowData';
 </style>

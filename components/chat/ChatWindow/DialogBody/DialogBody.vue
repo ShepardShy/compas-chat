@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { nextTick } from 'vue'
 import ChatInput from '~/components/chat/ui/ChatInput.vue'
-import SendMsgIcon from '~/assets/icons/send-msg-icon.svg'
-import MicrophoneIcon from '~/assets/icons/microphone-icon.svg'
+import SendMsgIcon from 'assets/icons/send-msg-icon.svg'
+import MicrophoneIcon from 'assets/icons/microphone-icon.svg'
 import { useUsersStore } from '~/store/users'
-import OwnMessage from '~/components/chat/OwnMessage/OwnMessage.vue'
-import OtherMessage from '~/components/chat/OtherMessage/OtherMessage.vue'
+import OwnMessage from '~/components/chat/ChatWindow/DialogBody/OwnMessage/OwnMessage.vue'
+import OtherMessage from '~/components/chat/ChatWindow/DialogBody/OtherMessage/OtherMessage.vue'
 import VoiceMessage from '~/components/chat/VoiceMessage/VoiceMessage.vue'
 import { useSettingsStore } from '~/store/settings'
 
@@ -252,5 +252,5 @@ const deleteMessage = (messageIdx) => {
 </template>
 
 <style scoped lang="scss">
-@import './DialogBody.scss';
+@import 'DialogBody';
 </style>

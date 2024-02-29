@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import UserChat from '~/components/chat/UserChat/UserChat.vue'
-import GroupChat from '~/components/chat/GroupChat/GroupChat.vue'
+import UserChat from '~/components/chat/AllChats/UserChat/UserChat.vue'
+import GroupChat from '~/components/chat/AllChats/GroupChat/GroupChat.vue'
 
 import type { UserChatType, GroupChatType } from '~/types/messages'
 
@@ -32,5 +32,5 @@ const { chatsWithoutPinnedUsers } = toRefs(props)
 </template>
 
 <style scoped lang="scss">
-@import './ChatsWithoutPinnedUsers.scss';
+@import 'ChatsWithoutPinnedUsers';
 </style>

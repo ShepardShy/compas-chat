@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import ViewedMessageIcon from 'assets/icons/viewed-message-icon.svg'
-import ReceivedMessageIcon from 'assets/icons/recieved-message-icon.svg'
-import PinnedIcon from 'assets/icons/pin-icon.svg'
-import MuteOffIcon from 'assets/icons/mute-off-icon.svg'
 import { useUsersStore } from '~/store/users'
-import type { MessageType, UserChatType } from '~/types/messages'
-
+import PinnedIcon from 'assets/icons/pin-icon.svg'
+import ReceivedMessageIcon from 'assets/icons/recieved-message-icon.svg'
+import MuteOffIcon from 'assets/icons/mute-off-icon.svg'
+import ViewedMessageIcon from 'assets/icons/viewed-message-icon.svg'
 import ChatPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
+
+import GroupChatIcon from 'assets/icons/group-chat-icon.svg'
+
+import type { GroupChatMessageType, GroupChatType } from '~/types/messages'
 import ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'
 import { getDistanceToViewport, messageTimeInfo } from '~/composables/chats'
 import { useSettingsStore } from '~/store/settings'
 
 interface PropsType {
-  chatData: UserChatType
+  chatData: GroupChatType
 }
 
 const props = defineProps<PropsType>()
@@ -26,8 +28,7 @@ const { isMobileSize } = storeToRefs(settingsStore)
 
 const isDetailedChatOpen = ref(false)
 
-const userFullName = computed<string>(() => chatData.value.firstName + ' ' + chatData.value.secondName)
-const lastMessage = computed<MessageType | {}>(() => {
+const lastMessage = computed<GroupChatMessageType | {}>(() => {
   if (chatData.value.messages.length) {
     return chatData.value.messages[chatData.value.messages.length - 1]
   }
@@ -47,30 +48,31 @@ const isMessageViewed = computed<boolean>(() => {
       lastMessage.value.isViewed
 })
 
-const togglePinUser = async () => {
-  await usersStore.togglePinUser(chatData.value.id)
+const unpinUser = async () => {
+  await usersStore.unpinUser(chatData.value.id)
 }
 
 const toggleMute = async () => {
   await usersStore.toggleUserMuted(chatData.value.id)
 }
 
-const distanceToViewport = ref<{ top: string, bottom: string } | {}>({})
+const distanceToViewport = ref()
 
 const onMouseClickUserChat = (event: MouseEvent) => {
   const iconsComponents = [...document.querySelectorAll('.icon')]
   const chatMenuComponent = [...document.querySelectorAll('.menu')]
 
   // Чтобы при нажатии на иконку не открывалось меню, а срабатывало событие нажатия на иконку
-  console.log(isDetailedChatOpen.value)
+
   if (!iconsComponents.includes(event.target.closest('.icon')) &&
-      !chatMenuComponent.includes(event.target.closest('.menu'))) {
+      !chatMenuComponent.includes(event.target.closest('.menu'))
+  ) {
     if (event.button === 0) {
-      // при нажатии ПКМ открыть чат
+      // при нажатии ЛКМ открыть чат
       settingsStore.$patch(state => state.isChatsShown = false)
       usersStore.$patch(state => state.openedChatId = chatData.value.id)
     } else if (event.button === 2) {
-      //  при нажатии ЛКМ открыть модалку для действий с диалогом пользователя
+      //  при нажатии ПКМ открыть модалку для действий с диалогом пользователя
       distanceToViewport.value = getDistanceToViewport(event.target)
       isDetailedChatOpen.value = !isDetailedChatOpen.value
     }
@@ -92,12 +94,14 @@ const borderRadiusForActiveChat = computed(() => {
 useEventListener(document, 'contextmenu', (event) => {
   const elem = event.target.className
 
-  if (elem.includes('user')) {
+  if (elem.includes('group')) {
     event.preventDefault()
   }
 })
 
-const toggleMenuOpen = () => isDetailedChatOpen.value = !isDetailedChatOpen.value
+const toggleMenuOpen = () => {
+  isDetailedChatOpen.value = !isDetailedChatOpen.value
+}
 
 const $menuItem = ref()
 
@@ -107,37 +111,39 @@ const $menuItem = ref()
 //     isDetailedChatOpen.value = true
 //   }
 // })
+
 </script>
 
 <template>
   <div
     ref="$menuItem"
-    class="user"
+    class="group"
     :class="{
-      'user__chat_open': openedChatId === chatData.id
+      'group__chat_open': openedChatId === chatData.id,
     }"
     :style="{
       'border-bottom': chatData.isPinned ? 'none' : 'solid 1px #eeeff1',
       'borderRadius': borderRadiusForActiveChat,
     }"
-    @mousedown.prevent="onMouseClickUserChat($event)"
+    @mousedown="onMouseClickUserChat($event)"
   >
     <ChatPhoto
-      :is-active="chatData.isActive"
       :is-pinned="chatData.isPinned"
-      :chat-name="chatData.firstName"
+      :is-group-chat="chatData.isGroupChat"
+      :chat-name="chatData.title"
       :photo="chatData.photo"
       :user-id="chatData.id"
-      :is-group-chat="chatData.isGroupChat"
     />
 
-    <div class="user__data">
-      <div class="user__personal">
-        <div class="user__full-name">
-          {{ userFullName }}
+    <div class="group__data">
+      <div class="group__info">
+        <div class="group__title">
+          <GroupChatIcon class="group__title-icon" />
+
+          <div>{{ chatData.title }}</div>
         </div>
 
-        <div class="user__message-status">
+        <div class="group__message-status">
           <ViewedMessageIcon
             v-if="isMessageViewed"
           />
@@ -151,17 +157,23 @@ const $menuItem = ref()
 
       <div
         v-if="!chatData.isTyping"
-        class="user__last-message"
+        class="group__last-message"
       >
-        <span v-if="lastMessage?.id && lastMessage?.userId === chatData.id">
-          <span class="user__user-message-last"> Вы: </span> {{ lastMessage.message }}
+        <span v-if="lastMessage?.id && lastMessage?.userId === userId">
+          <span class="group__user-message-last"> Вы: </span>
+          {{ lastMessage.message }}
         </span>
-        <span v-else> {{ lastMessage.message ?? '' }} </span>
+        <span v-else>
+          <span class="group__user-message-last">
+            {{ lastMessage.firstName + ' ' + lastMessage.secondName }}:
+          </span>
+          {{ lastMessage.message }}
+        </span>
       </div>
 
       <div
         v-if="chatData.isTyping"
-        class="user__is-typing"
+        class="group__is-typing"
       >
         печатает
 
@@ -172,7 +184,7 @@ const $menuItem = ref()
         </span>
       </div>
 
-      <div class="user__chat-info icon">
+      <div class="group__chat-info icon">
         <MuteOffIcon
           v-if="chatData.isMutedOff"
           class="user__muted icon"
@@ -181,22 +193,22 @@ const $menuItem = ref()
 
         <div
           v-if="unreadMessagesLength"
-          class="user__unread-msg"
+          class="group__unread-msg"
         >
           {{ unreadMessagesLength }}
         </div>
 
         <PinnedIcon
           v-if="chatData.isPinned"
-          class="user__pinned icon"
-          @click="togglePinUser"
+          class="group__pinned icon"
+          @click="unpinUser"
         />
       </div>
     </div>
 
     <!--    <div-->
     <!--      v-if="isDetailedChatOpen"-->
-    <!--      class="user__menu-bg"-->
+    <!--      class="group__menu-bg"-->
     <!--      @click="toggleMenuOpen"-->
     <!--    />-->
 
@@ -218,5 +230,5 @@ const $menuItem = ref()
 </template>
 
 <style scoped lang="scss">
-@import './UserChat.scss';
+@import 'GroupChat';
 </style>
