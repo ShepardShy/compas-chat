@@ -132,7 +132,7 @@ const $menuItem = ref()
       :is-group-chat="chatData.isGroupChat"
       :chat-name="chatData.title"
       :photo="chatData.photo"
-      :user-id="chatData.id"
+      :chat-id="chatData.id"
     />
 
     <div class="group__data">

@@ -43,7 +43,7 @@ const setUsersQuantity = computed(() => {
       :photo="openedChatData.photo"
       :is-active="openedChatData.isActive"
       :chat-name="userFullName"
-      :user-id="openedChatData.id"
+      :chat-id="openedChatData.id"
       :is-group-chat="openedChatData.isGroupChat"
       :is-open-dialog-image="true"
     />

@@ -16,26 +16,21 @@ import VideoMessagesIcon from 'assets/icons/video-messages-icon.svg'
 import VoiceMessagesIcon from 'assets/icons/voice-messages-icon.svg'
 import DeleteIcon from 'assets/icons/delete-icon.svg'
 import CloseIcon from 'assets/icons/close-icon.svg'
+import GroupChatIcon from 'assets/icons/group-chat-icon.svg'
+import AddUserIcon from 'assets/icons/add-user-icon.svg'
 
 import ChatPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
 import { useSettingsStore } from '~/store/settings'
 import BackIcon from 'assets/icons/back-icon.svg'
+import GroupChatUser from '~/components/chat/DetailedInfo/GroupChatUser/GroupChatUser.vue'
 
 const usersStore = useUsersStore()
-const { openModalChatData } = storeToRefs(usersStore)
+const { openModalChatData, chats, chatIdForOpenModal } = storeToRefs(usersStore)
 
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
-interface PropsType {
-  isDetailedModalOpen: boolean
-  isGroupChat: boolean
-}
-
-const props = defineProps<PropsType>()
-const { isDetailedModalOpen, isGroupChat } = toRefs(props)
-
-const emit = defineEmits<{(emit: 'update:isDetailedModalOpen', value: boolean): void }>()
+const isGroupChat = computed(() => [...chats.value].find(chat => chat.id === chatIdForOpenModal.value).isGroupChat)
 
 const chatFullName = computed<string>(() => {
   if (isGroupChat.value) {
@@ -117,15 +112,16 @@ const showModalMenuItemTitle = (item: DetailedInfoMenuItem) => {
 }
 
 const closeModal = () => {
-  emit('update:isDetailedModalOpen', !isDetailedModalOpen.value)
-  usersStore.$patch(state => state.chatIdForOpenModal = -1)
+  usersStore.closeDetailedModal()
+  usersStore.closeAddUserModal()
+  usersStore.clearChatIdForOpenModal()
 }
 
 const onClickDetailedInfoMenuItem = async (item: DetailedInfoMenuItem) => {
   switch (item.action) {
     case 'delete-messages': {
       await usersStore.deleteChat(openModalChatData.value.id)
-      usersStore.$patch(state => state.chatIdForOpenModal = undefined)
+      usersStore.clearChatIdForOpenModal()
       break
     }
 
@@ -151,10 +147,27 @@ const groupChatUsersTotal = computed(() => {
   }
 })
 
+const filteredDetailedInfoMenuItems = computed(() => {
+  if (isGroupChat.value) {
+    return detailedInfoMenuItems.slice(0, detailedInfoMenuItems.length - 2)
+  } else {
+    return detailedInfoMenuItems
+  }
+})
+
+const lastDetailedInfoMenuItem = computed(() => detailedInfoMenuItems[detailedInfoMenuItems.length - 1])
+
+const openAddUserModal = () => {
+  usersStore.$patch(state => state.isAddUserModalOpen = true)
+}
 </script>
 
 <template>
-  <div class="add-info">
+  <div
+    class="add-info__wrapper"
+    :class="{
+      'add-info__modal_mobile':isMobileSize}"
+  >
     <div
       class="add-info__modal"
       :class="{
@@ -183,7 +196,7 @@ const groupChatUsersTotal = computed(() => {
 
       <ChatPhoto
         class="add-info__img"
-        :user-id="openModalChatData.userId"
+        :chat-id="openModalChatData.id"
         :is-pinned="openModalChatData.isPinned"
         :is-active="openModalChatData.isActive"
         :photo="openModalChatData.photo"
@@ -258,13 +271,13 @@ const groupChatUsersTotal = computed(() => {
       </div>
 
       <div
-        v-for="(item, idx) in detailedInfoMenuItems"
+        v-for="(item, idx) in filteredDetailedInfoMenuItems"
         :key="item.action"
         class="details-menu__item"
         :class="{
           'details-menu__item_first': idx === 0,
-          'details-menu__item_pre-last': idx === detailedInfoMenuItems.length - 2,
-          'details-menu__item_last': idx === detailedInfoMenuItems.length - 1,
+          'details-menu__item_pre-last': !isGroupChat && idx === detailedInfoMenuItems.length - 2,
+          'details-menu__item_last': !isGroupChat && idx === detailedInfoMenuItems.length - 1,
         }"
         @click="onClickDetailedInfoMenuItem(item)"
       >
@@ -278,6 +291,41 @@ const groupChatUsersTotal = computed(() => {
 
         <div>{{ showModalMenuItemTitle(item) }}</div>
       </div>
+
+      <div
+        v-if="isGroupChat"
+        class="details-menu__group-users-data"
+      >
+        <div class="details-menu__group-users-action">
+          <div class="details-menu__group-users-info">
+            <GroupChatIcon />
+            <div class="details-menu__group-users-total">
+              {{ `${groupChatUsersTotal} группы` }}
+            </div>
+          </div>
+          <AddUserIcon
+            class="details-menu__add-user"
+            @click="openAddUserModal"
+          />
+        </div>
+        <div class="details-menu__group-users">
+          <GroupChatUser
+            v-for="user in openModalChatData.users"
+            :key="user.id"
+            :user-data="user"
+          />
+        </div>
+      </div>
+
+      <div
+        v-if="isGroupChat"
+        class="details-menu__item details-menu__item_last"
+        @click="onClickDetailedInfoMenuItem(lastDetailedInfoMenuItem)"
+      >
+        <DeleteIcon />
+
+        <div>{{ showModalMenuItemTitle(lastDetailedInfoMenuItem) }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -285,29 +333,36 @@ const groupChatUsersTotal = computed(() => {
 <style scoped lang="scss">
 @use '~/assets/styles/_variables.scss' as variables;
 
-.add-info {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .add-info__modal {
+  position: relative;
   width: 400px;
   background-color: variables.$color-white;
-  position: relative;
   z-index: 1100;
+  border-radius: 15px;
+  padding-right: 5px;
   padding-top: 25px;
   padding-bottom: 25px;
-  border-radius: 15px;
   border: 1px solid #979797;
-  overflow: hidden;
+}
+
+.add-info__wrapper {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 95vh;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+    height: 122px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: variables.$color-blue-grey;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 }
 
 .add-info__modal_mobile {
@@ -315,6 +370,28 @@ const groupChatUsersTotal = computed(() => {
   border: 1px solid transparent;
   border-radius: 0;
   height: 100%;
+  max-height: 100%;
+
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 122px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: variables.$color-blue-grey;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 }
 
 .add-info__back-icon {
@@ -468,5 +545,47 @@ const groupChatUsersTotal = computed(() => {
   padding-bottom: 0;
   color: variables.$color-red;
   background-color: variables.$color-white;
+
+}
+
+.details-menu__group-users-data {
+  margin-top: 25px;
+}
+
+.details-menu__group-users {
+  max-height: 350px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+    height: 122px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: variables.$color-blue-grey;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}
+
+.details-menu__group-users-action {
+  display: flex;
+  padding: 20px 20px 20px 25px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f7f8fa;
+}
+
+.details-menu__group-users-info {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.details-menu__add-user {
+  cursor: pointer;
 }
 </style>

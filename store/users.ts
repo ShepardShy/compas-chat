@@ -26,6 +26,7 @@ export const useUsersStore = defineStore('users', {
           totalLinksMessages: 66,
           isMenuOpen: false,
           isDetailedInfoOpen: false,
+          lastTimeActive: '15.02.2024 15:00',
           messages: [
             {
               id: 1,
@@ -143,7 +144,8 @@ export const useUsersStore = defineStore('users', {
               isActive: true,
               isTyping: false,
               photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами'
+              position: 'Менеджер по работе с клиентами',
+              lastTimeActive: '15.02.2024 15:00'
             },
             {
               id: 3,
@@ -152,7 +154,8 @@ export const useUsersStore = defineStore('users', {
               isActive: false,
               isTyping: false,
               photo: '',
-              position: 'Менеджер'
+              position: 'Менеджер',
+              lastTimeActive: '20.02.2024 14:00'
             },
             {
               id: 4,
@@ -161,34 +164,38 @@ export const useUsersStore = defineStore('users', {
               isActive: true,
               isTyping: false,
               photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами'
+              position: 'Менеджер по работе с клиентами',
+              lastTimeActive: '20.02.2024 14:00'
             },
             {
-              id: 5,
-              firstName: 'Вася',
-              secondName: 'Петров',
+              id: 1,
+              firstName: 'Тимур',
+              secondName: 'Киселев',
               isActive: false,
               isTyping: false,
               photo: '',
-              position: 'Менеджер'
+              position: 'Менеджер',
+              lastTimeActive: '20.02.2024 14:00'
             },
             {
-              id: 6,
+              id: 22,
               firstName: 'Илья',
               secondName: 'Петров',
               isActive: true,
               isTyping: false,
               photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами'
+              position: 'Менеджер по работе с клиентами',
+              lastTimeActive: '20.02.2024 14:00'
             },
             {
-              id: 7,
+              id: 29,
               firstName: 'Вася',
               secondName: 'Петров',
               isActive: false,
               isTyping: false,
               photo: '',
-              position: 'Менеджер'
+              position: 'Менеджер',
+              lastTimeActive: '20.02.2024 14:00'
             },
             {
               id: 8,
@@ -197,7 +204,8 @@ export const useUsersStore = defineStore('users', {
               isActive: true,
               isTyping: false,
               photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами'
+              position: 'Менеджер по работе с клиентами',
+              lastTimeActive: '20.02.2024 14:00'
             },
             {
               id: 9,
@@ -206,25 +214,28 @@ export const useUsersStore = defineStore('users', {
               isActive: false,
               isTyping: false,
               photo: '',
-              position: 'Менеджер'
+              position: 'Менеджер',
+              lastTimeActive: '25.02.2024 15:00'
             },
             {
-              id: 10,
+              id: 55,
               firstName: 'Илья',
               secondName: 'Петров',
               isActive: true,
               isTyping: false,
               photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами'
+              position: 'Менеджер по работе с клиентами',
+              lastTimeActive: '20.02.2024 14:00'
             },
             {
-              id: 11,
+              id: 77,
               firstName: 'Вася',
               secondName: 'Петров',
               isActive: false,
               isTyping: false,
               photo: '',
-              position: 'Менеджер'
+              position: 'Менеджер',
+              lastTimeActive: '29.02.2024 18:00'
             },
             {
               id: 12,
@@ -233,7 +244,8 @@ export const useUsersStore = defineStore('users', {
               isActive: true,
               isTyping: false,
               photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами'
+              position: 'Менеджер по работе с клиентами',
+              lastTimeActive: '20.02.2024 14:00'
             },
             {
               id: 13,
@@ -242,7 +254,8 @@ export const useUsersStore = defineStore('users', {
               isActive: false,
               isTyping: false,
               photo: '',
-              position: 'Менеджер'
+              position: 'Менеджер',
+              lastTimeActive: '15.02.2024 15:00'
             },
             {
               id: 14,
@@ -251,7 +264,8 @@ export const useUsersStore = defineStore('users', {
               isActive: true,
               isTyping: false,
               photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами'
+              position: 'Менеджер по работе с клиентами',
+              lastTimeActive: '20.02.2024 14:00'
             },
             {
               id: 15,
@@ -260,7 +274,8 @@ export const useUsersStore = defineStore('users', {
               isActive: false,
               isTyping: false,
               photo: '',
-              position: 'Менеджер'
+              position: 'Менеджер',
+              lastTimeActive: '20.02.2024 14:00'
             },
             {
               id: 13,
@@ -269,25 +284,28 @@ export const useUsersStore = defineStore('users', {
               isActive: false,
               isTyping: false,
               photo: '',
-              position: 'Менеджер'
+              position: 'Менеджер',
+              lastTimeActive: '20.02.2024 14:00'
             },
             {
               id: 14,
               firstName: 'Илья',
               secondName: 'Петров',
-              isActive: true,
+              isActive: false,
               isTyping: false,
               photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами'
+              position: 'Менеджер по работе с клиентами',
+              lastTimeActive: '15.02.2024 15:00'
             },
             {
               id: 15,
               firstName: 'Вася',
               secondName: 'Петров',
-              isActive: false,
+              isActive: true,
               isTyping: false,
               photo: '',
-              position: 'Менеджер'
+              position: 'Менеджер',
+              lastTimeActive: '20.02.2024 14:00'
             }
           ],
           messages: [
@@ -329,6 +347,7 @@ export const useUsersStore = defineStore('users', {
           totalLinksMessages: 66,
           isMenuOpen: false,
           isDetailedInfoOpen: false,
+          lastTimeActive: '15.02.2024 15:00',
           messages: [
             {
               id: 1,
@@ -370,6 +389,7 @@ export const useUsersStore = defineStore('users', {
           totalLinksMessages: 66,
           isMenuOpen: false,
           isDetailedInfoOpen: false,
+          lastTimeActive: '15.02.2024 15:00',
           messages: [
             {
               id: 1,
@@ -411,6 +431,7 @@ export const useUsersStore = defineStore('users', {
           totalLinksMessages: 66,
           isMenuOpen: false,
           isDetailedInfoOpen: false,
+          lastTimeActive: '15.02.2024 15:00',
           messages: [
             {
               id: 1,
@@ -452,6 +473,7 @@ export const useUsersStore = defineStore('users', {
           totalLinksMessages: 66,
           isMenuOpen: false,
           isDetailedInfoOpen: false,
+          lastTimeActive: '15.02.2024 15:00',
           messages: [
             {
               id: 1,
@@ -493,6 +515,7 @@ export const useUsersStore = defineStore('users', {
           totalLinksMessages: 66,
           isMenuOpen: false,
           isDetailedInfoOpen: false,
+          lastTimeActive: '15.02.2024 15:00',
           messages: []
         },
         {
@@ -511,6 +534,7 @@ export const useUsersStore = defineStore('users', {
           totalLinksMessages: 66,
           isMenuOpen: false,
           isDetailedInfoOpen: false,
+          lastTimeActive: '15.02.2024 15:00',
           users: [
             {
               id: 2,
@@ -570,6 +594,7 @@ export const useUsersStore = defineStore('users', {
           totalLinksMessages: 66,
           isMenuOpen: false,
           isDetailedInfoOpen: false,
+          lastTimeActive: '15.02.2024 15:00',
           messages: []
         },
         {
@@ -592,6 +617,7 @@ export const useUsersStore = defineStore('users', {
           totalLinksMessages: 66,
           isMenuOpen: false,
           isDetailedInfoOpen: false,
+          lastTimeActive: '15.02.2024 15:00',
           messages: [
             {
               id: 1,
@@ -633,6 +659,7 @@ export const useUsersStore = defineStore('users', {
           totalLinksMessages: 66,
           isMenuOpen: false,
           isDetailedInfoOpen: false,
+          lastTimeActive: '15.02.2024 15:00',
           messages: [
             {
               id: 1,
@@ -656,8 +683,12 @@ export const useUsersStore = defineStore('users', {
         }
       ] as Array<UserChatType | GroupChatType>,
       filteredChats: [] as Array<UserChatType | GroupChatType> | [],
-      openedChatId: 4 as undefined | number,
-      chatIdForOpenModal: undefined as undefined | number
+      openedChatId: 11 as undefined | number,
+
+      chatIdForOpenModal: 11 as undefined | number,
+      isDetailedInfoModalOpen: false,
+      isAddUserModalOpen: false,
+      isGroupChatEditModalOpen: true
     }
   },
 
@@ -665,7 +696,8 @@ export const useUsersStore = defineStore('users', {
     chatsWithPinnedUsers: state => state.chats.filter(chat => chat.isPinned),
     chatsWithoutPinned: state => state.chats.filter(chat => !chat.isPinned),
     openedChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find(chat => chat.id === state.openedChatId),
-    openModalChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find(chat => chat.id === state.chatIdForOpenModal)
+    openModalChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find(chat => chat.id === state.chatIdForOpenModal),
+    allChatUsers: state => state.chats.filter(chat => !chat.isGroupChat)
   },
 
   actions: {
@@ -718,6 +750,76 @@ export const useUsersStore = defineStore('users', {
       } catch (e) {
         console.log(e)
       }
+    },
+
+    async addToGroup (userId: number, groupId: number) {
+      const userData = this.chats
+        .find(chat => chat.id === userId && !chat.isGroupChat)
+
+      this.chats = this.chats.map((chat) => {
+        if (!chat.isGroupChat) {
+          return chat
+        }
+
+        if (chat.id === groupId) {
+          return {
+            ...chat,
+            users: [
+              userData,
+              ...(chat as GroupChatType).users
+            ]
+          }
+        } else {
+          return chat
+        }
+      })
+    },
+
+    async removeFromGroup (userId: number, groupId: number) {
+      this.chats = this.chats.map((chat) => {
+        if (!chat.isGroupChat) {
+          return chat
+        }
+
+        if (chat.id === groupId) {
+          return {
+            ...chat,
+            users: (chat as GroupChatType).users.filter(user => userId !== user.id)
+          }
+        } else {
+          return chat
+        }
+      })
+    },
+
+    clearChatIdForOpenModal () {
+      this.chatIdForOpenModal = undefined
+    },
+
+    closeDetailedModal () {
+      this.isDetailedInfoModalOpen = false
+    },
+
+    closeAddUserModal () {
+      this.isAddUserModalOpen = false
+    },
+
+    closeGroupChatEditModal () {
+      this.isGroupChatEditModalOpen = false
+    },
+
+    updateGroupChat (chatData: GroupChatType) {
+      this.chats = this.chats.map((chat) => {
+        if (!chat.isGroupChat) {
+          return chat
+        }
+
+        if (chat.id === chatData.id) {
+          return chatData
+        } else {
+          return chat
+        }
+      })
     }
   }
 }

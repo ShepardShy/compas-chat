@@ -21,7 +21,6 @@ const { isMobileSize } = storeToRefs(settingsStore)
 const isSearchInDialogOpen = ref<boolean>(false)
 const isMenuOpen = ref<boolean>(false)
 const isMakingACall = ref<boolean>(false)
-const isDetailedChatOpen = ref<boolean>(false)
 
 const searchInDialogValue = ref<string>()
 
@@ -111,7 +110,6 @@ const openAllChats = () => {
 
       <ChatMenu
         v-if="isMenuOpen"
-        v-model:is-detailed-chat-open="isDetailedChatOpen"
         class="window__menu"
         :chat-id="openedChatId"
         :is-pinned="openedChatData.isPinned"

@@ -38,6 +38,7 @@ export interface GroupChatUserType {
     secondName: string
     isActive: boolean
     isTyping: boolean
+    lastTimeActive: string
     photo: string | undefined
     position: string
 }

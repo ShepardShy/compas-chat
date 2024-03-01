@@ -28,7 +28,7 @@ const isDetailedChatOpen = ref(false)
 
 const userFullName = computed<string>(() => chatData.value.firstName + ' ' + chatData.value.secondName)
 const lastMessage = computed<MessageType | {}>(() => {
-  if (chatData.value.messages.length) {
+  if (chatData.value?.messages?.length) {
     return chatData.value.messages[chatData.value.messages.length - 1]
   }
 
@@ -127,7 +127,7 @@ const $menuItem = ref()
       :is-pinned="chatData.isPinned"
       :chat-name="chatData.firstName"
       :photo="chatData.photo"
-      :user-id="chatData.id"
+      :chat-id="chatData.id"
       :is-group-chat="chatData.isGroupChat"
     />
 
