@@ -1,0 +1,277 @@
+{
+  "resolvedId": "D:/Work/compas-chat/components/chat/ChatsWithoutPinnedUsers/ChatsWithoutPinnedUsers.vue?vue&type=style&index=0&scoped=0174e39c&lang.scss",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\r\n@import './ChatsWithoutPinnedUsers.scss';\r\n",
+      "start": 1709273111512,
+      "end": 1709273111512,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "D:/Work/compas-chat/components/chat/ChatsWithoutPinnedUsers/ChatsWithoutPinnedUsers.vue"
+        ],
+        "names": [],
+        "mappings": ";AAkCA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC",
+        "file": "D:/Work/compas-chat/components/chat/ChatsWithoutPinnedUsers/ChatsWithoutPinnedUsers.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\r\nimport UserChat from '~/components/chat/UserChat/UserChat.vue'\r\nimport GroupChat from '~/components/chat/GroupChat/GroupChat.vue'\r\n\r\nimport type { UserChatType, GroupChatType } from '~/types/messages'\r\n\r\ninterface PropsType {\r\n  chatsWithoutPinnedUsers: Array<UserChatType | GroupChatType>\r\n}\r\n\r\nconst props = defineProps<PropsType>()\r\nconst { chatsWithoutPinnedUsers } = toRefs(props)\r\n</script>\r\n\r\n<template>\r\n  <div class=\"not-pinned\">\r\n    <div\r\n      v-for=\"chat in chatsWithoutPinnedUsers\"\r\n      :key=\"chat.id\"\r\n    >\r\n      <UserChat\r\n        v-if=\"!chat.isGroupChat\"\r\n        :chat-data=\"chat as UserChatType\"\r\n      />\r\n\r\n      <GroupChat\r\n        v-if=\"chat.isGroupChat\"\r\n        :chat-data=\"chat as GroupChatType\"\r\n      />\r\n    </div>\r\n  </div>\r\n</template>\r\n\r\n<style scoped lang=\"scss\">\r\n@import './ChatsWithoutPinnedUsers.scss';\r\n</style>\r\n"
+        ]
+      }
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273111512,
+      "end": 1709273111512,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273111512,
+      "end": 1709273111512,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273111512,
+      "end": 1709273111512,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273111512,
+      "end": 1709273111512,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709273111512,
+      "end": 1709273111512,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "result": "",
+      "start": 1709273111512,
+      "end": 1709273111530,
+      "order": "normal",
+      "sourcemaps": {
+        "names": [],
+        "sources": [],
+        "mappings": "",
+        "version": 3
+      }
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709273111530,
+      "end": 1709273111530,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709273111530,
+      "end": 1709273111530,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709273111530,
+      "end": 1709273111530,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "",
+      "start": 1709273111530,
+      "end": 1709273111531,
+      "order": "normal",
+      "sourcemaps": {
+        "file": "D:/Work/compas-chat/components/chat/ChatsWithoutPinnedUsers/ChatsWithoutPinnedUsers.vue",
+        "mappings": "",
+        "names": [],
+        "sources": [],
+        "version": 3
+      }
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-template",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709273111531,
+      "end": 1709273111531,
+      "order": "normal"
+    }
+  ]
+}

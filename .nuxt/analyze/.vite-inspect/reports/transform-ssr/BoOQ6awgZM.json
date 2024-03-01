@@ -1,0 +1,277 @@
+{
+  "resolvedId": "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue?vue&type=style&index=0&scoped=b79ed9ff&lang.scss?inline&used",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\r\n@import './ChatMenu.scss';\r\n",
+      "start": 1709273110152,
+      "end": 1709273110152
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273110152,
+      "end": 1709273110152,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273110152,
+      "end": 1709273110152,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273110152,
+      "end": 1709273110152,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273110152,
+      "end": 1709273110152,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709273110152,
+      "end": 1709273110152,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "result": ".menu{background-color:#fff;border-radius:7px;box-shadow:0 0 3px 0 #000;position:absolute;right:51px;top:54px;width:200px;z-index:200}.menu__item{color:#161616;cursor:pointer;display:flex;font-size:14px;font-weight:400;gap:10px;padding:10px 17px 10px 10px}.menu__item-icon{align-items:center;background-color:#0584fe;border-radius:5px;display:flex;height:19px;justify-content:center;margin:1px;transition:all .2s;width:19px}.menu__item-icon_not-selected{background-color:transparent;border:1px solid #0584fe}.menu__item-img{color:#fff;transform:scale(.7)}.menu__item_active{background-color:#eeeff1}.menu__item:first-of-type{border-radius:7px 7px 0 0}.menu__item:last-of-type{border-radius:0 0 7px 7px;color:#ae0a0a}.menu__item:hover{background-color:#eeeff1}",
+      "start": 1709273110153,
+      "end": 1709273110569,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "file": "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue",
+        "mappings": "AAEA,MAOE,sBAFA,kBACA,0BALA,kBAEA,WADA,SAEA,YAIA,YAGF,YAKE,aCPW,CDIX,eAIA,aAHA,eACA,gBAGA,SANA,4BASF,iBAQE,mBANA,yBADA,kBAKA,aAFA,YAGA,uBAFA,WAIA,mBANA,WASF,8BACE,6BACA,yBAGF,gBAEE,WADA,oBAIF,mBACE,yBAGF,0BACE,0BAGF,yBACE,0BACA,cAGF,kBACE",
+        "names": [],
+        "sources": [
+          "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.scss",
+          "D:/Work/compas-chat/assets/styles/_variables.scss"
+        ],
+        "sourcesContent": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709273110569,
+      "end": 1709273110569,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709273110569,
+      "end": 1709273110569,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709273110569,
+      "end": 1709273110570,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": ".menu[data-v-b79ed9ff]{background-color:#fff;border-radius:7px;box-shadow:0 0 3px 0 #000;position:absolute;right:51px;top:54px;width:200px;z-index:200}.menu__item[data-v-b79ed9ff]{color:#161616;cursor:pointer;display:flex;font-size:14px;font-weight:400;gap:10px;padding:10px 17px 10px 10px}.menu__item-icon[data-v-b79ed9ff]{align-items:center;background-color:#0584fe;border-radius:5px;display:flex;height:19px;justify-content:center;margin:1px;transition:all .2s;width:19px}.menu__item-icon_not-selected[data-v-b79ed9ff]{background-color:transparent;border:1px solid #0584fe}.menu__item-img[data-v-b79ed9ff]{color:#fff;transform:scale(.7)}.menu__item_active[data-v-b79ed9ff]{background-color:#eeeff1}.menu__item[data-v-b79ed9ff]:first-of-type{border-radius:7px 7px 0 0}.menu__item[data-v-b79ed9ff]:last-of-type{border-radius:0 0 7px 7px;color:#ae0a0a}.menu__item[data-v-b79ed9ff]:hover{background-color:#eeeff1}",
+      "start": 1709273110579,
+      "end": 1709273110590,
+      "order": "normal",
+      "sourcemaps": {
+        "file": "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue",
+        "mappings": "AAAA,uBAAM,qBAAqB,CAAC,iBAAiB,CAAC,yBAAyB,CAAC,iBAAiB,CAAC,UAAU,CAAC,QAAQ,CAAC,WAAW,CAAC,WAAW,CAAC,6BAAY,aAAa,CAAC,cAAc,CAAC,YAAY,CAAC,cAAc,CAAC,eAAe,CAAC,QAAQ,CAAC,2BAA2B,CAAC,kCAAiB,kBAAkB,CAAC,wBAAwB,CAAC,iBAAiB,CAAC,YAAY,CAAC,WAAW,CAAC,sBAAsB,CAAC,UAAU,CAAC,kBAAkB,CAAC,UAAU,CAAC,+CAA8B,4BAA4B,CAAC,wBAAwB,CAAC,iCAAgB,UAAU,CAAC,mBAAmB,CAAC,oCAAmB,wBAAwB,CAAC,2CAA0B,yBAAyB,CAAC,0CAAyB,yBAAyB,CAAC,aAAa,CAAC,mCAAkB,wBAAwB",
+        "names": [],
+        "sources": [
+          "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue"
+        ],
+        "sourcesContent": [
+          null
+        ],
+        "version": 3
+      }
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273110590,
+      "end": 1709273110591,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709273110591,
+      "end": 1709273110591,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110591,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "export default \".menu[data-v-b79ed9ff]{background-color:#fff;border-radius:7px;box-shadow:0 0 3px 0 #000;position:absolute;right:51px;top:54px;width:200px;z-index:200}.menu__item[data-v-b79ed9ff]{color:#161616;cursor:pointer;display:flex;font-size:14px;font-weight:400;gap:10px;padding:10px 17px 10px 10px}.menu__item-icon[data-v-b79ed9ff]{align-items:center;background-color:#0584fe;border-radius:5px;display:flex;height:19px;justify-content:center;margin:1px;transition:all .2s;width:19px}.menu__item-icon_not-selected[data-v-b79ed9ff]{background-color:transparent;border:1px solid #0584fe}.menu__item-img[data-v-b79ed9ff]{color:#fff;transform:scale(.7)}.menu__item_active[data-v-b79ed9ff]{background-color:#eeeff1}.menu__item[data-v-b79ed9ff]:first-of-type{border-radius:7px 7px 0 0}.menu__item[data-v-b79ed9ff]:last-of-type{border-radius:0 0 7px 7px;color:#ae0a0a}.menu__item[data-v-b79ed9ff]:hover{background-color:#eeeff1}\"",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273110593,
+      "end": 1709273110594,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273110593,
+      "end": 1709273110594,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273110594,
+      "end": 1709273110594,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273110594,
+      "end": 1709273110594,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273110594,
+      "end": 1709273110595,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273110594,
+      "end": 1709273110595,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-template",
+      "start": 1709273110595,
+      "end": 1709273110595,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709273110596,
+      "end": 1709273110596,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709273110596,
+      "end": 1709273110596,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709273110597,
+      "end": 1709273110597,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709273110597,
+      "end": 1709273110597,
+      "order": "normal"
+    }
+  ]
+}

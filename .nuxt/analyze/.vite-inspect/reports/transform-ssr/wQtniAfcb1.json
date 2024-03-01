@@ -1,0 +1,277 @@
+{
+  "resolvedId": "D:/Work/compas-chat/components/chat/GroupChat/GroupChat.vue?vue&type=style&index=0&scoped=9ec6cb8e&lang.scss?inline&used",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\r\n@import './GroupChat.scss';\r\n",
+      "start": 1709273110081,
+      "end": 1709273110081
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273110081,
+      "end": 1709273110081,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273110081,
+      "end": 1709273110081,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273110081,
+      "end": 1709273110082,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273110081,
+      "end": 1709273110082,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709273110082,
+      "end": 1709273110082,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "result": ".group{cursor:pointer;display:flex;gap:10px;padding:10px 15px;position:relative}.group__data{position:relative;width:calc(100% - 60px)}.group__info{display:flex;justify-content:space-between;margin-bottom:5px;width:100%}.group__title{align-items:flex-end;display:flex;font-size:16px;font-weight:400;gap:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:85%}.group__title-icon{transform:scale(.8)}.group__is-typing,.group__last-message,.group__message-status{color:#8f8f8f;font-size:12px;font-weight:400}.group__is-typing,.group__last-message{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;width:85%}.type__circle{animation:scaleAnimation 1.5s infinite;background-color:#8f8f8f;border-radius:3px;display:inline-block;height:3px;margin-right:2px;width:3px}.type__circle:nth-child(2){animation-delay:.5s}.type__circle:nth-child(3){animation-delay:1s}@keyframes scaleAnimation{0%{transform:scale(1)}50%{transform:scale(1.4)}to{transform:scale(1)}}.group__chat-info{align-items:center;bottom:0;display:flex;gap:10px;position:absolute;right:0}.group__muted,.group__pinned{cursor:pointer;height:15px}.group__unread-msg{background-color:#a6b7d4;border-radius:9px;color:#fff;font-size:12px;font-weight:400;padding:1px 5px}.group__chat_open{background-color:#eef3f9}.group__user-message-last{color:#000;font-weight:600}.icon{color:#a6b7d4}.group__menu-bg{background-color:transparent;bottom:0;left:0;position:fixed;right:0;top:0;z-index:20}",
+      "start": 1709273110082,
+      "end": 1709273110569,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "file": "D:/Work/compas-chat/components/chat/GroupChat/GroupChat.vue",
+        "mappings": "AAEA,OAIE,eAHA,aACA,SACA,kBAEA,kBAGF,aAEE,kBADA,wBAIF,aAGE,aACA,8BAFA,kBADA,WAMF,cAQE,qBADA,aANA,eACA,gBAOA,QAJA,gBACA,uBAFA,mBADA,UASF,mBACE,oBASF,8DAJE,aChBgB,CDehB,eAEA,gBAGF,uCAKE,oBACA,qBACA,4BACA,gBACA,uBACA,UAGF,cAME,uCADA,wBCtCgB,CDqChB,kBAHA,qBAEA,WAIA,iBALA,UAQF,2BACE,oBAGF,2BACE,mBAGF,0BACE,GAAK,mBACL,IAAM,qBACN,GAAO,oBAGT,kBAKE,mBAHA,SAEA,aAEA,SALA,kBAEA,QAMF,6BAGE,eADA,YAIF,mBAME,wBCrFgB,CDiFhB,kBAEA,WADA,eAEA,gBAJA,gBAQF,kBACE,yBAGF,0BAEE,UCrGY,CDoGZ,gBAIF,MACE,cAGF,gBAOE,6BAHA,SACA,OAJA,eAKA,QAHA,MADA",
+        "names": [],
+        "sources": [
+          "D:/Work/compas-chat/components/chat/GroupChat/GroupChat.scss",
+          "D:/Work/compas-chat/assets/styles/_variables.scss"
+        ],
+        "sourcesContent": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709273110569,
+      "end": 1709273110569,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709273110569,
+      "end": 1709273110569,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709273110569,
+      "end": 1709273110570,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": ".group[data-v-9ec6cb8e]{cursor:pointer;display:flex;gap:10px;padding:10px 15px;position:relative}.group__data[data-v-9ec6cb8e]{position:relative;width:calc(100% - 60px)}.group__info[data-v-9ec6cb8e]{display:flex;justify-content:space-between;margin-bottom:5px;width:100%}.group__title[data-v-9ec6cb8e]{align-items:flex-end;display:flex;font-size:16px;font-weight:400;gap:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:85%}.group__title-icon[data-v-9ec6cb8e]{transform:scale(.8)}.group__is-typing[data-v-9ec6cb8e],.group__last-message[data-v-9ec6cb8e],.group__message-status[data-v-9ec6cb8e]{color:#8f8f8f;font-size:12px;font-weight:400}.group__is-typing[data-v-9ec6cb8e],.group__last-message[data-v-9ec6cb8e]{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;width:85%}.type__circle[data-v-9ec6cb8e]{animation:scaleAnimation-9ec6cb8e 1.5s infinite;background-color:#8f8f8f;border-radius:3px;display:inline-block;height:3px;margin-right:2px;width:3px}.type__circle[data-v-9ec6cb8e]:nth-child(2){animation-delay:.5s}.type__circle[data-v-9ec6cb8e]:nth-child(3){animation-delay:1s}@keyframes scaleAnimation-9ec6cb8e{0%{transform:scale(1)}50%{transform:scale(1.4)}to{transform:scale(1)}}.group__chat-info[data-v-9ec6cb8e]{align-items:center;bottom:0;display:flex;gap:10px;position:absolute;right:0}.group__muted[data-v-9ec6cb8e],.group__pinned[data-v-9ec6cb8e]{cursor:pointer;height:15px}.group__unread-msg[data-v-9ec6cb8e]{background-color:#a6b7d4;border-radius:9px;color:#fff;font-size:12px;font-weight:400;padding:1px 5px}.group__chat_open[data-v-9ec6cb8e]{background-color:#eef3f9}.group__user-message-last[data-v-9ec6cb8e]{color:#000;font-weight:600}.icon[data-v-9ec6cb8e]{color:#a6b7d4}.group__menu-bg[data-v-9ec6cb8e]{background-color:transparent;bottom:0;left:0;position:fixed;right:0;top:0;z-index:20}",
+      "start": 1709273110585,
+      "end": 1709273110590,
+      "order": "normal",
+      "sourcemaps": {
+        "file": "D:/Work/compas-chat/components/chat/GroupChat/GroupChat.vue",
+        "mappings": "AAAA,wBAAO,cAAc,CAAC,YAAY,CAAC,QAAQ,CAAC,iBAAiB,CAAC,iBAAiB,CAAC,8BAAa,iBAAiB,CAAC,uBAAuB,CAAC,8BAAa,YAAY,CAAC,6BAA6B,CAAC,iBAAiB,CAAC,UAAU,CAAC,+BAAc,oBAAoB,CAAC,YAAY,CAAC,cAAc,CAAC,eAAe,CAAC,OAAO,CAAC,eAAe,CAAC,sBAAsB,CAAC,kBAAkB,CAAC,SAAS,CAAC,oCAAmB,mBAAmB,CAAC,iHAA8D,aAAa,CAAC,cAAc,CAAC,eAAe,CAAC,yEAAuC,mBAAmB,CAAC,oBAAoB,CAAC,2BAA2B,CAAC,eAAe,CAAC,sBAAsB,CAAC,SAAS,CAAC,+BAAc,+CAAsC,CAAC,wBAAwB,CAAC,iBAAiB,CAAC,oBAAoB,CAAC,UAAU,CAAC,gBAAgB,CAAC,SAAS,CAAC,4CAA2B,mBAAmB,CAAC,4CAA2B,kBAAkB,CAAC,mCAA0B,GAAG,kBAAkB,CAAC,IAAI,oBAAoB,CAAC,GAAG,kBAAkB,CAAC,CAAC,mCAAkB,kBAAkB,CAAC,QAAQ,CAAC,YAAY,CAAC,QAAQ,CAAC,iBAAiB,CAAC,OAAO,CAAC,+DAA6B,cAAc,CAAC,WAAW,CAAC,oCAAmB,wBAAwB,CAAC,iBAAiB,CAAC,UAAU,CAAC,cAAc,CAAC,eAAe,CAAC,eAAe,CAAC,mCAAkB,wBAAwB,CAAC,2CAA0B,UAAU,CAAC,eAAe,CAAC,uBAAM,aAAa,CAAC,iCAAgB,4BAA4B,CAAC,QAAQ,CAAC,MAAM,CAAC,cAAc,CAAC,OAAO,CAAC,KAAK,CAAC,UAAU",
+        "names": [],
+        "sources": [
+          "D:/Work/compas-chat/components/chat/GroupChat/GroupChat.vue"
+        ],
+        "sourcesContent": [
+          null
+        ],
+        "version": 3
+      }
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273110590,
+      "end": 1709273110591,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709273110591,
+      "end": 1709273110591,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110591,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "export default \".group[data-v-9ec6cb8e]{cursor:pointer;display:flex;gap:10px;padding:10px 15px;position:relative}.group__data[data-v-9ec6cb8e]{position:relative;width:calc(100% - 60px)}.group__info[data-v-9ec6cb8e]{display:flex;justify-content:space-between;margin-bottom:5px;width:100%}.group__title[data-v-9ec6cb8e]{align-items:flex-end;display:flex;font-size:16px;font-weight:400;gap:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:85%}.group__title-icon[data-v-9ec6cb8e]{transform:scale(.8)}.group__is-typing[data-v-9ec6cb8e],.group__last-message[data-v-9ec6cb8e],.group__message-status[data-v-9ec6cb8e]{color:#8f8f8f;font-size:12px;font-weight:400}.group__is-typing[data-v-9ec6cb8e],.group__last-message[data-v-9ec6cb8e]{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;width:85%}.type__circle[data-v-9ec6cb8e]{animation:scaleAnimation-9ec6cb8e 1.5s infinite;background-color:#8f8f8f;border-radius:3px;display:inline-block;height:3px;margin-right:2px;width:3px}.type__circle[data-v-9ec6cb8e]:nth-child(2){animation-delay:.5s}.type__circle[data-v-9ec6cb8e]:nth-child(3){animation-delay:1s}@keyframes scaleAnimation-9ec6cb8e{0%{transform:scale(1)}50%{transform:scale(1.4)}to{transform:scale(1)}}.group__chat-info[data-v-9ec6cb8e]{align-items:center;bottom:0;display:flex;gap:10px;position:absolute;right:0}.group__muted[data-v-9ec6cb8e],.group__pinned[data-v-9ec6cb8e]{cursor:pointer;height:15px}.group__unread-msg[data-v-9ec6cb8e]{background-color:#a6b7d4;border-radius:9px;color:#fff;font-size:12px;font-weight:400;padding:1px 5px}.group__chat_open[data-v-9ec6cb8e]{background-color:#eef3f9}.group__user-message-last[data-v-9ec6cb8e]{color:#000;font-weight:600}.icon[data-v-9ec6cb8e]{color:#a6b7d4}.group__menu-bg[data-v-9ec6cb8e]{background-color:transparent;bottom:0;left:0;position:fixed;right:0;top:0;z-index:20}\"",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273110594,
+      "end": 1709273110594,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273110594,
+      "end": 1709273110594,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273110594,
+      "end": 1709273110594,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273110594,
+      "end": 1709273110594,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273110595,
+      "end": 1709273110595,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273110595,
+      "end": 1709273110595,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-template",
+      "start": 1709273110595,
+      "end": 1709273110595,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709273110596,
+      "end": 1709273110596,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709273110596,
+      "end": 1709273110596,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709273110597,
+      "end": 1709273110597,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709273110597,
+      "end": 1709273110597,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,214 @@
+{
+  "resolvedId": "D:/Work/compas-chat/components/chat/GroupChat/GroupChat.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\r\nimport { useUsersStore } from '~/store/users'\r\nimport PinnedIcon from 'assets/icons/pin-icon.svg'\r\nimport ReceivedMessageIcon from 'assets/icons/recieved-message-icon.svg'\r\nimport MuteOffIcon from 'assets/icons/mute-off-icon.svg'\r\nimport ViewedMessageIcon from 'assets/icons/viewed-message-icon.svg'\r\nimport ChatPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'\r\n\r\nimport GroupChatIcon from '~/assets/icons/group-chat-icon.svg'\r\n\r\nimport type { GroupChatMessageType, GroupChatType } from '~/types/messages'\r\nimport ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'\r\nimport { getDistanceToViewport, messageTimeInfo } from '~/composables/chats'\r\nimport { useSettingsStore } from '~/store/settings'\r\n\r\ninterface PropsType {\r\n  chatData: GroupChatType\r\n}\r\n\r\nconst props = defineProps<PropsType>()\r\nconst { chatData } = toRefs(props)\r\n\r\nconst usersStore = useUsersStore()\r\nconst { openedChatId, userId, chatsWithPinnedUsers, chatIdForOpenModal } = storeToRefs(usersStore)\r\n\r\nconst settingsStore = useSettingsStore()\r\nconst { isMobileSize } = storeToRefs(settingsStore)\r\n\r\nconst isDetailedChatOpen = ref(false)\r\n\r\nconst lastMessage = computed<GroupChatMessageType | {}>(() => {\r\n  if (chatData.value.messages.length) {\r\n    return chatData.value.messages[chatData.value.messages.length - 1]\r\n  }\r\n\r\n  return {}\r\n})\r\nconst unreadMessagesLength = computed<number>(() => chatData.value.messages.filter(message => message.isUnread).length)\r\n\r\nconst isMessageReceived = computed<boolean>(() => {\r\n  return userId.value === lastMessage.value.userId &&\r\n      lastMessage.value.isReceived &&\r\n      !lastMessage.value.isViewed\r\n})\r\n\r\nconst isMessageViewed = computed<boolean>(() => {\r\n  return userId.value === lastMessage.value.userId &&\r\n      lastMessage.value.isViewed\r\n})\r\n\r\nconst unpinUser = async () => {\r\n  await usersStore.unpinUser(chatData.value.id)\r\n}\r\n\r\nconst toggleMute = async () => {\r\n  await usersStore.toggleUserMuted(chatData.value.id)\r\n}\r\n\r\nconst distanceToViewport = ref()\r\n\r\nconst onMouseClickUserChat = (event: MouseEvent) => {\r\n  const iconsComponents = [...document.querySelectorAll('.icon')]\r\n  const chatMenuComponent = [...document.querySelectorAll('.menu')]\r\n\r\n  // Чтобы при нажатии на иконку не открывалось меню, а срабатывало событие нажатия на иконку\r\n\r\n  if (!iconsComponents.includes(event.target.closest('.icon')) &&\r\n      !chatMenuComponent.includes(event.target.closest('.menu'))\r\n  ) {\r\n    if (event.button === 0) {\r\n      // при нажатии ЛКМ открыть чат\r\n      settingsStore.$patch(state => state.isChatsShown = false)\r\n      usersStore.$patch(state => state.openedChatId = chatData.value.id)\r\n    } else if (event.button === 2) {\r\n      //  при нажатии ПКМ открыть модалку для действий с диалогом пользователя\r\n      distanceToViewport.value = getDistanceToViewport(event.target)\r\n      isDetailedChatOpen.value = !isDetailedChatOpen.value\r\n    }\r\n  }\r\n}\r\n\r\nconst borderRadiusForActiveChat = computed(() => {\r\n  if (chatData.value.isPinned &&\r\n      chatsWithPinnedUsers.value[chatsWithPinnedUsers.value.length - 1].id === chatData.value.id) {\r\n    return '0 0 9px 9px'\r\n  } else if (chatData.value.isPinned &&\r\n      chatsWithPinnedUsers.value[0].id === chatData.value.id) {\r\n    return '9px 9px 0 0'\r\n  }\r\n\r\n  return '0'\r\n})\r\n\r\nuseEventListener(document, 'contextmenu', (event) => {\r\n  const elem = event.target.className\r\n\r\n  if (elem.includes('group')) {\r\n    event.preventDefault()\r\n  }\r\n})\r\n\r\nconst toggleMenuOpen = () => {\r\n  isDetailedChatOpen.value = !isDetailedChatOpen.value\r\n}\r\n\r\nconst $menuItem = ref()\r\n\r\n// onMounted(() => {\r\n//   if (chatIdForOpenModal.value === chatData.value.id) {\r\n//     distanceToViewport.value = getDistanceToViewport($menuItem.value).bottom\r\n//     isDetailedChatOpen.value = true\r\n//   }\r\n// })\r\n\r\n</script>\r\n\r\n<template>\r\n  <div\r\n    ref=\"$menuItem\"\r\n    class=\"group\"\r\n    :class=\"{\r\n      'group__chat_open': openedChatId === chatData.id,\r\n    }\"\r\n    :style=\"{\r\n      'border-bottom': chatData.isPinned ? 'none' : 'solid 1px #eeeff1',\r\n      'borderRadius': borderRadiusForActiveChat,\r\n    }\"\r\n    @mousedown=\"onMouseClickUserChat($event)\"\r\n  >\r\n    <ChatPhoto\r\n      :is-pinned=\"chatData.isPinned\"\r\n      :is-group-chat=\"chatData.isGroupChat\"\r\n      :chat-name=\"chatData.title\"\r\n      :photo=\"chatData.photo\"\r\n      :user-id=\"chatData.id\"\r\n    />\r\n\r\n    <div class=\"group__data\">\r\n      <div class=\"group__info\">\r\n        <div class=\"group__title\">\r\n          <GroupChatIcon class=\"group__title-icon\" />\r\n\r\n          <div>{{ chatData.title }}</div>\r\n        </div>\r\n\r\n        <div class=\"group__message-status\">\r\n          <ViewedMessageIcon\r\n            v-if=\"isMessageViewed\"\r\n          />\r\n          <ReceivedMessageIcon\r\n            v-if=\"isMessageReceived\"\r\n          />\r\n\r\n          {{ messageTimeInfo(lastMessage) }}\r\n        </div>\r\n      </div>\r\n\r\n      <div\r\n        v-if=\"!chatData.isTyping\"\r\n        class=\"group__last-message\"\r\n      >\r\n        <span v-if=\"lastMessage?.id && lastMessage?.userId === userId\">\r\n          <span class=\"group__user-message-last\"> Вы: </span>\r\n          {{ lastMessage.message }}\r\n        </span>\r\n        <span v-else>\r\n          <span class=\"group__user-message-last\">\r\n            {{ lastMessage.firstName + ' ' + lastMessage.secondName }}:\r\n          </span>\r\n          {{ lastMessage.message }}\r\n        </span>\r\n      </div>\r\n\r\n      <div\r\n        v-if=\"chatData.isTyping\"\r\n        class=\"group__is-typing\"\r\n      >\r\n        печатает\r\n\r\n        <span class=\"type__circles\">\r\n          <span class=\"type__circle\" />\r\n          <span class=\"type__circle\" />\r\n          <span class=\"type__circle\" />\r\n        </span>\r\n      </div>\r\n\r\n      <div class=\"group__chat-info icon\">\r\n        <MuteOffIcon\r\n          v-if=\"chatData.isMutedOff\"\r\n          class=\"user__muted icon\"\r\n          @click=\"toggleMute\"\r\n        />\r\n\r\n        <div\r\n          v-if=\"unreadMessagesLength\"\r\n          class=\"group__unread-msg\"\r\n        >\r\n          {{ unreadMessagesLength }}\r\n        </div>\r\n\r\n        <PinnedIcon\r\n          v-if=\"chatData.isPinned\"\r\n          class=\"group__pinned icon\"\r\n          @click=\"unpinUser\"\r\n        />\r\n      </div>\r\n    </div>\r\n\r\n    <!--    <div-->\r\n    <!--      v-if=\"isDetailedChatOpen\"-->\r\n    <!--      class=\"group__menu-bg\"-->\r\n    <!--      @click=\"toggleMenuOpen\"-->\r\n    <!--    />-->\r\n\r\n    <!--    <ChatMenu-->\r\n    <!--      v-if=\"isDetailedChatOpen\"-->\r\n    <!--      v-model:is-detailed-chat-open=\"isDetailedChatOpen\"-->\r\n    <!--      :style=\"{-->\r\n    <!--        top: distanceToViewport.bottom < 240 ? '-172px' : '30px',-->\r\n    <!--        right: '10px',-->\r\n    <!--      }\"-->\r\n    <!--      :chat-id=\"chatData.id\"-->\r\n    <!--      :is-pinned=\"chatData.isPinned\"-->\r\n    <!--      :is-muted-off=\"chatData.isMutedOff\"-->\r\n    <!--      :is-user-chat-left=\"true\"-->\r\n    <!--      :is-group-chat=\"chatData.isGroupChat\"-->\r\n    <!--      @close-chat=\"toggleMenuOpen\"-->\r\n    <!--    />-->\r\n  </div>\r\n</template>\r\n\r\n<style scoped lang=\"scss\">\r\n@import './GroupChat.scss';\r\n</style>\r\n",
+      "start": 1709273107289,
+      "end": 1709273107768,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273107768,
+      "end": 1709273107768,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273107768,
+      "end": 1709273107768,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709273107768,
+      "end": 1709273107768,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709273107768,
+      "end": 1709273107768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709273107768,
+      "end": 1709273107768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709273107768,
+      "end": 1709273107768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709273107768,
+      "end": 1709273107768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"D:/Work/compas-chat/components/chat/GroupChat/GroupChat.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"D:/Work/compas-chat/components/chat/GroupChat/GroupChat.vue?vue&type=script&setup=true&lang.ts\";\nimport \"D:/Work/compas-chat/components/chat/GroupChat/GroupChat.vue?vue&type=style&index=0&scoped=9ec6cb8e&lang.scss\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-9ec6cb8e\"]]);\n",
+      "start": 1709273107768,
+      "end": 1709273107866,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709273107866,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273107867,
+      "end": 1709273107867,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273107867,
+      "end": 1709273107868,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273107868,
+      "end": 1709273107868,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273107868,
+      "end": 1709273107868,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709273107868,
+      "end": 1709273107869,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709273107869,
+      "end": 1709273107869,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709273107869,
+      "end": 1709273107869,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709273107869,
+      "end": 1709273107869,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709273107869,
+      "end": 1709273107869,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709273107869,
+      "end": 1709273107869,
+      "order": "normal"
+    }
+  ]
+}

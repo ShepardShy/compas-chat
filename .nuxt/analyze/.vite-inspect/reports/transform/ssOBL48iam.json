@@ -1,0 +1,214 @@
+{
+  "resolvedId": "D:/Work/compas-chat/components/chat/ChatWindowDialogData/ChatWindowDialogData.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\r\nimport GroupChatIcon from 'assets/icons/group-chat-icon.svg'\r\nimport UserPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'\r\n\r\nimport { useUsersStore } from '~/store/users'\r\nimport { useSettingsStore } from '~/store/settings'\r\n\r\nconst usersStore = useUsersStore()\r\nconst { openedChatData } = storeToRefs(usersStore)\r\n\r\nconst settingsStore = useSettingsStore()\r\nconst { isMobileSize } = storeToRefs(settingsStore)\r\n\r\nconst userFullName = computed<string>(() => {\r\n  if (openedChatData.value.isGroupChat) {\r\n    return openedChatData.value.title\r\n  } else if (openedChatData.value.firstName) {\r\n    return openedChatData.value?.firstName + ' ' + openedChatData.value?.secondName\r\n  } else {\r\n    return openedChatData.value?.secondName\r\n  }\r\n})\r\n\r\nconst setUsersQuantity = computed(() => {\r\n  const totalChatUsers = openedChatData.value.users?.length.toString()\r\n\r\n  if (totalChatUsers.slice(-1) === 1) {\r\n    return `${totalChatUsers} участник`\r\n  } else if ([2, 3, 4].includes(+totalChatUsers.slice(-1))) {\r\n    return `${totalChatUsers} участника`\r\n  } else {\r\n    return `${totalChatUsers} участников`\r\n  }\r\n}\r\n)\r\n\r\n</script>\r\n\r\n<template>\r\n  <div class=\"window__user-data\">\r\n    <UserPhoto\r\n      :is-pinned=\"openedChatData.isPinned\"\r\n      :photo=\"openedChatData.photo\"\r\n      :is-active=\"openedChatData.isActive\"\r\n      :chat-name=\"userFullName\"\r\n      :user-id=\"openedChatData.id\"\r\n      :is-group-chat=\"openedChatData.isGroupChat\"\r\n      :is-open-dialog-image=\"true\"\r\n    />\r\n\r\n    <div class=\"user__user-data\">\r\n      <div\r\n        class=\"user__name-status\"\r\n        :class=\"{\r\n          'user__name-status_mobile': isMobileSize\r\n        }\"\r\n      >\r\n        <GroupChatIcon\r\n          v-if=\"openedChatData.isGroupChat\"\r\n          class=\"group__title-icon\"\r\n        />\r\n\r\n        <div class=\"user__name\">\r\n          {{ userFullName }}\r\n        </div>\r\n\r\n        <div\r\n          v-if=\"!openedChatData.isGroupChat\"\r\n          class=\"user__status\"\r\n        >\r\n          {{ openedChatData.isActive ? 'В сети' : 'Не в сети' }}\r\n        </div>\r\n      </div>\r\n\r\n      <div\r\n        v-if=\"!openedChatData.isGroupChat\"\r\n        class=\"user__position\"\r\n      >\r\n        {{ openedChatData.position ?? '' }}\r\n      </div>\r\n\r\n      <div\r\n        v-if=\"openedChatData.isGroupChat\"\r\n        class=\"user__chat-users\"\r\n      >\r\n        {{ setUsersQuantity }}\r\n      </div>\r\n    </div>\r\n  </div>\r\n</template>\r\n\r\n<style scoped lang=\"scss\">\r\n@import './ChatWindowDialogData.scss';\r\n</style>\r\n",
+      "start": 1709273106917,
+      "end": 1709273107161,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273107161,
+      "end": 1709273107161,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273107161,
+      "end": 1709273107161,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709273107161,
+      "end": 1709273107161,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709273107161,
+      "end": 1709273107161,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709273107161,
+      "end": 1709273107161,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709273107161,
+      "end": 1709273107161,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709273107161,
+      "end": 1709273107161,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"D:/Work/compas-chat/components/chat/ChatWindowDialogData/ChatWindowDialogData.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"D:/Work/compas-chat/components/chat/ChatWindowDialogData/ChatWindowDialogData.vue?vue&type=script&setup=true&lang.ts\";\nimport \"D:/Work/compas-chat/components/chat/ChatWindowDialogData/ChatWindowDialogData.vue?vue&type=style&index=0&scoped=20ceba7f&lang.scss\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-20ceba7f\"]]);\n",
+      "start": 1709273107161,
+      "end": 1709273107213,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709273107213,
+      "end": 1709273107213,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273107213,
+      "end": 1709273107214,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273107214,
+      "end": 1709273107214,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709273107214,
+      "end": 1709273107214,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709273107214,
+      "end": 1709273107214,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273107214,
+      "end": 1709273107214,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709273107214,
+      "end": 1709273107214,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709273107214,
+      "end": 1709273107214,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709273107214,
+      "end": 1709273107215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709273107215,
+      "end": 1709273107215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709273107215,
+      "end": 1709273107215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709273107215,
+      "end": 1709273107215,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709273107215,
+      "end": 1709273107215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709273107215,
+      "end": 1709273107215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709273107215,
+      "end": 1709273107215,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273107215,
+      "end": 1709273107215,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273107215,
+      "end": 1709273107217,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273107217,
+      "end": 1709273107217,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273107217,
+      "end": 1709273107219,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709273107221,
+      "end": 1709273107221,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709273107223,
+      "end": 1709273107223,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709273107223,
+      "end": 1709273107223,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709273107223,
+      "end": 1709273107223,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709273107223,
+      "end": 1709273107223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709273107224,
+      "end": 1709273107224,
+      "order": "normal"
+    }
+  ]
+}

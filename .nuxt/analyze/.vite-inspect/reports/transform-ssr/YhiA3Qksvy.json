@@ -1,0 +1,288 @@
+{
+  "resolvedId": "D:/Work/compas-chat/pages/index.vue?vue&type=style&index=0&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\r\n.chat {\r\n  display: flex;\r\n}\r\n\r\n.chat__users {\r\n  flex: 0 0 419px;\r\n}\r\n\r\n.chat__users_mobile {\r\n  flex: 0 0 100%;\r\n}\r\n\r\n.chat__window {\r\n  flex: 1 1 auto;\r\n}\r\n\r\n.chat__window_mobile {\r\n  flex: 1 1 100%;\r\n}\r\n",
+      "start": 1709273110260,
+      "end": 1709273110260,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "D:/Work/compas-chat/pages/index.vue"
+        ],
+        "names": [],
+        "mappings": ";AAgEA,CAAC,CAAC,CAAC,CAAC,EAAE;EACJ,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;AACf;;AAEA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACX,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;AACjB;;AAEA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EAClB,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC;AAChB;;AAEA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACZ,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC;AAChB;;AAEA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACnB,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC;AAChB",
+        "file": "D:/Work/compas-chat/pages/index.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\r\n\r\nimport { useWindowSize } from '@vueuse/core'\r\nimport { ERouteName } from '~/shared/routes'\r\n\r\nimport AllChats from '~/components/chat/AllChats/AllChats.vue'\r\nimport ChatWindow from '~/components/chat/ChatWindow/ChatWindow.vue'\r\nimport { useUsersStore } from '~/store/users'\r\nimport { useSettingsStore } from '~/store/settings'\r\n\r\nimport ChatLoader from '~/components/chat/ui/ChatLoader.vue'\r\n\r\ndefinePageMeta({\r\n  name: ERouteName.PAGE_HOME\r\n})\r\n\r\nconst usersStore = useUsersStore()\r\nconst settingsStore = useSettingsStore()\r\nconst { isMobileSize, isChatsShown, isLoading } = storeToRefs(settingsStore)\r\n\r\nconst { width } = useWindowSize()\r\n\r\nonMounted(() => {\r\n  usersStore.$patch(state => state.filteredChats = state.chats)\r\n\r\n  checkMobileSize()\r\n  window.addEventListener('resize', checkMobileSize)\r\n  settingsStore.$patch(state => state.isLoading = false)\r\n})\r\n\r\nconst checkMobileSize = () => {\r\n  settingsStore.$patch(state => state.isMobileSize = window.innerWidth < 950)\r\n}\r\n</script>\r\n\r\n<template>\r\n  <div class=\"app\">\r\n    <ChatLoader\r\n      v-if=\"isLoading\"\r\n    />\r\n\r\n    <div\r\n      v-else\r\n      class=\"chat\"\r\n    >\r\n      <AllChats\r\n        v-if=\"(width < 950 && isChatsShown) || !isMobileSize\"\r\n        class=\"chat__users\"\r\n        :class=\"{\r\n          'chat__users_mobile': isMobileSize\r\n        }\"\r\n      />\r\n      <ChatWindow\r\n        v-if=\"(isMobileSize && !isChatsShown) || !isMobileSize\"\r\n        class=\"chat__window\"\r\n        :class=\"{\r\n          'chat__window_mobile': isMobileSize\r\n        }\"\r\n      />\r\n    </div>\r\n  </div>\r\n</template>\r\n\r\n<style>\r\n.chat {\r\n  display: flex;\r\n}\r\n\r\n.chat__users {\r\n  flex: 0 0 419px;\r\n}\r\n\r\n.chat__users_mobile {\r\n  flex: 0 0 100%;\r\n}\r\n\r\n.chat__window {\r\n  flex: 1 1 auto;\r\n}\r\n\r\n.chat__window_mobile {\r\n  flex: 1 1 100%;\r\n}\r\n</style>\r\n"
+        ]
+      }
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273110260,
+      "end": 1709273110260,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273110260,
+      "end": 1709273110260,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273110260,
+      "end": 1709273110261,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273110260,
+      "end": 1709273110261,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709273110261,
+      "end": 1709273110261,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "result": ".chat{display:flex}.chat__users{flex:0 0 419px}.chat__users_mobile{flex:0 0 100%}.chat__window{flex:1 1 auto}.chat__window_mobile{flex:1 1 100%}",
+      "start": 1709273110261,
+      "end": 1709273110264,
+      "order": "normal",
+      "sourcemaps": {
+        "file": "D:/Work/compas-chat/pages/index.vue",
+        "mappings": "AACA,MACE,YACF,CAEA,aACE,cACF,CAEA,oBACE,aACF,CAEA,cACE,aACF,CAEA,qBACE,aACF",
+        "names": [],
+        "sources": [
+          "D:/Work/compas-chat/pages/index.vue"
+        ],
+        "sourcesContent": [
+          "\r\n.chat {\r\n  display: flex;\r\n}\r\n\r\n.chat__users {\r\n  flex: 0 0 419px;\r\n}\r\n\r\n.chat__users_mobile {\r\n  flex: 0 0 100%;\r\n}\r\n\r\n.chat__window {\r\n  flex: 1 1 auto;\r\n}\r\n\r\n.chat__window_mobile {\r\n  flex: 1 1 100%;\r\n}\r\n"
+        ],
+        "version": 3
+      }
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709273110264,
+      "end": 1709273110264,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709273110264,
+      "end": 1709273110264,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709273110264,
+      "end": 1709273110264,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": ".chat{display:flex}.chat__users{flex:0 0 419px}.chat__users_mobile{flex:0 0 100%}.chat__window{flex:1 1 auto}.chat__window_mobile{flex:1 1 100%}",
+      "start": 1709273110264,
+      "end": 1709273110264,
+      "order": "normal",
+      "sourcemaps": {
+        "file": "D:/Work/compas-chat/pages/index.vue",
+        "mappings": "AAAA,MAAM,YAAY,CAAC,aAAa,cAAc,CAAC,oBAAoB,aAAa,CAAC,cAAc,aAAa,CAAC,qBAAqB,aAAa",
+        "names": [],
+        "sources": [
+          "D:/Work/compas-chat/pages/index.vue"
+        ],
+        "sourcesContent": [
+          null
+        ],
+        "version": 3
+      }
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709273110264,
+      "end": 1709273110264,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110264,
+      "end": 1709273110264,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110264,
+      "end": 1709273110264,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273110264,
+      "end": 1709273110264,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273110264,
+      "end": 1709273110264,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709273110264,
+      "end": 1709273110264,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110264,
+      "end": 1709273110264,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709273110264,
+      "end": 1709273110265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-template",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709273110265,
+      "end": 1709273110265,
+      "order": "normal"
+    }
+  ]
+}

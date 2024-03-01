@@ -1,0 +1,290 @@
+{
+  "resolvedId": "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue?vue&type=style&index=0&scoped=b79ed9ff&lang.scss",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\r\n@import './ChatMenu.scss';\r\n",
+      "start": 1709273111520,
+      "end": 1709273111520,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue"
+        ],
+        "names": [],
+        "mappings": ";AA+IA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC",
+        "file": "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\r\nimport { chatMenuItems } from '~/shared/const'\r\n\r\nimport { useUsersStore } from '~/store/users'\r\nimport MuteOffIcon from '~/assets/icons/mute-off-icon.svg'\r\nimport MuteIcon from '~/assets/icons/mute-icon.svg'\r\nimport PinIcon from '~/assets/icons/pin-icon.svg'\r\nimport type { ChatMenuType } from '~/types/messages'\r\nimport AdditionalInfoModal from '~/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue'\r\nimport { useSettingsStore } from '~/store/settings'\r\nimport { getDistanceToViewport } from '~/composables/chats'\r\n\r\ninterface PropsType {\r\n  isDetailedChatOpen: boolean\r\n  chatId: number | string | undefined\r\n  isPinned: boolean\r\n  isMutedOff: boolean\r\n  isUserChatLeft?: boolean\r\n  isGroupChat: boolean\r\n}\r\n\r\nconst props = defineProps<PropsType>()\r\nconst { isDetailedChatOpen, chatId, isPinned, isMutedOff, isUserChatLeft, isGroupChat } = toRefs(props)\r\n\r\nconst settingsStore = useSettingsStore()\r\n\r\nconst emit = defineEmits<{\r\n  (emit: 'update:isDetailedChatOpen', value: boolean): void\r\n  (emit: 'closeChat'): void\r\n}>()\r\n\r\nconst usersStore = useUsersStore()\r\nconst { chatIdForOpenModal } = storeToRefs(usersStore)\r\n\r\nconst activeMenuItem = ref<string>()\r\n\r\nconst onClickDoMenuAction = async (menuItem: ChatMenuType) => {\r\n  activeMenuItem.value = menuItem.title\r\n\r\n  switch (menuItem.action) {\r\n    case 'pinChat': {\r\n      await usersStore.togglePinUser(chatId.value!)\r\n      isUserChatLeft.value && !chatIdForOpenModal.value && emit('update:isDetailedChatOpen', !isDetailedChatOpen.value)\r\n      break\r\n    }\r\n    case 'detailedChatInfo': {\r\n      usersStore.$patch(state => state.chatIdForOpenModal = chatId)\r\n      toggleDetailedModalOpen()\r\n      break\r\n    }\r\n    case 'editChat': {\r\n      console.log('edit chat')\r\n      isUserChatLeft.value && !chatIdForOpenModal.value && emit('update:isDetailedChatOpen', !isDetailedChatOpen.value)\r\n      break\r\n    }\r\n    case 'deleteChat': {\r\n      await usersStore.deleteChat(chatId.value!)\r\n      settingsStore.$patch(state => state.isChatsShown = true)\r\n      emit('closeChat')\r\n      isUserChatLeft.value && emit('update:isDetailedChatOpen', !isDetailedChatOpen.value)\r\n      break\r\n    }\r\n    case 'muteChat': {\r\n      await usersStore.toggleUserMuted(chatId.value!)\r\n      isUserChatLeft.value && !chatIdForOpenModal.value && emit('update:isDetailedChatOpen', !isDetailedChatOpen.value)\r\n      break\r\n    }\r\n  }\r\n}\r\n\r\nconst showMenuItem = (menuItem: ChatMenuType) => {\r\n  // if (menuItem.action === 'pinChat') {\r\n  //   return !isPinned.value ? menuItem.title : menuItem.alternativeTitle\r\n  // } else if (menuItem.action === 'muteChat') {\r\n  //   return !isMutedOff.value ? menuItem.title : menuItem.alternativeTitle\r\n  // }\r\n\r\n  return menuItem.title\r\n}\r\n\r\nuseEventListener(document, 'contextmenu', (event) => {\r\n  event.preventDefault()\r\n})\r\n\r\nconst isDetailedModalOpen = ref(false)\r\nconst toggleDetailedModalOpen = () => isDetailedModalOpen.value = !isDetailedModalOpen.value\r\n\r\nconst chatItems = computed(() => {\r\n  if (isGroupChat.value) {\r\n    return chatMenuItems\r\n  } else {\r\n    return chatMenuItems.filter(menuItems => menuItems.action !== 'editChat')\r\n  }\r\n})\r\n\r\n// onMounted(() => {\r\n//   if (chatIdForOpenModal.value) {\r\n//     isDetailedModalOpen.value = true\r\n//   }\r\n// })\r\n</script>\r\n\r\n<template>\r\n  <div class=\"menu\">\r\n    <div\r\n      v-for=\"item in chatItems\"\r\n      :key=\"item.title\"\r\n      class=\"menu__item\"\r\n      :class=\"{\r\n        'menu__item_active': item.title === activeMenuItem\r\n      }\"\r\n      @click=\"onClickDoMenuAction(item)\"\r\n    >\r\n      <div\r\n        v-if=\"item.icon\"\r\n        class=\"menu__item-icon\"\r\n        :class=\"{\r\n          'menu__item-icon_not-selected': (item.action == 'muteChat' && !isMutedOff) || (item.action == 'pinChat' && !isPinned)\r\n        }\"\r\n      >\r\n        <MuteOffIcon\r\n          v-if=\"item.action == 'muteChat' && isMutedOff\"\r\n          class=\"menu__item-img\"\r\n        />\r\n\r\n        <PinIcon\r\n          v-if=\"item.action == 'pinChat' && isPinned\"\r\n          class=\"menu__item-img\"\r\n        />\r\n      </div>\r\n\r\n      {{ showMenuItem(item) }}\r\n    </div>\r\n\r\n    <AdditionalInfoModal\r\n      v-if=\"isDetailedModalOpen\"\r\n      v-model:is-detailed-modal-open=\"isDetailedModalOpen\"\r\n      :is-group-chat=\"isGroupChat\"\r\n    />\r\n  </div>\r\n</template>\r\n\r\n<style scoped lang=\"scss\">\r\n@import './ChatMenu.scss';\r\n</style>\r\n"
+        ]
+      }
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273111520,
+      "end": 1709273111520,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273111520,
+      "end": 1709273111520,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273111520,
+      "end": 1709273111520,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273111520,
+      "end": 1709273111520,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709273111520,
+      "end": 1709273111520,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "result": ".menu{background-color:#fff;border-radius:7px;box-shadow:0 0 3px 0 #000;position:absolute;right:51px;top:54px;width:200px;z-index:200}.menu__item{color:#161616;cursor:pointer;display:flex;font-size:14px;font-weight:400;gap:10px;padding:10px 17px 10px 10px}.menu__item-icon{align-items:center;background-color:#0584fe;border-radius:5px;display:flex;height:19px;justify-content:center;margin:1px;transition:all .2s;width:19px}.menu__item-icon_not-selected{background-color:transparent;border:1px solid #0584fe}.menu__item-img{color:#fff;transform:scale(.7)}.menu__item_active{background-color:#eeeff1}.menu__item:first-of-type{border-radius:7px 7px 0 0}.menu__item:last-of-type{border-radius:0 0 7px 7px;color:#ae0a0a}.menu__item:hover{background-color:#eeeff1}",
+      "start": 1709273111520,
+      "end": 1709273111637,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "file": "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue",
+        "mappings": "AAEA,MAOE,sBAFA,kBACA,0BALA,kBAEA,WADA,SAEA,YAIA,YAGF,YAKE,aCPW,CDIX,eAIA,aAHA,eACA,gBAGA,SANA,4BASF,iBAQE,mBANA,yBADA,kBAKA,aAFA,YAGA,uBAFA,WAIA,mBANA,WASF,8BACE,6BACA,yBAGF,gBAEE,WADA,oBAIF,mBACE,yBAGF,0BACE,0BAGF,yBACE,0BACA,cAGF,kBACE",
+        "names": [],
+        "sources": [
+          "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.scss",
+          "D:/Work/compas-chat/assets/styles/_variables.scss"
+        ],
+        "sourcesContent": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709273111637,
+      "end": 1709273111637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709273111637,
+      "end": 1709273111637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709273111637,
+      "end": 1709273111637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": ".menu[data-v-b79ed9ff]{background-color:#fff;border-radius:7px;box-shadow:0 0 3px 0 #000;position:absolute;right:51px;top:54px;width:200px;z-index:200}.menu__item[data-v-b79ed9ff]{color:#161616;cursor:pointer;display:flex;font-size:14px;font-weight:400;gap:10px;padding:10px 17px 10px 10px}.menu__item-icon[data-v-b79ed9ff]{align-items:center;background-color:#0584fe;border-radius:5px;display:flex;height:19px;justify-content:center;margin:1px;transition:all .2s;width:19px}.menu__item-icon_not-selected[data-v-b79ed9ff]{background-color:transparent;border:1px solid #0584fe}.menu__item-img[data-v-b79ed9ff]{color:#fff;transform:scale(.7)}.menu__item_active[data-v-b79ed9ff]{background-color:#eeeff1}.menu__item[data-v-b79ed9ff]:first-of-type{border-radius:7px 7px 0 0}.menu__item[data-v-b79ed9ff]:last-of-type{border-radius:0 0 7px 7px;color:#ae0a0a}.menu__item[data-v-b79ed9ff]:hover{background-color:#eeeff1}",
+      "start": 1709273111640,
+      "end": 1709273111644,
+      "order": "normal",
+      "sourcemaps": {
+        "file": "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue",
+        "mappings": "AAAA,uBAAM,qBAAqB,CAAC,iBAAiB,CAAC,yBAAyB,CAAC,iBAAiB,CAAC,UAAU,CAAC,QAAQ,CAAC,WAAW,CAAC,WAAW,CAAC,6BAAY,aAAa,CAAC,cAAc,CAAC,YAAY,CAAC,cAAc,CAAC,eAAe,CAAC,QAAQ,CAAC,2BAA2B,CAAC,kCAAiB,kBAAkB,CAAC,wBAAwB,CAAC,iBAAiB,CAAC,YAAY,CAAC,WAAW,CAAC,sBAAsB,CAAC,UAAU,CAAC,kBAAkB,CAAC,UAAU,CAAC,+CAA8B,4BAA4B,CAAC,wBAAwB,CAAC,iCAAgB,UAAU,CAAC,mBAAmB,CAAC,oCAAmB,wBAAwB,CAAC,2CAA0B,yBAAyB,CAAC,0CAAyB,yBAAyB,CAAC,aAAa,CAAC,mCAAkB,wBAAwB",
+        "names": [],
+        "sources": [
+          "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue"
+        ],
+        "sourcesContent": [
+          null
+        ],
+        "version": 3
+      }
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709273111644,
+      "end": 1709273111644,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273111644,
+      "end": 1709273111644,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273111644,
+      "end": 1709273111644,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273111644,
+      "end": 1709273111644,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273111644,
+      "end": 1709273111644,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709273111644,
+      "end": 1709273111644,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273111645,
+      "end": 1709273111645,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273111645,
+      "end": 1709273111646,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273111645,
+      "end": 1709273111646,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-template",
+      "start": 1709273111646,
+      "end": 1709273111646,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709273111646,
+      "end": 1709273111646,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709273111646,
+      "end": 1709273111648,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709273111648,
+      "end": 1709273111648,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709273111648,
+      "end": 1709273111648,
+      "order": "normal"
+    }
+  ]
+}

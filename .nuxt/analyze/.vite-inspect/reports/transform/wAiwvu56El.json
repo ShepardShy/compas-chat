@@ -1,0 +1,214 @@
+{
+  "resolvedId": "D:/Work/compas-chat/components/chat/ChatsWithPinnedUsers/ChatsWithPinnedUsers.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\r\nimport UserChat from '~/components/chat/UserChat/UserChat.vue'\r\nimport type { UserChatType, GroupChatType } from '~/types/messages'\r\n\r\nimport GroupChat from '~/components/chat/GroupChat/GroupChat.vue'\r\n\r\ninterface PropsType {\r\n  chatsWithPinnedUsers: Array< UserChatType | GroupChatType>\r\n}\r\n\r\nconst props = defineProps<PropsType>()\r\nconst { chatsWithPinnedUsers } = toRefs(props)\r\n\r\n</script>\r\n\r\n<template>\r\n  <div class=\"pinned\">\r\n    <div\r\n      v-for=\"chat in chatsWithPinnedUsers\"\r\n      :key=\"chat.id\"\r\n    >\r\n      <UserChat\r\n        v-if=\"!chat.isGroupChat\"\r\n        :chat-data=\"chat as UserChatType\"\r\n      />\r\n\r\n      <GroupChat\r\n        v-if=\"chat.isGroupChat\"\r\n        :chat-data=\"chat as GroupChatType\"\r\n      />\r\n    </div>\r\n  </div>\r\n</template>\r\n\r\n<style scoped lang=\"scss\">\r\n@import './ChatsWithPinnedUsers.scss';\r\n</style>\r\n",
+      "start": 1709273106911,
+      "end": 1709273107103,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273107103,
+      "end": 1709273107103,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273107103,
+      "end": 1709273107103,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709273107103,
+      "end": 1709273107103,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709273107103,
+      "end": 1709273107103,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709273107103,
+      "end": 1709273107103,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709273107103,
+      "end": 1709273107103,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709273107103,
+      "end": 1709273107103,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"D:/Work/compas-chat/components/chat/ChatsWithPinnedUsers/ChatsWithPinnedUsers.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"D:/Work/compas-chat/components/chat/ChatsWithPinnedUsers/ChatsWithPinnedUsers.vue?vue&type=script&setup=true&lang.ts\";\nimport \"D:/Work/compas-chat/components/chat/ChatsWithPinnedUsers/ChatsWithPinnedUsers.vue?vue&type=style&index=0&scoped=feee7579&lang.scss\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-feee7579\"]]);\n",
+      "start": 1709273107103,
+      "end": 1709273107180,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273107180,
+      "end": 1709273107180,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273107180,
+      "end": 1709273107181,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273107181,
+      "end": 1709273107181,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273107181,
+      "end": 1709273107181,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709273107181,
+      "end": 1709273107181,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709273107181,
+      "end": 1709273107181,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709273107182,
+      "end": 1709273107182,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709273107182,
+      "end": 1709273107182,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709273107182,
+      "end": 1709273107182,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709273107182,
+      "end": 1709273107182,
+      "order": "normal"
+    }
+  ]
+}

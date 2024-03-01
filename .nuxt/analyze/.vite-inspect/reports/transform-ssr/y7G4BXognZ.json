@@ -1,0 +1,250 @@
+{
+  "resolvedId": "D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\r\nimport { chatMenuItems } from '~/shared/const'\r\n\r\nimport { useUsersStore } from '~/store/users'\r\nimport MuteOffIcon from '~/assets/icons/mute-off-icon.svg'\r\nimport MuteIcon from '~/assets/icons/mute-icon.svg'\r\nimport PinIcon from '~/assets/icons/pin-icon.svg'\r\nimport type { ChatMenuType } from '~/types/messages'\r\nimport AdditionalInfoModal from '~/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue'\r\nimport { useSettingsStore } from '~/store/settings'\r\nimport { getDistanceToViewport } from '~/composables/chats'\r\n\r\ninterface PropsType {\r\n  isDetailedChatOpen: boolean\r\n  chatId: number | string | undefined\r\n  isPinned: boolean\r\n  isMutedOff: boolean\r\n  isUserChatLeft?: boolean\r\n  isGroupChat: boolean\r\n}\r\n\r\nconst props = defineProps<PropsType>()\r\nconst { isDetailedChatOpen, chatId, isPinned, isMutedOff, isUserChatLeft, isGroupChat } = toRefs(props)\r\n\r\nconst settingsStore = useSettingsStore()\r\n\r\nconst emit = defineEmits<{\r\n  (emit: 'update:isDetailedChatOpen', value: boolean): void\r\n  (emit: 'closeChat'): void\r\n}>()\r\n\r\nconst usersStore = useUsersStore()\r\nconst { chatIdForOpenModal } = storeToRefs(usersStore)\r\n\r\nconst activeMenuItem = ref<string>()\r\n\r\nconst onClickDoMenuAction = async (menuItem: ChatMenuType) => {\r\n  activeMenuItem.value = menuItem.title\r\n\r\n  switch (menuItem.action) {\r\n    case 'pinChat': {\r\n      await usersStore.togglePinUser(chatId.value!)\r\n      isUserChatLeft.value && !chatIdForOpenModal.value && emit('update:isDetailedChatOpen', !isDetailedChatOpen.value)\r\n      break\r\n    }\r\n    case 'detailedChatInfo': {\r\n      usersStore.$patch(state => state.chatIdForOpenModal = chatId)\r\n      toggleDetailedModalOpen()\r\n      break\r\n    }\r\n    case 'editChat': {\r\n      console.log('edit chat')\r\n      isUserChatLeft.value && !chatIdForOpenModal.value && emit('update:isDetailedChatOpen', !isDetailedChatOpen.value)\r\n      break\r\n    }\r\n    case 'deleteChat': {\r\n      await usersStore.deleteChat(chatId.value!)\r\n      settingsStore.$patch(state => state.isChatsShown = true)\r\n      emit('closeChat')\r\n      isUserChatLeft.value && emit('update:isDetailedChatOpen', !isDetailedChatOpen.value)\r\n      break\r\n    }\r\n    case 'muteChat': {\r\n      await usersStore.toggleUserMuted(chatId.value!)\r\n      isUserChatLeft.value && !chatIdForOpenModal.value && emit('update:isDetailedChatOpen', !isDetailedChatOpen.value)\r\n      break\r\n    }\r\n  }\r\n}\r\n\r\nconst showMenuItem = (menuItem: ChatMenuType) => {\r\n  // if (menuItem.action === 'pinChat') {\r\n  //   return !isPinned.value ? menuItem.title : menuItem.alternativeTitle\r\n  // } else if (menuItem.action === 'muteChat') {\r\n  //   return !isMutedOff.value ? menuItem.title : menuItem.alternativeTitle\r\n  // }\r\n\r\n  return menuItem.title\r\n}\r\n\r\nuseEventListener(document, 'contextmenu', (event) => {\r\n  event.preventDefault()\r\n})\r\n\r\nconst isDetailedModalOpen = ref(false)\r\nconst toggleDetailedModalOpen = () => isDetailedModalOpen.value = !isDetailedModalOpen.value\r\n\r\nconst chatItems = computed(() => {\r\n  if (isGroupChat.value) {\r\n    return chatMenuItems\r\n  } else {\r\n    return chatMenuItems.filter(menuItems => menuItems.action !== 'editChat')\r\n  }\r\n})\r\n\r\n// onMounted(() => {\r\n//   if (chatIdForOpenModal.value) {\r\n//     isDetailedModalOpen.value = true\r\n//   }\r\n// })\r\n</script>\r\n\r\n<template>\r\n  <div class=\"menu\">\r\n    <div\r\n      v-for=\"item in chatItems\"\r\n      :key=\"item.title\"\r\n      class=\"menu__item\"\r\n      :class=\"{\r\n        'menu__item_active': item.title === activeMenuItem\r\n      }\"\r\n      @click=\"onClickDoMenuAction(item)\"\r\n    >\r\n      <div\r\n        v-if=\"item.icon\"\r\n        class=\"menu__item-icon\"\r\n        :class=\"{\r\n          'menu__item-icon_not-selected': (item.action == 'muteChat' && !isMutedOff) || (item.action == 'pinChat' && !isPinned)\r\n        }\"\r\n      >\r\n        <MuteOffIcon\r\n          v-if=\"item.action == 'muteChat' && isMutedOff\"\r\n          class=\"menu__item-img\"\r\n        />\r\n\r\n        <PinIcon\r\n          v-if=\"item.action == 'pinChat' && isPinned\"\r\n          class=\"menu__item-img\"\r\n        />\r\n      </div>\r\n\r\n      {{ showMenuItem(item) }}\r\n    </div>\r\n\r\n    <AdditionalInfoModal\r\n      v-if=\"isDetailedModalOpen\"\r\n      v-model:is-detailed-modal-open=\"isDetailedModalOpen\"\r\n      :is-group-chat=\"isGroupChat\"\r\n    />\r\n  </div>\r\n</template>\r\n\r\n<style scoped lang=\"scss\">\r\n@import './ChatMenu.scss';\r\n</style>\r\n",
+      "start": 1709273111337,
+      "end": 1709273111470,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273111470,
+      "end": 1709273111470,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273111470,
+      "end": 1709273111470,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273111470,
+      "end": 1709273111470,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273111470,
+      "end": 1709273111470,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709273111470,
+      "end": 1709273111470,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709273111470,
+      "end": 1709273111470,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709273111470,
+      "end": 1709273111470,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709273111470,
+      "end": 1709273111470,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709273111470,
+      "end": 1709273111470,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue?vue&type=script&setup=true&lang.ts\";\nimport \"D:/Work/compas-chat/components/chat/ChatMenu/ChatMenu.vue?vue&type=style&index=0&scoped=b79ed9ff&lang.scss\";\nimport { useSSRContext as __vite_useSSRContext } from \"vue\";\nconst _sfc_setup = _sfc_main.setup;\n_sfc_main.setup = (props, ctx) => {\n  const ssrContext = __vite_useSSRContext();\n  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add(\"components/chat/ChatMenu/ChatMenu.vue\");\n  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;\n};\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-b79ed9ff\"]]);\n",
+      "start": 1709273111470,
+      "end": 1709273111495,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273111495,
+      "end": 1709273111495,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273111495,
+      "end": 1709273111496,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273111495,
+      "end": 1709273111496,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273111496,
+      "end": 1709273111496,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273111496,
+      "end": 1709273111496,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273111496,
+      "end": 1709273111496,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273111496,
+      "end": 1709273111496,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-template",
+      "start": 1709273111496,
+      "end": 1709273111496,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709273111496,
+      "end": 1709273111496,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709273111496,
+      "end": 1709273111496,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709273111496,
+      "end": 1709273111496,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709273111496,
+      "end": 1709273111496,
+      "order": "normal"
+    }
+  ]
+}

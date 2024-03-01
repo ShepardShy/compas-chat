@@ -1,0 +1,277 @@
+{
+  "resolvedId": "D:/Work/compas-chat/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue?vue&type=style&index=0&scoped=bf34d35a&lang.scss?inline&used",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\r\n@use '~/assets/styles/_variables.scss' as variables;\r\n\r\n.add-info {\r\n  position: fixed;\r\n  top: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  left: 0;\r\n  background-color: rgba(0, 0, 0, 0.8);\r\n  z-index: 1000;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n}\r\n\r\n.add-info__modal {\r\n  width: 400px;\r\n  background-color: variables.$color-white;\r\n  position: relative;\r\n  z-index: 1100;\r\n  padding-top: 25px;\r\n  padding-bottom: 25px;\r\n  border-radius: 15px;\r\n  border: 1px solid #979797;\r\n  overflow: hidden;\r\n}\r\n\r\n.add-info__modal_mobile {\r\n  width: 100%;\r\n  border: 1px solid transparent;\r\n  border-radius: 0;\r\n  height: 100%;\r\n}\r\n\r\n.add-info__back-icon {\r\n  height: 25px;\r\n  position: absolute;\r\n  top: 25px;\r\n  left: 10px;\r\n  cursor: pointer;\r\n}\r\n\r\n.add-info__title {\r\n  font-size: 20px;\r\n  font-weight: 400;\r\n  color: variables.$color-black;\r\n  margin-bottom: 25px;\r\n  padding-left: 25px;\r\n  padding-right: 25px;\r\n}\r\n\r\n.add-info__title_mobile {\r\n  padding-left: 45px;\r\n}\r\n\r\n.menu__active {\r\n  font-size: 12px;\r\n  font-weight: 400;\r\n  color: variables.$color-dark-grey;\r\n  margin-bottom: 0px;\r\n  text-align: center;\r\n}\r\n\r\n.menu__name {\r\n  margin-bottom: 5px;\r\n  text-align: center;\r\n  font-size: 21px;\r\n  font-weight: 400;\r\n  text-decoration: underline;\r\n  color: variables.$color-active;\r\n}\r\n\r\n.menu__title {\r\n  margin-bottom: 5px;\r\n  text-align: center;\r\n  font-size: 21px;\r\n  font-weight: 400;\r\n  color: variables.$color-black;\r\n}\r\n\r\n.menu__position {\r\n  margin-bottom: 5px;\r\n  font-size: 12px;\r\n  font-weight: 400;\r\n  text-align: center;\r\n  color: variables.$color-dark-grey;\r\n}\r\n\r\n.menu__participants {\r\n  margin-bottom: 5px;\r\n  font-size: 12px;\r\n  font-weight: 400;\r\n  text-align: center;\r\n  color: variables.$color-dark-grey;\r\n}\r\n\r\n.add-info__img {\r\n  margin: 0 auto 10px;\r\n}\r\n\r\n.add-info__close-icon {\r\n  position: absolute;\r\n  top: 15px;\r\n  right: 15px;\r\n  cursor: pointer;\r\n  transition: 0.3s all;\r\n}\r\n\r\n.add-info__close-icon:hover {\r\n  scale: 1.1;\r\n}\r\n\r\n.menu__item {\r\n  padding: 10px 25px 10px 25px;\r\n  cursor: pointer;\r\n  font-size: 16px;\r\n  font-weight: 400;\r\n  color: variables.$color-dark;\r\n  display: flex;\r\n  gap: 10px;\r\n}\r\n\r\n.menu__item_last {\r\n  padding: 10px 25px 20px 25px;\r\n}\r\n\r\n.menu__item-icon {\r\n  border-radius: 5px;\r\n  background-color: #0584fe;\r\n  width: 18px;\r\n  height: 18px;\r\n  margin: 1px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n}\r\n\r\n.menu__item-icon_not-selected {\r\n  background-color: transparent;\r\n  border: 1px solid #0584fe;\r\n}\r\n\r\n.menu__item-img {\r\n  transform: scale(0.7);\r\n  color: #fff;\r\n}\r\n\r\n.menu__item_active {\r\n  background-color: variables.$color-light-grey;\r\n}\r\n\r\n.menu__item:nth-of-type(1) {\r\n  border-radius: 7px 7px 0 0;\r\n}\r\n\r\n.details-menu__item {\r\n  padding: 10px 25px;\r\n  background-color: #f7f8fa;\r\n  cursor: pointer;\r\n  font-size: 16px;\r\n  font-weight: 400;\r\n  color: variables.$color-dark;\r\n  display: flex;\r\n  gap: 10px;\r\n  align-items: flex-start;\r\n  transition: 0.2s all;\r\n}\r\n\r\n.details-menu__item:not(:last-of-type):hover {\r\n  scale: 1.03;\r\n}\r\n\r\n.details-menu__item_first {\r\n  padding-top: 20px;\r\n}\r\n\r\n.details-menu__item_pre-last {\r\n  padding-bottom: 20px;\r\n}\r\n\r\n.details-menu__item_last {\r\n  padding-top: 20px;\r\n  padding-bottom: 0;\r\n  color: variables.$color-red;\r\n  background-color: variables.$color-white;\r\n}\r\n",
+      "start": 1709273110147,
+      "end": 1709273110147
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273110147,
+      "end": 1709273110147,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273110147,
+      "end": 1709273110147,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273110147,
+      "end": 1709273110147,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273110147,
+      "end": 1709273110147,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709273110147,
+      "end": 1709273110147,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "result": ".add-info{align-items:center;background-color:rgba(0,0,0,.8);bottom:0;display:flex;justify-content:center;left:0;position:fixed;right:0;top:0;z-index:1000}.add-info__modal{background-color:#fff;border:1px solid #979797;border-radius:15px;overflow:hidden;padding-bottom:25px;padding-top:25px;position:relative;width:400px;z-index:1100}.add-info__modal_mobile{border:1px solid transparent;border-radius:0;height:100%;width:100%}.add-info__back-icon{cursor:pointer;height:25px;left:10px;position:absolute;top:25px}.add-info__title{color:#000;font-size:20px;font-weight:400;margin-bottom:25px;padding-left:25px;padding-right:25px}.add-info__title_mobile{padding-left:45px}.menu__active{color:#8f8f8f;font-size:12px;font-weight:400;margin-bottom:0;text-align:center}.menu__name{color:#1253a2;text-decoration:underline}.menu__name,.menu__title{font-size:21px;font-weight:400;margin-bottom:5px;text-align:center}.menu__title{color:#000}.menu__participants,.menu__position{color:#8f8f8f;font-size:12px;font-weight:400;margin-bottom:5px;text-align:center}.add-info__img{margin:0 auto 10px}.add-info__close-icon{cursor:pointer;position:absolute;right:15px;top:15px;transition:all .3s}.add-info__close-icon:hover{scale:1.1}.menu__item{color:#161616;cursor:pointer;display:flex;font-size:16px;font-weight:400;gap:10px;padding:10px 25px}.menu__item_last{padding:10px 25px 20px}.menu__item-icon{align-items:center;background-color:#0584fe;border-radius:5px;display:flex;height:18px;justify-content:center;margin:1px;width:18px}.menu__item-icon_not-selected{background-color:transparent;border:1px solid #0584fe}.menu__item-img{color:#fff;transform:scale(.7)}.menu__item_active{background-color:#eeeff1}.menu__item:first-of-type{border-radius:7px 7px 0 0}.details-menu__item{align-items:flex-start;background-color:#f7f8fa;color:#161616;cursor:pointer;display:flex;font-size:16px;font-weight:400;gap:10px;padding:10px 25px;transition:all .2s}.details-menu__item:not(:last-of-type):hover{scale:1.03}.details-menu__item_first{padding-top:20px}.details-menu__item_pre-last{padding-bottom:20px}.details-menu__item_last{background-color:#fff;color:#ad0b0a;padding-bottom:0;padding-top:20px}",
+      "start": 1709273110147,
+      "end": 1709273110564,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "file": "D:/Work/compas-chat/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue",
+        "mappings": "AAGA,UASE,mBAHA,gCAHA,SAKA,aAEA,uBALA,OAJA,eAGA,QAFA,MAKA,aAMF,iBAEE,qBCTY,CDeZ,yBADA,mBAEA,gBAHA,oBADA,iBAFA,kBAFA,YAGA,aAQF,wBAEE,6BACA,gBACA,YAHA,WAMF,qBAKE,eAJA,YAGA,UAFA,kBACA,SAKF,iBAGE,UCpCY,CDkCZ,eACA,gBAEA,mBACA,kBACA,mBAGF,wBACE,kBAGF,cAGE,aCnCgB,CDiChB,eACA,gBAEA,gBACA,kBAGF,YAME,aCtDa,CDqDb,0BAIF,yBANE,eACA,gBAHA,kBACA,kBAOF,aAKE,WAWF,oCAKE,aCtEgB,CDmEhB,eACA,gBAFA,kBAGA,kBAIF,eACE,mBAGF,sBAIE,eAHA,kBAEA,WADA,SAGA,mBAGF,4BACE,UAGF,YAKE,aC3GW,CDwGX,eAIA,aAHA,eACA,gBAGA,SANA,kBASF,iBACE,uBAGF,iBAQE,mBANA,yBADA,kBAKA,aAFA,YAGA,uBAFA,WAFA,WAQF,8BACE,6BACA,yBAGF,gBAEE,WADA,oBAIF,mBACE,yBAGF,0BACE,0BAGF,oBASE,uBAPA,yBAIA,aCvJW,CDoJX,eAIA,aAHA,eACA,gBAGA,SAPA,kBASA,mBAGF,6CACE,WAGF,0BACE,iBAGF,6BACE,oBAGF,yBAIE,qBChLY,CD+KZ,aC3KU,CD0KV,iBADA",
+        "names": [],
+        "sources": [
+          "D:/Work/compas-chat/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue",
+          "D:/Work/compas-chat/assets/styles/_variables.scss"
+        ],
+        "sourcesContent": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709273110569,
+      "end": 1709273110569,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709273110569,
+      "end": 1709273110569,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709273110569,
+      "end": 1709273110569,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": ".add-info[data-v-bf34d35a]{align-items:center;background-color:rgba(0,0,0,.8);bottom:0;display:flex;justify-content:center;left:0;position:fixed;right:0;top:0;z-index:1000}.add-info__modal[data-v-bf34d35a]{background-color:#fff;border:1px solid #979797;border-radius:15px;overflow:hidden;padding-bottom:25px;padding-top:25px;position:relative;width:400px;z-index:1100}.add-info__modal_mobile[data-v-bf34d35a]{border:1px solid transparent;border-radius:0;height:100%;width:100%}.add-info__back-icon[data-v-bf34d35a]{cursor:pointer;height:25px;left:10px;position:absolute;top:25px}.add-info__title[data-v-bf34d35a]{color:#000;font-size:20px;font-weight:400;margin-bottom:25px;padding-left:25px;padding-right:25px}.add-info__title_mobile[data-v-bf34d35a]{padding-left:45px}.menu__active[data-v-bf34d35a]{color:#8f8f8f;font-size:12px;font-weight:400;margin-bottom:0;text-align:center}.menu__name[data-v-bf34d35a]{color:#1253a2;text-decoration:underline}.menu__name[data-v-bf34d35a],.menu__title[data-v-bf34d35a]{font-size:21px;font-weight:400;margin-bottom:5px;text-align:center}.menu__title[data-v-bf34d35a]{color:#000}.menu__participants[data-v-bf34d35a],.menu__position[data-v-bf34d35a]{color:#8f8f8f;font-size:12px;font-weight:400;margin-bottom:5px;text-align:center}.add-info__img[data-v-bf34d35a]{margin:0 auto 10px}.add-info__close-icon[data-v-bf34d35a]{cursor:pointer;position:absolute;right:15px;top:15px;transition:all .3s}.add-info__close-icon[data-v-bf34d35a]:hover{scale:1.1}.menu__item[data-v-bf34d35a]{color:#161616;cursor:pointer;display:flex;font-size:16px;font-weight:400;gap:10px;padding:10px 25px}.menu__item_last[data-v-bf34d35a]{padding:10px 25px 20px}.menu__item-icon[data-v-bf34d35a]{align-items:center;background-color:#0584fe;border-radius:5px;display:flex;height:18px;justify-content:center;margin:1px;width:18px}.menu__item-icon_not-selected[data-v-bf34d35a]{background-color:transparent;border:1px solid #0584fe}.menu__item-img[data-v-bf34d35a]{color:#fff;transform:scale(.7)}.menu__item_active[data-v-bf34d35a]{background-color:#eeeff1}.menu__item[data-v-bf34d35a]:first-of-type{border-radius:7px 7px 0 0}.details-menu__item[data-v-bf34d35a]{align-items:flex-start;background-color:#f7f8fa;color:#161616;cursor:pointer;display:flex;font-size:16px;font-weight:400;gap:10px;padding:10px 25px;transition:all .2s}.details-menu__item[data-v-bf34d35a]:not(:last-of-type):hover{scale:1.03}.details-menu__item_first[data-v-bf34d35a]{padding-top:20px}.details-menu__item_pre-last[data-v-bf34d35a]{padding-bottom:20px}.details-menu__item_last[data-v-bf34d35a]{background-color:#fff;color:#ad0b0a;padding-bottom:0;padding-top:20px}",
+      "start": 1709273110574,
+      "end": 1709273110578,
+      "order": "normal",
+      "sourcemaps": {
+        "file": "D:/Work/compas-chat/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue",
+        "mappings": "AAAA,2BAAU,kBAAkB,CAAC,+BAA+B,CAAC,QAAQ,CAAC,YAAY,CAAC,sBAAsB,CAAC,MAAM,CAAC,cAAc,CAAC,OAAO,CAAC,KAAK,CAAC,YAAY,CAAC,kCAAiB,qBAAqB,CAAC,wBAAwB,CAAC,kBAAkB,CAAC,eAAe,CAAC,mBAAmB,CAAC,gBAAgB,CAAC,iBAAiB,CAAC,WAAW,CAAC,YAAY,CAAC,yCAAwB,4BAA4B,CAAC,eAAe,CAAC,WAAW,CAAC,UAAU,CAAC,sCAAqB,cAAc,CAAC,WAAW,CAAC,SAAS,CAAC,iBAAiB,CAAC,QAAQ,CAAC,kCAAiB,UAAU,CAAC,cAAc,CAAC,eAAe,CAAC,kBAAkB,CAAC,iBAAiB,CAAC,kBAAkB,CAAC,yCAAwB,iBAAiB,CAAC,+BAAc,aAAa,CAAC,cAAc,CAAC,eAAe,CAAC,eAAe,CAAC,iBAAiB,CAAC,6BAAY,aAAa,CAAC,yBAAyB,CAAC,2DAAyB,cAAc,CAAC,eAAe,CAAC,iBAAiB,CAAC,iBAAiB,CAAC,8BAAa,UAAU,CAAC,sEAAoC,aAAa,CAAC,cAAc,CAAC,eAAe,CAAC,iBAAiB,CAAC,iBAAiB,CAAC,gCAAe,kBAAkB,CAAC,uCAAsB,cAAc,CAAC,iBAAiB,CAAC,UAAU,CAAC,QAAQ,CAAC,kBAAkB,CAAC,6CAA4B,SAAS,CAAC,6BAAY,aAAa,CAAC,cAAc,CAAC,YAAY,CAAC,cAAc,CAAC,eAAe,CAAC,QAAQ,CAAC,iBAAiB,CAAC,kCAAiB,sBAAsB,CAAC,kCAAiB,kBAAkB,CAAC,wBAAwB,CAAC,iBAAiB,CAAC,YAAY,CAAC,WAAW,CAAC,sBAAsB,CAAC,UAAU,CAAC,UAAU,CAAC,+CAA8B,4BAA4B,CAAC,wBAAwB,CAAC,iCAAgB,UAAU,CAAC,mBAAmB,CAAC,oCAAmB,wBAAwB,CAAC,2CAA0B,yBAAyB,CAAC,qCAAoB,sBAAsB,CAAC,wBAAwB,CAAC,aAAa,CAAC,cAAc,CAAC,YAAY,CAAC,cAAc,CAAC,eAAe,CAAC,QAAQ,CAAC,iBAAiB,CAAC,kBAAkB,CAAC,8DAA6C,UAAU,CAAC,2CAA0B,gBAAgB,CAAC,8CAA6B,mBAAmB,CAAC,0CAAyB,qBAAqB,CAAC,aAAa,CAAC,gBAAgB,CAAC,gBAAgB",
+        "names": [],
+        "sources": [
+          "D:/Work/compas-chat/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue"
+        ],
+        "sourcesContent": [
+          null
+        ],
+        "version": 3
+      }
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273110590,
+      "end": 1709273110590,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709273110591,
+      "end": 1709273110591,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110591,
+      "end": 1709273110591,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "export default \".add-info[data-v-bf34d35a]{align-items:center;background-color:rgba(0,0,0,.8);bottom:0;display:flex;justify-content:center;left:0;position:fixed;right:0;top:0;z-index:1000}.add-info__modal[data-v-bf34d35a]{background-color:#fff;border:1px solid #979797;border-radius:15px;overflow:hidden;padding-bottom:25px;padding-top:25px;position:relative;width:400px;z-index:1100}.add-info__modal_mobile[data-v-bf34d35a]{border:1px solid transparent;border-radius:0;height:100%;width:100%}.add-info__back-icon[data-v-bf34d35a]{cursor:pointer;height:25px;left:10px;position:absolute;top:25px}.add-info__title[data-v-bf34d35a]{color:#000;font-size:20px;font-weight:400;margin-bottom:25px;padding-left:25px;padding-right:25px}.add-info__title_mobile[data-v-bf34d35a]{padding-left:45px}.menu__active[data-v-bf34d35a]{color:#8f8f8f;font-size:12px;font-weight:400;margin-bottom:0;text-align:center}.menu__name[data-v-bf34d35a]{color:#1253a2;text-decoration:underline}.menu__name[data-v-bf34d35a],.menu__title[data-v-bf34d35a]{font-size:21px;font-weight:400;margin-bottom:5px;text-align:center}.menu__title[data-v-bf34d35a]{color:#000}.menu__participants[data-v-bf34d35a],.menu__position[data-v-bf34d35a]{color:#8f8f8f;font-size:12px;font-weight:400;margin-bottom:5px;text-align:center}.add-info__img[data-v-bf34d35a]{margin:0 auto 10px}.add-info__close-icon[data-v-bf34d35a]{cursor:pointer;position:absolute;right:15px;top:15px;transition:all .3s}.add-info__close-icon[data-v-bf34d35a]:hover{scale:1.1}.menu__item[data-v-bf34d35a]{color:#161616;cursor:pointer;display:flex;font-size:16px;font-weight:400;gap:10px;padding:10px 25px}.menu__item_last[data-v-bf34d35a]{padding:10px 25px 20px}.menu__item-icon[data-v-bf34d35a]{align-items:center;background-color:#0584fe;border-radius:5px;display:flex;height:18px;justify-content:center;margin:1px;width:18px}.menu__item-icon_not-selected[data-v-bf34d35a]{background-color:transparent;border:1px solid #0584fe}.menu__item-img[data-v-bf34d35a]{color:#fff;transform:scale(.7)}.menu__item_active[data-v-bf34d35a]{background-color:#eeeff1}.menu__item[data-v-bf34d35a]:first-of-type{border-radius:7px 7px 0 0}.details-menu__item[data-v-bf34d35a]{align-items:flex-start;background-color:#f7f8fa;color:#161616;cursor:pointer;display:flex;font-size:16px;font-weight:400;gap:10px;padding:10px 25px;transition:all .2s}.details-menu__item[data-v-bf34d35a]:not(:last-of-type):hover{scale:1.03}.details-menu__item_first[data-v-bf34d35a]{padding-top:20px}.details-menu__item_pre-last[data-v-bf34d35a]{padding-bottom:20px}.details-menu__item_last[data-v-bf34d35a]{background-color:#fff;color:#ad0b0a;padding-bottom:0;padding-top:20px}\"",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709273110592,
+      "end": 1709273110592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273110593,
+      "end": 1709273110593,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273110594,
+      "end": 1709273110594,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273110594,
+      "end": 1709273110594,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273110594,
+      "end": 1709273110594,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273110594,
+      "end": 1709273110594,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-template",
+      "start": 1709273110595,
+      "end": 1709273110595,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709273110595,
+      "end": 1709273110596,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709273110596,
+      "end": 1709273110596,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709273110596,
+      "end": 1709273110597,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709273110597,
+      "end": 1709273110597,
+      "order": "normal"
+    }
+  ]
+}

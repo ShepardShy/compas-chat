@@ -1,0 +1,275 @@
+{
+  "resolvedId": "D:/Work/compas-chat/components/chat/ChatsWithPinnedUsers/ChatsWithPinnedUsers.vue?vue&type=style&index=0&scoped=feee7579&lang.scss?inline&used",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\r\n@import './ChatsWithPinnedUsers.scss';\r\n",
+      "start": 1709273110086,
+      "end": 1709273110086
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273110086,
+      "end": 1709273110086,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709273110086,
+      "end": 1709273110086,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273110086,
+      "end": 1709273110086,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709273110086,
+      "end": 1709273110086,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709273110086,
+      "end": 1709273110086,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "result": ".pinned{background-color:#eeeff1;border-radius:9px}",
+      "start": 1709273110086,
+      "end": 1709273110226,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "file": "D:/Work/compas-chat/components/chat/ChatsWithPinnedUsers/ChatsWithPinnedUsers.vue",
+        "mappings": "AAAA,QACE,yBACA",
+        "names": [],
+        "sources": [
+          "D:/Work/compas-chat/components/chat/ChatsWithPinnedUsers/ChatsWithPinnedUsers.scss"
+        ],
+        "sourcesContent": [
+          null
+        ]
+      }
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709273110226,
+      "end": 1709273110226,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709273110226,
+      "end": 1709273110226,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709273110226,
+      "end": 1709273110226,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": ".pinned[data-v-feee7579]{background-color:#eeeff1;border-radius:9px}",
+      "start": 1709273110226,
+      "end": 1709273110232,
+      "order": "normal",
+      "sourcemaps": {
+        "file": "D:/Work/compas-chat/components/chat/ChatsWithPinnedUsers/ChatsWithPinnedUsers.vue",
+        "mappings": "AAAA,yBAAQ,wBAAwB,CAAC,iBAAiB",
+        "names": [],
+        "sources": [
+          "D:/Work/compas-chat/components/chat/ChatsWithPinnedUsers/ChatsWithPinnedUsers.vue"
+        ],
+        "sourcesContent": [
+          null
+        ],
+        "version": 3
+      }
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709273110232,
+      "end": 1709273110232,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110232,
+      "end": 1709273110232,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110232,
+      "end": 1709273110232,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273110232,
+      "end": 1709273110232,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709273110232,
+      "end": 1709273110232,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709273110232,
+      "end": 1709273110233,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709273110233,
+      "end": 1709273110233,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709273110233,
+      "end": 1709273110233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709273110233,
+      "end": 1709273110233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "export default \".pinned[data-v-feee7579]{background-color:#eeeff1;border-radius:9px}\"",
+      "start": 1709273110233,
+      "end": 1709273110233,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709273110233,
+      "end": 1709273110233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709273110233,
+      "end": 1709273110233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709273110233,
+      "end": 1709273110233,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709273110233,
+      "end": 1709273110233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709273110233,
+      "end": 1709273110233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709273110233,
+      "end": 1709273110233,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273110234,
+      "end": 1709273110234,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709273110234,
+      "end": 1709273110234,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273110234,
+      "end": 1709273110234,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709273110234,
+      "end": 1709273110234,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273110234,
+      "end": 1709273110234,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709273110234,
+      "end": 1709273110234,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273110234,
+      "end": 1709273110235,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709273110234,
+      "end": 1709273110235,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-template",
+      "start": 1709273110235,
+      "end": 1709273110235,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709273110235,
+      "end": 1709273110235,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709273110235,
+      "end": 1709273110235,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709273110235,
+      "end": 1709273110235,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709273110235,
+      "end": 1709273110235,
+      "order": "normal"
+    }
+  ]
+}
