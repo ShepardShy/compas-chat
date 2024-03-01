@@ -39,12 +39,12 @@ const onClickDoMenuAction = async (menuItem: ChatMenuType) => {
       break
     }
     case 'detailedChatInfo': {
-      usersStore.$patch(state => state.chatIdForOpenModal = chatId)
+      usersStore.$patch(state => state.chatIdForOpenModal = chatId.value)
       usersStore.$patch(state => state.isDetailedInfoModalOpen = true)
       break
     }
     case 'editChat': {
-      usersStore.$patch(state => state.chatIdForOpenModal = chatId)
+      usersStore.$patch(state => state.chatIdForOpenModal = chatId.value)
       usersStore.$patch(state => state.isGroupChatEditModalOpen = true)
       break
     }
