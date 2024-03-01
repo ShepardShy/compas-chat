@@ -57,5 +57,5 @@ const messageTime = ():string => {
 </template>
 
 <style scoped lang="scss">
-@import './OwnMessage.scss';
+@import 'OwnMessage';
 </style>

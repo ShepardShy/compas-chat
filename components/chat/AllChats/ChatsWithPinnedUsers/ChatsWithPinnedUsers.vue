@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import UserChat from '~/components/chat/UserChat/UserChat.vue'
+import UserChat from '~/components/chat/AllChats/UserChat/UserChat.vue'
 import type { UserChatType, GroupChatType } from '~/types/messages'
 
-import GroupChat from '~/components/chat/GroupChat/GroupChat.vue'
+import GroupChat from '~/components/chat/AllChats/GroupChat/GroupChat.vue'
 
 interface PropsType {
   chatsWithPinnedUsers: Array< UserChatType | GroupChatType>
@@ -33,5 +33,5 @@ const { chatsWithPinnedUsers } = toRefs(props)
 </template>
 
 <style scoped lang="scss">
-@import './ChatsWithPinnedUsers.scss';
+@import 'ChatsWithPinnedUsers';
 </style>

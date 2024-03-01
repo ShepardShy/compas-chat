@@ -3,8 +3,8 @@ import { useUsersStore } from '~/store/users'
 import { useSettingsStore } from '~/store/settings'
 
 interface PropsType {
-  userId: number | string
-  isPinned: boolean
+  chatId: number | string
+  isPinned?: boolean
   isActive?: boolean
   photo: string | undefined
   chatName: string
@@ -20,14 +20,14 @@ const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
 const props = defineProps<PropsType>()
-const { userId, isPinned, isActive, photo, chatName, isGroupChat, isDetailedMenu, isOpenDialogImage } = toRefs(props)
+const { chatId, isPinned, isActive, photo, chatName, isGroupChat, isDetailedMenu, isOpenDialogImage } = toRefs(props)
 
 const activeCircleBackgroundColor = computed<string>(() => {
   if (isDetailedMenu.value) {
     return '#fff'
   }
 
-  if (userId.value === openedChatId.value) {
+  if (chatId.value === openedChatId.value) {
     return '#eef3f9'
   } else if (isPinned.value) {
     return '#eeeff1'

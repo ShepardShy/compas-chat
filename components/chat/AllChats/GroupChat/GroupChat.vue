@@ -6,7 +6,7 @@ import MuteOffIcon from 'assets/icons/mute-off-icon.svg'
 import ViewedMessageIcon from 'assets/icons/viewed-message-icon.svg'
 import ChatPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
 
-import GroupChatIcon from '~/assets/icons/group-chat-icon.svg'
+import GroupChatIcon from 'assets/icons/group-chat-icon.svg'
 
 import type { GroupChatMessageType, GroupChatType } from '~/types/messages'
 import ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'
@@ -132,7 +132,7 @@ const $menuItem = ref()
       :is-group-chat="chatData.isGroupChat"
       :chat-name="chatData.title"
       :photo="chatData.photo"
-      :user-id="chatData.id"
+      :chat-id="chatData.id"
     />
 
     <div class="group__data">
@@ -230,5 +230,5 @@ const $menuItem = ref()
 </template>
 
 <style scoped lang="scss">
-@import './GroupChat.scss';
+@import 'GroupChat';
 </style>

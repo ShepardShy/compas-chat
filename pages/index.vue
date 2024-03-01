@@ -9,12 +9,17 @@ import { useUsersStore } from '~/store/users'
 import { useSettingsStore } from '~/store/settings'
 
 import ChatLoader from '~/components/chat/ui/ChatLoader.vue'
+import GroupAddUserModal from '~/components/chat/DetailedInfo/GroupChatAddUserModal/GroupAddUserModal.vue'
+import AdditionalInfoModal from '~/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue'
+import GroupChatEditModal from '~/components/chat/DetailedInfo/GroupChatEditModal/GroupChatEditModal.vue'
 
 definePageMeta({
   name: ERouteName.PAGE_HOME
 })
 
 const usersStore = useUsersStore()
+const { isAddUserModalOpen, isDetailedInfoModalOpen, isGroupChatEditModalOpen } = storeToRefs(usersStore)
+
 const settingsStore = useSettingsStore()
 const { isMobileSize, isChatsShown, isLoading } = storeToRefs(settingsStore)
 
@@ -31,13 +36,12 @@ onMounted(() => {
 const checkMobileSize = () => {
   settingsStore.$patch(state => state.isMobileSize = window.innerWidth < 950)
 }
+
 </script>
 
 <template>
   <div class="app">
-    <ChatLoader
-      v-if="isLoading"
-    />
+    <ChatLoader v-if="isLoading" />
 
     <div
       v-else
@@ -57,6 +61,15 @@ const checkMobileSize = () => {
           'chat__window_mobile': isMobileSize
         }"
       />
+
+      <div
+        v-if="isAddUserModalOpen || isDetailedInfoModalOpen || isGroupChatEditModalOpen"
+        class="modal__bg"
+      >
+        <AdditionalInfoModal v-if="isDetailedInfoModalOpen && !isAddUserModalOpen && !isGroupChatEditModalOpen" />
+        <GroupChatEditModal v-if="isGroupChatEditModalOpen && !isAddUserModalOpen" />
+        <GroupAddUserModal v-if="isAddUserModalOpen" />
+      </div>
     </div>
   </div>
 </template>
@@ -80,5 +93,18 @@ const checkMobileSize = () => {
 
 .chat__window_mobile {
   flex: 1 1 100%;
+}
+
+.modal__bg {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

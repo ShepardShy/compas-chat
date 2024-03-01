@@ -2,8 +2,8 @@
 import AppH1 from '~/components/ui/AppH1/AppH1.vue'
 import CrossIcon from 'assets/icons/cross-icon.svg'
 import ChatInput from '~/components/chat/ui/ChatInput.vue'
-import ChatsWithPinnedUsers from '~/components/chat/ChatsWithPinnedUsers/ChatsWithPinnedUsers.vue'
-import ChatsWithoutPinnedUsers from '~/components/chat/ChatsWithoutPinnedUsers/ChatsWithoutPinnedUsers.vue'
+import ChatsWithPinnedUsers from '~/components/chat/AllChats/ChatsWithPinnedUsers/ChatsWithPinnedUsers.vue'
+import ChatsWithoutPinnedUsers from '~/components/chat/AllChats/ChatsWithoutPinnedUsers/ChatsWithoutPinnedUsers.vue'
 import { useUsersStore } from '~/store/users'
 
 const usersStore = useUsersStore()
