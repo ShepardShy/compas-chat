@@ -685,10 +685,10 @@ export const useUsersStore = defineStore('users', {
       filteredChats: [] as Array<UserChatType | GroupChatType> | [],
       openedChatId: 11 as undefined | number,
 
-      chatIdForOpenModal: 11 as undefined | number,
+      chatIdForOpenModal: undefined as undefined | number,
       isDetailedInfoModalOpen: false,
       isAddUserModalOpen: false,
-      isGroupChatEditModalOpen: true
+      isGroupChatEditModalOpen: false
     }
   },
 

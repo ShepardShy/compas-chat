@@ -68,7 +68,7 @@ const openAddUserModal = () => {
   usersStore.$patch(state => state.isAddUserModalOpen = true)
 }
 
-const groupTitle = ref(openModalChatData.value.title)
+const groupTitle = ref(openModalChatData.value?.title)
 
 const localCopyGroupChat = ref(openModalChatData.value as GroupChatType)
 
