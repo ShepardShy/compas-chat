@@ -6,7 +6,7 @@ import MicrophoneIcon from 'assets/icons/microphone-icon.svg'
 import { useUsersStore } from '~/store/users'
 import OwnMessage from '~/components/chat/ChatWindow/DialogBody/OwnMessage/OwnMessage.vue'
 import OtherMessage from '~/components/chat/ChatWindow/DialogBody/OtherMessage/OtherMessage.vue'
-import VoiceMessage from '~/components/chat/VoiceMessage/VoiceMessage.vue'
+import VoiceMessage from '~/components/chat/DetailedInfo/MessagesTypesModal/VoiceMessage/VoiceMessage.vue'
 import { useSettingsStore } from '~/store/settings'
 
 const usersStore = useUsersStore()

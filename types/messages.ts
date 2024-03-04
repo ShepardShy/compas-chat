@@ -29,7 +29,6 @@ export interface UserChatType {
     totalLinksMessages: number
     isMenuOpen: boolean
     isDetailedInfoOpen: boolean
-
 }
 
 export interface GroupChatUserType {
@@ -79,4 +78,15 @@ export interface DetailedInfoMenuItem {
     titleThree: string
     icon: string
     action: 'text-messages' | 'images-messages' | 'video-messages' | 'file-messages' | 'voice-messages' | 'link-messages' | 'delete-messages'
+}
+
+export type MessagesTypesTitleType = 'Текстовые сообщения'
+    | 'Фотографии'
+    | 'Видео'
+    | 'Файлы'
+    | 'Голосовые сообщения' | 'Ссылки'
+
+export interface MessagesTypesType {
+    action: 'text-messages' | 'images-messages' | 'video-messages' | 'file-messages' | 'voice-messages' | 'link-messages' | 'delete-messages'
+    title: MessagesTypesTitleType
 }

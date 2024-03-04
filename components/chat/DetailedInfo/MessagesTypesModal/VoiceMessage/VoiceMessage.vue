@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import ReceivedIcon from '~/assets/icons/recieved-message-icon.svg'
-import ViewedIcon from '~/assets/icons/viewed-message-icon.svg'
+import ReceivedIcon from 'assets/icons/recieved-message-icon.svg'
+import ViewedIcon from 'assets/icons/viewed-message-icon.svg'
 import DeleteIcon from 'assets/icons/delete-icon.svg'
 
 interface PropsType {
-  isViewed: boolean
-  isReceived: boolean
+  isViewed: boolean | undefined
+  isReceived: boolean | undefined
   isOwnMessage: boolean
   date: string
   audioMessage: unknown
+  isInVoiceMessagesList?: boolean
+  senderFullName?: string
 }
 
 const props = defineProps<PropsType>()
-const { isViewed, isReceived, isOwnMessage, date, audioMessage } = toRefs(props)
+const { isViewed, isReceived, isOwnMessage, date, audioMessage, isInVoiceMessagesList, senderFullName } = toRefs(props)
 
 const emit = defineEmits<{(emit: 'deleteMessage'): void }>()
 
@@ -231,6 +233,9 @@ onMounted(() => {
           <div class="audio-msg__weight">
             {{ fileSizeInKilobytes.toFixed(2) }} KB
           </div>
+          <div class="audio-msg__sender">
+            {{ senderFullName }}
+          </div>
         </div>
       </div>
 
@@ -250,6 +255,7 @@ onMounted(() => {
     </div>
 
     <div
+      v-if="!isInVoiceMessagesList"
       class="audio-msg__delete"
       @click="deleteMessage"
     >
@@ -353,6 +359,12 @@ onMounted(() => {
   font-size: 12px;
   font-weight: 400;
   color: #8babd8;
+}
+
+.audio-msg__sender {
+  font-size: 12px;
+  font-weight: 400;
+  color: variables.$color-black;
 }
 
 .audio-msg__delete {

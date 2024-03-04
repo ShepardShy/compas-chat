@@ -12,13 +12,19 @@ import ChatLoader from '~/components/chat/ui/ChatLoader.vue'
 import GroupAddUserModal from '~/components/chat/DetailedInfo/GroupChatAddUserModal/GroupAddUserModal.vue'
 import AdditionalInfoModal from '~/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue'
 import GroupChatEditModal from '~/components/chat/DetailedInfo/GroupChatEditModal/GroupChatEditModal.vue'
+import MessagesTypesModal from '~/components/chat/DetailedInfo/MessagesTypesModal/MessagesTypesModal.vue'
 
 definePageMeta({
   name: ERouteName.PAGE_HOME
 })
 
 const usersStore = useUsersStore()
-const { isAddUserModalOpen, isDetailedInfoModalOpen, isGroupChatEditModalOpen } = storeToRefs(usersStore)
+const {
+  isAddUserModalOpen,
+  isDetailedInfoModalOpen,
+  isGroupChatEditModalOpen,
+  isOpenMessageTypeModal
+} = storeToRefs(usersStore)
 
 const settingsStore = useSettingsStore()
 const { isMobileSize, isChatsShown, isLoading } = storeToRefs(settingsStore)
@@ -63,12 +69,16 @@ const checkMobileSize = () => {
       />
 
       <div
-        v-if="isAddUserModalOpen || isDetailedInfoModalOpen || isGroupChatEditModalOpen"
+        v-if="isAddUserModalOpen || isDetailedInfoModalOpen || isGroupChatEditModalOpen || isOpenMessageTypeModal"
         class="modal__bg"
       >
-        <AdditionalInfoModal v-if="isDetailedInfoModalOpen && !isAddUserModalOpen && !isGroupChatEditModalOpen" />
+        <AdditionalInfoModal
+          v-if="isDetailedInfoModalOpen && !isAddUserModalOpen && !isGroupChatEditModalOpen && !isOpenMessageTypeModal"
+        />
         <GroupChatEditModal v-if="isGroupChatEditModalOpen && !isAddUserModalOpen" />
         <GroupAddUserModal v-if="isAddUserModalOpen" />
+
+        <MessagesTypesModal v-if="isOpenMessageTypeModal" />
       </div>
     </div>
   </div>

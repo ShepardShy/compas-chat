@@ -127,6 +127,20 @@ const onClickDetailedInfoMenuItem = async (item: DetailedInfoMenuItem) => {
 
     default: {
       detailedMenuActiveDataType.value = item.action
+      usersStore.$patch(state => state.openMessageTypeModal = item.action)
+      usersStore.$patch(state => state.isOpenMessageTypeModal = true)
+
+      if (item.action === 'text-messages') {
+        usersStore.getTextMessages()
+      }
+
+      if (item.action === 'images-messages') {
+        usersStore.getPhotoMessages()
+      }
+
+      // if (item.action === 'voice-messages') {
+      //   usersStore.getVoiceMessages()
+      // }
     }
   }
 }

@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import type { GroupChatType, UserChatType } from '~/types/messages'
+import { messagesTypesList } from '~/shared/const'
+import { MessagesTypesType } from '~/types/messages'
 
 export const useUsersStore = defineStore('users', {
   state: () => {
@@ -688,7 +690,164 @@ export const useUsersStore = defineStore('users', {
       chatIdForOpenModal: undefined as undefined | number,
       isDetailedInfoModalOpen: false,
       isAddUserModalOpen: false,
-      isGroupChatEditModalOpen: false
+      isGroupChatEditModalOpen: false,
+
+      openMessageTypeModal: undefined as undefined | MessagesTypesType,
+      isOpenMessageTypeModal: false,
+      dataFromSelectedTypeOfChatMessage: [] as unknown,
+
+      testTextMessages: [
+        {
+          id: 1,
+          message: 'Привет Привет ПриветПриветПривет ПриветПривет ПриветПриветПривет Привет Привет ПриветПривет Привет',
+          userId: 1,
+          isReceived: true,
+          isViewed: true,
+          isUnread: false,
+          date: '13.02.2024 15:12'
+        },
+        {
+          id: 2,
+          message: 'Принимаете заказ?',
+          userId: 1,
+          isReceived: true,
+          isViewed: true,
+          isUnread: false,
+          date: '13.02.2024 15:10'
+        },
+        {
+          id: 1,
+          message: 'Привет',
+          userId: 1,
+          isReceived: true,
+          isViewed: true,
+          isUnread: false,
+          date: '14.02.2024 15:12'
+        },
+        {
+          id: 2,
+          message: 'Принимаете заказ?',
+          userId: 1,
+          isReceived: true,
+          isViewed: true,
+          isUnread: false,
+          date: '14.02.2024 15:12'
+        },
+        {
+          id: 1,
+          message: 'Привет',
+          userId: 1,
+          isReceived: true,
+          isViewed: true,
+          isUnread: false,
+          date: '14.02.2024 15:12'
+        },
+        {
+          id: 2,
+          message: 'Принимаете заказ?',
+          userId: 1,
+          isReceived: true,
+          isViewed: true,
+          isUnread: false,
+          date: '14.02.2024 15:12'
+        },
+        {
+          id: 3,
+          message: 'Привет',
+          userId: 2,
+          isReceived: true,
+          isViewed: true,
+          isUnread: false,
+          date: '14.02.2024 15:12'
+        },
+        {
+          id: 4,
+          message: 'Принимаете заказ?',
+          userId: 2,
+          isReceived: true,
+          isViewed: true,
+          isUnread: false,
+          date: '15.02.2024 15:12'
+        },
+        {
+          id: 5,
+          message: 'Привет',
+          userId: 1,
+          isReceived: true,
+          isViewed: false,
+          isUnread: false,
+          date: '18.02.2024 15:12'
+        },
+        {
+          id: 6,
+          message: 'Принимаете заказ?',
+          userId: 1,
+          isReceived: false,
+          isViewed: false,
+          isUnread: false,
+          date: '18.02.2024 15:12'
+        }
+      ],
+      testPhotoMessages: [
+        {
+          date: '15.01.2024 15:05',
+          messages: [
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            }
+          ]
+        },
+        {
+          date: '20.02.2024 15:05',
+          messages: [
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            },
+            {
+              url: '/image-example.png'
+            }
+          ]
+        }
+      ]
     }
   },
 
@@ -808,6 +967,10 @@ export const useUsersStore = defineStore('users', {
       this.isGroupChatEditModalOpen = false
     },
 
+    closeMessageTypeModal () {
+      this.isOpenMessageTypeModal = false
+    },
+
     updateGroupChat (chatData: GroupChatType) {
       this.chats = this.chats.map((chat) => {
         if (!chat.isGroupChat) {
@@ -820,6 +983,18 @@ export const useUsersStore = defineStore('users', {
           return chat
         }
       })
+    },
+
+    clearDataFromSelectedTypeOfChatMessage () {
+      this.dataFromSelectedTypeOfChatMessage = []
+    },
+
+    getTextMessages () {
+      this.dataFromSelectedTypeOfChatMessage = [...this.testTextMessages]
+    },
+
+    getPhotoMessages () {
+      this.dataFromSelectedTypeOfChatMessage = [...this.testPhotoMessages]
     }
   }
 }

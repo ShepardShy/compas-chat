@@ -1,4 +1,4 @@
-import type { ChatMenuType, DetailedInfoMenuItem } from '~/types/messages'
+import type { ChatMenuType, DetailedInfoMenuItem, MessagesTypesType } from '~/types/messages'
 
 export const daysOfWeek = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб']
 
@@ -94,3 +94,28 @@ export const detailedInfoMenuItems: DetailedInfoMenuItem[] = [
   }
 
 ] as const
+
+export const messagesTypesList: MessagesTypesType[] = [
+  {
+    action: 'text-messages',
+    title: 'Текстовые сообщения'
+  },
+  {
+    action: 'images-messages',
+    title: 'Фотографии'
+  },
+  {
+    action: 'video-messages',
+    title: 'Видео'
+  },
+  {
+    title: 'Файлы',
+    action: 'file-messages'
+  },
+  {
+    action: 'voice-messages',
+    title: 'Голосовые сообщения'
+  }, {
+    action: 'link-messages',
+    title: 'Ссылки'
+  }]
