@@ -11,7 +11,7 @@ import { useSettingsStore } from '~/store/settings'
 import ChatLoader from '~/components/chat/ui/ChatLoader.vue'
 import GroupAddUserModal from '~/components/chat/DetailedInfo/GroupChatAddUserModal/GroupAddUserModal.vue'
 import AdditionalInfoModal from '~/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue'
-import GroupChatEditModal from '~/components/chat/DetailedInfo/GroupChatEditModal/GroupChatEditModal.vue'
+import GroupChatCreateEditModal from '~/components/chat/DetailedInfo/GroupChatCreateEditModal/GroupChatCreateEditModal.vue'
 import MessagesTypesModal from '~/components/chat/DetailedInfo/MessagesTypesModal/MessagesTypesModal.vue'
 
 definePageMeta({
@@ -23,6 +23,7 @@ const {
   isAddUserModalOpen,
   isDetailedInfoModalOpen,
   isGroupChatEditModalOpen,
+  isGroupChatCreateModalOpen,
   isOpenMessageTypeModal
 } = storeToRefs(usersStore)
 
@@ -69,13 +70,14 @@ const checkMobileSize = () => {
       />
 
       <div
-        v-if="isAddUserModalOpen || isDetailedInfoModalOpen || isGroupChatEditModalOpen || isOpenMessageTypeModal"
+        v-if="isAddUserModalOpen || isDetailedInfoModalOpen || isGroupChatEditModalOpen || isOpenMessageTypeModal || isGroupChatCreateModalOpen"
         class="modal__bg"
       >
         <AdditionalInfoModal
-          v-if="isDetailedInfoModalOpen && !isAddUserModalOpen && !isGroupChatEditModalOpen && !isOpenMessageTypeModal"
+          v-if="isDetailedInfoModalOpen && !isAddUserModalOpen && !isGroupChatEditModalOpen &&!isGroupChatCreateModalOpen && !isOpenMessageTypeModal"
         />
-        <GroupChatEditModal v-if="isGroupChatEditModalOpen && !isAddUserModalOpen" />
+        <GroupChatCreateEditModal v-if="isGroupChatEditModalOpen && !isAddUserModalOpen" />
+        <GroupChatCreateEditModal v-if="isGroupChatCreateModalOpen && !isAddUserModalOpen" />
         <GroupAddUserModal v-if="isAddUserModalOpen" />
 
         <MessagesTypesModal v-if="isOpenMessageTypeModal" />

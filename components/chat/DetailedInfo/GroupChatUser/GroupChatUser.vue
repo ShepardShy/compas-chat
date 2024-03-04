@@ -10,15 +10,20 @@ interface PropsType {
   isDeleteIcon?: boolean
   isAddIcon?: boolean
   userData: GroupChatUserType
+  allChatDataLocal: GroupChatUserType[]
 }
 
 const props = defineProps<PropsType>()
-const { isDeleteIcon, isAddIcon, userData } = toRefs(props)
+const { isDeleteIcon, isAddIcon, userData, allChatDataLocal } = toRefs(props)
 
 const usersStore = useUsersStore()
-const { chats, chatIdForOpenModal } = storeToRefs(usersStore)
+const { chatIdForOpenModal, isGroupChatCreateModalOpen, allChatUsers } = storeToRefs(usersStore)
 
-const emit = defineEmits<{(emit: 'delete-user'): void }>()
+const emit = defineEmits<{
+  (emit: 'delete-user'): void
+  (emit: 'add-to-group', userData: GroupChatUserType): void
+  (emit: 'remove-from-group', userId: number | string): void
+}>()
 
 const userFullName = computed(() => {
   if (userData.value.firstName) {
@@ -37,9 +42,11 @@ const userActiveDateAndTime = computed(() => {
 })
 
 const isInOpenGroup = computed(() => {
-  return chats.value
-    .find(chat => chat.isGroupChat && (chat.id === chatIdForOpenModal.value))
-    .users
+  if (!allChatDataLocal.value?.users?.length && isGroupChatCreateModalOpen.value) {
+    return false
+  }
+
+  return allChatDataLocal.value?.users
     .map(user => user.id)
     .includes(userData.value.id)
 })
@@ -52,11 +59,11 @@ const toggleInGroup = () => {
   }
 }
 const addToGroup = () => {
-  usersStore.addToGroup(userData.value.id, chatIdForOpenModal.value)
+  emit('add-to-group', userData.value)
 }
 
 const removeFromGroup = () => {
-  usersStore.removeFromGroup(userData.value.id, chatIdForOpenModal.value)
+  emit('remove-from-group', userData.value.id)
 }
 
 const deleteUserFromGroupBeforeSave = () => emit('delete-user')

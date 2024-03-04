@@ -19,12 +19,10 @@ const props = defineProps<PropsType>()
 const { chatData } = toRefs(props)
 
 const usersStore = useUsersStore()
-const { openedChatId, userId, chatsWithPinnedUsers, chatIdForOpenModal } = storeToRefs(usersStore)
+const { openedChatId, userId, chatsWithPinnedUsers } = storeToRefs(usersStore)
 
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
-
-const isDetailedChatOpen = ref(false)
 
 const userFullName = computed<string>(() => chatData.value.firstName + ' ' + chatData.value.secondName)
 const lastMessage = computed<MessageType | {}>(() => {
@@ -47,33 +45,11 @@ const isMessageViewed = computed<boolean>(() => {
       lastMessage.value.isViewed
 })
 
-const togglePinUser = async () => {
-  await usersStore.togglePinUser(chatData.value.id)
-}
-
-const toggleMute = async () => {
-  await usersStore.toggleUserMuted(chatData.value.id)
-}
-
-const distanceToViewport = ref<{ top: string, bottom: string } | {}>({})
-
 const onMouseClickUserChat = (event: MouseEvent) => {
-  const iconsComponents = [...document.querySelectorAll('.icon')]
-  const chatMenuComponent = [...document.querySelectorAll('.menu')]
-
-  // Чтобы при нажатии на иконку не открывалось меню, а срабатывало событие нажатия на иконку
-
-  if (!iconsComponents.includes(event.target.closest('.icon')) &&
-      !chatMenuComponent.includes(event.target.closest('.menu'))) {
-    if (event.button === 0) {
-      // при нажатии ПКМ открыть чат
-      settingsStore.$patch(state => state.isChatsShown = false)
-      usersStore.$patch(state => state.openedChatId = chatData.value.id)
-    } else if (event.button === 2) {
-      //  при нажатии ЛКМ открыть модалку для действий с диалогом пользователя
-      distanceToViewport.value = getDistanceToViewport(event.target)
-      isDetailedChatOpen.value = !isDetailedChatOpen.value
-    }
+  if (event.button === 0) {
+    // при нажатии ПКМ открыть чат
+    settingsStore.$patch(state => state.isChatsShown = false)
+    usersStore.$patch(state => state.openedChatId = chatData.value.id)
   }
 }
 
@@ -89,24 +65,12 @@ const borderRadiusForActiveChat = computed(() => {
   return '0'
 })
 
-useEventListener(document, 'contextmenu', (event) => {
-  const elem = event.target.className
-
-  if (elem.includes('user')) {
-    event.preventDefault()
-  }
-})
-
-const toggleMenuOpen = () => isDetailedChatOpen.value = !isDetailedChatOpen.value
+const openUserDetailedInfoModal = async () => {
+  await usersStore.$patch(state => state.chatIdForOpenModal = chatData.value.id)
+  await usersStore.$patch(state => (state.isDetailedInfoModalOpen = true))
+}
 
 const $menuItem = ref()
-
-// onMounted(() => {
-//   if (chatIdForOpenModal.value === chatData.value.id) {
-//     distanceToViewport.value = getDistanceToViewport($menuItem.value).bottom
-//     isDetailedChatOpen.value = true
-//   }
-// })
 </script>
 
 <template>
@@ -134,7 +98,9 @@ const $menuItem = ref()
     <div class="user__data">
       <div class="user__personal">
         <div class="user__full-name">
-          {{ userFullName }}
+          <span @click="openUserDetailedInfoModal">
+            {{ userFullName }}
+          </span>
         </div>
 
         <div class="user__message-status">
@@ -176,7 +142,6 @@ const $menuItem = ref()
         <MuteOffIcon
           v-if="chatData.isMutedOff"
           class="user__muted icon"
-          @click="toggleMute"
         />
 
         <div
@@ -189,31 +154,9 @@ const $menuItem = ref()
         <PinnedIcon
           v-if="chatData.isPinned"
           class="user__pinned icon"
-          @click="togglePinUser"
         />
       </div>
     </div>
-
-    <!--    <div-->
-    <!--      v-if="isDetailedChatOpen"-->
-    <!--      class="user__menu-bg"-->
-    <!--      @click="toggleMenuOpen"-->
-    <!--    />-->
-
-    <!--    <ChatMenu-->
-    <!--      v-if="isDetailedChatOpen"-->
-    <!--      v-model:is-detailed-chat-open="isDetailedChatOpen"-->
-    <!--      :style="{-->
-    <!--        top: distanceToViewport.bottom < 240 ? '-172px' : '30px',-->
-    <!--        right: '10px',-->
-    <!--      }"-->
-    <!--      :chat-id="chatData.id"-->
-    <!--      :is-pinned="chatData.isPinned"-->
-    <!--      :is-muted-off="chatData.isMutedOff"-->
-    <!--      :is-user-chat-left="true"-->
-    <!--      :is-group-chat="chatData.isGroupChat"-->
-    <!--      @close-chat="toggleMenuOpen"-->
-    <!--    />-->
   </div>
 </template>
 

@@ -691,10 +691,17 @@ export const useUsersStore = defineStore('users', {
       isDetailedInfoModalOpen: false,
       isAddUserModalOpen: false,
       isGroupChatEditModalOpen: false,
+      isGroupChatCreateModalOpen: false,
 
       openMessageTypeModal: undefined as undefined | MessagesTypesType,
       isOpenMessageTypeModal: false,
       dataFromSelectedTypeOfChatMessage: [] as unknown,
+
+      temporalStorageForNewGroupChat: {
+        title: '',
+        photo: '',
+        users: []
+      },
 
       testTextMessages: [
         {
@@ -995,6 +1002,51 @@ export const useUsersStore = defineStore('users', {
 
     getPhotoMessages () {
       this.dataFromSelectedTypeOfChatMessage = [...this.testPhotoMessages]
+    },
+
+    closeGroupChatCreateModalOpen () {
+      this.isGroupChatCreateModalOpen = false
+    },
+
+    clearTemporalStorageForNewGroupChat () {
+      this.temporalStorageForNewGroupChat = {
+        title: '',
+        photo: '',
+        users: []
+      }
+    },
+
+    updateTemporalStorageForNewGroupChat (
+      temporalChatData: {
+                    title: string
+                    photo: string
+                    users: never[];
+                }) {
+      this.temporalStorageForNewGroupChat = temporalChatData
+    },
+
+    createGroupChat () {
+      const newGroupChat: GroupChatType = {
+        ...this.temporalStorageForNewGroupChat,
+        id: this.chats.length + 1,
+        isGroupChat: true,
+        isPinned: false,
+        isTyping: false,
+        isMutedOff: false,
+        totalTextMessages: 0,
+        totalPhotoMessages: 0,
+        totalVideoMessages: 0,
+        totalFileMessages: 0,
+        totalVoiceMessages: 0,
+        totalLinksMessages: 0,
+        messages: []
+      }
+
+      this.chats = [newGroupChat, ...this.chats]
+      this.openedChatId = newGroupChat.id
+
+      this.clearTemporalStorageForNewGroupChat()
+      this.closeGroupChatCreateModalOpen()
     }
   }
 }

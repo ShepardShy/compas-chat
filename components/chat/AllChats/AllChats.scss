@@ -7,9 +7,13 @@
 
 .users__wrapper {
   height: 100vh;
+  padding: 25px 5px 25px 15px;
+}
+
+.chats__wrapper {
+  height: calc(100vh - 125px);
   overflow-y: scroll;
-  padding: 25px 10px 25px 15px;
-  background-color: #fbfcfd;
+
   &::-webkit-scrollbar {
     width: 3px;
     height: 122px;
@@ -34,6 +38,40 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
+  position: relative;
+}
+
+.chats__menu {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  width: 200px;
+  border-radius: 7px;
+  box-shadow: 0 0 3px 0 #000;
+  background-color: #fff;
+  z-index: 200;
+}
+
+.chats__menu-item {
+  padding: 10px 17px 10px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  color: variables.$color-dark;
+  display: flex;
+  gap: 10px;
+}
+
+.chats__menu-item:hover {
+  background-color: variables.$color-light-grey;
+}
+
+.chats__menu-item:nth-of-type(1) {
+  border-radius: 7px 7px 0 0;
+}
+
+.chats__menu-item:last-of-type {
+  border-radius: 0 0 7px 7px;
 }
 
 .users__title {

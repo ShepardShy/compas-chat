@@ -150,8 +150,8 @@ const detailedMenuActiveDataType = ref()
 const groupChatUsersTotal = computed(() => {
   if (!openModalChatData.value?.users) return
 
-  const totalUsers = openModalChatData.value?.users.length
-  const lastDigit = toString().slice(-1)
+  const totalUsers = openModalChatData.value?.users?.length
+  const lastDigit = totalUsers.toString().slice(-1)
   if (+lastDigit === 1) {
     return totalUsers + ' ' + 'участник'
   } else if (+lastDigit >= 2 && +lastDigit <= 4) {
@@ -178,168 +178,162 @@ const openAddUserModal = () => {
 
 <template>
   <div
-    class="add-info__wrapper"
+    class="add-info__modal"
     :class="{
       'add-info__modal_mobile':isMobileSize}"
   >
-    <div
-      class="add-info__modal"
+    <BackIcon
+      v-if="isMobileSize"
+      class="add-info__back-icon"
+      @click="closeModal"
+    />
+
+    <CloseIcon
+      v-if="!isMobileSize"
+      class="add-info__close-icon"
+      @click="closeModal"
+    />
+
+    <AppH3
+      class="add-info__title"
       :class="{
-        'add-info__modal_mobile':isMobileSize}"
+        'add-info__title_mobile': isMobileSize
+      }"
     >
-      <BackIcon
-        v-if="isMobileSize"
-        class="add-info__back-icon"
-        @click="closeModal"
-      />
+      Подробная информация
+    </AppH3>
 
-      <CloseIcon
-        v-if="!isMobileSize"
-        class="add-info__close-icon"
-        @click="closeModal"
-      />
+    <ChatPhoto
+      class="add-info__img"
+      :chat-id="openModalChatData.id"
+      :is-pinned="openModalChatData.isPinned"
+      :is-active="openModalChatData.isActive"
+      :photo="openModalChatData.photo"
+      :chat-name="chatFullName"
+      :is-group-chat="isGroupChat"
+      :is-detailed-menu="true"
+    />
 
-      <AppH3
-        class="add-info__title"
+    <div
+      v-if="!isGroupChat"
+      class="menu__active"
+    >
+      {{ openModalChatData.isActive ? 'В сети' : 'Не в сети' }}
+    </div>
+
+    <div
+      v-if="!isGroupChat"
+      class="menu__name"
+    >
+      {{ chatFullName }}
+    </div>
+
+    <div
+      v-if="isGroupChat"
+      class="menu__title"
+    >
+      {{ chatFullName }}
+    </div>
+
+    <div
+      v-if="!isGroupChat"
+      class="menu__position"
+    >
+      {{ openModalChatData.position ?? '' }}
+    </div>
+
+    <div
+      v-if="isGroupChat"
+      class="menu__participants"
+    >
+      {{ groupChatUsersTotal }}
+    </div>
+
+    <div
+      v-for="(item,idx) in chatMenuValues"
+      :key="item.title"
+      class="menu__item"
+      :class="{
+        'menu__item_last': idx === chatMenuValues.length - 1
+      }"
+      @click="onClickDoAction(item)"
+    >
+      <div
+        v-if="item.icon"
+        class="menu__item-icon"
         :class="{
-          'add-info__title_mobile': isMobileSize
+          'menu__item-icon_not-selected': (item.action == 'muteChat' && !openModalChatData.isMutedOff) || (item.action == 'pinChat' && !openModalChatData.isPinned)
         }"
       >
-        Подробная информация
-      </AppH3>
+        <MuteOffIcon
+          v-if="item.action == 'muteChat' && openModalChatData.isMutedOff"
+          class="menu__item-img"
+        />
 
-      <ChatPhoto
-        class="add-info__img"
-        :chat-id="openModalChatData.id"
-        :is-pinned="openModalChatData.isPinned"
-        :is-active="openModalChatData.isActive"
-        :photo="openModalChatData.photo"
-        :chat-name="chatFullName"
-        :is-group-chat="isGroupChat"
-        :is-detailed-menu="true"
-      />
-
-      <div
-        v-if="!isGroupChat"
-        class="menu__active"
-      >
-        {{ openModalChatData.isActive ? 'В сети' : 'Не в сети' }}
+        <PinIcon
+          v-if="item.action == 'pinChat' && openModalChatData.isPinned"
+          class="menu__item-img"
+        />
       </div>
 
-      <div
-        v-if="!isGroupChat"
-        class="menu__name"
-      >
-        {{ chatFullName }}
-      </div>
+      {{ showMenuItem(item) }}
+    </div>
 
-      <div
-        v-if="isGroupChat"
-        class="menu__title"
-      >
-        {{ chatFullName }}
-      </div>
+    <div
+      v-for="(item, idx) in filteredDetailedInfoMenuItems"
+      :key="item.action"
+      class="details-menu__item"
+      :class="{
+        'details-menu__item_first': idx === 0,
+        'details-menu__item_pre-last': !isGroupChat && idx === detailedInfoMenuItems.length - 2,
+        'details-menu__item_last': !isGroupChat && idx === detailedInfoMenuItems.length - 1,
+      }"
+      @click="onClickDetailedInfoMenuItem(item)"
+    >
+      <FileMessagesIcon v-if="item.icon === 'file-messages-icon'" />
+      <VoiceMessagesIcon v-if="item.icon === 'voice-messages-icon'" />
+      <TextMessagesIcon v-if="item.icon === 'text-messages-icon'" />
+      <LinkMessagesIcon v-if="item.icon === 'link-messages-icon'" />
+      <ImageMessagesIcon v-if="item.icon === 'images-messages-icon'" />
+      <VideoMessagesIcon v-if="item.icon === 'video-messages-icon'" />
+      <DeleteIcon v-if="item.icon === 'delete-icon'" />
 
-      <div
-        v-if="!isGroupChat"
-        class="menu__position"
-      >
-        {{ openModalChatData.position ?? '' }}
-      </div>
+      <div>{{ showModalMenuItemTitle(item) }}</div>
+    </div>
 
-      <div
-        v-if="isGroupChat"
-        class="menu__participants"
-      >
-        {{ groupChatUsersTotal }}
-      </div>
-
-      <div
-        v-for="(item,idx) in chatMenuValues"
-        :key="item.title"
-        class="menu__item"
-        :class="{
-          'menu__item_last': idx === chatMenuValues.length - 1
-        }"
-        @click="onClickDoAction(item)"
-      >
-        <div
-          v-if="item.icon"
-          class="menu__item-icon"
-          :class="{
-            'menu__item-icon_not-selected': (item.action == 'muteChat' && !openModalChatData.isMutedOff) || (item.action == 'pinChat' && !openModalChatData.isPinned)
-          }"
-        >
-          <MuteOffIcon
-            v-if="item.action == 'muteChat' && openModalChatData.isMutedOff"
-            class="menu__item-img"
-          />
-
-          <PinIcon
-            v-if="item.action == 'pinChat' && openModalChatData.isPinned"
-            class="menu__item-img"
-          />
-        </div>
-
-        {{ showMenuItem(item) }}
-      </div>
-
-      <div
-        v-for="(item, idx) in filteredDetailedInfoMenuItems"
-        :key="item.action"
-        class="details-menu__item"
-        :class="{
-          'details-menu__item_first': idx === 0,
-          'details-menu__item_pre-last': !isGroupChat && idx === detailedInfoMenuItems.length - 2,
-          'details-menu__item_last': !isGroupChat && idx === detailedInfoMenuItems.length - 1,
-        }"
-        @click="onClickDetailedInfoMenuItem(item)"
-      >
-        <FileMessagesIcon v-if="item.icon === 'file-messages-icon'" />
-        <VoiceMessagesIcon v-if="item.icon === 'voice-messages-icon'" />
-        <TextMessagesIcon v-if="item.icon === 'text-messages-icon'" />
-        <LinkMessagesIcon v-if="item.icon === 'link-messages-icon'" />
-        <ImageMessagesIcon v-if="item.icon === 'images-messages-icon'" />
-        <VideoMessagesIcon v-if="item.icon === 'video-messages-icon'" />
-        <DeleteIcon v-if="item.icon === 'delete-icon'" />
-
-        <div>{{ showModalMenuItemTitle(item) }}</div>
-      </div>
-
-      <div
-        v-if="isGroupChat"
-        class="details-menu__group-users-data"
-      >
-        <div class="details-menu__group-users-action">
-          <div class="details-menu__group-users-info">
-            <GroupChatIcon />
-            <div class="details-menu__group-users-total">
-              {{ `${groupChatUsersTotal} группы` }}
-            </div>
+    <div
+      v-if="isGroupChat"
+      class="details-menu__group-users-data"
+    >
+      <div class="details-menu__group-users-action">
+        <div class="details-menu__group-users-info">
+          <GroupChatIcon />
+          <div class="details-menu__group-users-total">
+            {{ `${groupChatUsersTotal} группы` }}
           </div>
-          <AddUserIcon
-            class="details-menu__add-user"
-            @click="openAddUserModal"
-          />
         </div>
-        <div class="details-menu__group-users">
-          <GroupChatUser
-            v-for="user in openModalChatData.users"
-            :key="user.id"
-            :user-data="user"
-          />
-        </div>
+        <AddUserIcon
+          class="details-menu__add-user"
+          @click="openAddUserModal"
+        />
       </div>
-
-      <div
-        v-if="isGroupChat"
-        class="details-menu__item details-menu__item_last"
-        @click="onClickDetailedInfoMenuItem(lastDetailedInfoMenuItem)"
-      >
-        <DeleteIcon />
-
-        <div>{{ showModalMenuItemTitle(lastDetailedInfoMenuItem) }}</div>
+      <div class="details-menu__group-users">
+        <GroupChatUser
+          v-for="user in openModalChatData.users"
+          :key="user.id"
+          :user-data="user"
+        />
       </div>
+    </div>
+
+    <div
+      v-if="isGroupChat"
+      class="details-menu__item details-menu__item_last"
+      @click="onClickDetailedInfoMenuItem(lastDetailedInfoMenuItem)"
+    >
+      <DeleteIcon />
+
+      <div>{{ showModalMenuItemTitle(lastDetailedInfoMenuItem) }}</div>
     </div>
   </div>
 </template>
@@ -348,21 +342,17 @@ const openAddUserModal = () => {
 @use '~/assets/styles/_variables.scss' as variables;
 
 .add-info__modal {
-  position: relative;
-  width: 400px;
-  background-color: variables.$color-white;
-  z-index: 1100;
-  border-radius: 15px;
-  padding-right: 5px;
   padding-top: 25px;
   padding-bottom: 25px;
+  background-color: variables.$color-white;
+  border-radius: 15px;
   border: 1px solid #979797;
-}
-
-.add-info__wrapper {
+  width: 400px;
+  z-index: 1100;
+  position: relative;
+  max-height: 96vh;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 95vh;
 
   &::-webkit-scrollbar {
     width: 3px;
@@ -377,6 +367,7 @@ const openAddUserModal = () => {
   &::-webkit-scrollbar-track {
     background-color: transparent;
   }
+
 }
 
 .add-info__modal_mobile {
@@ -539,11 +530,13 @@ const openAddUserModal = () => {
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  transition: 0.2s all;
+  transition: 0.5s all;
+  border-bottom: 1px solid transparent;
 }
 
 .details-menu__item:not(:last-of-type):hover {
-  scale: 1.03;
+  background-color: rgba(0, 0, 0, 0.1);
+
 }
 
 .details-menu__item_first {
@@ -569,6 +562,7 @@ const openAddUserModal = () => {
 .details-menu__group-users {
   max-height: 350px;
   overflow-y: auto;
+  margin-right: 5px;
 
   &::-webkit-scrollbar {
     width: 3px;

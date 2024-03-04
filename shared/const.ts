@@ -119,3 +119,5 @@ export const messagesTypesList: MessagesTypesType[] = [
     action: 'link-messages',
     title: 'Ссылки'
   }]
+
+export const createChatMenu = ['Создать групповой чат']

@@ -13,6 +13,11 @@
   position: relative;
 }
 
+.group__photo_edit {
+  background-color: linear-gradient(to bottom, #aeee90 2%, #65dd78 100%);
+  background-image: url('~/assets/icons/camera-icon.svg');
+}
+
 .user__photo_big {
   width: 120px;
   height: 120px;

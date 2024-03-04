@@ -53,8 +53,8 @@ const { isOwnMessage, isNewMessagesDate, date, isNextMessageOwn, text, isNextMes
 }
 
 .text-message_next-new-date,
-text-message__own-message_next-own,
-text-message__other-message_next-other {
+.text-message__own-message_next-own,
+.text-message__other-message_next-other {
   margin-bottom: 15px;
 }
 

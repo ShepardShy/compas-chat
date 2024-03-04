@@ -59,8 +59,12 @@ export interface GroupChatType {
     isPinned: boolean
     isTyping: boolean
     isMutedOff: boolean
-    isMenuOpen: boolean
-    isDetailedInfoOpen: boolean
+    totalTextMessages: number
+    totalPhotoMessages: number
+    totalVideoMessages: number
+    totalFileMessages: number
+    totalVoiceMessages: number
+    totalLinksMessages: number
     users: GroupChatUserType[]
     messages: GroupChatMessageType[]
 }

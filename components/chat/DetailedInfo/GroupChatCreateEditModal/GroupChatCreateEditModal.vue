@@ -18,17 +18,28 @@ import ChatInput from '~/components/chat/ui/ChatInput.vue'
 import AppButton from '~/components/ui/AppButton/AppButton.vue'
 
 const usersStore = useUsersStore()
-const { openModalChatData, chats, chatIdForOpenModal } = storeToRefs(usersStore)
+const {
+  openModalChatData,
+  isGroupChatCreateModalOpen,
+  isGroupChatEditModalOpen,
+  temporalStorageForNewGroupChat
+} = storeToRefs(usersStore)
 
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
-const isGroupChat = true
+const chatFullName = computed<string>(() => {
+  if (isGroupChatCreateModalOpen.value) {
+    return ''
+  }
 
-const chatFullName = computed<string>(() => openModalChatData.value.title)
+  return openModalChatData.value.title
+})
 
 const closeModal = () => {
+  usersStore.closeGroupChatCreateModalOpen()
   usersStore.closeGroupChatEditModal()
+  usersStore.clearTemporalStorageForNewGroupChat()
   usersStore.clearChatIdForOpenModal()
 }
 
@@ -49,10 +60,13 @@ const onClickDetailedInfoMenuItem = async (item: DetailedInfoMenuItem) => {
 const detailedMenuActiveDataType = ref()
 
 const groupChatUsersTotal = computed(() => {
-  if (!openModalChatData.value?.users) return
+  if (!openModalChatData.value?.users.length && !isGroupChatCreateModalOpen.value) return
 
-  const totalUsers = openModalChatData.value?.users.length
-  const lastDigit = toString().slice(-1)
+  const totalUsers = isGroupChatCreateModalOpen.value
+    ? temporalStorageForNewGroupChat.value?.users.length
+    : openModalChatData.value?.users.length
+
+  const lastDigit = totalUsers.toString().slice(-1)
   if (+lastDigit === 1) {
     return totalUsers + ' ' + 'участник'
   } else if (+lastDigit >= 2 && +lastDigit <= 4) {
@@ -69,24 +83,70 @@ const openAddUserModal = () => {
 }
 
 const groupTitle = ref(openModalChatData.value?.title)
+const groupPhoto = ref(openModalChatData.value?.photo)
 
-const localCopyGroupChat = ref(openModalChatData.value as GroupChatType)
+const localCopyGroupChat = ref()
 
-const deleteUserFromChatLocal = (userId: number) => {
+const deleteUserFromChatLocal = async (userId: number) => {
+  if (!isGroupChatCreateModalOpen.value) {
+    localCopyGroupChat.value = {
+      ...localCopyGroupChat.value,
+      users: localCopyGroupChat.value.users.filter(user => user.id !== userId)
+    }
+  }
+
+  await updateTemporalStorageForNewGroupChat(userId)
+}
+
+watch(
+  () => [groupTitle.value, groupPhoto.value],
+  async () => {
+    await updateTemporalStorageForNewGroupChat()
+  }
+)
+
+const updateTemporalStorageForNewGroupChat = async (userId?: number) => {
+  const actualUsers = userId
+    ? localCopyGroupChat.value?.users.filter(user => user.id !== userId)
+    : localCopyGroupChat.value?.users
+
+  await usersStore.updateTemporalStorageForNewGroupChat({
+    ...localCopyGroupChat.value,
+    title: groupTitle.value,
+    photo: groupPhoto.value,
+    users: actualUsers
+  })
+
   localCopyGroupChat.value = {
     ...localCopyGroupChat.value,
-    users: localCopyGroupChat.value.users.filter(user => user.id !== userId)
+    users: actualUsers
   }
 }
 
 const saveChanges = async () => {
-  await usersStore.updateGroupChat({
-    ...localCopyGroupChat.value,
-    title: groupTitle.value
-  })
-  usersStore.closeGroupChatEditModal()
+  if (!isGroupChatCreateModalOpen.value) {
+    await usersStore.updateGroupChat({
+      ...localCopyGroupChat.value,
+      title: groupTitle.value
+    })
+    usersStore.closeGroupChatEditModal()
+  }
+
+  await updateTemporalStorageForNewGroupChat()
+  usersStore.createGroupChat()
 }
 
+onMounted(() => {
+  if (isGroupChatCreateModalOpen.value) {
+    localCopyGroupChat.value = temporalStorageForNewGroupChat.value
+    groupTitle.value = temporalStorageForNewGroupChat.value.title
+    groupPhoto.value = temporalStorageForNewGroupChat.value.photo
+  } else {
+    localCopyGroupChat.value = openModalChatData.value
+    groupTitle.value = openModalChatData.value?.title
+    groupPhoto.value = openModalChatData.value?.photo
+  }
+})
 </script>
 
 <template>
@@ -107,18 +167,18 @@ const saveChanges = async () => {
       />
 
       <AppH3 class="edit-group__title">
-        Редактирование группы
+        {{ isGroupChatCreateModalOpen ? 'Создание группы' : 'Редактирование группы' }}
       </AppH3>
 
       <ChatPhoto
         class="edit-group__img"
-        :chat-id="openModalChatData.id"
-        :is-pinned="openModalChatData.isPinned"
-        :is-active="openModalChatData.isActive"
-        :photo="openModalChatData.photo"
+        :chat-id="openModalChatData?.id"
+        :is-pinned="openModalChatData?.isPinned"
+        :photo="groupPhoto"
         :chat-name="chatFullName"
-        :is-group-chat="isGroupChat"
+        :is-group-chat="true"
         :is-detailed-menu="true"
+        :is-edit-photo="isGroupChatCreateModalOpen || isGroupChatEditModalOpen"
       />
 
       <ChatInput
@@ -127,11 +187,19 @@ const saveChanges = async () => {
       />
 
       <div class="edit-group__group-users-data">
-        <div class="edit-group__group-users-action">
+        <div
+          class="edit-group__group-users-action edit-group__group-users-action_no-users"
+          :class="{
+            'edit-group__group-users-action': !temporalStorageForNewGroupChat.users?.length
+          }"
+        >
           <div class="edit-group__group-users-info">
             <GroupChatIcon />
+
             <div class="edit-group__group-users-total">
-              {{ `${groupChatUsersTotal} группы` }}
+              {{
+                `${groupChatUsersTotal} группы`
+              }}
             </div>
           </div>
           <AddUserIcon
@@ -143,7 +211,7 @@ const saveChanges = async () => {
           class="edit-group__group-users"
         >
           <GroupChatUser
-            v-for="user in localCopyGroupChat.users"
+            v-for="user in localCopyGroupChat?.users"
             :key="user.id"
             :user-data="user"
             :is-delete-icon="true"
@@ -153,6 +221,7 @@ const saveChanges = async () => {
       </div>
 
       <div
+        v-if="!isGroupChatCreateModalOpen"
         class="edit-group__item edit-group__item_last"
         @click="onClickDetailedInfoMenuItem(lastDetailedInfoMenuItem)"
       >
@@ -166,7 +235,7 @@ const saveChanges = async () => {
           class="edit-group__btn"
           @click="saveChanges"
         >
-          Сохранить
+          {{ isGroupChatCreateModalOpen ? 'Создать' : 'Сохранить' }}
         </AppButton>
         <AppButton
           class="edit-group__btn"
@@ -377,6 +446,10 @@ const saveChanges = async () => {
   justify-content: space-between;
   align-items: center;
   background-color: #f7f8fa;
+}
+
+.edit-group__group-users-action_no-users {
+  margin-bottom: 25px;
 }
 
 .edit-group__group-users-info {

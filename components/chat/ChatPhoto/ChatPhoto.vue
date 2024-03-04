@@ -3,14 +3,15 @@ import { useUsersStore } from '~/store/users'
 import { useSettingsStore } from '~/store/settings'
 
 interface PropsType {
-  chatId: number | string
-  isPinned?: boolean
-  isActive?: boolean
+  chatId: number | string | undefined
+  isPinned?: boolean | undefined
+  isActive?: boolean | undefined
   photo: string | undefined
   chatName: string
   isGroupChat: boolean
   isDetailedMenu?: boolean
   isOpenDialogImage?: boolean
+  isEditModal?: boolean
 }
 
 const usersStore = useUsersStore()
@@ -20,7 +21,7 @@ const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
 const props = defineProps<PropsType>()
-const { chatId, isPinned, isActive, photo, chatName, isGroupChat, isDetailedMenu, isOpenDialogImage } = toRefs(props)
+const { chatId, isPinned, isActive, photo, chatName, isGroupChat, isDetailedMenu, isOpenDialogImage, isEditModal } = toRefs(props)
 
 const activeCircleBackgroundColor = computed<string>(() => {
   if (isDetailedMenu.value) {
@@ -54,6 +55,7 @@ const chatPhoto = computed<string>(() => {
     class="user__photo"
     :class="{
       'group__photo': isGroupChat,
+      'group__photo_edit': isEditModal,
       'user__photo_big': isDetailedMenu,
       'user__photo_mobile': isMobileSize && isOpenDialogImage
     }"
@@ -62,7 +64,7 @@ const chatPhoto = computed<string>(() => {
     }"
   >
     <div
-      v-if="!photo"
+      v-if="!photo && !isEditModal"
       class="user__photo-name"
       :class="{
         'user__photo-name_big':isDetailedMenu,

@@ -23,10 +23,11 @@ const userFullName = computed<string>(() => {
 
 const setUsersQuantity = computed(() => {
   const totalChatUsers = openedChatData.value.users?.length.toString()
+  const lastDigit = +(totalChatUsers.slice(-1))
 
-  if (totalChatUsers.slice(-1) === 1) {
+  if (lastDigit === 1) {
     return `${totalChatUsers} участник`
-  } else if ([2, 3, 4].includes(+totalChatUsers.slice(-1))) {
+  } else if (lastDigit >= 2 && lastDigit <= 4) {
     return `${totalChatUsers} участника`
   } else {
     return `${totalChatUsers} участников`

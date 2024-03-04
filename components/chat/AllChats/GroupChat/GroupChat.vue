@@ -21,12 +21,10 @@ const props = defineProps<PropsType>()
 const { chatData } = toRefs(props)
 
 const usersStore = useUsersStore()
-const { openedChatId, userId, chatsWithPinnedUsers, chatIdForOpenModal } = storeToRefs(usersStore)
+const { openedChatId, userId, chatsWithPinnedUsers } = storeToRefs(usersStore)
 
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
-
-const isDetailedChatOpen = ref(false)
 
 const lastMessage = computed<GroupChatMessageType | {}>(() => {
   if (chatData.value.messages.length) {
@@ -56,26 +54,11 @@ const toggleMute = async () => {
   await usersStore.toggleUserMuted(chatData.value.id)
 }
 
-const distanceToViewport = ref()
-
 const onMouseClickUserChat = (event: MouseEvent) => {
-  const iconsComponents = [...document.querySelectorAll('.icon')]
-  const chatMenuComponent = [...document.querySelectorAll('.menu')]
-
-  // Чтобы при нажатии на иконку не открывалось меню, а срабатывало событие нажатия на иконку
-
-  if (!iconsComponents.includes(event.target.closest('.icon')) &&
-      !chatMenuComponent.includes(event.target.closest('.menu'))
-  ) {
-    if (event.button === 0) {
-      // при нажатии ЛКМ открыть чат
-      settingsStore.$patch(state => state.isChatsShown = false)
-      usersStore.$patch(state => state.openedChatId = chatData.value.id)
-    } else if (event.button === 2) {
-      //  при нажатии ПКМ открыть модалку для действий с диалогом пользователя
-      distanceToViewport.value = getDistanceToViewport(event.target)
-      isDetailedChatOpen.value = !isDetailedChatOpen.value
-    }
+  if (event.button === 0) {
+    // при нажатии ЛКМ открыть чат
+    settingsStore.$patch(state => state.isChatsShown = false)
+    usersStore.$patch(state => state.openedChatId = chatData.value.id)
   }
 }
 
@@ -91,27 +74,7 @@ const borderRadiusForActiveChat = computed(() => {
   return '0'
 })
 
-useEventListener(document, 'contextmenu', (event) => {
-  const elem = event.target.className
-
-  if (elem.includes('group')) {
-    event.preventDefault()
-  }
-})
-
-const toggleMenuOpen = () => {
-  isDetailedChatOpen.value = !isDetailedChatOpen.value
-}
-
 const $menuItem = ref()
-
-// onMounted(() => {
-//   if (chatIdForOpenModal.value === chatData.value.id) {
-//     distanceToViewport.value = getDistanceToViewport($menuItem.value).bottom
-//     isDetailedChatOpen.value = true
-//   }
-// })
-
 </script>
 
 <template>
@@ -163,7 +126,8 @@ const $menuItem = ref()
           <span class="group__user-message-last"> Вы: </span>
           {{ lastMessage.message }}
         </span>
-        <span v-else>
+
+        <span v-else-if="lastMessage?.id">
           <span class="group__user-message-last">
             {{ lastMessage.firstName + ' ' + lastMessage.secondName }}:
           </span>
@@ -205,27 +169,6 @@ const $menuItem = ref()
         />
       </div>
     </div>
-
-    <!--    <div-->
-    <!--      v-if="isDetailedChatOpen"-->
-    <!--      class="group__menu-bg"-->
-    <!--      @click="toggleMenuOpen"-->
-    <!--    />-->
-
-    <!--    <ChatMenu-->
-    <!--      v-if="isDetailedChatOpen"-->
-    <!--      v-model:is-detailed-chat-open="isDetailedChatOpen"-->
-    <!--      :style="{-->
-    <!--        top: distanceToViewport.bottom < 240 ? '-172px' : '30px',-->
-    <!--        right: '10px',-->
-    <!--      }"-->
-    <!--      :chat-id="chatData.id"-->
-    <!--      :is-pinned="chatData.isPinned"-->
-    <!--      :is-muted-off="chatData.isMutedOff"-->
-    <!--      :is-user-chat-left="true"-->
-    <!--      :is-group-chat="chatData.isGroupChat"-->
-    <!--      @close-chat="toggleMenuOpen"-->
-    <!--    />-->
   </div>
 </template>
 
