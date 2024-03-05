@@ -65,11 +65,6 @@ const borderRadiusForActiveChat = computed(() => {
   return '0'
 })
 
-const openUserDetailedInfoModal = async () => {
-  await usersStore.$patch(state => state.chatIdForOpenModal = chatData.value.id)
-  await usersStore.$patch(state => (state.isDetailedInfoModalOpen = true))
-}
-
 const $menuItem = ref()
 </script>
 
@@ -98,7 +93,7 @@ const $menuItem = ref()
     <div class="user__data">
       <div class="user__personal">
         <div class="user__full-name">
-          <span @click="openUserDetailedInfoModal">
+          <span>
             {{ userFullName }}
           </span>
         </div>

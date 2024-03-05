@@ -36,6 +36,8 @@ const chatFullName = computed<string>(() => {
   return openModalChatData.value.title
 })
 
+const userSearchValue = ref()
+
 const closeModal = () => {
   usersStore.closeGroupChatCreateModalOpen()
   usersStore.closeGroupChatEditModal()
@@ -207,6 +209,14 @@ onMounted(() => {
             @click="openAddUserModal"
           />
         </div>
+
+        <ChatInput
+          v-if="localCopyGroupChat?.users?.length"
+          v-model:input-value="userSearchValue"
+          placeholder="Найти"
+          class="edit-group__user-search-input"
+        />
+
         <div
           class="edit-group__group-users"
         >
@@ -339,7 +349,7 @@ onMounted(() => {
 }
 
 .edit-group__title {
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   text-align: left !important;
   font-size: 21px;
   font-weight: 400;
@@ -460,6 +470,11 @@ onMounted(() => {
 
 .edit-group__add-user {
   cursor: pointer;
+}
+
+.edit-group__user-search-input {
+  padding: 0 25px;
+  margin-bottom: 15px;
 }
 
 .edit-group__btns {

@@ -1,9 +1,9 @@
 @use '~/assets/styles/_variables.scss' as variables;
 
 .dialog {
-  height: calc(100vh - 105px);
+  height: calc(100vh - 81px);
   border-top: solid 1px #eeeff1;
-  padding: 10px 50px 25px 25px;
+  padding: 10px 10px 0 0;
   background-color: variables.$color-pale-grey;
   display: flex;
   flex-direction: column;
@@ -17,9 +17,10 @@
   flex: 1 1 auto;
   margin-bottom: 60px;
   overflow-y: auto;
+  padding-right: 50px;
 
   &::-webkit-scrollbar {
-    width: 3px;
+    width: 5px;
     height: 122px;
   }
 
@@ -35,8 +36,11 @@
 
 .dialog__wrapper_flex {
   display: flex;
-  justify-content: flex-end;
   align-items: flex-end;
+}
+
+.dialog__wrapper-scroll {
+  flex: 1 1 auto;
 }
 
 .dialog__body {
@@ -48,9 +52,21 @@
 
 .dialog__actions {
   flex: 0 0 50px;
+  padding: 25px 50px 25px 25px;
   display: flex;
   gap: 10px;
   align-items: flex-end;
+  background-color: #f7f8fa;
+}
+
+.dialog__voice-messages {
+  background-color: #f7f8fa;
+  padding: 25px;
+}
+
+.dialog__message {
+  position: relative;
+  z-index: 10;
 }
 
 .dialog__input {

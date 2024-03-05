@@ -271,6 +271,8 @@ onMounted(() => {
   padding: 10px 15px;
   background-color: #f7f8fa;
   position: relative;
+  border: 1px solid variables.$color-grey;
+  border-radius: 5px;
 }
 
 .audio-msg__body {

@@ -1,6 +1,7 @@
 import type { ChatMenuType, DetailedInfoMenuItem, MessagesTypesType } from '~/types/messages'
 
 export const daysOfWeek = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб']
+export const daysOfWeekLongName = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
 
 export const chatMenuItems: ChatMenuType[] = [
   {

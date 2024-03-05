@@ -73,7 +73,7 @@ export const useUsersStore = defineStore('users', {
               isReceived: true,
               isViewed: true,
               isUnread: false,
-              date: '14.02.2024 15:12'
+              date: '16.02.2024 15:12'
             },
             {
               id: 2,
@@ -82,7 +82,7 @@ export const useUsersStore = defineStore('users', {
               isReceived: true,
               isViewed: true,
               isUnread: false,
-              date: '14.02.2024 15:12'
+              date: '16.02.2024 15:12'
             },
             {
               id: 3,
@@ -91,7 +91,7 @@ export const useUsersStore = defineStore('users', {
               isReceived: true,
               isViewed: true,
               isUnread: false,
-              date: '14.02.2024 15:12'
+              date: '16.02.2024 15:12'
             },
             {
               id: 4,
@@ -100,7 +100,7 @@ export const useUsersStore = defineStore('users', {
               isReceived: true,
               isViewed: true,
               isUnread: false,
-              date: '14.02.2024 15:12'
+              date: '16.02.2024 15:12'
             },
             {
               id: 5,
@@ -109,7 +109,7 @@ export const useUsersStore = defineStore('users', {
               isReceived: true,
               isViewed: false,
               isUnread: false,
-              date: '14.02.2024 15:12'
+              date: '29.02.2024 15:12'
             },
             {
               id: 6,
@@ -118,7 +118,7 @@ export const useUsersStore = defineStore('users', {
               isReceived: false,
               isViewed: false,
               isUnread: false,
-              date: '14.02.2024 15:12'
+              date: '05.03.2024 15:12'
             }
           ]
         },
@@ -861,7 +861,32 @@ export const useUsersStore = defineStore('users', {
   getters: {
     chatsWithPinnedUsers: state => state.chats.filter(chat => chat.isPinned),
     chatsWithoutPinned: state => state.chats.filter(chat => !chat.isPinned),
-    openedChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find(chat => chat.id === state.openedChatId),
+    openedChatData: (state): UserChatType | GroupChatType | undefined => {
+      const chatData = state.chats.find(chat => chat.id === state.openedChatId)
+      const messages = chatData?.messages
+      const preparedMessages:Array<{ date: string, messages: UserChatType | GroupChatType | undefined }> = []
+
+      for (let i = 0; i < messages.length; i++) {
+        if (i === 0) {
+          preparedMessages.push({
+            date: messages[i]?.date?.slice(0, 10),
+            messages: [messages[i]]
+          })
+        } else if (messages[i]?.date.slice(0, 10) === preparedMessages[preparedMessages.length - 1].date) {
+          preparedMessages[preparedMessages.length - 1].messages.push(messages[i])
+        } else {
+          preparedMessages.push({
+            date: messages[i]?.date.slice(0, 10),
+            messages: [messages[i]]
+          })
+        }
+      }
+
+      return {
+        ...chatData,
+        messages: preparedMessages
+      }
+    },
     openModalChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find(chat => chat.id === state.chatIdForOpenModal),
     allChatUsers: state => state.chats.filter(chat => !chat.isGroupChat)
   },

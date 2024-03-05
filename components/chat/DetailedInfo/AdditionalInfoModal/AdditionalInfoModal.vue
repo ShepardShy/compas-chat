@@ -290,12 +290,30 @@ const openAddUserModal = () => {
       }"
       @click="onClickDetailedInfoMenuItem(item)"
     >
-      <FileMessagesIcon v-if="item.icon === 'file-messages-icon'" />
-      <VoiceMessagesIcon v-if="item.icon === 'voice-messages-icon'" />
-      <TextMessagesIcon v-if="item.icon === 'text-messages-icon'" />
-      <LinkMessagesIcon v-if="item.icon === 'link-messages-icon'" />
-      <ImageMessagesIcon v-if="item.icon === 'images-messages-icon'" />
-      <VideoMessagesIcon v-if="item.icon === 'video-messages-icon'" />
+      <FileMessagesIcon
+        v-if="item.icon === 'file-messages-icon'"
+        class="details-menu__item-icon"
+      />
+      <VoiceMessagesIcon
+        v-if="item.icon === 'voice-messages-icon'"
+        class="details-menu__item-icon"
+      />
+      <TextMessagesIcon
+        v-if="item.icon === 'text-messages-icon'"
+        class="details-menu__item-icon"
+      />
+      <LinkMessagesIcon
+        v-if="item.icon === 'link-messages-icon'"
+        class="details-menu__item-icon"
+      />
+      <ImageMessagesIcon
+        v-if="item.icon === 'images-messages-icon'"
+        class="details-menu__item-icon"
+      />
+      <VideoMessagesIcon
+        v-if="item.icon === 'video-messages-icon'"
+        class="details-menu__item-icon"
+      />
       <DeleteIcon v-if="item.icon === 'delete-icon'" />
 
       <div>{{ showModalMenuItemTitle(item) }}</div>
@@ -435,6 +453,8 @@ const openAddUserModal = () => {
   font-weight: 400;
   text-decoration: underline;
   color: variables.$color-active;
+  transition: 0.2s all;
+  cursor: pointer;
 }
 
 .menu__title {
@@ -443,6 +463,11 @@ const openAddUserModal = () => {
   font-size: 21px;
   font-weight: 400;
   color: variables.$color-black;
+  transition: 0.2s all;
+}
+
+.menu__name:hover{
+  text-decoration: none;
 }
 
 .menu__position {
@@ -534,9 +559,13 @@ const openAddUserModal = () => {
   border-bottom: 1px solid transparent;
 }
 
-.details-menu__item:not(:last-of-type):hover {
-  background-color: rgba(0, 0, 0, 0.1);
+.details-menu__item-icon {
+  color: #A6B7D4;
+  transition: 0.2s all;
+}
 
+.details-menu__item:hover .details-menu__item-icon {
+  color: #1253a2;
 }
 
 .details-menu__item_first {

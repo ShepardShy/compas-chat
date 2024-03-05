@@ -47,7 +47,7 @@ import '../AppDate.scss'
 import { ref, watch, onMounted } from 'vue'
 
 import VueDatePicker from '@vuepic/vue-datepicker'
-import FormItem from '@/components/AppForm/FormItem/FormItem.vue'
+import FormItem from '~/components/ui/AppForm/FormItem/FormItem.vue'
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const props = defineProps({

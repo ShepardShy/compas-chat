@@ -4,6 +4,7 @@ import type { GroupChatMessageType, MessageType } from '~/types/messages'
 import ViewedMessageIcon from 'assets/icons/viewed-message-icon.svg'
 import ReceivedMessageIcon from 'assets/icons/recieved-message-icon.svg'
 import { useSettingsStore } from '~/store/settings'
+import MessageDay from '~/components/chat/ChatWindow/DialogBody/MessageDay/MessageDay.vue'
 
 interface PropsType {
   message: GroupChatMessageType | MessageType
@@ -25,7 +26,7 @@ const isMessageViewed = computed<boolean>(() => {
   return message.value.isViewed
 })
 
-const messageTime = ():string => {
+const messageTime = (): string => {
   return message.value.date.slice(-5)
 }
 </script>

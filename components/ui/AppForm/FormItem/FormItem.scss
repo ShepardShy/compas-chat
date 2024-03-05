@@ -1,5 +1,5 @@
-@use '@/assets/variables.scss' as variables;
-@use '@/assets/mixins.scss' as mixins;
+@use '~/assets/styles/_variables.scss' as variables;
+@use '~/assets/styles/_mixins.scss' as mixins;
 
 .form__item {
     &.form-item_required {
@@ -14,5 +14,5 @@
                 color: variables.$color-red;
             }
         }
-    } 
+    }
 }

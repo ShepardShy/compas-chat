@@ -99,13 +99,17 @@ const openAllChats = () => {
           class="window__icon"
           @click="toggleIsCalling"
         />
-        <MoreIcon
-          :style="{
-            color: isMenuOpen ? '#1253a2' : '#8BABD8',
-          }"
-          class="window__icon"
+        <div
+          class="window__icon-wrapper"
           @click="toggleMenuOpen"
-        />
+        >
+          <MoreIcon
+            :style="{
+              color: isMenuOpen ? '#1253a2' : '#8BABD8',
+            }"
+            class="window__icon"
+          />
+        </div>
       </div>
 
       <ChatMenu

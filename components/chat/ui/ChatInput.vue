@@ -127,6 +127,9 @@ const voiceMessageLengthTransformer = computed(() => {
 
   return finalDuration
 })
+
+const $inputBody = ref(null)
+
 </script>
 
 <template>
@@ -191,7 +194,8 @@ const voiceMessageLengthTransformer = computed(() => {
         width: width
       }"
     >
-      <input
+      <textarea
+        ref="$inputBody"
         :value="inputValue"
         class="input__body"
         :class="{
@@ -203,7 +207,18 @@ const voiceMessageLengthTransformer = computed(() => {
           width: width,
         }"
         @input="$emit('update:inputValue', $event.currentTarget.value)"
+      />
+
+      <div
+        class="input__resize-window"
+        @mousedown="handleMouseDown($event)"
+        @mousemove="handleMouseMove($event)"
+        @mouseup="handleMouseUp"
       >
+        <div class="input__resize-window-line" />
+        <div class="input__resize-window-line" />
+      </div>
+
       <AddDocuments
         v-if="addDocuments && !isMakingAVoiceMessage"
         class="input__add-doc-icon"
@@ -273,6 +288,24 @@ const voiceMessageLengthTransformer = computed(() => {
   }
 }
 
+.input__resize-window {
+  position: absolute;
+  cursor: pointer;
+  top: 5px;
+  width: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.input__resize-window-line {
+  height: 1px;
+  border-radius: 1px;
+  background-color: #a6b7d4;
+}
+
 .input__body_document {
   padding-left: 48px;
 }
@@ -289,6 +322,11 @@ const voiceMessageLengthTransformer = computed(() => {
   left: 15px;
   color: #A6B7D4;
   cursor: pointer;
+  transition: 0.2s all;
+}
+
+.input__add-doc-icon:hover {
+  color: #1253a2;
 }
 
 .input__voice-msg-length {

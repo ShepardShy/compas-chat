@@ -8,6 +8,8 @@ import OwnMessage from '~/components/chat/ChatWindow/DialogBody/OwnMessage/OwnMe
 import OtherMessage from '~/components/chat/ChatWindow/DialogBody/OtherMessage/OtherMessage.vue'
 import VoiceMessage from '~/components/chat/DetailedInfo/MessagesTypesModal/VoiceMessage/VoiceMessage.vue'
 import { useSettingsStore } from '~/store/settings'
+import MessageDay from '~/components/chat/ChatWindow/DialogBody/MessageDay/MessageDay.vue'
+import AppDateInput from '~/components/ui/AppInputs/Date/AppDateInput/AppDateInput.vue'
 
 const usersStore = useUsersStore()
 const { openedChatData, userId, openedChatId } = storeToRefs(usersStore)
@@ -33,7 +35,7 @@ const setMessageType = () => {
   }
 }
 
-const $dialogBody = ref<HTMLDivElement>()
+const $dialogWrapperScroll = ref<HTMLDivElement>()
 const $dialogWrapper = ref<HTMLDivElement>()
 const $dialogActions = ref<HTMLDivElement>()
 
@@ -45,7 +47,8 @@ const scrollToDialogWrapperBottom = () => {
 
 const checkIfDialogBodyHeightsLessThenVH = async () => {
   await nextTick()
-  const dialogBodyHeight = $dialogBody.value.offsetHeight
+
+  const dialogBodyHeight = $dialogWrapperScroll.value.offsetHeight
   const dialogWrapperHeight = $dialogWrapper.value.offsetHeight
 
   isDialogBodyHeightsLessThenVH.value = (dialogBodyHeight < dialogWrapperHeight)
@@ -178,44 +181,58 @@ const deleteMessage = (messageIdx) => {
       }"
     >
       <div
-        ref="$dialogBody"
-        class="dialog__body"
+        ref="$dialogWrapperScroll"
+        class="dialog__wrapper-scroll"
       >
         <div
-          v-for="(message, idx) in openedChatData.messages"
-          :key="message.id"
-          class="dialog__message"
-          :style="{
-            alignSelf: message.userId == userId ? 'flex-end' : 'flex-start',
-            marginBottom: openedChatData.messages.length - 1 === idx && '5px'
-          }"
+          v-for="(messagesSortedByDay, index) in openedChatData?.messages"
+          :key="messagesSortedByDay.date"
+          class="dialog__body"
         >
-          <OwnMessage
-            v-if="message.userId === userId"
-            :message="message"
-            :last-of-several-msgs="checkIfLastOfSeveralMessages(idx)"
+          <MessageDay
+            :is-first-date="index === 0"
+            :date="messagesSortedByDay.date"
           />
 
-          <OtherMessage
-            v-else
-            :message="message"
-            :last-of-several-msgs="checkIfLastOfSeveralMessages(idx)"
-          />
+          <div
+            v-for="(message, idx) in messagesSortedByDay?.messages"
+            :key="message.id"
+            class="dialog__message"
+            :style="{
+              alignSelf: message.userId == userId ? 'flex-end' : 'flex-start',
+
+            }"
+          >
+            <OwnMessage
+              v-if="message.userId === userId"
+              :message="message"
+              :last-of-several-msgs="checkIfLastOfSeveralMessages(idx) || messagesSortedByDay?.messages.length - 1 === idx"
+            />
+
+            <OtherMessage
+              v-else
+              :message="message"
+              :last-of-several-msgs="checkIfLastOfSeveralMessages(idx) || messagesSortedByDay?.messages.length - 1 === idx"
+            />
+          </div>
         </div>
       </div>
     </div>
 
-    <VoiceMessage
+    <div
       v-if="voiceMessage.length"
-      class="dialog__voice"
-      :is-own-message="true"
-      date="12:01:2024 14:15"
-      :is-received="true"
-      :is-viewed="true"
-      :audio-message="voiceMessage[0]"
-      @delete-message="deleteMessage(0)"
-    />
-
+      class="dialog__voice-messages"
+    >
+      <VoiceMessage
+        class="dialog__voice"
+        :is-own-message="true"
+        date="12:01:2024 14:15"
+        :is-received="true"
+        :is-viewed="true"
+        :audio-message="voiceMessage[0]"
+        @delete-message="deleteMessage(0)"
+      />
+    </div>
     <div
       ref="$dialogActions"
       class="dialog__actions"
@@ -248,6 +265,8 @@ const deleteMessage = (messageIdx) => {
       class="dialog__voice-bg"
       @click="setVoiceMessage(false, true)"
     />
+
+    <!--    <AppDateInput />-->
   </div>
 </template>
 
