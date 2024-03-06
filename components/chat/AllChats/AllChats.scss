@@ -60,19 +60,20 @@
   color: variables.$color-dark;
   display: flex;
   gap: 10px;
+  border-radius: 7px;
 }
 
 .chats__menu-item:hover {
   background-color: variables.$color-light-grey;
 }
 
-.chats__menu-item:nth-of-type(1) {
-  border-radius: 7px 7px 0 0;
-}
-
-.chats__menu-item:last-of-type {
-  border-radius: 0 0 7px 7px;
-}
+//.chats__menu-item:nth-of-type(1) {
+//  border-radius: 7px 7px 0 0;
+//}
+//
+//.chats__menu-item:last-of-type {
+//  border-radius: 0 0 7px 7px;
+//}
 
 .users__title {
   color: variables.$color-black;

@@ -71,10 +71,6 @@ const showMenuItem = (menuItem: ChatMenuType) => {
   return menuItem.title
 }
 
-useEventListener(document, 'contextmenu', (event) => {
-  event.preventDefault()
-})
-
 const chatItems = computed(() => {
   if (isGroupChat.value) {
     return chatMenuItems

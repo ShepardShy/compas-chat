@@ -244,6 +244,7 @@ const deleteMessage = (messageIdx) => {
         :add-documents="true"
         :is-making-a-voice-message="isMakingAVoiceMessage"
         :message-duration="messageDuration"
+        :is-height-resize="true"
       />
 
       <div

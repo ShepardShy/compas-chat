@@ -112,9 +112,18 @@ const openAllChats = () => {
         </div>
       </div>
 
+      <div
+        v-if="isMenuOpen"
+        class="window__menu-bg"
+        @click="toggleMenuOpen"
+      />
+
       <ChatMenu
         v-if="isMenuOpen"
         class="window__menu"
+        :class="{
+          'window__menu_modal': isMobileSize
+        }"
         :chat-id="openedChatId"
         :is-pinned="openedChatData.isPinned"
         :is-muted-off="openedChatData.isMutedOff"

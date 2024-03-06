@@ -1029,7 +1029,7 @@ export const useUsersStore = defineStore('users', {
       this.dataFromSelectedTypeOfChatMessage = [...this.testPhotoMessages]
     },
 
-    closeGroupChatCreateModalOpen () {
+    closeGroupChatCreateModal () {
       this.isGroupChatCreateModalOpen = false
     },
 

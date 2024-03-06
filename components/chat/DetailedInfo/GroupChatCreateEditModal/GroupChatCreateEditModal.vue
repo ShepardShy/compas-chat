@@ -39,7 +39,7 @@ const chatFullName = computed<string>(() => {
 const userSearchValue = ref()
 
 const closeModal = () => {
-  usersStore.closeGroupChatCreateModalOpen()
+  usersStore.closeGroupChatCreateModal()
   usersStore.closeGroupChatEditModal()
   usersStore.clearTemporalStorageForNewGroupChat()
   usersStore.clearChatIdForOpenModal()

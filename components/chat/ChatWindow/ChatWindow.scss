@@ -90,5 +90,19 @@
 }
 
 .window__menu {
-  right: 70px;
+  right: 66px;
+}
+
+.window__menu_modal {
+  right: 30px;
+}
+
+.window__menu-bg {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  z-index: 150;
 }

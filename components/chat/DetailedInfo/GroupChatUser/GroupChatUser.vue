@@ -165,5 +165,11 @@ const deleteUserFromGroupBeforeSave = () => emit('delete-user')
 
 .group-chat-user__delete {
   cursor: pointer;
+  color: #a6b7d4;
+  transition: 0.2s all;
+}
+
+.group-chat-user__delete:hover {
+  color: #1253a2;
 }
 </style>

@@ -10,10 +10,19 @@ interface PropsType {
   width?: string
   isMakingAVoiceMessage?: boolean
   messageDuration?: number
+  isHeightResize?: boolean
 }
 
 const props = defineProps<PropsType>()
-const { placeholder, addDocuments, inputValue, width, isMakingAVoiceMessage, messageDuration } = toRefs(props)
+const {
+  placeholder,
+  addDocuments,
+  inputValue,
+  width,
+  isMakingAVoiceMessage,
+  messageDuration,
+  isHeightResize
+} = toRefs(props)
 
 const emit = defineEmits<{
   (emit: 'update:inputValue', inputValue: string): void
@@ -128,8 +137,59 @@ const voiceMessageLengthTransformer = computed(() => {
   return finalDuration
 })
 
-const $inputBody = ref(null)
+const $inputBody = ref<HTMLInputElement>()
+const $inputResizeIcon = ref<HTMLDivElement>()
+let startPosition
+let currentInputHeight = 40
+const minHeight = 40
+let isResizing = false
 
+const startInputHeightResizing = (event: MouseEvent) => {
+  event.preventDefault()
+  isResizing = true
+
+  $inputResizeIcon.value.style.cursor = 'grabbing'
+  $inputBody.value.style.height = `${currentInputHeight}px`
+  startPosition = $inputBody.value.getBoundingClientRect().top
+
+  window.addEventListener('mousemove', keepInputHeightResizing)
+  window.addEventListener('mouseup', stopInputHeightResizing)
+}
+
+const keepInputHeightResizing = (event: MouseEvent) => {
+  if (!isResizing) return
+
+  const currentMousePosition = event.pageY
+  const windowHeight = window.innerHeight
+
+  let newHeight
+  if (startPosition > currentMousePosition) {
+    newHeight = minHeight + startPosition - currentMousePosition
+  } else {
+    newHeight = currentInputHeight - (currentMousePosition - startPosition)
+    startPosition = event.pageY
+  }
+
+  if (newHeight > windowHeight * 0.45) {
+    $inputBody.value.style.height = `${windowHeight * 0.45}px`
+    currentInputHeight = windowHeight * 0.45
+  } else if (newHeight < minHeight) {
+    $inputBody.value.style.height = `${minHeight}px`
+    currentInputHeight = minHeight
+  } else {
+    $inputBody.value.style.height = `${newHeight}px`
+    currentInputHeight = newHeight
+  }
+}
+
+const stopInputHeightResizing = () => {
+  if (!isResizing) return
+
+  $inputResizeIcon.value.style.cursor = 'grab'
+
+  window.removeEventListener('mousemove', keepInputHeightResizing)
+  window.removeEventListener('mouseup', stopInputHeightResizing)
+}
 </script>
 
 <template>
@@ -189,6 +249,7 @@ const $inputBody = ref(null)
     </div>
 
     <div
+      ref="inputWrapperRef"
       class="input"
       :style="{
         width: width
@@ -205,15 +266,17 @@ const $inputBody = ref(null)
         :placeholder="placeholderValue"
         :style="{
           width: width,
+          minHeight: currentInputHeight + 'px',
+          height: currentInputHeight + 'px'
         }"
         @input="$emit('update:inputValue', $event.currentTarget.value)"
       />
 
       <div
+        v-if="isHeightResize"
+        ref="$inputResizeIcon"
         class="input__resize-window"
-        @mousedown="handleMouseDown($event)"
-        @mousemove="handleMouseMove($event)"
-        @mouseup="handleMouseUp"
+        @mousedown.prevent="startInputHeightResizing($event)"
       >
         <div class="input__resize-window-line" />
         <div class="input__resize-window-line" />
@@ -290,17 +353,19 @@ const $inputBody = ref(null)
 
 .input__resize-window {
   position: absolute;
-  cursor: pointer;
+  z-index: 10;
+  cursor: grab;
   top: 5px;
-  width: 15px;
   display: flex;
   flex-direction: column;
   gap: 2px;
   left: 50%;
   transform: translateX(-50%);
+  padding: 0 10px 5px;
 }
 
 .input__resize-window-line {
+  width: 15px;
   height: 1px;
   border-radius: 1px;
   background-color: #a6b7d4;

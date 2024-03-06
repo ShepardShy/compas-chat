@@ -44,6 +44,13 @@ const checkMobileSize = () => {
   settingsStore.$patch(state => state.isMobileSize = window.innerWidth < 950)
 }
 
+const closeAllModal = () => {
+  usersStore.closeAddUserModal()
+  usersStore.closeDetailedModal()
+  usersStore.closeGroupChatEditModal()
+  usersStore.closeGroupChatCreateModal()
+  usersStore.closeMessageTypeModal()
+}
 </script>
 
 <template>
@@ -72,6 +79,7 @@ const checkMobileSize = () => {
       <div
         v-if="isAddUserModalOpen || isDetailedInfoModalOpen || isGroupChatEditModalOpen || isOpenMessageTypeModal || isGroupChatCreateModalOpen"
         class="modal__bg"
+        @click="closeAllModal"
       >
         <AdditionalInfoModal
           v-if="isDetailedInfoModalOpen && !isAddUserModalOpen && !isGroupChatEditModalOpen &&!isGroupChatCreateModalOpen && !isOpenMessageTypeModal"
