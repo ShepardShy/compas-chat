@@ -70,60 +70,67 @@ const saveChanges = async () => {
   <div
     class="add-user"
     :class="{
-      'add-user_mobile': isMobileSize
+      'add-user_mobile':isMobileSize
     }"
   >
-    <BackIcon
-      class="add-user__back-icon"
-      @click="closeModal"
-    />
+    <div
+      class="add-user__modal"
+      :class="{
+        'add-user__modal_mobile': isMobileSize
+      }"
+      @click.stop
+    >
+      <BackIcon
+        class="add-user__back-icon"
+        @click="closeModal"
+      />
 
-    <AppH3 class="add-user__title">
-      Добавить в группу
-    </AppH3>
+      <AppH3 class="add-user__title">
+        Добавить в группу
+      </AppH3>
 
-    <CloseIcon
-      class="add-user__close-icon"
-      @click="closeAllModals"
-    />
+      <CloseIcon
+        class="add-user__close-icon"
+        @click="closeAllModals"
+      />
 
-    <ChatInput
-      v-model:input-value="userSearchInputValue"
-      class="add-user__search-input"
-      placeholder="Найти"
-    />
+      <ChatInput
+        v-model:input-value="userSearchInputValue"
+        class="add-user__search-input"
+        placeholder="Найти"
+      />
+
+      <div
+        class="add-user__group-users-wrapper"
+        :class="{
+          'add-user__group-users-wrapper_mobile': isMobileSize
+        }"
+      >
+        <GroupChatUser
+          v-for="user in allChatUsers"
+          :key="user.id"
+          :all-chat-data-local="allChatDataLocal"
+          :user-data="user"
+          :is-add-icon="true"
+          @add-to-group="userData => addToGroup(userData)"
+          @remove-from-group="userId => removeFromGroup(userId)"
+        />
+      </div>
+
+      <div class="add-user__btns">
+        <AppButton
+          class="add-user__btn"
+          @click="saveChanges"
+        >
+          Добавить
+        </AppButton>
+      </div>
+    </div>
 
     <div
-      class="add-user__group-users-wrapper"
-      :class="{
-        'add-user__group-users-wrapper_mobile': isMobileSize
-      }"
-    >
-      <GroupChatUser
-        v-for="user in allChatUsers"
-        :key="user.id"
-        :all-chat-data-local="allChatDataLocal"
-        :user-data="user"
-        :is-add-icon="true"
-        @add-to-group="userData => addToGroup(userData)"
-        @remove-from-group="userId => removeFromGroup(userId)"
-      />
-    </div>
-
-    <div class="add-user__btns">
-      <AppButton
-        class="add-user__btn"
-        @click="saveChanges"
-      >
-        Сохранить
-      </AppButton>
-      <AppButton
-        class="add-users__btn"
-        @click="closeModal"
-      >
-        Отменить
-      </AppButton>
-    </div>
+      v-if="!isMobileSize"
+      class="add-user__bg-padding"
+    />
   </div>
 </template>
 
@@ -131,18 +138,31 @@ const saveChanges = async () => {
 @use '~/assets/styles/_variables.scss' as variables;
 
 .add-user {
-  position: relative;
+  z-index: 1100;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   width: 400px;
-  background-color: variables.$color-white;
-  z-index: 1200;
-  border-radius: 15px;
-  padding-right: 5px;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  border: 1px solid #979797;
 }
 
 .add-user_mobile {
+  left: 0;
+  transform: translateX(0);
+  width: 100vw;
+  height: 100%;
+}
+
+.add-user__modal {
+  background-color: variables.$color-white;
+  border-radius: 15px;
+  padding-right: 5px;
+  padding-top: 25px;
+  padding-bottom: 15px;
+  border: 1px solid #979797;
+  position: relative;
+}
+
+.add-user__modal_mobile {
   width: 100%;
   border: 1px solid transparent;
   border-radius: 0;
@@ -186,6 +206,7 @@ const saveChanges = async () => {
   max-height: 500px;
   overflow-y: auto;
   margin-bottom: 25px;
+  border-bottom: 1px solid #f7f8fa;
 
   &::-webkit-scrollbar {
     width: 3px;
@@ -216,5 +237,10 @@ const saveChanges = async () => {
 .add-user__btn:first-of-type {
   background-color: #2f8cff;
   color: variables.$color-white;
+}
+
+.add-user__bg-padding {
+  height: 10vh;
+  background-color: transparent;
 }
 </style>

@@ -52,6 +52,16 @@
   z-index: 200;
 }
 
+.chats__menu-bg {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: transparent;
+  z-index: 190;
+}
+
 .chats__menu-item {
   padding: 10px 17px 10px 10px;
   cursor: pointer;

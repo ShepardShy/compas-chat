@@ -42,6 +42,12 @@ const openModalToCreateChat = () => {
 
         <div
           v-if="isAllChatsMenuOpen"
+          class="chats__menu-bg"
+          @click="toggleAllChatsMenu"
+        />
+
+        <div
+          v-if="isAllChatsMenuOpen"
           class="chats__menu"
         >
           <div

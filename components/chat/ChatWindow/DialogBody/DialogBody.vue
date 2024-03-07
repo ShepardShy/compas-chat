@@ -18,6 +18,8 @@ const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
 const messageValue = ref<string>()
+const uploadedImages = ref([])
+const uploadedDocuments = ref([])
 
 const messageType = ref<'text' | 'voice'>('text')
 
@@ -164,6 +166,16 @@ const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
 const deleteMessage = (messageIdx) => {
   voiceMessage.value = voiceMessage.value.splice(messageIdx, -1)
 }
+
+watch(
+  () => openedChatId.value,
+  () => {
+    messageValue.value = ''
+    messageType.value = 'text'
+    voiceMessage.value = []
+    uploadedImages.value = []
+    uploadedDocuments.value = []
+  })
 </script>
 
 <template>
@@ -239,6 +251,8 @@ const deleteMessage = (messageIdx) => {
     >
       <ChatInput
         v-model:input-value="messageValue"
+        v-model:loaded-images="uploadedImages"
+        v-model:loaded-documents="uploadedDocuments"
         class="dialog__input"
         placeholder="Напишите сообщение…"
         :add-documents="true"

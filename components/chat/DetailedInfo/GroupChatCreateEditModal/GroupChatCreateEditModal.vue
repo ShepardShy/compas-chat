@@ -153,15 +153,16 @@ onMounted(() => {
 
 <template>
   <div
-    class="edit-group__wrapper"
+    class="edit-group"
     :class="{
-      'edit-group__modal_mobile':isMobileSize
+      'edit-group_mobile':isMobileSize
     }"
   >
     <div
       class="edit-group__modal"
       :class="{
         'edit-group__modal_mobile':isMobileSize}"
+      @click.stop
     >
       <CloseIcon
         class="edit-group__close-icon"
@@ -255,11 +256,29 @@ onMounted(() => {
         </AppButton>
       </div>
     </div>
+    <div
+      v-if="!isMobileSize"
+      class="edit-group__bg-padding"
+    />
   </div>
 </template>
 
 <style scoped lang="scss">
 @use '~/assets/styles/_variables.scss' as variables;
+
+.edit-group {
+  z-index: 1100;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.edit-group_mobile {
+  left: 0;
+  transform: translateX(0);
+  width: 100vw;
+  height: 100%;
+}
 
 .edit-group__modal {
   position: relative;
@@ -271,26 +290,6 @@ onMounted(() => {
   padding-top: 25px;
   padding-bottom: 25px;
   border: 1px solid #979797;
-}
-
-.edit-group__wrapper {
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 100vh;
-
-  &::-webkit-scrollbar {
-    width: 3px;
-    height: 122px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: variables.$color-blue-grey;
-    border-radius: 2px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
 }
 
 .edit-group__modal_mobile {
@@ -305,20 +304,6 @@ onMounted(() => {
   right: 0;
   left: 0;
   overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    width: 4px;
-    height: 122px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: variables.$color-blue-grey;
-    border-radius: 2px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
 }
 
 .edit-group__back-icon {
@@ -429,6 +414,7 @@ onMounted(() => {
 
 .edit-group__group-users-data {
   margin-top: 25px;
+  border-bottom: 1px solid #f7f8fa;
 }
 
 .edit-group__group-users {
@@ -481,11 +467,15 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 25px;
 }
 
 .edit-group__btn:first-of-type {
   background-color: #2f8cff;
   color: variables.$color-white;
+}
+
+.edit-group__bg-padding{
+  height: 10vh;
+  background-color: transparent;
 }
 </style>

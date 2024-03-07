@@ -11,6 +11,8 @@ interface PropsType {
   isMakingAVoiceMessage?: boolean
   messageDuration?: number
   isHeightResize?: boolean
+  loadedImages: Array<unknown>
+  loadedDocuments: Array<unknown>
 }
 
 const props = defineProps<PropsType>()
@@ -21,11 +23,15 @@ const {
   width,
   isMakingAVoiceMessage,
   messageDuration,
-  isHeightResize
+  isHeightResize,
+  loadedImages,
+  loadedDocuments
 } = toRefs(props)
 
 const emit = defineEmits<{
   (emit: 'update:inputValue', inputValue: string): void
+  (emit: 'update:loadedImages', loadedImages: Array<unknown>): void
+  (emit: 'update:loadedDocuments', loadedDocuments: Array<unknown>): void
 }>()
 
 const filesData = ref()
@@ -190,6 +196,22 @@ const stopInputHeightResizing = () => {
   window.removeEventListener('mousemove', keepInputHeightResizing)
   window.removeEventListener('mouseup', stopInputHeightResizing)
 }
+
+watch(
+  () => [uploadedImages.value, uploadedDocuments.value],
+  () => {
+    emit('update:loadedImages', uploadedImages.value)
+    emit('update:loadedDocuments', uploadedDocuments.value)
+  },
+  {
+    deep: true
+  }
+)
+
+onMounted(() => {
+  uploadedImages.value = loadedImages.value
+  uploadedDocuments.value = loadedDocuments.value
+})
 </script>
 
 <template>
@@ -200,11 +222,11 @@ const stopInputHeightResizing = () => {
     }"
   >
     <div
-      v-if="uploadedImages.length || uploadedDocuments.length"
+      v-if="uploadedImages?.length || uploadedDocuments?.length"
       class="files"
     >
       <div
-        v-if="uploadedImages.length"
+        v-if="uploadedImages?.length"
         class="files__images"
       >
         <div

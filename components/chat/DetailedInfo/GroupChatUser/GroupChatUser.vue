@@ -145,7 +145,7 @@ const deleteUserFromGroupBeforeSave = () => emit('delete-user')
 .action__add-user {
   width: 19px;
   height: 19px;
-  border: 1px solid #0584fe;
+  border: 1px solid #c8c8c8;
   border-radius: 5px;
   cursor: pointer;
   transition: 0.2s all;
@@ -153,6 +153,7 @@ const deleteUserFromGroupBeforeSave = () => emit('delete-user')
 
 .action__add-user_active {
   background-color: #0584fe;
+  border: 1px solid #0584fe;
   display: flex;
   justify-content: center;
   align-items: center;

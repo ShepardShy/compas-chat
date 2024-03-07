@@ -11,7 +11,8 @@ import { useSettingsStore } from '~/store/settings'
 import ChatLoader from '~/components/chat/ui/ChatLoader.vue'
 import GroupAddUserModal from '~/components/chat/DetailedInfo/GroupChatAddUserModal/GroupAddUserModal.vue'
 import AdditionalInfoModal from '~/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue'
-import GroupChatCreateEditModal from '~/components/chat/DetailedInfo/GroupChatCreateEditModal/GroupChatCreateEditModal.vue'
+import GroupChatCreateEditModal
+  from '~/components/chat/DetailedInfo/GroupChatCreateEditModal/GroupChatCreateEditModal.vue'
 import MessagesTypesModal from '~/components/chat/DetailedInfo/MessagesTypesModal/MessagesTypesModal.vue'
 
 definePageMeta({
@@ -44,7 +45,9 @@ const checkMobileSize = () => {
   settingsStore.$patch(state => state.isMobileSize = window.innerWidth < 950)
 }
 
-const closeAllModal = () => {
+const closeAllModal = (event: MouseEvent) => {
+  event.preventDefault()
+
   usersStore.closeAddUserModal()
   usersStore.closeDetailedModal()
   usersStore.closeGroupChatEditModal()
@@ -79,16 +82,26 @@ const closeAllModal = () => {
       <div
         v-if="isAddUserModalOpen || isDetailedInfoModalOpen || isGroupChatEditModalOpen || isOpenMessageTypeModal || isGroupChatCreateModalOpen"
         class="modal__bg"
-        @click="closeAllModal"
+        @click="closeAllModal($event)"
       >
-        <AdditionalInfoModal
-          v-if="isDetailedInfoModalOpen && !isAddUserModalOpen && !isGroupChatEditModalOpen &&!isGroupChatCreateModalOpen && !isOpenMessageTypeModal"
-        />
-        <GroupChatCreateEditModal v-if="isGroupChatEditModalOpen && !isAddUserModalOpen" />
-        <GroupChatCreateEditModal v-if="isGroupChatCreateModalOpen && !isAddUserModalOpen" />
-        <GroupAddUserModal v-if="isAddUserModalOpen" />
+        <div
+          class="modal__bg-overlay"
+          @click="closeAllModal($event)"
+        >
+          <div
+            v-if="!isMobileSize"
+            class="modal__bg-padding"
+          />
 
-        <MessagesTypesModal v-if="isOpenMessageTypeModal" />
+          <AdditionalInfoModal
+            v-if="isDetailedInfoModalOpen && !isAddUserModalOpen && !isGroupChatEditModalOpen &&!isGroupChatCreateModalOpen && !isOpenMessageTypeModal"
+          />
+          <GroupChatCreateEditModal v-if="isGroupChatEditModalOpen && !isAddUserModalOpen" />
+          <GroupChatCreateEditModal v-if="isGroupChatCreateModalOpen && !isAddUserModalOpen" />
+          <GroupAddUserModal v-if="isAddUserModalOpen" />
+
+          <MessagesTypesModal v-if="isOpenMessageTypeModal" />
+        </div>
       </div>
     </div>
   </div>
@@ -123,8 +136,21 @@ const closeAllModal = () => {
   left: 0;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+}
+
+.modal__bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 13, 18, 0.2);
+  z-index: 1001;
+  overflow-y: auto;
+}
+
+.modal__bg-padding {
+  height: 10vh;
+  background-color: transparent;
 }
 </style>
