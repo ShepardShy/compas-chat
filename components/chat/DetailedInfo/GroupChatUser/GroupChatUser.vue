@@ -118,7 +118,6 @@ const deleteUserFromGroupBeforeSave = () => emit('delete-user')
   justify-content: space-between;
   align-items: center;
   padding: 10px 25px;
-
 }
 
 .group-chat-user__data {

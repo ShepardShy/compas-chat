@@ -286,7 +286,7 @@ onMounted(() => {
   background-color: variables.$color-white;
   z-index: 1100;
   border-radius: 15px;
-  padding-right: 5px;
+  padding-right: 2px;
   padding-top: 25px;
   padding-bottom: 25px;
   border: 1px solid #979797;

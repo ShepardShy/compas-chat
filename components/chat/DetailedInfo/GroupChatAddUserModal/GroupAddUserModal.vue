@@ -155,7 +155,7 @@ const saveChanges = async () => {
 .add-user__modal {
   background-color: variables.$color-white;
   border-radius: 15px;
-  padding-right: 5px;
+  padding-right: 2px;
   padding-top: 25px;
   padding-bottom: 15px;
   border: 1px solid #979797;
