@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { chatMenuItems } from '~/shared/const'
+import { chatMenuItems } from '~/shared'
 
-import { useUsersStore } from '~/store/users'
+import { useChatsStore } from '~/store/chats'
 import MuteOffIcon from '~/assets/icons/mute-off-icon.svg'
-import MuteIcon from '~/assets/icons/mute-icon.svg'
 import PinIcon from '~/assets/icons/pin-icon.svg'
 import type { ChatMenuType } from '~/types/messages'
 import { useSettingsStore } from '~/store/settings'
-import { getDistanceToViewport } from '~/composables/chats'
 
+/**
+ * Входящие пропсы
+ */
 interface PropsType {
   chatId: number | string | undefined
   isPinned: boolean
@@ -18,59 +19,34 @@ interface PropsType {
 }
 
 const props = defineProps<PropsType>()
-const { chatId, isPinned, isMutedOff, isUserChatLeft, isGroupChat } = toRefs(props)
+const { chatId, isPinned, isMutedOff, isGroupChat } = toRefs(props)
 
-const settingsStore = useSettingsStore()
-const { isMobileSize } = storeToRefs(settingsStore)
-
+/**
+ * События компонента
+ */
 const emit = defineEmits<{
   (emit: 'closeChat'): void
 }>()
 
-const usersStore = useUsersStore()
+/**
+ * Подключение стора с настройками
+ */
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
+/**
+ * Подключение стора с чатами
+ */
+const chatsStore = useChatsStore()
+const { openedChatData } = storeToRefs(chatsStore)
+
+/**
+ * Выбраный элемент меню чата
+ */
 const activeMenuItem = ref<string>()
 
-const onClickDoMenuAction = async (menuItem: ChatMenuType) => {
-  activeMenuItem.value = menuItem.title
-
-  switch (menuItem.action) {
-    case 'pinChat': {
-      await usersStore.togglePinUser(chatId.value!)
-      break
-    }
-    case 'detailedChatInfo': {
-      usersStore.$patch(state => state.chatIdForOpenModal = chatId.value)
-      usersStore.$patch(state => state.isDetailedInfoModalOpen = true)
-      break
-    }
-    case 'editChat': {
-      usersStore.$patch(state => state.chatIdForOpenModal = chatId.value)
-      usersStore.$patch(state => state.isGroupChatEditModalOpen = true)
-      break
-    }
-    case 'deleteChat': {
-      await usersStore.deleteChat(chatId.value!)
-      settingsStore.$patch(state => state.isChatsShown = true)
-      emit('closeChat')
-      break
-    }
-    case 'muteChat': {
-      await usersStore.toggleUserMuted(chatId.value!)
-      break
-    }
-  }
-}
-
-const showMenuItem = (menuItem: ChatMenuType) => {
-  // if (menuItem.action === 'pinChat') {
-  //   return !isPinned.value ? menuItem.title : menuItem.alternativeTitle
-  // } else if (menuItem.action === 'muteChat') {
-  //   return !isMutedOff.value ? menuItem.title : menuItem.alternativeTitle
-  // }
-
-  return menuItem.title
-}
-
+/**
+ * Элементы меню чата
+ */
 const chatItems = computed(() => {
   if (isGroupChat.value) {
     return chatMenuItems
@@ -78,6 +54,44 @@ const chatItems = computed(() => {
     return chatMenuItems.filter(menuItems => menuItems.action !== 'editChat')
   }
 })
+/**
+ * Событие при клике на элемент меню чата
+ * @param _menuItem
+ */
+const onClickDoMenuAction = async (_menuItem: ChatMenuType) => {
+  activeMenuItem.value = _menuItem.title
+
+  switch (_menuItem.action) {
+    case 'pinChat': {
+      await chatsStore.togglePinUser(chatId.value!)
+      break
+    }
+    case 'detailedChatInfo': {
+      chatsStore.$patch(state => state.chatIdForOpenModal = chatId.value)
+      chatsStore.$patch(state => state.isDetailedInfoModalOpen = true)
+      break
+    }
+    case 'editChat': {
+      await chatsStore.$patch(state => state.chatIdForOpenModal = chatId.value)
+
+      await nextTick()
+
+      await chatsStore.$patch(state => state.temporalStorageForGroupChat = openedChatData.value)
+      chatsStore.$patch(state => state.isGroupChatEditModalOpen = true)
+      break
+    }
+    case 'deleteChat': {
+      await chatsStore.deleteChat(chatId.value!)
+      settingsStore.$patch(state => state.isChatsShown = true)
+      emit('closeChat')
+      break
+    }
+    case 'muteChat': {
+      await chatsStore.toggleUserMuted(chatId.value!)
+      break
+    }
+  }
+}
 </script>
 
 <template>
@@ -114,7 +128,7 @@ const chatItems = computed(() => {
         />
       </div>
 
-      {{ showMenuItem(item) }}
+      {{ item.title }}
     </div>
   </div>
 </template>

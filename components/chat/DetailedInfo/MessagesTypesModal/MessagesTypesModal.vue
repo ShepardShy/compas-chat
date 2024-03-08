@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { useUsersStore } from '~/store/users'
+import { useChatsStore } from '~/store/chats'
 import BackIcon from '~/assets/icons/back-icon.svg'
 import CloseIcon from '~/assets/icons/close-icon.svg'
 import { useSettingsStore } from '~/store/settings'
 import VoiceMessage from '~/components/chat/DetailedInfo/MessagesTypesModal/VoiceMessage/VoiceMessage.vue'
 import type { MessagesTypesTitleType } from '~/types/messages'
 import TextMessage from '~/components/chat/DetailedInfo/MessagesTypesModal/TextMessage/TextMessage.vue'
-import ChatInput from '~/components/chat/ui/ChatInput.vue'
+import ChatInput from '~/components/chat/ui/ChatInput/ChatInput.vue'
 import { messagesTypesList } from '~/shared/const'
 import PhotoMessage from '~/components/chat/DetailedInfo/MessagesTypesModal/PhotoMessage/PhotoMessage.vue'
 import AppH3 from '~/components/ui/AppH3/AppH3.vue'
 
-const usersStore = useUsersStore()
-const { userId, openMessageTypeModal, dataFromSelectedTypeOfChatMessage } = storeToRefs(usersStore)
+const chatsStore = useChatsStore()
+const { userId, openMessageTypeModal, dataFromSelectedTypeOfChatMessage } = storeToRefs(chatsStore)
 
 const settingStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingStore)
@@ -23,14 +23,14 @@ const searchInputValue = ref()
 const page = ref(1)
 
 const backToDetailedInfo = () => {
-  usersStore.clearDataFromSelectedTypeOfChatMessage()
-  usersStore.closeMessageTypeModal()
+  chatsStore.clearDataFromSelectedTypeOfChatMessage()
+  chatsStore.closeMessageTypeModal()
 }
 
 const closeDetailsInfoModal = () => {
-  usersStore.clearDataFromSelectedTypeOfChatMessage()
-  usersStore.closeMessageTypeModal()
-  usersStore.closeDetailedModal()
+  chatsStore.clearDataFromSelectedTypeOfChatMessage()
+  chatsStore.closeMessageTypeModal()
+  chatsStore.closeDetailedModal()
 }
 
 onMounted(() => {

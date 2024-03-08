@@ -1,13 +1,14 @@
 @use '~/assets/styles/_variables.scss' as variables;
 
-.users {
-  padding-right: 2px;
+.chats {
   border-right: 1px solid #bcbcbc;
-}
-
-.users__wrapper {
+  user-select: none;
   height: 100vh;
   padding: 25px 5px 25px 15px;
+}
+
+.chats__wrapper_mobile {
+  padding: 25px 5px 25px;
 }
 
 .chats__wrapper {
@@ -29,11 +30,11 @@
   }
 }
 
-.users::-webkit-scrollbar-button {
+.chats::-webkit-scrollbar-button {
   display: none;
 }
 
-.users__head {
+.chats__head {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -85,18 +86,18 @@
 //  border-radius: 0 0 7px 7px;
 //}
 
-.users__title {
+.chats__title {
   color: variables.$color-black;
 }
 
-.users__add-chat {
+.chats__add-chat {
   cursor: pointer;
 }
 
-.users__input {
+.chats__input {
   margin-bottom: 25px;
 }
 
-.users__pinned {
+.chats__pinned {
   margin-bottom: 10px;
 }

@@ -2,5 +2,14 @@
 @use '@/assets/mixins.scss' as mixins;
 
 .form-item__textarea {
-    
+    &.form-item__textarea_empty {
+        .form-item__substring {
+            display: none;
+        }
+    }
+
+    .form-item__substring {
+        color: variables.$color-dark-grey;
+        margin-left: 5px;
+    }
 }

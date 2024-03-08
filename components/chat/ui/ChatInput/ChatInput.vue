@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AddDocuments from '~/assets/icons/add-doc-icon.svg'
-import DeleteIcon from '~/assets/icons/delete-icon.svg'
+import AddDocuments from 'assets/icons/add-doc-icon.svg'
+import DeleteIcon from 'assets/icons/delete-icon.svg'
 import { docTypes, imagesTypes, inputFilesTypes } from '~/shared/const'
 
 interface PropsType {
@@ -11,8 +11,8 @@ interface PropsType {
   isMakingAVoiceMessage?: boolean
   messageDuration?: number
   isHeightResize?: boolean
-  loadedImages: Array<unknown>
-  loadedDocuments: Array<unknown>
+  loadedImages?: Array<unknown>
+  loadedDocuments?: Array<unknown>
 }
 
 const props = defineProps<PropsType>()
@@ -67,28 +67,28 @@ const $uploadDocuments = ref<HTMLInputElement>()
 const uploadedImages = ref([])
 const uploadedDocuments = ref([])
 
-const onChangeChooseFiles = (event: unknown) => {
-  const files = event.target.files
+const onChangeChooseFiles = (_event: unknown) => {
+  const _files = _event.target.files
 
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i]
-    const imageUrl = URL.createObjectURL(file)
-    const fileName = files[i].name
+  for (let i = 0; i < _files.length; i++) {
+    const _file = _files[i]
+    const _imageUrl = URL.createObjectURL(_file)
+    const _fileName = _files[i].name
 
-    if (file.type.includes('image')) {
+    if (_file.type.includes('image')) {
       uploadedImages.value = [
         ...uploadedImages.value,
         {
           id: i,
-          url: imageUrl
+          url: _imageUrl
         }]
     } else {
       uploadedDocuments.value = [
         ...uploadedDocuments.value,
         {
           id: i,
-          url: imageUrl,
-          name: fileName
+          url: _imageUrl,
+          name: _fileName
         }]
     }
   }
@@ -354,170 +354,5 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-@use '~/assets/styles/_variables.scss' as variables;
-
-.input {
-  position: relative;
-}
-
-.files {
-  margin-bottom: 20px;
-}
-
-.input__body {
-  font-size: 14px;
-  font-weight: 400;
-
-  &::placeholder {
-    color: variables.$color-dark-grey;
-  }
-}
-
-.input__resize-window {
-  position: absolute;
-  z-index: 10;
-  cursor: grab;
-  top: 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0 10px 5px;
-}
-
-.input__resize-window-line {
-  width: 15px;
-  height: 1px;
-  border-radius: 1px;
-  background-color: #a6b7d4;
-}
-
-.input__body_document {
-  padding-left: 48px;
-}
-
-.input__body_voice::placeholder {
-  text-align: center;
-}
-
-.input__add-doc-icon,
-.input__voice-msg-length,
-.input__voice-msg-circle {
-  position: absolute;
-  top: 14px;
-  left: 15px;
-  color: #A6B7D4;
-  cursor: pointer;
-  transition: 0.2s all;
-}
-
-.input__add-doc-icon:hover {
-  color: #1253a2;
-}
-
-.input__voice-msg-length {
-  color: variables.$color-black;
-  left: 42px;
-  top: 12px;
-}
-
-.input__voice-msg-circle {
-  width: 12px;
-  height: 12px;
-  margin: 1px 15px 3px 0;
-  border-radius: 12px;
-  box-shadow: 0 0 5px 0 rgba(199, 73, 35, 0.5);
-  background-color: #c74923;
-}
-
-.input__add-doc-icon_active {
-  color: #1253a2;
-}
-
-.input__documents {
-  display: none;
-}
-
-.doc__menu {
-  position: absolute;
-  left: 15px;
-  top: -55px;
-  border-radius: 5px;
-  box-shadow: 0 0 3px 0 variables.$color-black;
-  background-color: #fff;
-}
-
-.doc__item {
-  cursor: pointer;
-  width: 179px;
-  padding: 7px 10px;
-}
-
-.doc__item:hover,
-.doc__item_active {
-  background-color: variables.$color-light-grey;
-}
-
-.files__images {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.files__image-wrapper {
-  flex: 0 0 auto;
-  border: 1px solid variables.$color-light-grey;
-  border-radius: 5px;
-  position: relative;
-  padding: 4px;
-  background-color: variables.$color-white;
-}
-
-.files__delete {
-  position: absolute;
-  top: -10px;
-  right: -5px;
-  width: 25px;
-  height: 25px;
-  border-radius: 5px;
-  background-color: variables.$color-white;
-  box-shadow: 0 0 3px 0 variables.$color-black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid variables.$color-light-grey;
-  cursor: pointer;
-  transition: 0.2s scale;
-}
-
-.files__delete-icon {
-  color: variables.$color-red;
-}
-
-.files__delete:hover {
-  scale: 1.1;
-}
-
-.files__image {
-  object-fit: contain;
-  width: 100%;
-  height: 150px;
-}
-
-.files__documents {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.files__document-wrapper {
-  min-height: 50px;
-  flex: 0 1 calc(33% - 10px);
-  border: 1px solid variables.$color-light-grey;
-  border-radius: 5px;
-  position: relative;
-  padding: 15px 10px 10px;
-  background-color: variables.$color-white;
-}
+@import './ChatInput'
 </style>

@@ -9,8 +9,14 @@
         @include mixins.borderOptions(1px, solid, variables.$color-grey, 3px);
         @include mixins.elemResolutionOptions(15px, 15px);
 
-        img {
+        svg {
             display: none;
+            position: relative;
+            height: 10px;
+
+            & * {
+                fill: variables.$color-white !important;
+            }
         }
     }
 
@@ -32,7 +38,7 @@
                 background: variables.$color-blue;
                 border: 1px solid variables.$color-blue;
 
-                img {
+                svg {
                     display: block;
                 }
             }
@@ -40,6 +46,13 @@
 
         &[disabled] {
             opacity: 0;
+        }
+    }
+
+    &.form-item__checkbox_disabled {
+        label, .form-item__title {
+            filter: opacity(0.6)
+
         }
     }
 }

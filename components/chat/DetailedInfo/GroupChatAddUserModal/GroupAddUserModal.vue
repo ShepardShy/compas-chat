@@ -3,64 +3,83 @@
 import AppH3 from '~/components/ui/AppH3/AppH3.vue'
 import BackIcon from 'assets/icons/back-icon.svg'
 import CloseIcon from 'assets/icons/close-icon.svg'
-import ChatInput from '~/components/chat/ui/ChatInput.vue'
-import GroupChatUser from '~/components/chat/DetailedInfo/GroupChatUser/GroupChatUser.vue'
-import { useUsersStore } from '~/store/users'
+import { ChatInput, GroupChatUser } from '~/components'
+
+import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
 import type { GroupChatUserType } from '~/types/messages'
 import AppButton from '~/components/ui/AppButton/AppButton.vue'
 
-const userSearchInputValue = ref()
-
-const usersStore = useUsersStore()
+/**
+ * Подключение стора с чатами
+ */
+const chatsStore = useChatsStore()
 const {
   allChatUsers,
-  isGroupChatCreateModalOpen,
-  openModalChatData,
-  temporalStorageForNewGroupChat
-} = storeToRefs(usersStore)
-
+  temporalStorageForGroupChat
+} = storeToRefs(chatsStore)
+/**
+ * Подключение стора с настройками
+ */
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
-const closeModal = () => {
-  usersStore.closeAddUserModal()
-}
-
-const closeAllModals = () => {
-  usersStore.closeDetailedModal()
-  usersStore.closeAddUserModal()
-  usersStore.clearChatIdForOpenModal()
-}
-
+/**
+ * Поиск пользователя
+ */
+const userSearchInputValue = ref()
+/**
+ * Докальное хранилище для чата
+ */
 const allChatDataLocal = ref()
 
-const addToGroup = (userData: GroupChatUserType) => {
+/**
+ * Монтирование компоненты
+ */
+onMounted(() => {
+  allChatDataLocal.value = temporalStorageForGroupChat.value
+})
+
+/**
+ * Закрыть модлаку
+ */
+const closeModal = () => {
+  chatsStore.closeAddUserModal()
+}
+/**
+ * Закрыть все модалки
+ */
+const closeAllModals = () => {
+  chatsStore.closeDetailedModal()
+  chatsStore.closeAddUserModal()
+  chatsStore.clearChatIdForOpenModal()
+}
+/**
+ * Добавить пользователя в локальное хранилище данных
+ * @param _userData
+ */
+const addToGroup = (_userData: GroupChatUserType) => {
   allChatDataLocal.value = {
     ...allChatDataLocal.value,
-    users: [...allChatDataLocal.value.users, userData]
+    users: [...allChatDataLocal.value.users, _userData]
   }
 }
-
+/**
+ * Убрать пользователя из локального хранилище данных
+ * @param _userData
+ */
 const removeFromGroup = (userId: number | string) => {
   allChatDataLocal.value = {
     ...allChatDataLocal.value,
     users: allChatDataLocal.value.users.filter(user => user.id !== userId)
   }
 }
-
-onMounted(() => {
-  if (isGroupChatCreateModalOpen.value) {
-    allChatDataLocal.value = temporalStorageForNewGroupChat.value
-  } else {
-    allChatDataLocal.value = openModalChatData.value
-  }
-})
-
+/**
+ * Сохранить добавление/удаление пользователей во временное хранилице в сторе
+ */
 const saveChanges = async () => {
-  await usersStore.$patch(state => state.temporalStorageForNewGroupChat = {
-    ...state.temporalStorageForNewGroupChat,
-    users: [...allChatDataLocal.value.users]
+  await chatsStore.$patch(state => state.temporalStorageForGroupChat = {
+    ...allChatDataLocal.value
   })
   closeModal()
 }
@@ -135,112 +154,5 @@ const saveChanges = async () => {
 </template>
 
 <style scoped lang="scss">
-@use '~/assets/styles/_variables.scss' as variables;
-
-.add-user {
-  z-index: 1100;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 400px;
-}
-
-.add-user_mobile {
-  left: 0;
-  transform: translateX(0);
-  width: 100vw;
-  height: 100%;
-}
-
-.add-user__modal {
-  background-color: variables.$color-white;
-  border-radius: 15px;
-  padding-right: 2px;
-  padding-top: 25px;
-  padding-bottom: 15px;
-  border: 1px solid #979797;
-  position: relative;
-}
-
-.add-user__modal_mobile {
-  width: 100%;
-  border: 1px solid transparent;
-  border-radius: 0;
-  height: 100%;
-  max-height: 100%;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  overflow-y: auto;
-}
-
-.add-user__back-icon {
-  position: absolute;
-  height: 28px;
-  top: 25px;
-  left: 28px;
-  cursor: pointer;
-}
-
-.add-user__close-icon {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  cursor: pointer;
-}
-
-.add-user__title {
-  padding: 0px 69px 25px;
-  font-size: 20px;
-  font-weight: 400;
-  color: variables.$color-black;
-}
-
-.add-user__search-input {
-  padding: 0 25px 25px;
-}
-
-.add-user__group-users-wrapper {
-  max-height: 500px;
-  overflow-y: auto;
-  margin-bottom: 25px;
-  border-bottom: 1px solid #f7f8fa;
-
-  &::-webkit-scrollbar {
-    width: 3px;
-    height: 122px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: variables.$color-blue-grey;
-    border-radius: 2px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-}
-
-.add-user__group-users-wrapper_mobile {
-  max-height: 100%;
-}
-
-.add-user__btns {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 25px;
-}
-
-.add-user__btn:first-of-type {
-  background-color: #2f8cff;
-  color: variables.$color-white;
-}
-
-.add-user__bg-padding {
-  height: 10vh;
-  background-color: transparent;
-}
+@import './GroupAddUserModal'
 </style>

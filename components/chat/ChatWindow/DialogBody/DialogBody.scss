@@ -10,7 +10,7 @@
 }
 
 .dialog_mobile {
-  padding: 15px 15px 25px 10px;
+  padding: 15px 0 0 0;
 }
 
 .dialog__wrapper {
@@ -32,6 +32,11 @@
   &::-webkit-scrollbar-track {
     background-color: transparent;
   }
+}
+
+.dialog__wrapper_mobile {
+  padding-right: 5px;
+  padding-left: 5px;
 }
 
 .dialog__wrapper_flex {
@@ -57,6 +62,10 @@
   gap: 10px;
   align-items: flex-end;
   background-color: #f7f8fa;
+}
+
+.dialog__actions_mobile {
+  padding: 25px 10px;
 }
 
 .dialog__voice-messages {

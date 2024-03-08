@@ -1,0 +1,22 @@
+@use '@/assets/variables' as variables;
+@use '@/assets/mixins' as mixins;
+
+.address__wrapper {
+	@include mixins.borderOptions(1px, solid, variables.$color-light-grey, 10px);
+	background: variables.$color-pale-grey;
+	padding: 15px;
+	position: relative;
+
+	.__ymap {
+		border-radius: 5px;
+		margin-top: 10px;
+	}
+
+	.form-item__value {
+		cursor: text;
+	}
+}
+
+.copy {
+	padding-top: 10px;
+}

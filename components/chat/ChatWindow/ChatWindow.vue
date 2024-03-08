@@ -4,42 +4,47 @@ import SearchIcon from '~/assets/icons/search-icon.svg'
 import CallIcon from '~/assets/icons/call-icon.svg'
 import BackIcon from '~/assets/icons/back-icon.svg'
 
-import DialogBody from '~/components/chat/ChatWindow/DialogBody/DialogBody.vue'
+import {
+  DialogBody,
+  ChatWindowData,
+  ChatInput,
+  ChatMenu
+} from '~/components'
 
-import ChatWindowHeader from '~/components/chat/ChatWindow/ChatWindowData/ChatWindowData.vue'
-import ChatInput from '~/components/chat/ui/ChatInput.vue'
-import ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'
-import { useUsersStore } from '~/store/users'
+import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
 
-const usersStore = useUsersStore()
-const { openedChatId, openedChatData } = storeToRefs(usersStore)
-
+/**
+ * Подключение стора с чатами
+ */
+const chatsStore = useChatsStore()
+const { openedChatId, openedChatData } = storeToRefs(chatsStore)
+/**
+ * Подключение стора с настройками
+ */
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
+/**
+ * Открыт поиск по чату
+ */
 const isSearchInDialogOpen = ref<boolean>(false)
+/**
+ * Открыто меню чата
+ */
 const isMenuOpen = ref<boolean>(false)
+/**
+ * Производится звонок
+ */
 const isMakingACall = ref<boolean>(false)
-
+/**
+ * Значение поиска по чату
+ */
 const searchInDialogValue = ref<string>()
 
-const toggleSearchInput = () => {
-  isSearchInDialogOpen.value = !isSearchInDialogOpen.value
-  isMenuOpen.value = false
-  isMakingACall.value = false
-}
-const toggleMenuOpen = () => {
-  isMenuOpen.value = !isMenuOpen.value
-  isMakingACall.value = false
-  isSearchInDialogOpen.value = false
-}
-const toggleIsCalling = () => {
-  isMakingACall.value = !isMakingACall.value
-  isSearchInDialogOpen.value = false
-  isMenuOpen.value = false
-}
-
+/**
+ * Подписка на открытие другого чата
+ */
 watch(
   () => openedChatId.value,
   () => {
@@ -47,6 +52,33 @@ watch(
   }
 )
 
+/**
+ * Вкл/выкл поиск по чату
+ */
+const toggleSearchInput = () => {
+  isSearchInDialogOpen.value = !isSearchInDialogOpen.value
+  isMenuOpen.value = false
+  isMakingACall.value = false
+}
+/**
+ * Открыть/закрыть меню чата
+ */
+const toggleMenuOpen = () => {
+  isMenuOpen.value = !isMenuOpen.value
+  isMakingACall.value = false
+  isSearchInDialogOpen.value = false
+}
+/**
+ * Начать/завершить звонок
+ */
+const toggleIsCalling = () => {
+  isMakingACall.value = !isMakingACall.value
+  isSearchInDialogOpen.value = false
+  isMenuOpen.value = false
+}
+/**
+ * Вернуться ко всем чатам (мобильная версия)
+ */
 const openAllChats = () => {
   settingsStore.$patch(state => state.isChatsShown = true)
   settingsStore.$patch(state => state.chatIdForOpenModal = undefined)
@@ -65,11 +97,14 @@ const openAllChats = () => {
       <BackIcon
         v-if="isMobileSize"
         class="window__back-icon"
+        :class="{
+          'window__back-icon_mobile': isMobileSize
+        }"
         @click="openAllChats"
       />
 
       <div class="window__user-data">
-        <ChatWindowHeader v-if="!isSearchInDialogOpen" />
+        <ChatWindowData v-if="!isSearchInDialogOpen" />
         <ChatInput
           v-if="isSearchInDialogOpen"
           v-model:input-value="searchInDialogValue"

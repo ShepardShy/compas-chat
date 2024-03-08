@@ -1,31 +1,42 @@
 <script setup lang="ts">
-import { useUsersStore } from '~/store/users'
+import { useChatsStore } from '~/store/chats'
+import { useSettingsStore } from '~/store/settings'
+
 import PinnedIcon from 'assets/icons/pin-icon.svg'
 import ReceivedMessageIcon from 'assets/icons/recieved-message-icon.svg'
 import MuteOffIcon from 'assets/icons/mute-off-icon.svg'
 import ViewedMessageIcon from 'assets/icons/viewed-message-icon.svg'
-import ChatPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
-
 import GroupChatIcon from 'assets/icons/group-chat-icon.svg'
 
-import type { GroupChatMessageType, GroupChatType } from '~/types/messages'
-import ChatMenu from '~/components/chat/ChatMenu/ChatMenu.vue'
-import { getDistanceToViewport, messageTimeInfo } from '~/composables/chats'
-import { useSettingsStore } from '~/store/settings'
+import { ChatPhoto } from '~/components'
 
+import type { GroupChatMessageType, GroupChatType } from '~/types/messages'
+import { messageTimeInfo } from '~/composables/chats'
+
+/**
+ * Входящие пропсы
+ */
 interface PropsType {
   chatData: GroupChatType
 }
-
 const props = defineProps<PropsType>()
 const { chatData } = toRefs(props)
 
-const usersStore = useUsersStore()
-const { openedChatId, userId, chatsWithPinnedUsers } = storeToRefs(usersStore)
+/**
+ * Подключение стора с чатами
+ */
+const chatsStore = useChatsStore()
+const { openedChatId, userId, chatsWithPinnedUsers } = storeToRefs(chatsStore)
 
+/**
+ * Подключение стора с настройками
+ */
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
+/**
+ * Последнее сообщение чата
+ */
 const lastMessage = computed<GroupChatMessageType | {}>(() => {
   if (chatData.value.messages.length) {
     return chatData.value.messages[chatData.value.messages.length - 1]
@@ -33,35 +44,29 @@ const lastMessage = computed<GroupChatMessageType | {}>(() => {
 
   return {}
 })
+/**
+ * Количество непрочитанных сообщений
+ */
 const unreadMessagesLength = computed<number>(() => chatData.value.messages.filter(message => message.isUnread).length)
-
+/**
+ * Доставлено ли сообщение
+ */
 const isMessageReceived = computed<boolean>(() => {
   return userId.value === lastMessage.value.userId &&
       lastMessage.value.isReceived &&
       !lastMessage.value.isViewed
 })
-
+/**
+ * Просмотрено ли сообщение
+ */
 const isMessageViewed = computed<boolean>(() => {
   return userId.value === lastMessage.value.userId &&
       lastMessage.value.isViewed
 })
 
-const unpinUser = async () => {
-  await usersStore.unpinUser(chatData.value.id)
-}
-
-const toggleMute = async () => {
-  await usersStore.toggleUserMuted(chatData.value.id)
-}
-
-const onMouseClickUserChat = (event: MouseEvent) => {
-  if (event.button === 0) {
-    // при нажатии ЛКМ открыть чат
-    settingsStore.$patch(state => state.isChatsShown = false)
-    usersStore.$patch(state => state.openedChatId = chatData.value.id)
-  }
-}
-
+/**
+ * Бордер радиус, если чат попал в закрепленные и стал первым и последним закрепленным чатом
+ */
 const borderRadiusForActiveChat = computed(() => {
   if (chatData.value.isPinned &&
       chatsWithPinnedUsers.value[chatsWithPinnedUsers.value.length - 1].id === chatData.value.id) {
@@ -74,12 +79,21 @@ const borderRadiusForActiveChat = computed(() => {
   return '0'
 })
 
-const $menuItem = ref()
+/**
+ * Событие при нажатии на чат
+ * @param _event
+ */
+const onMouseClickUserChat = (_event: MouseEvent) => {
+  if (_event.button === 0) {
+    // при нажатии ЛКМ открыть чат
+    settingsStore.$patch(state => state.isChatsShown = false)
+    chatsStore.$patch(state => state.openedChatId = chatData.value.id)
+  }
+}
 </script>
 
 <template>
   <div
-    ref="$menuItem"
     class="group"
     :class="{
       'group__chat_open': openedChatId === chatData.id,
@@ -152,7 +166,6 @@ const $menuItem = ref()
         <MuteOffIcon
           v-if="chatData.isMutedOff"
           class="user__muted icon"
-          @click="toggleMute"
         />
 
         <div
@@ -165,7 +178,6 @@ const $menuItem = ref()
         <PinnedIcon
           v-if="chatData.isPinned"
           class="group__pinned icon"
-          @click="unpinUser"
         />
       </div>
     </div>

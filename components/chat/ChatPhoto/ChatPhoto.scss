@@ -1,4 +1,4 @@
-.user__photo {
+.chat__photo {
   flex: 0 0 50px;
   width: 50px;
   height: 50px;
@@ -15,16 +15,23 @@
 
 .group__photo_edit {
   background-color: linear-gradient(to bottom, #aeee90 2%, #65dd78 100%);
-  background-image: url('~/assets/icons/camera-icon.svg');
 }
 
-.user__photo_big {
+.chat__load-photo {
+  display: none;
+}
+
+.chat__camera-icon {
+  cursor: pointer;
+}
+
+.chat__photo_big {
   width: 120px;
   height: 120px;
   flex: 0 0 120px;
 }
 
-.user__photo_mobile {
+.chat__photo_mobile {
   width: 32px;
   height: 32px;
   flex: 0 0 32px;
@@ -34,22 +41,22 @@
   border-radius: 10px;
 }
 
-.user__photo-name {
+.chat__photo-name {
   font-family: VAG;
   font-size: 25px;
   color: #fff;
   font-weight: 400;
 }
 
-.user__photo-name_mobile {
+.chat__photo-name_mobile {
   font-size: 16px;
 }
 
-.user__photo-name_big {
+.chat__photo-name_big {
   font-size: 50px;
 }
 
-.user__active {
+.chat__active {
   position: absolute;
   width: 12px;
   height: 12px;
@@ -61,31 +68,31 @@
   align-items: center;
 }
 
-.user__active-mobile {
+.chat__active-mobile {
   width: 10px;
   height: 10px;
 }
 
-.user__active-big {
+.chat__active-big {
   width: 23px;
   height: 23px;
   bottom: 0;
   right: 10px;
 }
 
-.user__active-circle {
+.chat__active-circle {
   background-color: #089a1e;
   width: 9px;
   height: 9px;
   border-radius: 50%;
 }
 
-.user__active-circle-mobile {
+.chat__active-circle-mobile {
   width: 7px;
   height: 7px;
 }
 
-.user__active-circle-big {
+.chat__active-circle-big {
   width: 18px;
   height: 18px;
 }

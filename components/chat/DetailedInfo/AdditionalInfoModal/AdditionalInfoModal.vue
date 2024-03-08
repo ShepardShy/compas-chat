@@ -1,12 +1,13 @@
 <script setup lang="ts">
-
 import AppH3 from '~/components/ui/AppH3/AppH3.vue'
-import { useUsersStore } from '~/store/users'
-import { chatMenuItems, detailedInfoMenuItems } from '~/shared/const'
+import { useChatsStore } from '~/store/chats'
+import { useSettingsStore } from '~/store/settings'
+
+import { chatMenuItems, detailedInfoMenuItems } from '~/shared'
+
 import type { ChatMenuType, DetailedInfoMenuItem } from '~/types/messages'
 
 import MuteOffIcon from 'assets/icons/mute-off-icon.svg'
-
 import PinIcon from 'assets/icons/pin-icon.svg'
 import FileMessagesIcon from 'assets/icons/file-messages-icon.svg'
 import LinkMessagesIcon from 'assets/icons/link-messages-icon.svg'
@@ -18,20 +19,34 @@ import DeleteIcon from 'assets/icons/delete-icon.svg'
 import CloseIcon from 'assets/icons/close-icon.svg'
 import GroupChatIcon from 'assets/icons/group-chat-icon.svg'
 import AddUserIcon from 'assets/icons/add-user-icon.svg'
-
-import ChatPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
-import { useSettingsStore } from '~/store/settings'
 import BackIcon from 'assets/icons/back-icon.svg'
-import GroupChatUser from '~/components/chat/DetailedInfo/GroupChatUser/GroupChatUser.vue'
 
-const usersStore = useUsersStore()
-const { openModalChatData, chats, chatIdForOpenModal } = storeToRefs(usersStore)
+import { ChatPhoto, GroupChatUser } from '~/components'
+import { showModalMenuItemTitle } from '~/composables/chats'
 
+/**
+ * Подключение стора с чатами
+ */
+const chatsStore = useChatsStore()
+const { openModalChatData, chats, chatIdForOpenModal } = storeToRefs(chatsStore)
+/**
+ * Подключение стора с настройками
+ */
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
-const isGroupChat = computed(() => [...chats.value].find(chat => chat.id === chatIdForOpenModal.value).isGroupChat)
+/**
+ * Выбранный тип сообщений для просмотра в модалке
+ */
+const detailedMenuActiveDataType = ref()
 
+/**
+ * Является ли чат групповым
+ */
+const isGroupChat = computed(() => [...chats.value].find(chat => chat.id === chatIdForOpenModal.value).isGroupChat)
+/**
+ * Полное имя пользователя чата или заголосов группового чата
+ */
 const chatFullName = computed<string>(() => {
   if (isGroupChat.value) {
     return openModalChatData.value?.title
@@ -43,99 +58,73 @@ const chatFullName = computed<string>(() => {
     return openModalChatData.value?.secondName
   }
 })
-
+/**
+ * Элементы меню для усправления чатом (звук и закрепление)
+ */
 const chatMenuValues = computed(() => chatMenuItems.filter(item => item.action === 'pinChat' || item.action === 'muteChat'))
+/**
+ * Элементы для меню типов чата без Удаления
+ */
+const filteredDetailedInfoMenuItems = computed(() => {
+  if (isGroupChat.value) {
+    return detailedInfoMenuItems.slice(0, detailedInfoMenuItems.length - 2)
+  } else {
+    return detailedInfoMenuItems
+  }
+})
+/**
+ * Элемент для меню типов чата Удаление
+ */
+const lastDetailedInfoMenuItem = computed(() => detailedInfoMenuItems[detailedInfoMenuItems.length - 1])
 
-const onClickDoAction = async (menuItem: ChatMenuType) => {
-  switch (menuItem.action) {
+/**
+ * Управление звуком и закрепом чата
+ * @param _menuItem
+ */
+const onClickDoAction = async (_menuItem: ChatMenuType) => {
+  switch (_menuItem.action) {
     case 'muteChat': {
-      await usersStore.toggleUserMuted(openModalChatData.value.id!)
+      await chatsStore.toggleUserMuted(openModalChatData.value.id!)
       break
     }
     case 'pinChat': {
-      await usersStore.togglePinUser(openModalChatData.value.id!)
+      await chatsStore.togglePinUser(openModalChatData.value.id!)
       break
     }
   }
 }
-
-const showMenuItem = (menuItem: ChatMenuType) => {
-  // if (menuItem.action === 'pinChat') {
-  //   return !openModalChatData.value.isPinned ? menuItem.title : menuItem.alternativeTitle
-  // } else if (menuItem.action === 'muteChat') {
-  //   return !openModalChatData.value.isMutedOff ? menuItem.title : menuItem.alternativeTitle
-  // }
-
-  return menuItem.title
-}
-
-const showModalMenuItemTitle = (item: DetailedInfoMenuItem) => {
-  switch (item.action) {
-    case 'text-messages': {
-      return setCorrectTitle(openModalChatData.value.totalTextMessages)
-    }
-    case 'images-messages': {
-      return setCorrectTitle(openModalChatData.value.totalPhotoMessages)
-    }
-
-    case 'video-messages': {
-      return setCorrectTitle(openModalChatData.value.totalVideoMessages)
-    }
-
-    case 'file-messages': {
-      return setCorrectTitle(openModalChatData.value.totalFileMessages)
-    }
-
-    case 'voice-messages': {
-      return setCorrectTitle(openModalChatData.value.totalVoiceMessages)
-    }
-
-    case 'link-messages': {
-      return setCorrectTitle(openModalChatData.value.totalLinksMessages)
-    }
-
-    case 'delete-messages': {
-      return item.titleOne
-    }
-  }
-
-  function setCorrectTitle (quantity: number) {
-    const lastDigit = quantity.toString().slice(-1)
-    if (+lastDigit === 1) {
-      return quantity + ' ' + item.titleOne
-    } else if (+lastDigit >= 2 && +lastDigit <= 4) {
-      return quantity + ' ' + item.titleTwo
-    } else {
-      return quantity + ' ' + item.titleThree
-    }
-  }
-}
-
+/**
+ * Закрыть все модалки
+ */
 const closeModal = () => {
-  usersStore.closeDetailedModal()
-  usersStore.closeAddUserModal()
-  usersStore.clearChatIdForOpenModal()
+  chatsStore.closeDetailedModal()
+  chatsStore.closeAddUserModal()
+  chatsStore.clearChatIdForOpenModal()
 }
-
-const onClickDetailedInfoMenuItem = async (item: DetailedInfoMenuItem) => {
-  switch (item.action) {
+/**
+ * Открыть модалку для просмотра выбранного типа сообщения или удалить чат
+ * @param _item
+ */
+const onClickDetailedInfoMenuItem = async (_item: DetailedInfoMenuItem) => {
+  switch (_item.action) {
     case 'delete-messages': {
-      await usersStore.deleteChat(openModalChatData.value.id)
-      usersStore.clearChatIdForOpenModal()
+      await chatsStore.deleteChat(openModalChatData.value!.id)
+      chatsStore.clearChatIdForOpenModal()
+      chatsStore.closeDetailedModal()
       break
     }
 
     default: {
-      detailedMenuActiveDataType.value = item.action
-      usersStore.$patch(state => state.openMessageTypeModal = item.action)
-      usersStore.$patch(state => state.isOpenMessageTypeModal = true)
+      detailedMenuActiveDataType.value = _item.action
+      chatsStore.$patch(state => state.openMessageTypeModal = _item.action)
+      chatsStore.$patch(state => state.isOpenMessageTypeModal = true)
 
-      if (item.action === 'text-messages') {
-        usersStore.getTextMessages()
+      if (_item.action === 'text-messages') {
+        chatsStore.getTextMessages()
       }
 
-      if (item.action === 'images-messages') {
-        usersStore.getPhotoMessages()
+      if (_item.action === 'images-messages') {
+        chatsStore.getPhotoMessages()
       }
 
       // if (item.action === 'voice-messages') {
@@ -145,8 +134,9 @@ const onClickDetailedInfoMenuItem = async (item: DetailedInfoMenuItem) => {
   }
 }
 
-const detailedMenuActiveDataType = ref()
-
+/**
+ * Всего участников в групповом чате
+ */
 const groupChatUsersTotal = computed(() => {
   if (!openModalChatData.value?.users) return
 
@@ -160,19 +150,38 @@ const groupChatUsersTotal = computed(() => {
     return totalUsers + ' ' + 'участников'
   }
 })
-
-const filteredDetailedInfoMenuItems = computed(() => {
-  if (isGroupChat.value) {
-    return detailedInfoMenuItems.slice(0, detailedInfoMenuItems.length - 2)
-  } else {
-    return detailedInfoMenuItems
-  }
-})
-
-const lastDetailedInfoMenuItem = computed(() => detailedInfoMenuItems[detailedInfoMenuItems.length - 1])
-
+/**
+ * Открыть модалку Добавить в групповой чат
+ */
 const openAddUserModal = () => {
-  usersStore.$patch(state => state.isAddUserModalOpen = true)
+  chatsStore.$patch(state => state.isAddUserModalOpen = true)
+}
+
+/**
+ * Проверка, что чат не закреплен и звук не выключен
+ * @param _itemAction
+ */
+const isMenuItemNotMutedOrPinned = (_itemAction: 'muteChat' | 'pinChat') => {
+  return (_itemAction == 'muteChat' && !openModalChatData.value.isMutedOff) ||
+      (_itemAction == 'pinChat' && !openModalChatData.value.isPinned)
+}
+
+/**
+ * Отрисовать типы сообщений
+ * @param _icon
+ */
+const getIconComponent = (_icon) => {
+  const iconComponentMap = {
+    'file-messages-icon': FileMessagesIcon,
+    'voice-messages-icon': VoiceMessagesIcon,
+    'text-messages-icon': TextMessagesIcon,
+    'link-messages-icon': LinkMessagesIcon,
+    'images-messages-icon': ImageMessagesIcon,
+    'video-messages-icon': VideoMessagesIcon,
+    'delete-icon': DeleteIcon
+  }
+
+  return iconComponentMap[_icon] || null
 }
 </script>
 
@@ -270,7 +279,7 @@ const openAddUserModal = () => {
           v-if="item.icon"
           class="menu__item-icon"
           :class="{
-            'menu__item-icon_not-selected': (item.action == 'muteChat' && !openModalChatData.isMutedOff) || (item.action == 'pinChat' && !openModalChatData.isPinned)
+            'menu__item-icon_not-selected': isMenuItemNotMutedOrPinned(item.action)
           }"
         >
           <MuteOffIcon
@@ -284,7 +293,7 @@ const openAddUserModal = () => {
           />
         </div>
 
-        {{ showMenuItem(item) }}
+        {{ item.title }}
       </div>
 
       <div
@@ -298,33 +307,14 @@ const openAddUserModal = () => {
         }"
         @click="onClickDetailedInfoMenuItem(item)"
       >
-        <FileMessagesIcon
-          v-if="item.icon === 'file-messages-icon'"
-          class="details-menu__item-icon"
+        <component
+          :is="getIconComponent(item.icon)"
+          :class="{
+            'details-menu__item-icon':item.icon !== 'delete-icon'
+          }"
         />
-        <VoiceMessagesIcon
-          v-if="item.icon === 'voice-messages-icon'"
-          class="details-menu__item-icon"
-        />
-        <TextMessagesIcon
-          v-if="item.icon === 'text-messages-icon'"
-          class="details-menu__item-icon"
-        />
-        <LinkMessagesIcon
-          v-if="item.icon === 'link-messages-icon'"
-          class="details-menu__item-icon"
-        />
-        <ImageMessagesIcon
-          v-if="item.icon === 'images-messages-icon'"
-          class="details-menu__item-icon"
-        />
-        <VideoMessagesIcon
-          v-if="item.icon === 'video-messages-icon'"
-          class="details-menu__item-icon"
-        />
-        <DeleteIcon v-if="item.icon === 'delete-icon'" />
 
-        <div>{{ showModalMenuItemTitle(item) }}</div>
+        <div>{{ showModalMenuItemTitle(openModalChatData, item) }}</div>
       </div>
 
       <div
@@ -359,7 +349,7 @@ const openAddUserModal = () => {
       >
         <DeleteIcon />
 
-        <div>{{ showModalMenuItemTitle(lastDetailedInfoMenuItem) }}</div>
+        <div>{{ showModalMenuItemTitle(openModalChatData, lastDetailedInfoMenuItem) }}</div>
       </div>
     </div>
     <div
@@ -370,256 +360,5 @@ const openAddUserModal = () => {
 </template>
 
 <style scoped lang="scss">
-@use '~/assets/styles/_variables.scss' as variables;
-
-.add-info {
-  z-index: 1100;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.add-info_mobile {
-  left: 0;
-  transform: translateX(0);
-  width: 100vw;
-  height: 100%;
-}
-
-.add-info__modal {
-  padding-top: 25px;
-  padding-bottom: 25px;
-  background-color: variables.$color-white;
-  border-radius: 15px;
-  border: 1px solid #979797;
-  width: 400px;
-  overflow-x: hidden;
-}
-
-.add-info__modal_mobile {
-  width: 100%;
-  border: 1px solid transparent;
-  border-radius: 0;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  overflow-y: auto;
-}
-
-.add-info__back-icon {
-  height: 25px;
-  position: absolute;
-  top: 25px;
-  left: 10px;
-  cursor: pointer;
-}
-
-.add-info__title {
-  font-size: 20px;
-  font-weight: 400;
-  color: variables.$color-black;
-  margin-bottom: 25px;
-  padding-left: 25px;
-  padding-right: 25px;
-}
-
-.add-info__title_mobile {
-  padding-left: 45px;
-}
-
-.menu__active {
-  font-size: 12px;
-  font-weight: 400;
-  color: variables.$color-dark-grey;
-  margin-bottom: 0px;
-  text-align: center;
-}
-
-.menu__name {
-  margin-bottom: 5px;
-  text-align: center;
-  font-size: 21px;
-  font-weight: 400;
-  text-decoration: underline;
-  color: variables.$color-active;
-  transition: 0.2s all;
-  cursor: pointer;
-}
-
-.menu__title {
-  margin-bottom: 5px;
-  text-align: center;
-  font-size: 21px;
-  font-weight: 400;
-  color: variables.$color-black;
-  transition: 0.2s all;
-}
-
-.menu__name:hover {
-  text-decoration: none;
-}
-
-.menu__position {
-  margin-bottom: 5px;
-  font-size: 12px;
-  font-weight: 400;
-  text-align: center;
-  color: variables.$color-dark-grey;
-}
-
-.menu__participants {
-  margin-bottom: 5px;
-  font-size: 12px;
-  font-weight: 400;
-  text-align: center;
-  color: variables.$color-dark-grey;
-}
-
-.add-info__img {
-  margin: 0 auto 10px;
-}
-
-.add-info__close-icon {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  cursor: pointer;
-  transition: 0.3s all;
-}
-
-.add-info__close-icon:hover {
-  scale: 1.1;
-}
-
-.menu__item {
-  padding: 10px 25px 10px 25px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 400;
-  color: variables.$color-dark;
-  display: flex;
-  gap: 10px;
-}
-
-.menu__item_last {
-  padding: 10px 25px 20px 25px;
-}
-
-.menu__item-icon {
-  border-radius: 5px;
-  background-color: #0584fe;
-  width: 18px;
-  height: 18px;
-  margin: 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.menu__item-icon_not-selected {
-  background-color: transparent;
-  border: 1px solid #c8c8c8;
-}
-
-.menu__item-img {
-  transform: scale(0.7);
-  color: #fff;
-}
-
-.menu__item_active {
-  background-color: variables.$color-light-grey;
-}
-
-.menu__item:nth-of-type(1) {
-  border-radius: 7px 7px 0 0;
-}
-
-.details-menu__item {
-  padding: 10px 25px;
-  background-color: #f7f8fa;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 400;
-  color: variables.$color-dark;
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  transition: 0.5s all;
-  border-bottom: 1px solid transparent;
-}
-
-.details-menu__item-icon {
-  color: #A6B7D4;
-  transition: 0.2s all;
-}
-
-.details-menu__item:hover .details-menu__item-icon {
-  color: #1253a2;
-}
-
-.details-menu__item_first {
-  padding-top: 20px;
-}
-
-.details-menu__item_pre-last {
-  padding-bottom: 20px;
-}
-
-.details-menu__item_last {
-  padding-top: 20px;
-  padding-bottom: 0;
-  color: variables.$color-red;
-  background-color: variables.$color-white;
-
-}
-
-.details-menu__group-users-data {
-  margin-top: 25px;
-}
-
-.details-menu__group-users {
-  max-height: 350px;
-  overflow-y: auto;
-  margin-right: 5px;
-
-  &::-webkit-scrollbar {
-    width: 3px;
-    height: 122px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: variables.$color-blue-grey;
-    border-radius: 2px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-}
-
-.details-menu__group-users-action {
-  display: flex;
-  padding: 20px 20px 20px 25px;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #f7f8fa;
-}
-
-.details-menu__group-users-info {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
-
-.details-menu__add-user {
-  cursor: pointer;
-}
-
-.details-menu__bg-padding {
-  height: 10vh;
-  background-color: transparent;
-}
+@import './AdditionalInfoModal';
 </style>

@@ -14,6 +14,8 @@
       :is-h-t-m-l="false"
       :is-link="props.isLink"
       :value="props.item.value"
+      :link="props.item.external_link"
+      :substring="props.item.substring"
       @click="() => props.isLink ? $emit('openLink', props.item) : ''"
     />
 
@@ -30,7 +32,7 @@
     />
 
     <span
-      v-if="![null, undefined].includes(props.item.substring) && props.item.substring != ''"
+      v-if="!props.isReadOnly && ![null, undefined].includes(props.item.substring) && props.item.substring != ''"
       class="form-item__substring"
     >{{ props.item.substring }}</span>
 
@@ -44,13 +46,11 @@ import './Input.scss'
 import { ref } from 'vue'
 
 import InputField from './InputField/InputField.vue'
-import FormItem from '@/components/AppForm/FormItem/FormItem.vue'
-import FormLabel from '@/components/AppForm/FormLabel/FormLabel.vue'
-import FormValue from '@/components/AppForm/FormValue/FormValue.vue'
+import FormItem from '~/components/ui/AppForm/FormItem/FormItem.vue'
+import FormLabel from '~/components/ui/AppForm/FormLabel/FormLabel.vue'
+import FormValue from '~/components/ui/AppForm/FormValue/FormValue.vue'
 
 const inputRef = ref(null)
-
-defineEmits(['changeValue', 'blur', 'focus', 'openLink'])
 
 const props = defineProps({
   item: {
@@ -64,7 +64,7 @@ const props = defineProps({
       substring: null,
       title: 'Undefined title'
     },
-    type: () => Object
+    type: Object
   },
   disabled: {
     default: false,

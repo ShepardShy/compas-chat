@@ -1,18 +1,26 @@
 <script setup lang="ts">
 import GroupChatIcon from 'assets/icons/group-chat-icon.svg'
-import UserPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
+import { ChatPhoto } from '~/components'
 
-import { useUsersStore } from '~/store/users'
+import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
 
-const usersStore = useUsersStore()
-const { openedChatData } = storeToRefs(usersStore)
-
+/**
+ * Подключение стора с чатами
+ */
+const chatsStore = useChatsStore()
+const { openedChatData } = storeToRefs(chatsStore)
+/**
+ * Подключение стора с настройками
+ */
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
+/**
+ * Если чат групповой - заголовок, иначе полное имя пользователя
+ */
 const userFullName = computed<string>(() => {
-  if (openedChatData.value.isGroupChat) {
+  if (openedChatData.value?.isGroupChat) {
     return openedChatData.value.title
   } else if (openedChatData.value.firstName) {
     return openedChatData.value?.firstName + ' ' + openedChatData.value?.secondName
@@ -20,26 +28,27 @@ const userFullName = computed<string>(() => {
     return openedChatData.value?.secondName
   }
 })
-
+/**
+ *  Итого участников группового чата
+ */
 const setUsersQuantity = computed(() => {
-  const totalChatUsers = openedChatData.value.users?.length.toString()
-  const lastDigit = +(totalChatUsers.slice(-1))
+  const _totalChatUsers = openedChatData.value.users?.length.toString()
+  const _lastDigit = +(_totalChatUsers.slice(-1))
 
-  if (lastDigit === 1) {
-    return `${totalChatUsers} участник`
-  } else if (lastDigit >= 2 && lastDigit <= 4) {
-    return `${totalChatUsers} участника`
+  if (_lastDigit === 1) {
+    return `${_totalChatUsers} участник`
+  } else if (_lastDigit >= 2 && _lastDigit <= 4) {
+    return `${_totalChatUsers} участника`
   } else {
-    return `${totalChatUsers} участников`
+    return `${_totalChatUsers} участников`
   }
 }
 )
-
 </script>
 
 <template>
   <div class="window__user-data">
-    <UserPhoto
+    <ChatPhoto
       :is-pinned="openedChatData.isPinned"
       :photo="openedChatData.photo"
       :is-active="openedChatData.isActive"

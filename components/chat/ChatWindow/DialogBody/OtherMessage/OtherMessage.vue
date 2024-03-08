@@ -1,29 +1,38 @@
 <script setup lang="ts">
 
 import type { GroupChatMessageType, MessageType, UserChatType } from '~/types/messages'
-import { useUsersStore } from '~/store/users'
+import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
 
+/**
+ * Входящие пропсы
+ */
 interface PropsType {
   message: GroupChatMessageType | MessageType
   lastOfSeveralMsgs: boolean
 }
-
-const usersStore = useUsersStore()
-const { chats } = storeToRefs(usersStore)
-
-const settingsStore = useSettingsStore()
-const { isMobileSize } = storeToRefs(settingsStore)
-
 const props = defineProps<PropsType>()
 const { message, lastOfSeveralMsgs } = toRefs(props)
 
-const messageTime = (): string => {
-  return message.value.date.slice(-5)
-}
+/**
+ * Подклбчение стора с чатами
+ */
+const chatsStore = useChatsStore()
+const { chats } = storeToRefs(chatsStore)
+/**
+ * Подклбчение стора с настройками
+ */
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
 
+/***
+ * Получение данных о о=пользователе открытого чата
+ */
 const chatUser = computed<UserChatType>(() => chats.value.find(chat => chat.userId === message.value.userId))
 
+/***
+ * Фото пользователя или если его нет заливка гралиентом
+ */
 const chatPhoto = computed<string>(() => {
   if (!lastOfSeveralMsgs.value) return 'none'
 
@@ -33,6 +42,13 @@ const chatPhoto = computed<string>(() => {
     return 'linear-gradient(to bottom, #71d2fc 2%, #9490ff 100%)'
   }
 })
+
+/**
+ * Вывод времени сообщения
+ */
+const messageTime = (): string => {
+  return message.value.date.slice(-5)
+}
 </script>
 
 <template>

@@ -1,28 +1,24 @@
 <template>
-  <div
-    v-if="props.isHTML"
-    class="form-item__title"
-    v-html="props.title"
-  />
+    <div class="form-item__title" v-if="props.isHTML" v-html="props.title"></div>
 
-  <FormLabel
-    v-else
-    :title="props.title"
-  />
+    <FormLabel 
+        v-else 
+        :title="props.title"
+    />
 </template>
 
 <script setup>
-import './CheckboxLabel.scss'
+    import './CheckboxLabel.scss';
+    
+    import FormLabel from '@/components/AppForm/FormLabel/FormLabel.vue';
 
-import FormLabel from '@/components/AppForm/FormLabel/FormLabel.vue'
-
-const props = defineProps({
-  title: {
-    default: null
-  },
-  isHTML: {
-    default: false,
-    type: Boolean
-  }
-})
+    const props = defineProps({
+        title: {
+            default: null,
+        },
+        isHTML: {
+            default: false,
+            type: Boolean
+        }
+    })
 </script>

@@ -1,22 +1,22 @@
-@use '@/assets/variables.scss' as variables;
-@use '@/assets/mixins.scss' as mixins;
+@use '~/assets/styles/_variables.scss' as variables;
+@use '~/assets/styles/_mixins.scss' as mixins;
 
 .form__item {
     &.form__item_datepicker {
         @include mixins.userSelect($value: none);
         overflow: inherit;
-    
+
         * {
             font-family: PT Sans !important;
             transition: none !important;
         }
 
-        .dp__date_hover_end, 
-        .dp__date_hover_start, 
-        .dp__date_hover, 
-        .dp__month_year_select, 
-        .dp__overlay_cell, 
-        .dp__button, 
+        .dp__date_hover_end,
+        .dp__date_hover_start,
+        .dp__date_hover,
+        .dp__month_year_select,
+        .dp__overlay_cell,
+        .dp__button,
         .dp__inner_nav {
             @include mixins.hoverElem();
         }
@@ -73,13 +73,13 @@
                 border: 1px solid variables.$color-blue;
             }
         }
-    
+
         .dp__input_wrap {
             svg {
                 display: none;
             }
         }
-    
+
         .dp__arrow_top {
             display: none;
         }
@@ -92,7 +92,7 @@
                 width: auto;
                 min-width: auto;
             }
-            
+
             &.dp__menu_up {
                 transform: translateX(0px) translateY(-50px) translateY(-100%) !important;
             }
@@ -112,7 +112,7 @@
 
         .datapicker__preset-days {
             width: 150px;
-            
+
             .datapicker__preset-item {
                 padding: 8px 20px 8px 10px;
                 @include mixins.hoverElem();
@@ -123,4 +123,4 @@
             }
         }
     }
-}      
+}

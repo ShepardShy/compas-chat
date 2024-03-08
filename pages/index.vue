@@ -1,58 +1,101 @@
 <script setup lang="ts">
-
 import { useWindowSize } from '@vueuse/core'
 import { ERouteName } from '~/shared/routes'
 
-import AllChats from '~/components/chat/AllChats/AllChats.vue'
-import ChatWindow from '~/components/chat/ChatWindow/ChatWindow.vue'
-import { useUsersStore } from '~/store/users'
-import { useSettingsStore } from '~/store/settings'
+import {
+  AllChats,
+  ChatWindow,
+  ChatLoader,
+  GroupAddUserModal,
+  AdditionalInfoModal,
+  GroupChatCreateEditModal,
+  MessagesTypesModal
+} from '~/components'
 
-import ChatLoader from '~/components/chat/ui/ChatLoader.vue'
-import GroupAddUserModal from '~/components/chat/DetailedInfo/GroupChatAddUserModal/GroupAddUserModal.vue'
-import AdditionalInfoModal from '~/components/chat/DetailedInfo/AdditionalInfoModal/AdditionalInfoModal.vue'
-import GroupChatCreateEditModal
-  from '~/components/chat/DetailedInfo/GroupChatCreateEditModal/GroupChatCreateEditModal.vue'
-import MessagesTypesModal from '~/components/chat/DetailedInfo/MessagesTypesModal/MessagesTypesModal.vue'
+import { useChatsStore } from '~/store/chats'
+import { useSettingsStore } from '~/store/settings'
 
 definePageMeta({
   name: ERouteName.PAGE_HOME
 })
 
-const usersStore = useUsersStore()
+/**
+ * Подюклчение стора с сообщениями
+ */
+const chatsStore = useChatsStore()
 const {
   isAddUserModalOpen,
   isDetailedInfoModalOpen,
   isGroupChatEditModalOpen,
   isGroupChatCreateModalOpen,
   isOpenMessageTypeModal
-} = storeToRefs(usersStore)
-
+} = storeToRefs(chatsStore)
+/**
+ * Подюклчение стора с настройками
+ */
 const settingsStore = useSettingsStore()
 const { isMobileSize, isChatsShown, isLoading } = storeToRefs(settingsStore)
 
+/**
+ * Хук для отслеживания ширины экрана
+ */
 const { width } = useWindowSize()
 
+/**
+ * Открыта ли любая моадка
+ */
+const isAnyModalOpen = computed(() => {
+  return isAddUserModalOpen.value ||
+      isDetailedInfoModalOpen.value ||
+      isGroupChatEditModalOpen.value ||
+      isOpenMessageTypeModal.value ||
+      isGroupChatCreateModalOpen.value
+})
+
+/**
+ *
+ */
+const isAdditionalInfoModalVisible = computed(() => {
+  return isDetailedInfoModalOpen.value &&
+      !isAddUserModalOpen.value &&
+      !isGroupChatEditModalOpen.value &&
+      !isGroupChatCreateModalOpen.value &&
+      !isOpenMessageTypeModal.value
+})
+
+/**
+ * После монтирования компоненты
+ */
 onMounted(() => {
-  usersStore.$patch(state => state.filteredChats = state.chats)
+  chatsStore.$patch(state => state.filteredChats = state.chats)
 
   checkMobileSize()
   window.addEventListener('resize', checkMobileSize)
   settingsStore.$patch(state => state.isLoading = false)
 })
 
+/**
+ * Максимальная ширина экрана допустимая для мобилбной версии
+ */
+const maxWindowWidthForMobile = 950
+/**
+ * Превышает ли ширина экрана максимальную ширина экрана допустимая для мобилбной версии
+ */
 const checkMobileSize = () => {
-  settingsStore.$patch(state => state.isMobileSize = window.innerWidth < 950)
+  settingsStore.$patch(state => state.isMobileSize = window.innerWidth < maxWindowWidthForMobile)
 }
+/**
+ * Закрыть все открытые моадбные окна
+ * @param _event
+ */
+const closeAllModal = (_event: MouseEvent) => {
+  _event.preventDefault()
 
-const closeAllModal = (event: MouseEvent) => {
-  event.preventDefault()
-
-  usersStore.closeAddUserModal()
-  usersStore.closeDetailedModal()
-  usersStore.closeGroupChatEditModal()
-  usersStore.closeGroupChatCreateModal()
-  usersStore.closeMessageTypeModal()
+  chatsStore.closeAddUserModal()
+  chatsStore.closeDetailedModal()
+  chatsStore.closeGroupChatEditModal()
+  chatsStore.closeGroupChatCreateModal()
+  chatsStore.closeMessageTypeModal()
 }
 </script>
 
@@ -65,7 +108,7 @@ const closeAllModal = (event: MouseEvent) => {
       class="chat"
     >
       <AllChats
-        v-if="(width < 950 && isChatsShown) || !isMobileSize"
+        v-if="(width < maxWindowWidthForMobile && isChatsShown) || !isMobileSize"
         class="chat__users"
         :class="{
           'chat__users_mobile': isMobileSize
@@ -80,7 +123,7 @@ const closeAllModal = (event: MouseEvent) => {
       />
 
       <div
-        v-if="isAddUserModalOpen || isDetailedInfoModalOpen || isGroupChatEditModalOpen || isOpenMessageTypeModal || isGroupChatCreateModalOpen"
+        v-if="isAnyModalOpen"
         class="modal__bg"
         @click="closeAllModal($event)"
       >
@@ -94,7 +137,7 @@ const closeAllModal = (event: MouseEvent) => {
           />
 
           <AdditionalInfoModal
-            v-if="isDetailedInfoModalOpen && !isAddUserModalOpen && !isGroupChatEditModalOpen &&!isGroupChatCreateModalOpen && !isOpenMessageTypeModal"
+            v-if="isAdditionalInfoModalVisible"
           />
           <GroupChatCreateEditModal v-if="isGroupChatEditModalOpen && !isAddUserModalOpen" />
           <GroupChatCreateEditModal v-if="isGroupChatCreateModalOpen && !isAddUserModalOpen" />

@@ -1,31 +1,43 @@
 <script setup lang="ts">
-
 import type { GroupChatMessageType, MessageType } from '~/types/messages'
 import ViewedMessageIcon from 'assets/icons/viewed-message-icon.svg'
 import ReceivedMessageIcon from 'assets/icons/recieved-message-icon.svg'
-import { useSettingsStore } from '~/store/settings'
-import MessageDay from '~/components/chat/ChatWindow/DialogBody/MessageDay/MessageDay.vue'
 
+import { useSettingsStore } from '~/store/settings'
+
+/**
+ * Входящие пропсы
+ */
 interface PropsType {
   message: GroupChatMessageType | MessageType
   lastOfSeveralMsgs: boolean
 }
-
-const settingsStore = useSettingsStore()
-const { isMobileSize } = storeToRefs(settingsStore)
-
 const props = defineProps<PropsType>()
 const { message, lastOfSeveralMsgs } = toRefs(props)
 
+/**
+ * Подключение стора с настройками
+ */
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
+
+/**
+ * Сообщение доставлено
+ */
 const isMessageReceived = computed<boolean>(() => {
   return message.value.isReceived &&
       !message.value.isViewed
 })
-
+/**
+ * Сообщение просмотрено
+ */
 const isMessageViewed = computed<boolean>(() => {
   return message.value.isViewed
 })
 
+/**
+ * Вывод времени сообщения
+ */
 const messageTime = (): string => {
   return message.value.date.slice(-5)
 }

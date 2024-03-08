@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia'
-import type { GroupChatType, UserChatType } from '~/types/messages'
-import { messagesTypesList } from '~/shared/const'
-import { MessagesTypesType } from '~/types/messages'
+import type { MessagesTypesType, GroupChatType, UserChatType } from '~/types/messages'
 
-export const useUsersStore = defineStore('users', {
+export const useChatsStore = defineStore('chats', {
   state: () => {
     return {
       userId: 1,
@@ -325,7 +323,7 @@ export const useUsersStore = defineStore('users', {
               firstName: 'Илья',
               secondName: 'Петров',
               message: 'Добрый день',
-              date: '14.02.2024 15:12'
+              date: '08.03.2024 15:12'
             }
           ]
         },
@@ -697,7 +695,7 @@ export const useUsersStore = defineStore('users', {
       isOpenMessageTypeModal: false,
       dataFromSelectedTypeOfChatMessage: [] as unknown,
 
-      temporalStorageForNewGroupChat: {
+      temporalStorageForGroupChat: {
         title: '',
         photo: '',
         users: []
@@ -934,9 +932,9 @@ export const useUsersStore = defineStore('users', {
       }
     },
 
-    async deleteChat (userId: string | number) {
+    async deleteChat (chatId: string | number) {
       try {
-        this.chats = this.chats.filter(chat => chat.id !== userId)
+        this.chats = this.chats.filter(chat => chat.id !== chatId)
         this.openedChatId = this.chats[0].id ?? undefined
       } catch (e) {
         console.log(e)
@@ -1003,14 +1001,14 @@ export const useUsersStore = defineStore('users', {
       this.isOpenMessageTypeModal = false
     },
 
-    updateGroupChat (chatData: GroupChatType) {
+    updateGroupChat (newChatData: GroupChatType) {
       this.chats = this.chats.map((chat) => {
         if (!chat.isGroupChat) {
           return chat
         }
 
-        if (chat.id === chatData.id) {
-          return chatData
+        if (chat.id === newChatData.id) {
+          return newChatData
         } else {
           return chat
         }
@@ -1034,25 +1032,25 @@ export const useUsersStore = defineStore('users', {
     },
 
     clearTemporalStorageForNewGroupChat () {
-      this.temporalStorageForNewGroupChat = {
+      this.temporalStorageForGroupChat = {
         title: '',
         photo: '',
         users: []
       }
     },
 
-    updateTemporalStorageForNewGroupChat (
+    updateTemporalStorageForGroupChat (
       temporalChatData: {
                     title: string
                     photo: string
                     users: never[];
                 }) {
-      this.temporalStorageForNewGroupChat = temporalChatData
+      this.temporalStorageForGroupChat = temporalChatData
     },
 
     createGroupChat () {
       const newGroupChat: GroupChatType = {
-        ...this.temporalStorageForNewGroupChat,
+        ...this.temporalStorageForGroupChat,
         id: this.chats.length + 1,
         isGroupChat: true,
         isPinned: false,
@@ -1071,7 +1069,7 @@ export const useUsersStore = defineStore('users', {
       this.openedChatId = newGroupChat.id
 
       this.clearTemporalStorageForNewGroupChat()
-      this.closeGroupChatCreateModalOpen()
+      this.closeGroupChatCreateModal()
     }
   }
 }

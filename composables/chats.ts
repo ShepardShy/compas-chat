@@ -1,5 +1,54 @@
 import { daysOfWeek, daysOfWeekLongName } from '~/shared/const'
-import type { GroupChatMessageType } from '~/types/messages'
+import type { DetailedInfoMenuItem, GroupChatMessageType, GroupChatType, UserChatType } from '~/types/messages'
+
+/**
+ *
+ * @param _openModalChatData
+ * @param _item
+ */
+export const showModalMenuItemTitle = (
+  _openModalChatData: UserChatType | GroupChatType,
+  _item: DetailedInfoMenuItem) => {
+  switch (_item.action) {
+    case 'text-messages': {
+      return setCorrectTitle(_openModalChatData.totalTextMessages, _item)
+    }
+    case 'images-messages': {
+      return setCorrectTitle(_openModalChatData.totalPhotoMessages, _item)
+    }
+
+    case 'video-messages': {
+      return setCorrectTitle(_openModalChatData.totalVideoMessages, _item)
+    }
+
+    case 'file-messages': {
+      return setCorrectTitle(_openModalChatData.totalFileMessages, _item)
+    }
+
+    case 'voice-messages': {
+      return setCorrectTitle(_openModalChatData.totalVoiceMessages, _item)
+    }
+
+    case 'link-messages': {
+      return setCorrectTitle(_openModalChatData.totalLinksMessages, _item)
+    }
+
+    case 'delete-messages': {
+      return _item.titleOne
+    }
+  }
+}
+
+export function setCorrectTitle (_quantity: number, _item: DetailedInfoMenuItem) {
+  const _lastDigit = _quantity.toString().slice(-1)
+  if (+_lastDigit === 1) {
+    return _quantity + ' ' + _item.titleOne
+  } else if (+_lastDigit >= 2 && +_lastDigit <= 4) {
+    return _quantity + ' ' + _item.titleTwo
+  } else {
+    return _quantity + ' ' + _item.titleThree
+  }
+}
 
 export const messageTimeInfo = (lastMessage: GroupChatMessageType | {}) => {
   if (lastMessage?.id) {

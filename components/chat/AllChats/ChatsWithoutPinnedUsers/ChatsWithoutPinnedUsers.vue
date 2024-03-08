@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import UserChat from '~/components/chat/AllChats/UserChat/UserChat.vue'
-import GroupChat from '~/components/chat/AllChats/GroupChat/GroupChat.vue'
+import { GroupChat, UserChat } from '~/components'
 
 import type { UserChatType, GroupChatType } from '~/types/messages'
 
+/**
+ * Входящие пропсы
+ */
 interface PropsType {
   chatsWithoutPinnedUsers: Array<UserChatType | GroupChatType>
 }
-
 const props = defineProps<PropsType>()
 const { chatsWithoutPinnedUsers } = toRefs(props)
 </script>

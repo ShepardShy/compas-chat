@@ -1,28 +1,70 @@
 <script setup lang="ts">
 import { nextTick } from 'vue'
-import ChatInput from '~/components/chat/ui/ChatInput.vue'
+import { ChatInput, OwnMessage, OtherMessage, VoiceMessage, MessageDay } from '~/components'
+
 import SendMsgIcon from 'assets/icons/send-msg-icon.svg'
 import MicrophoneIcon from 'assets/icons/microphone-icon.svg'
-import { useUsersStore } from '~/store/users'
-import OwnMessage from '~/components/chat/ChatWindow/DialogBody/OwnMessage/OwnMessage.vue'
-import OtherMessage from '~/components/chat/ChatWindow/DialogBody/OtherMessage/OtherMessage.vue'
-import VoiceMessage from '~/components/chat/DetailedInfo/MessagesTypesModal/VoiceMessage/VoiceMessage.vue'
+
+import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
-import MessageDay from '~/components/chat/ChatWindow/DialogBody/MessageDay/MessageDay.vue'
-import AppDateInput from '~/components/ui/AppInputs/Date/AppDateInput/AppDateInput.vue'
 
-const usersStore = useUsersStore()
-const { openedChatData, userId, openedChatId } = storeToRefs(usersStore)
+import AppDateInput from '~/components/ui/AppInputs/Date/Date.vue'
 
+/**
+ * Подключение стора с чатами
+ */
+const chatsStore = useChatsStore()
+const { openedChatData, userId, openedChatId } = storeToRefs(chatsStore)
+/**
+ * Подключение стора с настройками
+ */
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
+/**
+ * Тест сообщения
+ */
 const messageValue = ref<string>()
+/**
+ * Загруженные картинки
+ */
 const uploadedImages = ref([])
+/**
+ * Загруженны документы
+ */
 const uploadedDocuments = ref([])
-
+/**
+ * Текущий тип сообщения
+ */
 const messageType = ref<'text' | 'voice'>('text')
 
+/**
+ * Подписка на измнение чата и его очистку
+ */
+watch(
+  () => openedChatId.value,
+  async () => {
+    messageValue.value = ''
+    messageType.value = 'text'
+    voiceMessage.value = []
+    uploadedImages.value = []
+    uploadedDocuments.value = []
+
+    await checkIfDialogBodyHeightsLessThenVH()
+    scrollToDialogWrapperBottom()
+  })
+
+/**
+ * Монтирование компонента
+ */
+onMounted(async () => {
+  await checkIfDialogBodyHeightsLessThenVH()
+  scrollToDialogWrapperBottom()
+})
+
+/**
+ * Выбрать тип сообщения через двойной клик
+ */
 const setMessageType = () => {
   // чтобы разделить срабатывание click и dbclick
   clearTimeout(oneClickTimer)
@@ -37,6 +79,9 @@ const setMessageType = () => {
   }
 }
 
+/**
+ * Проверка высоты блока с сообщениями и скролл к последнему сообщению
+ */
 const $dialogWrapperScroll = ref<HTMLDivElement>()
 const $dialogWrapper = ref<HTMLDivElement>()
 const $dialogActions = ref<HTMLDivElement>()
@@ -56,6 +101,9 @@ const checkIfDialogBodyHeightsLessThenVH = async () => {
   isDialogBodyHeightsLessThenVH.value = (dialogBodyHeight < dialogWrapperHeight)
 }
 
+/**
+ * Управление голосовым сообщением
+ */
 const isMakingAVoiceMessage = ref(false)
 const voiceMessage = ref([])
 let doNotSaveVoiceMessage = false
@@ -76,6 +124,9 @@ let startTime
 const messageDuration = ref(0)
 let messageIntervalId
 
+/**
+ * Начала записи голосового сообщения
+ */
 async function startRecord () {
   if (!navigator.mediaDevices && !navigator.mediaDevices.getUserMedia) {
     return console.warn('Not supported')
@@ -108,6 +159,10 @@ async function startRecord () {
   }
 }
 
+/**
+ * Прекращение записи голосового сообщения
+ */
+
 function mediaRecorderStop () {
   audioBlob = new Blob(chunks, { type: 'audio/mp3' })
   const src = URL.createObjectURL(audioBlob)
@@ -122,6 +177,9 @@ function mediaRecorderStop () {
   chunks = []
 }
 
+/**
+ * Отправить текстовое сообщение
+ */
 const sendTextMessage = () => {
 }
 
@@ -141,41 +199,25 @@ const handleMessage = () => {
   }, 300)
 }
 
-onMounted(async () => {
-  await checkIfDialogBodyHeightsLessThenVH()
-  scrollToDialogWrapperBottom()
-})
-
-watch(
-  () => openedChatId.value,
-  async () => {
-    await checkIfDialogBodyHeightsLessThenVH()
-    scrollToDialogWrapperBottom()
-  }
-)
-
-const checkIfLastOfSeveralMessages = (idx: string | number): boolean => {
+/**
+ * Является ли сообщение последним в своем типе (когда несколько своих подряд)
+ * @param _idx
+ */
+const checkIfLastOfSeveralMessages = (_idx: string | number): boolean => {
   const messages = openedChatData.value!.messages
-  if (messages[idx + 1]) {
-    return messages[idx].userId !== messages[idx + 1].userId
+  if (messages[_idx + 1]) {
+    return messages[_idx].userId !== messages[_idx + 1].userId
   } else {
     return true
   }
 }
-
-const deleteMessage = (messageIdx) => {
-  voiceMessage.value = voiceMessage.value.splice(messageIdx, -1)
+/**
+ * Удалить сообщение
+ * @param messageIdx
+ */
+const deleteMessage = (_messageIdx) => {
+  voiceMessage.value = voiceMessage.value.splice(_messageIdx, -1)
 }
-
-watch(
-  () => openedChatId.value,
-  () => {
-    messageValue.value = ''
-    messageType.value = 'text'
-    voiceMessage.value = []
-    uploadedImages.value = []
-    uploadedDocuments.value = []
-  })
 </script>
 
 <template>
@@ -189,7 +231,8 @@ watch(
       ref="$dialogWrapper"
       class="dialog__wrapper"
       :class="{
-        'dialog__wrapper_flex': isDialogBodyHeightsLessThenVH
+        'dialog__wrapper_flex': isDialogBodyHeightsLessThenVH,
+        'dialog__wrapper_mobile': isMobileSize
       }"
     >
       <div
@@ -248,6 +291,9 @@ watch(
     <div
       ref="$dialogActions"
       class="dialog__actions"
+      :class="{
+        'dialog__actions_mobile':isMobileSize
+      }"
     >
       <ChatInput
         v-model:input-value="messageValue"
@@ -281,7 +327,22 @@ watch(
       @click="setVoiceMessage(false, true)"
     />
 
-    <!--    <AppDateInput />-->
+    <!--    <AppDateInput-->
+    <!--      style="position: absolute"-->
+    <!--      :item="{-->
+    <!--        id: 0,-->
+    <!--        required: true,-->
+    <!--        substring: null,-->
+    <!--        type: 'date',-->
+    <!--        title: 'Дата',-->
+    <!--        placeholder: '..____,',-->
+    <!--        value: null,-->
+    <!--        key: 'dateKey',-->
+    <!--        focus: true,-->
+    <!--      }"-->
+    <!--      :is-multiple="false"-->
+    <!--      :is-read-only="false"-->
+    <!--    />-->
   </div>
 </template>
 

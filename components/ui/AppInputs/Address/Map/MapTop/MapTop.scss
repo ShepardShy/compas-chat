@@ -1,0 +1,7 @@
+@use '@/assets/variables' as variables;
+@use '@/assets/mixins' as mixins;
+
+.map-top {
+    @include mixins.flexBlock($vertical: center, $horizontal: flex-end, $gap: 10px);
+    padding-top: 10px;
+}

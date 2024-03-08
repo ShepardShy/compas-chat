@@ -1,30 +1,42 @@
 <script setup lang="ts">
 import DeleteIcon from '~/assets/icons/delete-icon.svg'
 import CheckIcon from '~/assets/icons/check-icon.svg'
-import type { GroupChatUserType } from '~/types/messages'
+import type { GroupChatUserType, GroupChatType } from '~/types/messages'
 import { userActiveTime } from '~/composables/chats'
 import ChatPhoto from '~/components/chat/ChatPhoto/ChatPhoto.vue'
-import { useUsersStore } from '~/store/users'
+import { useChatsStore } from '~/store/chats'
 
+/**
+ * Входящие пропсы
+ */
 interface PropsType {
   isDeleteIcon?: boolean
   isAddIcon?: boolean
   userData: GroupChatUserType
-  allChatDataLocal: GroupChatUserType[]
+  allChatDataLocal?: GroupChatType
 }
 
 const props = defineProps<PropsType>()
 const { isDeleteIcon, isAddIcon, userData, allChatDataLocal } = toRefs(props)
 
-const usersStore = useUsersStore()
-const { chatIdForOpenModal, isGroupChatCreateModalOpen, allChatUsers } = storeToRefs(usersStore)
-
+/**
+ * События компонента
+ */
 const emit = defineEmits<{
   (emit: 'delete-user'): void
   (emit: 'add-to-group', userData: GroupChatUserType): void
   (emit: 'remove-from-group', userId: number | string): void
 }>()
 
+/**
+ * Подключение стора с чатама
+ */
+const chatsStore = useChatsStore()
+const { isGroupChatCreateModalOpen } = storeToRefs(chatsStore)
+
+/**
+ * Полное имя пользователя
+ */
 const userFullName = computed(() => {
   if (userData.value.firstName) {
     return userData.value.firstName + userData.value?.secondName
@@ -33,6 +45,9 @@ const userFullName = computed(() => {
   }
 })
 
+/**
+ * Информация об активности пользователя
+ */
 const userActiveDateAndTime = computed(() => {
   if (userData.value.isActive) {
     return 'В сети'
@@ -40,7 +55,9 @@ const userActiveDateAndTime = computed(() => {
     return `Был(а) в сети ${userActiveTime(userData.value.lastTimeActive)}`
   }
 })
-
+/**
+ * Находится ли пользователь уже в выбранном групповом чате
+ */
 const isInOpenGroup = computed(() => {
   if (!allChatDataLocal.value?.users?.length && isGroupChatCreateModalOpen.value) {
     return false
@@ -51,6 +68,9 @@ const isInOpenGroup = computed(() => {
     .includes(userData.value.id)
 })
 
+/**
+ * Добавление/удаление из группы
+ */
 const toggleInGroup = () => {
   if (isInOpenGroup.value) {
     removeFromGroup()
@@ -58,14 +78,21 @@ const toggleInGroup = () => {
     addToGroup()
   }
 }
+/**
+ * Добавить в группу
+ */
 const addToGroup = () => {
   emit('add-to-group', userData.value)
 }
-
+/**
+ * Удалить из группы
+ */
 const removeFromGroup = () => {
   emit('remove-from-group', userData.value.id)
 }
-
+/**
+ * Удалить пользователя до сохранения
+ */
 const deleteUserFromGroupBeforeSave = () => emit('delete-user')
 </script>
 
@@ -111,65 +138,5 @@ const deleteUserFromGroupBeforeSave = () => emit('delete-user')
 </template>
 
 <style scoped lang="scss">
-@use '~/assets/styles/_variables.scss' as variables;
-
-.group-chat-user {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 25px;
-}
-
-.group-chat-user__data {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.group-chat-user__name {
-  font-size: 16px;
-  font-weight: 400;
-  color: variables.$color-active;
-  text-decoration: underline;
-  margin-bottom: 5px;
-}
-
-.group-chat-user__active {
-  font-family: MyriadPro;
-  font-size: 12px;
-  font-weight: 400;
-  color: variables.$color-dark-grey;
-}
-
-.action__add-user {
-  width: 19px;
-  height: 19px;
-  border: 1px solid #c8c8c8;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.2s all;
-}
-
-.action__add-user_active {
-  background-color: #0584fe;
-  border: 1px solid #0584fe;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.action__add-user-icon {
-  color: variables.$color-white;
-  scale: 0.7;
-}
-
-.group-chat-user__delete {
-  cursor: pointer;
-  color: #a6b7d4;
-  transition: 0.2s all;
-}
-
-.group-chat-user__delete:hover {
-  color: #1253a2;
-}
+@import './GroupChatUser'
 </style>

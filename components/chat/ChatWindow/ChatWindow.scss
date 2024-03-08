@@ -18,12 +18,13 @@
   padding-left: 25px;
   padding-right: 50px;
   flex: 0 0 50px;
+  user-select: none;
 }
 
 .window__top_mobile {
   padding-left: 10px;
-  padding-right: 30px;
-  gap: 0;
+  padding-right: 20px;
+  gap: 15px;
 }
 
 .window__body {
@@ -52,7 +53,7 @@
 }
 
 .window__actions_mobile {
-  gap: 35px;
+  gap: 15px;
 }
 
 .window__icon {
@@ -89,12 +90,16 @@
   margin-right: 25px;
 }
 
+.window__back-icon_mobile {
+  margin-right: 0;
+}
+
 .window__menu {
   right: 50px;
 }
 
 .window__menu_modal {
-  right: 30px;
+  right: 20px;
 }
 
 .window__menu-bg {
