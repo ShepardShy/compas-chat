@@ -190,6 +190,12 @@
 
 .edit-group__add-user {
   cursor: pointer;
+  transition: 0.2s all;
+  color: #A6B7D4;
+}
+
+.edit-group__add-user:hover {
+  color: #1253a2 ;
 }
 
 .edit-group__user-search-input {

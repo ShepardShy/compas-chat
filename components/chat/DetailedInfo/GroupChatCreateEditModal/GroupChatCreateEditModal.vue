@@ -166,7 +166,7 @@ const saveChanges = async () => {
   }
 
   await updateTemporalStorageForGroupChat()
-
+  settingsStore.$patch(state => state.isChatsShown = false)
   chatsStore.createGroupChat()
 }
 </script>
