@@ -19,6 +19,12 @@
   color: variables.$color-active;
   text-decoration: underline;
   margin-bottom: 5px;
+  cursor: pointer;
+  transition: 0.2s all;
+}
+
+.group-chat-user__name:hover {
+  text-decoration: none;
 }
 
 .group-chat-user__active {

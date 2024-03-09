@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { MessagesTypesType, GroupChatType, UserChatType } from '~/types/messages'
+import { formattedDateToday } from '~/composables/chats'
 
 export const useChatsStore = defineStore('chats', {
   state: () => {
@@ -309,6 +310,12 @@ export const useChatsStore = defineStore('chats', {
             }
           ],
           messages: [
+            {
+              id: 33,
+              type: 'message-info',
+              message: 'Тимур Киселев создал(а) чат',
+              date: '14.02.2024 15:12'
+            },
             {
               id: 1,
               userId: 1,
@@ -681,7 +688,7 @@ export const useChatsStore = defineStore('chats', {
             }
           ]
         }
-      ] as Array<UserChatType | GroupChatType>,
+      ] as Array<UserChatType | GroupChatType >,
       filteredChats: [] as Array<UserChatType | GroupChatType> | [],
       openedChatId: 11 as undefined | number,
 
@@ -700,6 +707,9 @@ export const useChatsStore = defineStore('chats', {
         photo: '',
         users: []
       },
+
+      temporalStorageForDeletedUsers: [],
+      temporalStorageForAddedUsers: [],
 
       testTextMessages: [
         {
@@ -1049,6 +1059,11 @@ export const useChatsStore = defineStore('chats', {
     },
 
     createGroupChat () {
+      const currentUser: UserChatType = this.chats.find(chat => chat.id === this.userId && !chat.isGroupChat)
+      const fullUserName = currentUser.firstName
+        ? currentUser.firstName + ' ' + currentUser.secondName
+        : currentUser.secondName
+
       const newGroupChat: GroupChatType = {
         ...this.temporalStorageForGroupChat,
         id: this.chats.length + 1,
@@ -1062,7 +1077,12 @@ export const useChatsStore = defineStore('chats', {
         totalFileMessages: 0,
         totalVoiceMessages: 0,
         totalLinksMessages: 0,
-        messages: []
+        messages: [{
+          id: 33,
+          type: 'message-info',
+          message: `${fullUserName} создал(а) чат`,
+          date: formattedDateToday()
+        }]
       }
 
       this.chats = [newGroupChat, ...this.chats]

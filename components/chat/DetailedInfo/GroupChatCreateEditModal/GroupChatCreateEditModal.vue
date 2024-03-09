@@ -14,6 +14,7 @@ import { useSettingsStore } from '~/store/settings'
 import GroupChatUser from '~/components/chat/DetailedInfo/GroupChatUser/GroupChatUser.vue'
 import ChatInput from '~/components/chat/ui/ChatInput/ChatInput.vue'
 import AppButton from '~/components/ui/AppButton/AppButton.vue'
+import { formattedDateToday } from '~/composables/chats'
 
 /**
  * Подключение стора с чатами
@@ -22,7 +23,9 @@ const chatsStore = useChatsStore()
 const {
   openModalChatData,
   isGroupChatCreateModalOpen,
-  temporalStorageForGroupChat
+  temporalStorageForGroupChat,
+  temporalStorageForDeletedUsers,
+  temporalStorageForAddedUsers
 } = storeToRefs(chatsStore)
 /**
  * Подключение стора с настройками
@@ -98,6 +101,25 @@ onMounted(() => {
   groupTitle.value = temporalStorageForGroupChat.value.title
   groupPhoto.value = temporalStorageForGroupChat.value.photo
   groupUsers.value = temporalStorageForGroupChat.value.users
+
+  if (temporalStorageForDeletedUsers.value.length) {
+    const _deletedUsersId = temporalStorageForDeletedUsers.value.map(user => user.id)
+    groupUsers.value = temporalStorageForGroupChat.value.users.filter(user => !_deletedUsersId.includes(user.id))
+  }
+
+  if (temporalStorageForAddedUsers.value.length) {
+    const _addedUsersId = temporalStorageForAddedUsers.value.map(user => user.id)
+    const allChatUsersSavedLocal = [...temporalStorageForGroupChat.value.users]
+    const _currentUsersId = allChatUsersSavedLocal.map(user => user.id)
+
+    for (let i = 0; i < _addedUsersId.length; i++) {
+      if (!_currentUsersId.includes(_addedUsersId[i])) {
+        allChatUsersSavedLocal.push(temporalStorageForAddedUsers[i])
+      }
+    }
+
+    groupUsers.value = [...allChatUsersSavedLocal]
+  }
 })
 
 /**
@@ -141,6 +163,8 @@ const deleteUserFromChatLocal = async (userId: number) => {
  * @param userId
  */
 const updateTemporalStorageForGroupChat = async (userId?: number) => {
+  const _userToDelete = temporalStorageForGroupChat.value?.users.find(user => user.id === userId)
+
   const actualUsers = userId
     ? temporalStorageForGroupChat.value?.users.filter(user => user.id !== userId)
     : temporalStorageForGroupChat.value?.users
@@ -151,6 +175,8 @@ const updateTemporalStorageForGroupChat = async (userId?: number) => {
     photo: groupPhoto.value,
     users: actualUsers
   })
+
+  await chatsStore.$patch(state => state.temporalStorageForDeletedUsers = [...state.temporalStorageForDeletedUsers, _userToDelete])
 }
 
 /**
@@ -160,14 +186,82 @@ const saveChanges = async () => {
   if (!isGroupChatCreateModalOpen.value) {
     await chatsStore.updateGroupChat({
       ...temporalStorageForGroupChat.value,
-      title: groupTitle.value
+      title: groupTitle.value,
+      photo: groupPhoto.value,
+      messages: addMessagesAboutDeletesAndAddedUsers()
     })
+
+    await chatsStore.$patch(state => state.temporalStorageForDeletedUsers = [])
+    await chatsStore.$patch(state => state.temporalStorageForAddeUsers = [])
+
+    chatsStore.clearTemporalStorageForNewGroupChat()
     chatsStore.closeGroupChatEditModal()
+
+    return
   }
 
   await updateTemporalStorageForGroupChat()
   settingsStore.$patch(state => state.isChatsShown = false)
   chatsStore.createGroupChat()
+}
+
+/**
+ * Добавить сообщение об удаленных пользователях
+ */
+const addMessagesAboutDeletesAndAddedUsers = () => {
+  const _messages = openModalChatData.value?.messages
+  const finalMessages = [..._messages]
+
+  // Сообщение об удалении
+
+  if (temporalStorageForDeletedUsers.value.length) {
+    const _deletedUsersListArray = temporalStorageForDeletedUsers.value.map((user) => {
+      if (user?.firstName) {
+        return user.firstName + ' ' + user?.secondName
+      } else {
+        return user?.secondName || ''
+      }
+    })
+
+    const _deletedUsersList = _deletedUsersListArray.join(', ')
+
+    const deleteMessage = _deletedUsersListArray.length > 1
+      ? `${_deletedUsersList} были удалены из чата`
+      : `${_deletedUsersList} был удалён из чата`
+
+    finalMessages.push({
+      id: formattedDateToday(),
+      type: 'message-info',
+      message: deleteMessage,
+      date: formattedDateToday()
+    })
+  }
+
+  // Сообщение о добавлении
+  if (temporalStorageForAddedUsers.value.length) {
+    const _addedUsersListArray = temporalStorageForAddedUsers.value.map((user) => {
+      if (user?.firstName) {
+        return user.firstName + ' ' + user?.secondName
+      } else {
+        return user?.secondName || ''
+      }
+    })
+
+    const _addedUsersList = _addedUsersListArray.join(', ')
+
+    const addMessage = _addedUsersListArray.length > 1
+      ? `${_addedUsersList} были добавлены в чат`
+      : `${_addedUsersList} был добавлен в чат`
+
+    finalMessages.push({
+      id: formattedDateToday(),
+      type: 'message-info',
+      message: addMessage,
+      date: formattedDateToday()
+    })
+  }
+  console.log(finalMessages)
+  return finalMessages
 }
 </script>
 

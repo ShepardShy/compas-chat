@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick } from 'vue'
-import { ChatInput, OwnMessage, OtherMessage, VoiceMessage, MessageDay } from '~/components'
+import { ChatInput, OwnMessage, OtherMessage, VoiceMessage, MessageDay, MessageInfo } from '~/components'
 
 import SendMsgIcon from 'assets/icons/send-msg-icon.svg'
 import MicrophoneIcon from 'assets/icons/microphone-icon.svg'
@@ -218,6 +218,7 @@ const checkIfLastOfSeveralMessages = (_idx: string | number): boolean => {
 const deleteMessage = (_messageIdx) => {
   voiceMessage.value = voiceMessage.value.splice(_messageIdx, -1)
 }
+watch(() => openedChatData.value, () => console.log(openedChatData.value), { deep: true })
 </script>
 
 <template>
@@ -232,7 +233,7 @@ const deleteMessage = (_messageIdx) => {
       class="dialog__wrapper"
       :class="{
         'dialog__wrapper_flex': isDialogBodyHeightsLessThenVH,
-        'dialog__wrapper_mobile': isMobileSize
+        'dialog__wrapper_mobile': isMobileSize,
       }"
     >
       <div
@@ -254,18 +255,24 @@ const deleteMessage = (_messageIdx) => {
             :key="message.id"
             class="dialog__message"
             :style="{
-              alignSelf: message.userId == userId ? 'flex-end' : 'flex-start',
+              alignSelf: message.type === 'message-info' ? 'center' :
+                message.userId == userId ? 'flex-end' : 'flex-start',
 
             }"
           >
+            <MessageInfo
+              v-if="message.type === 'message-info'"
+              :message="message"
+            />
+
             <OwnMessage
-              v-if="message.userId === userId"
+              v-if="(message.userId === userId) && (message?.type !== 'message-info')"
               :message="message"
               :last-of-several-msgs="checkIfLastOfSeveralMessages(idx) || messagesSortedByDay?.messages.length - 1 === idx"
             />
 
             <OtherMessage
-              v-else
+              v-if="(message.userId !== userId) && (message?.type !== 'message-info')"
               :message="message"
               :last-of-several-msgs="checkIfLastOfSeveralMessages(idx) || messagesSortedByDay?.messages.length - 1 === idx"
             />

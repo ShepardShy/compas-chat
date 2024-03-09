@@ -71,7 +71,7 @@ const messageTime = (): string => {
         v-if="!chatUser.photo"
         class="other-msg__first-name-letter"
       >
-        {{ chatUser.firstName[0] }}
+        {{ chatUser?.firstName ? chatUser?.firstName[0] : '' }}
       </div>
     </div>
 

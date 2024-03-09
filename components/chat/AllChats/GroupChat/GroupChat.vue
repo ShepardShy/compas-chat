@@ -136,17 +136,19 @@ const onMouseClickUserChat = (_event: MouseEvent) => {
         v-if="!chatData.isTyping"
         class="group__last-message"
       >
-        <span v-if="lastMessage?.id && lastMessage?.userId === userId">
+        <span v-if="lastMessage?.id && lastMessage?.userId === userId && lastMessage?.type !== 'message-info'">
           <span class="group__user-message-last"> Вы: </span>
           {{ lastMessage.message }}
         </span>
 
-        <span v-else-if="lastMessage?.id">
+        <span v-else-if="lastMessage?.id && lastMessage?.type !== 'message-info'">
           <span class="group__user-message-last">
             {{ lastMessage.firstName + ' ' + lastMessage.secondName }}:
           </span>
           {{ lastMessage.message }}
         </span>
+
+        <span v-if="lastMessage?.type === 'message-info'"> {{ lastMessage.message }}</span>
       </div>
 
       <div

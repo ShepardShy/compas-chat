@@ -8,6 +8,13 @@ export interface MessageType {
     date: string
 }
 
+export interface MessageInfoType {
+    id: number
+    type: string
+    message: string
+    date: string
+}
+
 export interface UserChatType {
     id: number
     userId: number
@@ -20,7 +27,7 @@ export interface UserChatType {
     photo: string | undefined
     isMutedOff: boolean
     position: string
-    messages: MessageType[]
+    messages: Array<MessageType | MessageInfoType>
     totalTextMessages: number
     totalPhotoMessages: number
     totalVideoMessages: number
@@ -66,7 +73,7 @@ export interface GroupChatType {
     totalVoiceMessages: number
     totalLinksMessages: number
     users: GroupChatUserType[]
-    messages: GroupChatMessageType[]
+    messages: Array<GroupChatMessageType | MessageInfoType>
 }
 
 export interface ChatMenuType {

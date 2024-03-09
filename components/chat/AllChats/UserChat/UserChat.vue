@@ -144,7 +144,7 @@ const onMouseClickUserChat = (_event: MouseEvent) => {
         v-if="!chatData.isTyping"
         class="user__last-message"
       >
-        <span v-if="lastMessage?.id && lastMessage?.userId === chatData.id">
+        <span v-if="lastMessage?.id && lastMessage?.userId === chatData.id && lastMessage?.type !== 'message-info'">
           <span class="user__user-message-last"> Вы: </span> {{ lastMessage.message }}
         </span>
         <span v-else> {{ lastMessage.message ?? '' }} </span>

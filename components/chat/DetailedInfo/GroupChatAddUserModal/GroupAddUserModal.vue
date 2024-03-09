@@ -9,6 +9,7 @@ import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
 import type { GroupChatUserType } from '~/types/messages'
 import AppButton from '~/components/ui/AppButton/AppButton.vue'
+import { formattedDateToday } from '~/composables/chats'
 
 /**
  * Подключение стора с чатами
@@ -16,7 +17,8 @@ import AppButton from '~/components/ui/AppButton/AppButton.vue'
 const chatsStore = useChatsStore()
 const {
   allChatUsers,
-  temporalStorageForGroupChat
+  temporalStorageForGroupChat,
+  isDetailedInfoModalOpen, chats
 } = storeToRefs(chatsStore)
 /**
  * Подключение стора с настройками
@@ -32,6 +34,14 @@ const userSearchInputValue = ref()
  * Докальное хранилище для чата
  */
 const allChatDataLocal = ref()
+/**
+ * Удаленные пользователи
+ */
+const deletedUsersLocal = ref<Array<unknown>>([])
+/**
+ * Добавленные пользователи
+ */
+const addedUsersLocal = ref<Array<unknown>>([])
 
 /**
  * Монтирование компоненты
@@ -44,6 +54,8 @@ onMounted(() => {
  * Закрыть модлаку
  */
 const closeModal = () => {
+  addedUsersLocal.value = []
+  deletedUsersLocal.value = []
   chatsStore.closeAddUserModal()
 }
 /**
@@ -59,6 +71,14 @@ const closeAllModals = () => {
  * @param _userData
  */
 const addToGroup = (_userData: GroupChatUserType) => {
+  const idDeletedUsers = deletedUsersLocal.value.map(user => user.id)
+
+  if (idDeletedUsers.includes(_userData.id)) {
+    deletedUsersLocal.value = deletedUsersLocal.value.filter(user => user.id !== _userData.id)
+  }
+
+  addedUsersLocal.value = [...addedUsersLocal.value, _userData]
+
   allChatDataLocal.value = {
     ...allChatDataLocal.value,
     users: [...allChatDataLocal.value.users, _userData]
@@ -69,6 +89,14 @@ const addToGroup = (_userData: GroupChatUserType) => {
  * @param _userData
  */
 const removeFromGroup = (userId: number | string) => {
+  const userToDelete = allChatDataLocal.value.users.find(user => user.id === userId)
+  deletedUsersLocal.value = [...deletedUsersLocal.value, userToDelete]
+
+  const idAddedUsers = addedUsersLocal.value.map(user => user.id)
+  if (idAddedUsers.includes(userId)) {
+    addedUsersLocal.value = addedUsersLocal.value.filter(user => user.id !== userId)
+  }
+
   allChatDataLocal.value = {
     ...allChatDataLocal.value,
     users: allChatDataLocal.value.users.filter(user => user.id !== userId)
@@ -78,10 +106,104 @@ const removeFromGroup = (userId: number | string) => {
  * Сохранить добавление/удаление пользователей во временное хранилице в сторе
  */
 const saveChanges = async () => {
-  await chatsStore.$patch(state => state.temporalStorageForGroupChat = {
-    ...allChatDataLocal.value
-  })
+  if (isDetailedInfoModalOpen.value) {
+    if (deletedUsersLocal.value.length) {
+      await saveDeletedUsers()
+    }
+    if (addedUsersLocal.value.length) {
+      await saveAddedUsers()
+    }
+  } else {
+    await chatsStore.$patch(state => state.temporalStorageForGroupChat = {
+      ...allChatDataLocal.value
+    })
+    await chatsStore.$patch(state => state.temporalStorageForDeletedUsers = [
+      ...deletedUsersLocal.value
+    ])
+    await chatsStore.$patch(state => state.temporalStorageForAddedUsers = [
+      ...addedUsersLocal.value
+    ])
+  }
+
   closeModal()
+}
+
+/**
+ * Сохранить удаление пользователей
+ */
+const saveDeletedUsers = async () => {
+  const _deletedUsersListArray = deletedUsersLocal.value.map((user) => {
+    if (user.firstName) {
+      return user.firstName + ' ' + user.secondName
+    } else {
+      return user.secondName || ''
+    }
+  })
+
+  const _deletedUsersListList = _deletedUsersListArray.join(', ')
+
+  const deleteMessage = _deletedUsersListArray.length > 1
+    ? `${_deletedUsersListList} были удалены из чата`
+    : `${_deletedUsersListList} был удалён из чата`
+
+  const _messages = chats.value.find(chat => chat.id === allChatDataLocal.value.id).messages
+
+  const preparedMessages = [
+    ..._messages,
+    {
+      id: formattedDateToday(),
+      type: 'message-info',
+      message: deleteMessage,
+      date: formattedDateToday()
+    }]
+
+  if (deletedUsersLocal.value.length === 0) {
+    await chatsStore.updateGroupChat(allChatDataLocal.value)
+  } else {
+    await chatsStore.updateGroupChat({
+      ...allChatDataLocal.value,
+      messages: [...preparedMessages]
+    })
+  }
+}
+
+/**
+ * Сохранить добавление пользователей
+ */
+const saveAddedUsers = async () => {
+  const _addedUsersListArray = addedUsersLocal.value.map((user) => {
+    if (user.firstName) {
+      return user.firstName + ' ' + user.secondName
+    } else {
+      return user.secondName || ''
+    }
+  })
+
+  const _addedUsersList = _addedUsersListArray.join(', ')
+
+  const addMessage = _addedUsersListArray.length > 1
+    ? `${_addedUsersList} были добавлены в чат`
+    : `${_addedUsersList} был добавлен в чат`
+
+  const _messages = chats.value.find(chat => chat.id === allChatDataLocal.value.id).messages
+
+  const preparedMessages = [
+    ..._messages,
+    {
+      id: 33,
+      type: 'message-info',
+      message: addMessage,
+      date: formattedDateToday()
+    }]
+
+  if (addedUsersLocal.value.length === 0) {
+    await chatsStore.updateGroupChat(allChatDataLocal.value)
+  } else {
+    await chatsStore.updateGroupChat({
+      ...allChatDataLocal.value,
+      messages: [...preparedMessages]
+    })
+  }
 }
 </script>
 

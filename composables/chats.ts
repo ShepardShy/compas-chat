@@ -124,3 +124,16 @@ export const setMessageDay = (dateFromMessage: string) => {
     return dateFromMessage.slice(0, 10)
   }
 }
+
+export const formattedDateToday = () => {
+  const todayDate = new Date()
+
+  const year = todayDate.getFullYear()
+  const month = String(todayDate.getMonth() + 1).padStart(2, '0')
+  const day = String(todayDate.getDate()).padStart(2, '0')
+  const hours = String(todayDate.getHours()).padStart(2, '0')
+  const minutes = String(todayDate.getMinutes()).padStart(2, '0')
+
+  const formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`
+  return formattedDate
+}

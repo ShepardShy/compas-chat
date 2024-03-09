@@ -63,7 +63,12 @@ const openModalToCreateChat = () => {
       'chats_mobile': isMobileSize
     }"
   >
-    <div class="chats__head">
+    <div
+      class="chats__head"
+      :class="{
+        'chats__head_mobile': isMobileSize
+      }"
+    >
       <AppH1 class="chats__title">
         Чат
       </AppH1>

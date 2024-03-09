@@ -68,6 +68,10 @@ const onClickDoMenuAction = async (_menuItem: ChatMenuType) => {
     }
     case 'detailedChatInfo': {
       chatsStore.$patch(state => state.chatIdForOpenModal = chatId.value)
+
+      await nextTick()
+      await chatsStore.$patch(state => state.temporalStorageForGroupChat = openedChatData.value)
+
       chatsStore.$patch(state => state.isDetailedInfoModalOpen = true)
       break
     }
