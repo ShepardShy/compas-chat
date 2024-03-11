@@ -1,0 +1,57 @@
+@use '~/assets/styles/_variables.scss' as variables;
+
+.documents {
+  width: 64px;
+}
+
+.document__delete-and-icon {
+  display: flex;
+  flex-direction: column;
+  height: 64px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: #f6f5f3;
+  padding: 4px;
+  margin-bottom: 5px;
+}
+
+.document__delete {
+  flex: 0 0 16px;
+  align-self: flex-end;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border: 1px solid variables.$color-blue-grey;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1px;
+}
+
+.document__delete-line {
+  transform: rotate(45deg);
+  width: 9px;
+  height: 1px;
+  background-color: variables.$color-blue-grey;
+  border-radius: 50%;
+  margin-right: 0;
+}
+
+.document__delete-line:last-of-type {
+  transform: rotate(135deg);
+  margin-left: -9px;
+}
+
+.document__icon {
+  width: 28px;
+  padding: 28px;
+}
+
+.document__title {
+  font-size: 14px;
+  font-weight: 400;
+  color: #bcbcbc;
+  word-wrap: break-word;
+}

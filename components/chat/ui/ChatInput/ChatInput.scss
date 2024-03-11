@@ -6,6 +6,8 @@
 
 .files {
   margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
 }
 
 .input__body {
@@ -102,66 +104,4 @@
 .doc__item:hover,
 .doc__item_active {
   background-color: variables.$color-light-grey;
-}
-
-.files__images {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.files__image-wrapper {
-  flex: 0 0 auto;
-  border: 1px solid variables.$color-light-grey;
-  border-radius: 5px;
-  position: relative;
-  padding: 4px;
-  background-color: variables.$color-white;
-}
-
-.files__delete {
-  position: absolute;
-  top: -10px;
-  right: -5px;
-  width: 25px;
-  height: 25px;
-  border-radius: 5px;
-  background-color: variables.$color-white;
-  box-shadow: 0 0 3px 0 variables.$color-black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid variables.$color-light-grey;
-  cursor: pointer;
-  transition: 0.2s scale;
-}
-
-.files__delete-icon {
-  color: variables.$color-red;
-}
-
-.files__delete:hover {
-  scale: 1.1;
-}
-
-.files__image {
-  object-fit: contain;
-  width: 100%;
-  height: 150px;
-}
-
-.files__documents {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.files__document-wrapper {
-  min-height: 50px;
-  flex: 0 1 calc(33% - 10px);
-  border: 1px solid variables.$color-light-grey;
-  border-radius: 5px;
-  position: relative;
-  padding: 15px 10px 10px;
-  background-color: variables.$color-white;
 }

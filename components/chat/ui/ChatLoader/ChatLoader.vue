@@ -11,5 +11,5 @@
 </template>
 
 <style scoped lang="scss">
-@import './ChatLoader'
+@import './ChatLoader';
 </style>

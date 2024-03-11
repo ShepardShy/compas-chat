@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import AddDocuments from 'assets/icons/add-doc-icon.svg'
-import DeleteIcon from 'assets/icons/delete-icon.svg'
 import { docTypes, imagesTypes, inputFilesTypes } from '~/shared/const'
+import { LoadedDocuments, LoadedImages } from '~/components'
 
+/**
+ * Входящие пропсы
+ */
 interface PropsType {
   placeholder?: string
   addDocuments?: boolean
@@ -14,7 +17,6 @@ interface PropsType {
   loadedImages?: Array<unknown>
   loadedDocuments?: Array<unknown>
 }
-
 const props = defineProps<PropsType>()
 const {
   placeholder,
@@ -28,32 +30,35 @@ const {
   loadedDocuments
 } = toRefs(props)
 
+/**
+ * События
+ */
 const emit = defineEmits<{
   (emit: 'update:inputValue', inputValue: string): void
   (emit: 'update:loadedImages', loadedImages: Array<unknown>): void
   (emit: 'update:loadedDocuments', loadedDocuments: Array<unknown>): void
 }>()
 
-const filesData = ref()
+/**
+ * Открыто ли меню для подгрузки файлов
+ */
 const isFilesTypesMenuOpen = ref<boolean>(false)
+/**
+ * Выбранный тип файлов для загрузки
+ */
 const activeFileType = ref()
+/**
+ * Загружеггые изображения
+ */
+const uploadedImages = ref([])
+/**
+ * Загруженные документы
+ */
+const uploadedDocuments = ref([])
 
-const toggleFilesMenuType = () => isFilesTypesMenuOpen.value = !isFilesTypesMenuOpen.value
-const setActiveFileType = async (fileType: typeof inputFilesTypes) => {
-  activeFileType.value = fileType
-  toggleFilesMenuType()
-  await nextTick()
-  $uploadDocuments.value.click()
-}
-
-const setBorderRadiusForFirstAndLastItem = (itemIdx) => {
-  if (itemIdx == 0) {
-    return '5px 5px 0 0'
-  } else if (inputFilesTypes.length - 1 == itemIdx) {
-    return '0 0 5px 5px'
-  }
-}
-
+/**
+ * Задает тип документов инпута при загрузке
+ */
 const documentsType = computed(() => {
   if (activeFileType.value == 'Фото') {
     return imagesTypes.join(',')
@@ -62,46 +67,9 @@ const documentsType = computed(() => {
     return docTypes.join(',')
   }
 })
-
-const $uploadDocuments = ref<HTMLInputElement>()
-const uploadedImages = ref([])
-const uploadedDocuments = ref([])
-
-const onChangeChooseFiles = (_event: unknown) => {
-  const _files = _event.target.files
-
-  for (let i = 0; i < _files.length; i++) {
-    const _file = _files[i]
-    const _imageUrl = URL.createObjectURL(_file)
-    const _fileName = _files[i].name
-
-    if (_file.type.includes('image')) {
-      uploadedImages.value = [
-        ...uploadedImages.value,
-        {
-          id: i,
-          url: _imageUrl
-        }]
-    } else {
-      uploadedDocuments.value = [
-        ...uploadedDocuments.value,
-        {
-          id: i,
-          url: _imageUrl,
-          name: _fileName
-        }]
-    }
-  }
-}
-
-const deleteImage = (imgUrl: string) => {
-  uploadedImages.value = [...uploadedImages.value].filter(image => image.url !== imgUrl)
-}
-
-const deleteDocument = (documentUrl: string) => {
-  uploadedDocuments.value = [...uploadedDocuments.value].filter(document => document.url !== documentUrl)
-}
-
+/**
+ * Определение placeholder для инпута
+ */
 const placeholderValue = computed(() => {
   if (isMakingAVoiceMessage.value) {
     return 'Для отмены кликните курсором вне поля'
@@ -109,7 +77,9 @@ const placeholderValue = computed(() => {
     return placeholder.value
   }
 })
-
+/**
+ * Преобразование длины голосового сообщения
+ */
 const voiceMessageLengthTransformer = computed(() => {
   if (!messageDuration.value) {
     return '00:00:00'
@@ -143,6 +113,77 @@ const voiceMessageLengthTransformer = computed(() => {
   return finalDuration
 })
 
+/**
+ * Подписка на загрузку изображений и документов
+ */
+watch(
+  () => [uploadedImages.value, uploadedDocuments.value],
+  () => {
+    emit('update:loadedImages', uploadedImages.value)
+    emit('update:loadedDocuments', uploadedDocuments.value)
+  },
+  {
+    deep: true
+  }
+)
+
+/**
+ * Монтирование компонента
+ */
+onMounted(() => {
+  uploadedImages.value = loadedImages.value
+  uploadedDocuments.value = loadedDocuments.value
+})
+
+/**
+ * Загрузка файлов
+ */
+const $uploadDocuments = ref<HTMLInputElement>()
+const filesData = ref()
+
+// Открыть/закрыть меню выбора типа загружаемых файлов
+const toggleFilesMenuType = () => isFilesTypesMenuOpen.value = !isFilesTypesMenuOpen.value
+
+// Задать активнй тип файла и открыть меню для выбора файлов
+const setActiveFileType = async (fileType: typeof inputFilesTypes) => {
+  activeFileType.value = fileType
+  toggleFilesMenuType()
+  await nextTick()
+  $uploadDocuments.value.click()
+}
+
+// Загрузка файлов
+const onChangeChooseFiles = (_event: unknown) => {
+  const _files = _event.target.files
+
+  for (let i = 0; i < _files.length; i++) {
+    const _file = _files[i]
+    const _imageUrl = URL.createObjectURL(_file)
+    const _fileName = _files[i].name
+
+    if (_file.type.includes('image')) {
+      uploadedImages.value = [
+        ...uploadedImages.value,
+        {
+          id: i,
+          url: _imageUrl,
+          name: _fileName
+        }]
+    } else {
+      uploadedDocuments.value = [
+        ...uploadedDocuments.value,
+        {
+          id: i,
+          url: _imageUrl,
+          name: _fileName
+        }]
+    }
+  }
+}
+
+/**
+ * Управление высотой инпута
+ */
 const $inputBody = ref<HTMLInputElement>()
 const $inputResizeIcon = ref<HTMLDivElement>()
 let startPosition
@@ -150,8 +191,9 @@ let currentInputHeight = 40
 const minHeight = 40
 let isResizing = false
 
-const startInputHeightResizing = (event: MouseEvent) => {
-  event.preventDefault()
+// Старт изменения высоты инпута
+const startInputHeightResizing = (_event: MouseEvent) => {
+  _event.preventDefault()
   isResizing = true
 
   $inputResizeIcon.value.style.cursor = 'grabbing'
@@ -162,6 +204,7 @@ const startInputHeightResizing = (event: MouseEvent) => {
   window.addEventListener('mouseup', stopInputHeightResizing)
 }
 
+// Изменение высоты инпута
 const keepInputHeightResizing = (event: MouseEvent) => {
   if (!isResizing) return
 
@@ -188,6 +231,7 @@ const keepInputHeightResizing = (event: MouseEvent) => {
   }
 }
 
+// Завершение изменение высоты инпута
 const stopInputHeightResizing = () => {
   if (!isResizing) return
 
@@ -197,21 +241,19 @@ const stopInputHeightResizing = () => {
   window.removeEventListener('mouseup', stopInputHeightResizing)
 }
 
-watch(
-  () => [uploadedImages.value, uploadedDocuments.value],
-  () => {
-    emit('update:loadedImages', uploadedImages.value)
-    emit('update:loadedDocuments', uploadedDocuments.value)
-  },
-  {
-    deep: true
+/**
+ * Задает border-radius для первого и последнего элемента меню выбора типо загружаемых документов
+ * @param _itemIdx
+ */
+const setBorderRadiusForFirstAndLastItem = (_itemIdx) => {
+  if (_itemIdx == 0) {
+    return '5px 5px 0 0'
+  } else if (inputFilesTypes.length - 1 == _itemIdx) {
+    return '0 0 5px 5px'
+  } else {
+    return '0 0 0 0'
   }
-)
-
-onMounted(() => {
-  uploadedImages.value = loadedImages.value
-  uploadedDocuments.value = loadedDocuments.value
-})
+}
 </script>
 
 <template>
@@ -225,53 +267,17 @@ onMounted(() => {
       v-if="uploadedImages?.length || uploadedDocuments?.length"
       class="files"
     >
-      <div
-        v-if="uploadedImages?.length"
-        class="files__images"
-      >
-        <div
-          v-for="image in uploadedImages"
-          :key="image.id"
-          class="files__image-wrapper"
-        >
-          <div
-            class="files__delete"
-            @click="deleteImage(image.url)"
-          >
-            <DeleteIcon class="files__delete-icon" />
-          </div>
-          <img
-            :src="image.url"
-            class="files__image"
-          >
-        </div>
-      </div>
-
-      <div
+      <LoadedDocuments
         v-if="uploadedDocuments.length"
-        class="files__documents"
-      >
-        <div
-          v-for="document in uploadedDocuments"
-          :key="document.id"
-          class="files__document-wrapper"
-        >
-          <div
-            class="files__delete"
-            @click="deleteDocument(document.url)"
-          >
-            <DeleteIcon class="files__delete-icon" />
-          </div>
-
-          <div class="files__document">
-            {{ document.name }}
-          </div>
-        </div>
-      </div>
+        v-model:uploaded-documents="uploadedDocuments"
+      />
+      <LoadedImages
+        v-if="uploadedImages?.length"
+        v-model:uploaded-images="uploadedImages"
+      />
     </div>
 
     <div
-      ref="inputWrapperRef"
       class="input"
       :style="{
         width: width
@@ -288,7 +294,6 @@ onMounted(() => {
         :placeholder="placeholderValue"
         :style="{
           width: width,
-          minHeight: currentInputHeight + 'px',
           height: currentInputHeight + 'px'
         }"
         @input="$emit('update:inputValue', $event.currentTarget.value)"
