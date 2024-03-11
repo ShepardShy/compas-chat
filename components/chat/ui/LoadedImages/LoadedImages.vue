@@ -38,11 +38,13 @@ const deleteImage = (url: string) => {
       }"
     >
       <div
-        class="images__delete"
+        class="images__delete-wrapper"
         @click="deleteImage(image.url)"
       >
-        <div class="images__delete-line" />
-        <div class="images__delete-line" />
+        <div class="images__delete">
+          <div class="images__delete-line" />
+          <div class="images__delete-line" />
+        </div>
       </div>
     </div>
 
