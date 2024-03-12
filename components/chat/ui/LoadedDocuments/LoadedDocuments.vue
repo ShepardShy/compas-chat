@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import PdfDocIcon from '~/assets/icons/pdf-doc-icon.svg'
+import XlsDocIcon from '~/assets/icons/xls-doc-icon.svg'
 import WordDocIcon from '~/assets/icons/word-doc-icon.svg'
 import AnyDocIcon from '~/assets/icons/any-doc-icon.svg'
+import DeleteFileIcon from '~/assets/icons/delete-file-icon.svg'
 
 /**
  * Входящие пропсы
@@ -34,25 +35,41 @@ const deleteDocument = (url: string) => {
     :key="document.id"
     class="documents"
   >
-    <div class="document__delete-and-icon">
-      <div
+    <div
+      class="document__delete-and-icon"
+    >
+      <DeleteFileIcon
         class="document__delete"
         @click="deleteDocument(document.url)"
-      >
-        <div class="document__delete-line" />
-        <div class="document__delete-line" />
-      </div>
+      />
 
-      <PdfDocIcon
-        v-if="document.name.slice(-3) === 'pdf'"
+      <!--      <iframe-->
+      <!--        v-if="document.name.includes('.pdf')"-->
+      <!--        :src="document.url"-->
+      <!--        class="document__pdf"-->
+      <!--        style="overflow:hidden;"-->
+      <!--        scrolling="no"-->
+      <!--        width="64px"-->
+      <!--        height="64px"-->
+      <!--      />-->
+
+      <WordDocIcon
+        v-if="document.name.includes('.doc')"
         class="document__icon"
       />
-      <WordDocIcon
-        v-else-if="document.name.slice(-4) === 'docx'"
+
+      <AnyDocIcon
+        v-if="document.name.includes('.pdf')"
         class="document__icon"
+      />
+
+      <XlsDocIcon
+        v-else-if="document.name.includes('.xls')"
+        class="document__icon"
+        style="scale: 2; pointer-events: none"
       />
       <AnyDocIcon
-        v-else
+        v-else-if="!document.name.includes('.xls') && !document.name.includes('.doc') && !document.name.includes('.pdf')"
         class="document__icon"
       />
     </div>

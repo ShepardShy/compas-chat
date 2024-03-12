@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import DeleteFileIcon from 'assets/icons/delete-file-icon.svg'
+
 /**
  * Входящие пропсы
  */
@@ -37,15 +39,10 @@ const deleteImage = (url: string) => {
         backgroundImage: `url(${image.url})`
       }"
     >
-      <div
-        class="images__delete-wrapper"
+      <DeleteFileIcon
+        class="images__delete"
         @click="deleteImage(image.url)"
-      >
-        <div class="images__delete">
-          <div class="images__delete-line" />
-          <div class="images__delete-line" />
-        </div>
-      </div>
+      />
     </div>
 
     <div class="images__title">

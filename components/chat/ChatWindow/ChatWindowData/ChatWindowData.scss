@@ -23,6 +23,11 @@
   font-weight: 400;
   color: variables.$color-active;
   text-decoration: underline;
+  cursor: pointer;
+}
+
+.user__name:hover {
+  text-decoration: none;
 }
 
 .user__status {

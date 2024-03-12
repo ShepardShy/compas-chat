@@ -127,13 +127,13 @@ const openAllChats = () => {
           class="window__icon"
           @click="toggleSearchInput"
         />
-        <CallIcon
-          :style="{
-            color: isMakingACall ? '#1253a2' : '#8BABD8',
-          }"
-          class="window__icon"
-          @click="toggleIsCalling"
-        />
+        <!--        <CallIcon-->
+        <!--          :style="{-->
+        <!--            color: isMakingACall ? '#1253a2' : '#8BABD8',-->
+        <!--          }"-->
+        <!--          class="window__icon"-->
+        <!--          @click="toggleIsCalling"-->
+        <!--        />-->
         <div
           class="window__icon-wrapper"
           @click="toggleMenuOpen"

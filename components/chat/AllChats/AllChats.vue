@@ -100,6 +100,9 @@ const openModalToCreateChat = () => {
     <ChatInput
       v-model:inputValue="searchChatValue"
       class="chats__input"
+      :class="{
+        'chats__input_mobile': isMobileSize
+      }"
       placeholder="Поиск"
     />
 
@@ -108,11 +111,18 @@ const openModalToCreateChat = () => {
         v-if="chatsWithPinnedUsers.length"
         :chats-with-pinned-users="chatsWithPinnedUsers"
         class="chats__pinned"
+        :class="{
+          'chats__pinned_mobile': isMobileSize
+        }"
       />
 
       <ChatsWithoutPinnedUsers
         v-if="chatsWithoutPinned.length"
         :chats-without-pinned-users="chatsWithoutPinned"
+        class="chats__without-pinned"
+        :class="{
+          'chats__without-pinned_mobile': isMobileSize
+        }"
       />
     </div>
   </div>

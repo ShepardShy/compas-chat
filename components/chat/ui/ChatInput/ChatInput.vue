@@ -2,6 +2,7 @@
 import AddDocuments from 'assets/icons/add-doc-icon.svg'
 import { docTypes, imagesTypes, inputFilesTypes } from '~/shared/const'
 import { LoadedDocuments, LoadedImages } from '~/components'
+import { useSettingsStore } from '~/store/settings'
 
 /**
  * Входящие пропсы
@@ -16,7 +17,9 @@ interface PropsType {
   isHeightResize?: boolean
   loadedImages?: Array<unknown>
   loadedDocuments?: Array<unknown>
+  isResizing?: boolean
 }
+
 const props = defineProps<PropsType>()
 const {
   placeholder,
@@ -37,7 +40,14 @@ const emit = defineEmits<{
   (emit: 'update:inputValue', inputValue: string): void
   (emit: 'update:loadedImages', loadedImages: Array<unknown>): void
   (emit: 'update:loadedDocuments', loadedDocuments: Array<unknown>): void
+  (emit: 'update:isResizing', isResizing: boolean): void
 }>()
+
+/**
+ * Подключение стора с настройками
+ */
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
 
 /**
  * Открыто ли меню для подгрузки файлов
@@ -189,12 +199,12 @@ const $inputResizeIcon = ref<HTMLDivElement>()
 let startPosition
 let currentInputHeight = 40
 const minHeight = 40
-let isResizing = false
+let isHeightResizing = false
 
 // Старт изменения высоты инпута
 const startInputHeightResizing = (_event: MouseEvent) => {
   _event.preventDefault()
-  isResizing = true
+  isHeightResizing = true
 
   $inputResizeIcon.value.style.cursor = 'grabbing'
   $inputBody.value.style.height = `${currentInputHeight}px`
@@ -206,7 +216,9 @@ const startInputHeightResizing = (_event: MouseEvent) => {
 
 // Изменение высоты инпута
 const keepInputHeightResizing = (event: MouseEvent) => {
-  if (!isResizing) return
+  if (!isHeightResizing) return
+
+  emit('update:isResizing', $inputBody.value.style.height !== 40)
 
   const currentMousePosition = event.pageY
   const windowHeight = window.innerHeight
@@ -233,7 +245,7 @@ const keepInputHeightResizing = (event: MouseEvent) => {
 
 // Завершение изменение высоты инпута
 const stopInputHeightResizing = () => {
-  if (!isResizing) return
+  if (!isHeightResizing) return
 
   $inputResizeIcon.value.style.cursor = 'grab'
 
@@ -253,6 +265,29 @@ const setBorderRadiusForFirstAndLastItem = (_itemIdx) => {
   } else {
     return '0 0 0 0'
   }
+}
+
+/**
+ * Подгонять высоту инпута при вводе на мобилке
+ */
+const autoResizeTextarea = () => {
+  if (!isMobileSize) return
+
+  const textarea = $inputBody.value
+  textarea.style.height = 'auto'
+  textarea.style.height = textarea.scrollHeight + 'px'
+
+  if (textarea.scrollHeight > 56) {
+    currentInputHeight = textarea.scrollHeight
+  }
+}
+
+/**
+ * При вводе данных в инпут
+ */
+const onTextareaInput = (_event: Event) => {
+  emit('update:inputValue', _event.currentTarget.value)
+  autoResizeTextarea()
 }
 </script>
 
@@ -296,11 +331,11 @@ const setBorderRadiusForFirstAndLastItem = (_itemIdx) => {
           width: width,
           height: currentInputHeight + 'px'
         }"
-        @input="$emit('update:inputValue', $event.currentTarget.value)"
+        @input="onTextareaInput($event)"
       />
 
       <div
-        v-if="isHeightResize"
+        v-if="isHeightResize && !isMobileSize"
         ref="$inputResizeIcon"
         class="input__resize-window"
         @mousedown.prevent="startInputHeightResizing($event)"

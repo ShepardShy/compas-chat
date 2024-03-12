@@ -107,7 +107,7 @@
 }
 
 .add-info__img {
-  margin: 0 auto 10px;
+  margin: 0 auto 5px;
 }
 
 .add-info__close-icon {
@@ -130,6 +130,7 @@
   color: variables.$color-dark;
   display: flex;
   gap: 10px;
+  align-content: center;
 }
 
 .menu__item_last {
@@ -174,7 +175,7 @@
   color: variables.$color-dark;
   display: flex;
   gap: 10px;
-  align-items: flex-start;
+  align-items: center;
   transition: 0.5s all;
   border-bottom: 1px solid transparent;
 }

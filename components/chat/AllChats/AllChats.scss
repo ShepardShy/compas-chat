@@ -4,11 +4,11 @@
   border-right: 1px solid #bcbcbc;
   user-select: none;
   height: 100vh;
-  padding: 25px 5px 25px 15px;
+  padding: 25px 0 25px 15px;
 }
 
 .chats_mobile {
-  padding: 25px 5px 25px;
+  padding: 25px 0 25px 5px;
 }
 
 .chats__wrapper {
@@ -101,8 +101,26 @@
 
 .chats__input {
   margin-bottom: 25px;
+  margin-right: 10px;
+}
+
+.chats__input_mobile {
+  margin-right: 5px;
 }
 
 .chats__pinned {
   margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.chats__pinned_mobile {
+  margin-right: 5px;
+}
+
+.chats__without-pinned {
+  margin-right: 10px;
+}
+
+.chats__without-pinned_mobile {
+  margin-right: 5px;
 }

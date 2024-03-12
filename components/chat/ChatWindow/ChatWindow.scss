@@ -88,6 +88,12 @@
   height: 20px;
   cursor: pointer;
   margin-right: 25px;
+  color: #0584fe;
+  transition: 0.2s all;
+}
+
+.window__back-icon:hover {
+  color: #1253a2;
 }
 
 .window__back-icon_mobile {

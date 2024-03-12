@@ -37,6 +37,10 @@ const uploadedDocuments = ref([])
  * Текущий тип сообщения
  */
 const messageType = ref<'text' | 'voice'>('text')
+/**
+ * Высота инпута изменена и не равна минимальной
+ */
+const isResizing = ref(false)
 
 /**
  * Подписка на измнение чата и его очистку
@@ -306,6 +310,7 @@ watch(() => openedChatData.value, () => console.log(openedChatData.value), { dee
         v-model:input-value="messageValue"
         v-model:loaded-images="uploadedImages"
         v-model:loaded-documents="uploadedDocuments"
+        v-model:is-resizing="isResizing"
         class="dialog__input"
         placeholder="Напишите сообщение…"
         :add-documents="true"
@@ -318,6 +323,9 @@ watch(() => openedChatData.value, () => console.log(openedChatData.value), { dee
         class="dialog__send-msg"
         :class="{
           'dialog__send-msg_active': isMakingAVoiceMessage,
+        }"
+        :style="{
+          alignSelf: isResizing || uploadedImages.length || uploadedDocuments.length ? 'flex-end': 'center',
         }"
         @dblclick="setMessageType"
         @click="handleMessage"

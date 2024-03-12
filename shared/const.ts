@@ -40,8 +40,9 @@ export const imagesTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/svg+x
 export const docTypes = [
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'application / pdf',
-  'application / vnd.ms - excel']
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+]
 
 export const detailedInfoMenuItems: DetailedInfoMenuItem[] = [
   {

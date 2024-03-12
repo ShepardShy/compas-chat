@@ -43,8 +43,13 @@
   position: absolute;
   height: 28px;
   top: 25px;
-  left: 28px;
+  left: 17px;
   cursor: pointer;
+  color: #0584fe;
+}
+
+.add-user__back-icon:hover {
+  color: #1253a2;
 }
 
 .add-user__close-icon {
@@ -52,6 +57,7 @@
   top: 15px;
   right: 15px;
   cursor: pointer;
+  color: #0584fe;
 }
 
 .add-user__title {
