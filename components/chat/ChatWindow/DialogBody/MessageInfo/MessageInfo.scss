@@ -1,6 +1,8 @@
 @use '~/assets/styles/_variables.scss' as variables;
 
 .message-info {
-  padding: 10px 0;
+  padding: 10px 25px;
+  text-align: center;
   color: variables.$color-dark-grey;
+
 }
