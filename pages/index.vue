@@ -19,6 +19,10 @@ definePageMeta({
   name: ERouteName.PAGE_HOME
 })
 
+/** Маршрутризатор */
+const router = useRouter()
+const route = useRoute()
+
 /**
  * Подюклчение стора с сообщениями
  */
@@ -28,7 +32,9 @@ const {
   isDetailedInfoModalOpen,
   isGroupChatEditModalOpen,
   isGroupChatCreateModalOpen,
-  isOpenMessageTypeModal
+  isOpenMessageTypeModal,
+  chats,
+  openedChatId
 } = storeToRefs(chatsStore)
 /**
  * Подюклчение стора с настройками
@@ -53,7 +59,7 @@ const isAnyModalOpen = computed(() => {
 })
 
 /**
- *
+ * Показывать ли модалку с дополнительной информацией
  */
 const isAdditionalInfoModalVisible = computed(() => {
   return isDetailedInfoModalOpen.value &&
@@ -64,14 +70,33 @@ const isAdditionalInfoModalVisible = computed(() => {
 })
 
 /**
+ * Подписка на измнение открытого чата
+ */
+watch(
+  () => openedChatId.value,
+  async () => {
+    if (openedChatId.value !== route.query?.chatId) {
+      await router.replace({ path: '/', query: { chatId: openedChatId.value } })
+    }
+  }
+)
+
+/**
  * После монтирования компоненты
  */
-onMounted(() => {
+onMounted(async () => {
   chatsStore.$patch(state => state.filteredChats = state.chats)
 
   checkMobileSize()
   window.addEventListener('resize', checkMobileSize)
   settingsStore.$patch(state => state.isLoading = false)
+
+  if (route.query?.chatId) {
+    await chatsStore.$patch(state => state.openedChatId = +route.query.chatId)
+  } else {
+    await router.replace({ path: '/', query: { chatId: chats.value[0].id } })
+    chatsStore.$patch(state => state.openedChatId = chats.value[0].id)
+  }
 })
 
 /**

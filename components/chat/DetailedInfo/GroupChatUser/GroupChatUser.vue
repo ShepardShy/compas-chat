@@ -39,7 +39,7 @@ const { isGroupChatCreateModalOpen } = storeToRefs(chatsStore)
  */
 const userFullName = computed(() => {
   if (userData.value.firstName) {
-    return userData.value.firstName + userData.value?.secondName
+    return userData.value.firstName + ' ' + userData.value?.secondName
   } else {
     return userData.value?.secondName
   }

@@ -18,7 +18,9 @@ const chatsStore = useChatsStore()
 const {
   allChatUsers,
   temporalStorageForGroupChat,
-  isDetailedInfoModalOpen, chats
+  isDetailedInfoModalOpen,
+  chats,
+  openedChatData
 } = storeToRefs(chatsStore)
 /**
  * Подключение стора с настройками
@@ -31,7 +33,7 @@ const { isMobileSize } = storeToRefs(settingsStore)
  */
 const userSearchInputValue = ref()
 /**
- * Докальное хранилище для чата
+ * Локальное хранилище для чата
  */
 const allChatDataLocal = ref()
 /**
@@ -42,6 +44,22 @@ const deletedUsersLocal = ref<Array<unknown>>([])
  * Добавленные пользователи
  */
 const addedUsersLocal = ref<Array<unknown>>([])
+
+/**
+ * Все пользователи приложения + пользователи чата
+ */
+const preparedChatUsers = computed(() => {
+  const _currentChatUsersId = [...openedChatData.value!.users].map(user => user.userId)
+  const _allUsersToChoose = [...openedChatData.value!.users]
+  const _allAppUsers = [...allChatUsers.value]
+
+  for (let i = 0; i < _allAppUsers.length; i++) {
+    if (!_currentChatUsersId.includes(_allAppUsers[i].userId)) {
+      _allUsersToChoose.push(allChatUsers.value[i])
+    }
+  }
+  return _allUsersToChoose
+})
 
 /**
  * Монтирование компоненты
@@ -118,9 +136,11 @@ const saveChanges = async () => {
       ...allChatDataLocal.value
     })
     await chatsStore.$patch(state => state.temporalStorageForDeletedUsers = [
+      ...state.temporalStorageForDeletedUsers,
       ...deletedUsersLocal.value
     ])
     await chatsStore.$patch(state => state.temporalStorageForAddedUsers = [
+      ...state.temporalStorageForAddedUsers,
       ...addedUsersLocal.value
     ])
   }
@@ -248,7 +268,7 @@ const saveAddedUsers = async () => {
         }"
       >
         <GroupChatUser
-          v-for="user in allChatUsers"
+          v-for="user in preparedChatUsers"
           :key="user.id"
           :all-chat-data-local="allChatDataLocal"
           :user-data="user"

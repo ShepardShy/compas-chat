@@ -139,9 +139,9 @@ export const useChatsStore = defineStore('chats', {
           isDetailedInfoOpen: false,
           users: [
             {
-              id: 2,
-              firstName: 'Илья',
-              secondName: 'Петров',
+              userId: 2,
+              firstName: 'Женя',
+              secondName: 'Иванов',
               isActive: true,
               isTyping: false,
               photo: '/photo.png',
@@ -149,9 +149,9 @@ export const useChatsStore = defineStore('chats', {
               lastTimeActive: '15.02.2024 15:00'
             },
             {
-              id: 3,
-              firstName: 'Вася',
-              secondName: 'Петров',
+              userId: 3,
+              firstName: 'Арсений',
+              secondName: 'Баранова',
               isActive: false,
               isTyping: false,
               photo: '',
@@ -159,153 +159,13 @@ export const useChatsStore = defineStore('chats', {
               lastTimeActive: '20.02.2024 14:00'
             },
             {
-              id: 4,
+              userId: 4,
               firstName: 'Илья',
               secondName: 'Петров',
               isActive: true,
               isTyping: false,
               photo: '/photo.png',
               position: 'Менеджер по работе с клиентами',
-              lastTimeActive: '20.02.2024 14:00'
-            },
-            {
-              id: 1,
-              firstName: 'Тимур',
-              secondName: 'Киселев',
-              isActive: false,
-              isTyping: false,
-              photo: '',
-              position: 'Менеджер',
-              lastTimeActive: '20.02.2024 14:00'
-            },
-            {
-              id: 22,
-              firstName: 'Илья',
-              secondName: 'Петров',
-              isActive: true,
-              isTyping: false,
-              photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами',
-              lastTimeActive: '20.02.2024 14:00'
-            },
-            {
-              id: 29,
-              firstName: 'Вася',
-              secondName: 'Петров',
-              isActive: false,
-              isTyping: false,
-              photo: '',
-              position: 'Менеджер',
-              lastTimeActive: '20.02.2024 14:00'
-            },
-            {
-              id: 8,
-              firstName: 'Илья',
-              secondName: 'Петров',
-              isActive: true,
-              isTyping: false,
-              photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами',
-              lastTimeActive: '20.02.2024 14:00'
-            },
-            {
-              id: 9,
-              firstName: 'Вася',
-              secondName: 'Петров',
-              isActive: false,
-              isTyping: false,
-              photo: '',
-              position: 'Менеджер',
-              lastTimeActive: '25.02.2024 15:00'
-            },
-            {
-              id: 55,
-              firstName: 'Илья',
-              secondName: 'Петров',
-              isActive: true,
-              isTyping: false,
-              photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами',
-              lastTimeActive: '20.02.2024 14:00'
-            },
-            {
-              id: 77,
-              firstName: 'Вася',
-              secondName: 'Петров',
-              isActive: false,
-              isTyping: false,
-              photo: '',
-              position: 'Менеджер',
-              lastTimeActive: '29.02.2024 18:00'
-            },
-            {
-              id: 12,
-              firstName: 'Илья',
-              secondName: 'Петров',
-              isActive: true,
-              isTyping: false,
-              photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами',
-              lastTimeActive: '20.02.2024 14:00'
-            },
-            {
-              id: 13,
-              firstName: 'Вася',
-              secondName: 'Петров',
-              isActive: false,
-              isTyping: false,
-              photo: '',
-              position: 'Менеджер',
-              lastTimeActive: '15.02.2024 15:00'
-            },
-            {
-              id: 14,
-              firstName: 'Илья',
-              secondName: 'Петров',
-              isActive: true,
-              isTyping: false,
-              photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами',
-              lastTimeActive: '20.02.2024 14:00'
-            },
-            {
-              id: 15,
-              firstName: 'Вася',
-              secondName: 'Петров',
-              isActive: false,
-              isTyping: false,
-              photo: '',
-              position: 'Менеджер',
-              lastTimeActive: '20.02.2024 14:00'
-            },
-            {
-              id: 13,
-              firstName: 'Вася',
-              secondName: 'Петров',
-              isActive: false,
-              isTyping: false,
-              photo: '',
-              position: 'Менеджер',
-              lastTimeActive: '20.02.2024 14:00'
-            },
-            {
-              id: 14,
-              firstName: 'Илья',
-              secondName: 'Петров',
-              isActive: false,
-              isTyping: false,
-              photo: '/photo.png',
-              position: 'Менеджер по работе с клиентами',
-              lastTimeActive: '15.02.2024 15:00'
-            },
-            {
-              id: 15,
-              firstName: 'Вася',
-              secondName: 'Петров',
-              isActive: true,
-              isTyping: false,
-              photo: '',
-              position: 'Менеджер',
               lastTimeActive: '20.02.2024 14:00'
             }
           ],
@@ -337,8 +197,8 @@ export const useChatsStore = defineStore('chats', {
         {
           id: 2,
           userId: 2,
-          firstName: 'Илья',
-          secondName: 'Петров',
+          firstName: 'Женя',
+          secondName: 'Иванов',
           isPinned: true,
           isActive: true,
           isTyping: false,
@@ -379,8 +239,8 @@ export const useChatsStore = defineStore('chats', {
         {
           id: 3,
           userId: 3,
-          firstName: 'Вася',
-          secondName: 'Петров',
+          firstName: 'Арсений',
+          secondName: 'Баранова',
           isPinned: false,
           isActive: true,
           isTyping: false,
@@ -421,8 +281,8 @@ export const useChatsStore = defineStore('chats', {
         {
           id: 4,
           userId: 4,
-          firstName: 'Тимур',
-          secondName: 'Киселев',
+          firstName: 'Илья',
+          secondName: 'Петров',
           isPinned: false,
           isActive: false,
           isTyping: false,
@@ -690,7 +550,7 @@ export const useChatsStore = defineStore('chats', {
         }
       ] as Array<UserChatType | GroupChatType >,
       filteredChats: [] as Array<UserChatType | GroupChatType> | [],
-      openedChatId: 11 as undefined | number,
+      openedChatId: undefined as undefined | number,
 
       chatIdForOpenModal: undefined as undefined | number,
       isDetailedInfoModalOpen: false,
@@ -874,7 +734,7 @@ export const useChatsStore = defineStore('chats', {
       const messages = chatData?.messages
       const preparedMessages:Array<{ date: string, messages: UserChatType | GroupChatType | undefined }> = []
 
-      for (let i = 0; i < messages.length; i++) {
+      for (let i = 0; i < messages?.length; i++) {
         if (i === 0) {
           preparedMessages.push({
             date: messages[i]?.date?.slice(0, 10),

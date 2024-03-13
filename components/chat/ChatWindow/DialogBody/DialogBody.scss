@@ -107,6 +107,7 @@
 .dialog__send-msg_active {
   background-color: variables.$color-red;
   animation: pulse 1s infinite;
+  align-items: flex-end;
 }
 
 @keyframes pulse {

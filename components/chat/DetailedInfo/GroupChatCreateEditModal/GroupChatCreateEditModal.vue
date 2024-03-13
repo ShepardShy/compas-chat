@@ -175,8 +175,9 @@ const updateTemporalStorageForGroupChat = async (userId?: number) => {
     photo: groupPhoto.value,
     users: actualUsers
   })
-
-  await chatsStore.$patch(state => state.temporalStorageForDeletedUsers = [...state.temporalStorageForDeletedUsers, _userToDelete])
+  if (userId) {
+    await chatsStore.$patch(state => state.temporalStorageForDeletedUsers = [...state.temporalStorageForDeletedUsers, _userToDelete])
+  }
 }
 
 /**
@@ -260,7 +261,7 @@ const addMessagesAboutDeletesAndAddedUsers = () => {
       date: formattedDateToday()
     })
   }
-  console.log(finalMessages)
+
   return finalMessages
 }
 </script>

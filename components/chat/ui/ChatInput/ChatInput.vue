@@ -200,11 +200,14 @@ let startPosition
 let currentInputHeight = 40
 const minHeight = 40
 let isHeightResizing = false
+let inputHeightWhenStartResizing
 
 // Старт изменения высоты инпута
 const startInputHeightResizing = (_event: MouseEvent) => {
   _event.preventDefault()
   isHeightResizing = true
+
+  inputHeightWhenStartResizing = currentInputHeight
 
   $inputResizeIcon.value.style.cursor = 'grabbing'
   $inputBody.value.style.height = `${currentInputHeight}px`
@@ -225,7 +228,7 @@ const keepInputHeightResizing = (event: MouseEvent) => {
 
   let newHeight
   if (startPosition > currentMousePosition) {
-    newHeight = minHeight + startPosition - currentMousePosition
+    newHeight = inputHeightWhenStartResizing + startPosition - currentMousePosition
   } else {
     newHeight = currentInputHeight - (currentMousePosition - startPosition)
     startPosition = event.pageY
@@ -271,14 +274,14 @@ const setBorderRadiusForFirstAndLastItem = (_itemIdx) => {
  * Подгонять высоту инпута при вводе на мобилке
  */
 const autoResizeTextarea = () => {
-  if (!isMobileSize) return
-
   const textarea = $inputBody.value
   textarea.style.height = 'auto'
   textarea.style.height = textarea.scrollHeight + 'px'
 
   if (textarea.scrollHeight > 56) {
     currentInputHeight = textarea.scrollHeight
+  } else {
+    currentInputHeight = minHeight
   }
 }
 

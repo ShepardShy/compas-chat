@@ -222,7 +222,6 @@ const checkIfLastOfSeveralMessages = (_idx: string | number): boolean => {
 const deleteMessage = (_messageIdx) => {
   voiceMessage.value = voiceMessage.value.splice(_messageIdx, -1)
 }
-watch(() => openedChatData.value, () => console.log(openedChatData.value), { deep: true })
 </script>
 
 <template>
@@ -323,9 +322,6 @@ watch(() => openedChatData.value, () => console.log(openedChatData.value), { dee
         class="dialog__send-msg"
         :class="{
           'dialog__send-msg_active': isMakingAVoiceMessage,
-        }"
-        :style="{
-          alignSelf: isResizing || uploadedImages.length || uploadedDocuments.length ? 'flex-end': 'center',
         }"
         @dblclick="setMessageType"
         @click="handleMessage"

@@ -34,6 +34,11 @@ const searchChatValue = ref<string | undefined>()
 const isCreateChatMenuOpen = ref(false)
 
 /**
+ * Высота блока с сообщенями
+ */
+const allMessagesHeight = computed(() => isMobileSize.value ? `${window.innerHeight - 155}px` : 'calc(100vh - 155px)')
+
+/**
  * Подписка на поиск чата
  */
 watch(
@@ -106,7 +111,12 @@ const openModalToCreateChat = () => {
       placeholder="Поиск"
     />
 
-    <div class="chats__wrapper">
+    <div
+      class="chats__wrapper"
+      :style="{
+        height: allMessagesHeight
+      }"
+    >
       <ChatsWithPinnedUsers
         v-if="chatsWithPinnedUsers.length"
         :chats-with-pinned-users="chatsWithPinnedUsers"
