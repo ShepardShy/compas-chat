@@ -30,14 +30,15 @@ const {
   messageDuration,
   isHeightResize,
   loadedImages,
-  loadedDocuments
+  loadedDocuments,
+  isResizing
 } = toRefs(props)
 
 /**
  * События
  */
 const emit = defineEmits<{
-  (emit: 'update:inputValue', inputValue: string): void
+  (emit: 'update:inputValue', _inputValue: string): void
   (emit: 'update:loadedImages', loadedImages: Array<unknown>): void
   (emit: 'update:loadedDocuments', loadedDocuments: Array<unknown>): void
   (emit: 'update:isResizing', isResizing: boolean): void
@@ -194,7 +195,8 @@ const onChangeChooseFiles = (_event: unknown) => {
 /**
  * Управление высотой инпута
  */
-const $inputBody = ref<HTMLInputElement>()
+const $inputBody = ref()
+const $input = ref()
 const $inputResizeIcon = ref<HTMLDivElement>()
 let startPosition
 let currentInputHeight = 40
@@ -236,12 +238,15 @@ const keepInputHeightResizing = (event: MouseEvent) => {
 
   if (newHeight > windowHeight * 0.45) {
     $inputBody.value.style.height = `${windowHeight * 0.45}px`
+    $input.value.style.height = `${windowHeight * 0.45}px`
     currentInputHeight = windowHeight * 0.45
   } else if (newHeight < minHeight) {
     $inputBody.value.style.height = `${minHeight}px`
+    $input.value.style.height = `${minHeight}px`
     currentInputHeight = minHeight
   } else {
     $inputBody.value.style.height = `${newHeight}px`
+    $input.value.style.height = `${newHeight}px`
     currentInputHeight = newHeight
   }
 }
@@ -275,10 +280,14 @@ const setBorderRadiusForFirstAndLastItem = (_itemIdx) => {
  */
 const autoResizeTextarea = () => {
   const textarea = $inputBody.value
+  const textareaWrapper = $input.value
+
   textarea.style.height = 'auto'
   textarea.style.height = textarea.scrollHeight + 'px'
+  textareaWrapper.style.height = 'auto'
+  textareaWrapper.style.height = textarea.scrollHeight + 'px'
 
-  if (textarea.scrollHeight > 56) {
+  if (textarea.scrollHeight > 57) {
     currentInputHeight = textarea.scrollHeight
   } else {
     currentInputHeight = minHeight
@@ -289,9 +298,20 @@ const autoResizeTextarea = () => {
  * При вводе данных в инпут
  */
 const onTextareaInput = (_event: Event) => {
-  emit('update:inputValue', _event.currentTarget.value)
-  autoResizeTextarea()
+  emit('update:inputValue', _event.target.value)
+  if (isHeightResize?.value) {
+    autoResizeTextarea()
+  }
 }
+
+/**
+ * Очистить загруженные сообщения
+ */
+const cleanLoadedImages = () => uploadedImages.value = []
+
+defineExpose({
+  cleanLoadedImages
+})
 </script>
 
 <template>
@@ -316,12 +336,15 @@ const onTextareaInput = (_event: Event) => {
     </div>
 
     <div
+      ref="$input"
       class="input"
       :style="{
-        width: width
+        width: width,
+        height: currentInputHeight + 'px'
       }"
     >
       <textarea
+        v-if="isHeightResizing"
         ref="$inputBody"
         :value="inputValue"
         class="input__body"
@@ -336,6 +359,23 @@ const onTextareaInput = (_event: Event) => {
         }"
         @input="onTextareaInput($event)"
       />
+
+      <input
+        v-if="!isHeightResizing"
+        ref="$inputBody"
+        :value="inputValue"
+        class="input__body"
+        :class="{
+          'input__body_document': addDocuments && !isMakingAVoiceMessage,
+          'input__body_voice': isMakingAVoiceMessage
+        }"
+        :placeholder="placeholderValue"
+        :style="{
+          width: width,
+          height: currentInputHeight + 'px'
+        }"
+        @input="onTextareaInput($event)"
+      >
 
       <div
         v-if="isHeightResize && !isMobileSize"

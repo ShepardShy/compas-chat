@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { GroupChatMessageType, MessageType } from '~/types/messages'
-import ViewedMessageIcon from 'assets/icons/viewed-message-icon.svg'
-import ReceivedMessageIcon from 'assets/icons/recieved-message-icon.svg'
 
 import { useSettingsStore } from '~/store/settings'
+import { TextMessage, ImageMessage, VoiceMessage, FileMessage } from '~/components'
 
 /**
  * Входящие пропсы
@@ -12,6 +11,7 @@ interface PropsType {
   message: GroupChatMessageType | MessageType
   lastOfSeveralMsgs: boolean
 }
+
 const props = defineProps<PropsType>()
 const { message, lastOfSeveralMsgs } = toRefs(props)
 
@@ -20,52 +20,36 @@ const { message, lastOfSeveralMsgs } = toRefs(props)
  */
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
-
-/**
- * Сообщение доставлено
- */
-const isMessageReceived = computed<boolean>(() => {
-  return message.value.isReceived &&
-      !message.value.isViewed
-})
-/**
- * Сообщение просмотрено
- */
-const isMessageViewed = computed<boolean>(() => {
-  return message.value.isViewed
-})
-
-/**
- * Вывод времени сообщения
- */
-const messageTime = (): string => {
-  return message.value.date.slice(-5)
-}
 </script>
 
 <template>
   <div
     class="own-msg"
     :class="{
-      'own-msg__triangle ': lastOfSeveralMsgs,
+      'own-msg__triangle': lastOfSeveralMsgs && (message.type === 'image' && message.comment),
       'own-msg_mobile': isMobileSize
     }"
+    :style="{
+      boxShadow: message.type === 'image' && 'none',
+      // backgroundColor: message.type === 'image' && !message.comment && 'transparent'
+    }"
   >
-    <div class="owm-msg__message">
-      {{ message.message }}
-    </div>
+    <TextMessage
+      v-if="message.type === 'text'"
+      :last-of-several-msgs="lastOfSeveralMsgs"
+      :message="message"
+      :other-message="false"
+    />
 
-    <div class="own-msg__time-and-status">
-      <div class="own-msg__time">
-        {{ messageTime() }}
-      </div>
-      <ViewedMessageIcon
-        v-if="isMessageViewed"
-      />
-      <ReceivedMessageIcon
-        v-if="isMessageReceived"
-      />
-    </div>
+    <ImageMessage
+      v-if="message.type === 'image'"
+      :message="message"
+      :other-message="false"
+    />
+
+    <VoiceMessage v-if="message.type === 'voice'" />
+
+    <FileMessage v-if="message.type === 'file'" />
   </div>
 </template>
 

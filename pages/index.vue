@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
+import { computed, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { ERouteName } from '~/shared/routes'
 
 import {
@@ -68,6 +70,10 @@ const isAdditionalInfoModalVisible = computed(() => {
       !isGroupChatCreateModalOpen.value &&
       !isOpenMessageTypeModal.value
 })
+/**
+ * Высота блока в 100vh
+ */
+const windowHeight = computed(() => `${window.innerHeight}px`)
 
 /**
  * Подписка на измнение открытого чата
@@ -89,6 +95,7 @@ onMounted(async () => {
 
   checkMobileSize()
   window.addEventListener('resize', checkMobileSize)
+
   settingsStore.$patch(state => state.isLoading = false)
 
   if (route.query?.chatId) {
@@ -138,12 +145,18 @@ const closeAllModal = (_event: MouseEvent) => {
         :class="{
           'chat__users_mobile': isMobileSize
         }"
+        :style="{
+          height: windowHeight
+        }"
       />
       <ChatWindow
         v-if="(isMobileSize && !isChatsShown) || !isMobileSize"
         class="chat__window"
         :class="{
           'chat__window_mobile': isMobileSize
+        }"
+        :style="{
+          height: windowHeight
         }"
       />
 

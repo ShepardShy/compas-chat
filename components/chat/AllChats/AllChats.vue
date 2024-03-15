@@ -36,7 +36,7 @@ const isCreateChatMenuOpen = ref(false)
 /**
  * Высота блока с сообщенями
  */
-const allMessagesHeight = computed(() => isMobileSize.value ? `${window.innerHeight - 155}px` : 'calc(100vh - 155px)')
+const allMessagesHeight = computed(() => `${window.innerHeight - 155}px`)
 
 /**
  * Подписка на поиск чата

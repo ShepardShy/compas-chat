@@ -31,6 +31,7 @@ export const useChatsStore = defineStore('chats', {
           messages: [
             {
               id: 1,
+              type: 'text',
               message: 'Привет Привет ПриветПриветПривет ПриветПривет ПриветПриветПривет Привет Привет ПриветПривет Привет',
               userId: 1,
               isReceived: true,
@@ -40,6 +41,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 2,
+              type: 'text',
               message: 'Принимаете заказ?',
               userId: 1,
               isReceived: true,
@@ -49,6 +51,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 1,
+              type: 'text',
               message: 'Привет',
               userId: 1,
               isReceived: true,
@@ -58,6 +61,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 2,
+              type: 'text',
               message: 'Принимаете заказ?',
               userId: 1,
               isReceived: true,
@@ -67,6 +71,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 1,
+              type: 'text',
               message: 'Привет',
               userId: 1,
               isReceived: true,
@@ -76,6 +81,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 2,
+              type: 'text',
               message: 'Принимаете заказ?',
               userId: 1,
               isReceived: true,
@@ -85,6 +91,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 3,
+              type: 'text',
               message: 'Привет',
               userId: 2,
               isReceived: true,
@@ -94,6 +101,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 4,
+              type: 'text',
               message: 'Принимаете заказ?',
               userId: 2,
               isReceived: true,
@@ -103,6 +111,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 5,
+              type: 'text',
               message: 'Привет',
               userId: 1,
               isReceived: true,
@@ -112,12 +121,57 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 6,
+              type: 'text',
               message: 'Принимаете заказ?',
               userId: 1,
               isReceived: false,
               isViewed: false,
               isUnread: false,
               date: '05.03.2024 15:12'
+            },
+            {
+              id: 7,
+              type: 'image',
+              comment: '',
+              userId: 2,
+              isReceived: false,
+              isViewed: false,
+              isUnread: false,
+              date: '15.03.2024 15:12',
+              images: [
+                {
+                  url: '/image-example.png',
+                  date: '15.03.2024 15:12',
+                  isReceived: true,
+                  isViewed: true,
+                  isUnread: false
+                }, {
+                  url: '/image-example.png',
+                  date: '15.03.2024 15:12',
+                  isReceived: true,
+                  isViewed: true,
+                  isUnread: false
+                }
+              ]
+            },
+            {
+              id: 8,
+              type: 'image',
+              comment: 'Прикрепляю фото',
+              userId: 1,
+              isReceived: true,
+              isViewed: false,
+              isUnread: false,
+              date: '15.03.2024 15:12',
+              images: [
+                {
+                  url: '/image-example.png',
+                  date: '15.03.2024 15:12',
+                  isReceived: true,
+                  isViewed: true,
+                  isUnread: false
+                }
+              ]
             }
           ]
         },
@@ -151,7 +205,7 @@ export const useChatsStore = defineStore('chats', {
             {
               userId: 3,
               firstName: 'Арсений',
-              secondName: 'Баранова',
+              secondName: 'Голубев',
               isActive: false,
               isTyping: false,
               photo: '',
@@ -173,11 +227,12 @@ export const useChatsStore = defineStore('chats', {
             {
               id: 33,
               type: 'message-info',
-              message: 'Тимур Киселев создал(а) чат',
+              message: 'Тимур Киселев создал групповой чат',
               date: '14.02.2024 15:12'
             },
             {
               id: 1,
+              type: 'text',
               userId: 1,
               firstName: 'Тимур',
               secondName: 'Киселев',
@@ -187,6 +242,7 @@ export const useChatsStore = defineStore('chats', {
             {
               id: 2,
               userId: 2,
+              type: 'text',
               firstName: 'Илья',
               secondName: 'Петров',
               message: 'Добрый день',
@@ -240,7 +296,7 @@ export const useChatsStore = defineStore('chats', {
           id: 3,
           userId: 3,
           firstName: 'Арсений',
-          secondName: 'Баранова',
+          secondName: 'Баранов',
           isPinned: false,
           isActive: true,
           isTyping: false,
@@ -548,7 +604,7 @@ export const useChatsStore = defineStore('chats', {
             }
           ]
         }
-      ] as Array<UserChatType | GroupChatType >,
+      ] as Array<UserChatType | GroupChatType>,
       filteredChats: [] as Array<UserChatType | GroupChatType> | [],
       openedChatId: undefined as undefined | number,
 
@@ -732,7 +788,7 @@ export const useChatsStore = defineStore('chats', {
     openedChatData: (state): UserChatType | GroupChatType | undefined => {
       const chatData = state.chats.find(chat => chat.id === state.openedChatId)
       const messages = chatData?.messages
-      const preparedMessages:Array<{ date: string, messages: UserChatType | GroupChatType | undefined }> = []
+      const preparedMessages: Array<{ date: string, messages: UserChatType | GroupChatType | undefined }> = []
 
       for (let i = 0; i < messages?.length; i++) {
         if (i === 0) {
@@ -915,7 +971,74 @@ export const useChatsStore = defineStore('chats', {
                     photo: string
                     users: never[];
                 }) {
-      this.temporalStorageForGroupChat = temporalChatData
+      this.temporalStorageForGroupChat = {
+        ...temporalChatData
+      }
+    },
+
+    sendTextMessage (message: string, userId: number, chatId: number) {
+      const userData = this.allChatUsers.find(user => user.id === userId)
+      const newMessage = {
+        id: formattedDateToday(),
+        userId,
+        type: 'text',
+        firstName: userData!.firstName ?? '',
+        secondName: userData!.secondName ?? '',
+        message,
+        date: formattedDateToday(),
+        isReceived: true,
+        isViewed: false,
+        isUnread: false
+      }
+
+      this.chats = this.chats.map((chat) => {
+        if (chat.id === chatId) {
+          return {
+            ...chat,
+            messages: [...chat.messages, newMessage]
+          }
+        } else {
+          return chat
+        }
+      })
+    },
+
+    sendImageMessage (uploadedImages: Array<string>, message: string, userId: number, chatId: number) {
+      const userData = this.allChatUsers.find(user => user.id === userId)
+      const newMessage = {
+        id: formattedDateToday(),
+        userId,
+        type: 'image',
+        firstName: userData!.firstName ?? '',
+        secondName: userData!.secondName ?? '',
+        comment: message,
+        date: formattedDateToday(),
+        isReceived: true,
+        isViewed: false,
+        isUnread: false,
+        images: [
+          ...uploadedImages.map((image) => {
+            return {
+              url: image.url,
+              date: formattedDateToday(),
+              isReceived: true,
+              isViewed: false,
+              isUnread: false
+            }
+          })
+        ]
+      }
+
+      this.chats = this.chats.map((chat) => {
+        if (chat.id === chatId) {
+          return {
+            ...chat,
+            messages: [...chat.messages, newMessage]
+          }
+        } else {
+          return chat
+        }
+      })
     },
 
     createGroupChat () {
@@ -940,7 +1063,7 @@ export const useChatsStore = defineStore('chats', {
         messages: [{
           id: 33,
           type: 'message-info',
-          message: `${fullUserName} создал(а) чат`,
+          message: `${fullUserName} создал(а) групповой чат`,
           date: formattedDateToday()
         }]
       }

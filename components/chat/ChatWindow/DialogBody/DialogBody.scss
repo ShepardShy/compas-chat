@@ -15,7 +15,7 @@
 
 .dialog__wrapper {
   flex: 1 1 auto;
-  margin-bottom: 60px;
+  margin-bottom: 35px;
   overflow-y: auto;
   padding-right: 50px;
 
@@ -96,7 +96,6 @@
   position: relative;
   z-index: 150;
   transition: 0.5s all;
-  margin-bottom: 3px;
 }
 
 .dialog__send-msg:active {

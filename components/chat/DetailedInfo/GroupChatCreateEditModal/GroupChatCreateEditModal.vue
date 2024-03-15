@@ -83,7 +83,20 @@ const chatFullName = computed<string>(() => {
 
   return openModalChatData.value.title
 })
+/**
+ *
+ */
+const chatUsers = computed(() => {
+  if (userSearchValue.value) {
+    return temporalStorageForGroupChat.value?.users.filter(user =>
+      user.firstName.toLowerCase().includes(userSearchValue.value.toLowerCase()) ||
+        user.secondName.toLowerCase().includes(userSearchValue.value.toLowerCase())
+    )
+  }
 
+  return temporalStorageForGroupChat.value?.users
+})
+watch(() => temporalStorageForGroupChat.value, () => console.log(temporalStorageForGroupChat.value.users), { deep: true })
 /**
  * Подписка на изменение названия или фото чата
  */
@@ -130,6 +143,9 @@ const closeModal = () => {
   chatsStore.closeGroupChatEditModal()
   chatsStore.clearTemporalStorageForNewGroupChat()
   chatsStore.clearChatIdForOpenModal()
+
+  chatsStore.$patch(state => state.temporalStorageForDeletedUsers = [])
+  chatsStore.$patch(state => state.temporalStorageForAddedUsers = [])
 }
 
 /**
@@ -166,7 +182,7 @@ const updateTemporalStorageForGroupChat = async (userId?: number) => {
   const _userToDelete = temporalStorageForGroupChat.value?.users.find(user => user.id === userId)
 
   const actualUsers = userId
-    ? temporalStorageForGroupChat.value?.users.filter(user => user.id !== userId)
+    ? temporalStorageForGroupChat.value?.users.filter(user => user.userId != userId)
     : temporalStorageForGroupChat.value?.users
 
   await chatsStore.updateTemporalStorageForGroupChat({
@@ -175,6 +191,7 @@ const updateTemporalStorageForGroupChat = async (userId?: number) => {
     photo: groupPhoto.value,
     users: actualUsers
   })
+
   if (userId) {
     await chatsStore.$patch(state => state.temporalStorageForDeletedUsers = [...state.temporalStorageForDeletedUsers, _userToDelete])
   }
@@ -227,8 +244,8 @@ const addMessagesAboutDeletesAndAddedUsers = () => {
     const _deletedUsersList = _deletedUsersListArray.join(', ')
 
     const deleteMessage = _deletedUsersListArray.length > 1
-      ? `${_deletedUsersList} были удалены из чата`
-      : `${_deletedUsersList} был удалён из чата`
+      ? `Удалены из группового чата: ${_deletedUsersList}`
+      : `Удалён из группвого чата: ${_deletedUsersList} `
 
     finalMessages.push({
       id: formattedDateToday(),
@@ -251,8 +268,8 @@ const addMessagesAboutDeletesAndAddedUsers = () => {
     const _addedUsersList = _addedUsersListArray.join(', ')
 
     const addMessage = _addedUsersListArray.length > 1
-      ? `${_addedUsersList} были добавлены в чат`
-      : `${_addedUsersList} был добавлен в чат`
+      ? `Добавлены в групповой чат: ${_addedUsersList}`
+      : `Добавлен в групповой чат: ${_addedUsersList}`
 
     finalMessages.push({
       id: formattedDateToday(),
@@ -338,12 +355,19 @@ const addMessagesAboutDeletesAndAddedUsers = () => {
           class="edit-group__group-users"
         >
           <GroupChatUser
-            v-for="user in temporalStorageForGroupChat?.users"
+            v-for="user in chatUsers"
             :key="user.id"
             :user-data="user"
             :is-delete-icon="true"
-            @delete-user="deleteUserFromChatLocal(user.id)"
+            @delete-user="deleteUserFromChatLocal(user.userId)"
           />
+        </div>
+
+        <div
+          v-if="!chatUsers.length && !isGroupChatCreateModalOpen"
+          class="edit-group__no-users"
+        >
+          Пользователи чата не найдены
         </div>
       </div>
 

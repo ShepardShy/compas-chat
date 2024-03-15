@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useChatsStore } from '~/store/chats'
+import { useSettingsStore } from '~/store/settings'
+
 import BackIcon from '~/assets/icons/back-icon.svg'
 import CloseIcon from '~/assets/icons/close-icon.svg'
-import { useSettingsStore } from '~/store/settings'
-import VoiceMessage from '~/components/chat/DetailedInfo/MessagesTypesModal/VoiceMessage/VoiceMessage.vue'
+
+import { VoiceMessageType, TextMessageType, PhotoMessageType, LinkMessageType, ChatInput } from '~/components/'
+
 import type { MessagesTypesTitleType } from '~/types/messages'
-import TextMessage from '~/components/chat/DetailedInfo/MessagesTypesModal/TextMessage/TextMessage.vue'
-import ChatInput from '~/components/chat/ui/ChatInput/ChatInput.vue'
 import { messagesTypesList } from '~/shared/const'
-import PhotoMessage from '~/components/chat/DetailedInfo/MessagesTypesModal/PhotoMessage/PhotoMessage.vue'
 import AppH3 from '~/components/ui/AppH3/AppH3.vue'
 
 const chatsStore = useChatsStore()
@@ -76,7 +76,7 @@ onMounted(() => {
           v-if="messageType === 'Текстовые сообщения'"
           class="message-type__text-message"
         >
-          <TextMessage
+          <TextMessageType
             v-for="(message, idx) in dataFromSelectedTypeOfChatMessage"
             :key="message.id"
             :is-next-message-own="dataFromSelectedTypeOfChatMessage[idx]?.userId === dataFromSelectedTypeOfChatMessage[idx + 1]?.userId"
@@ -92,7 +92,7 @@ onMounted(() => {
           v-if="messageType === 'Голосовые сообщения'"
           class="message-type__voice-message"
         >
-          <VoiceMessage
+          <VoiceMessageType
             v-for="message in dataFromSelectedTypeOfChatMessage"
             :key="message.id"
             :date="message?.date"
@@ -108,7 +108,7 @@ onMounted(() => {
           v-if="messageType === 'Фотографии'"
           class="message-type__photo-message"
         >
-          <PhotoMessage
+          <PhotoMessageType
             :photo-messages="dataFromSelectedTypeOfChatMessage"
           />
         </div>
@@ -117,7 +117,7 @@ onMounted(() => {
           v-if="messageType === 'Ссылки'"
           class="message-type__link-message"
         >
-          <LinkMessage
+          <LinkMessageType
             :link-message="dataFromSelectedTypeOfChatMessage"
           />
         </div>

@@ -49,10 +49,10 @@ const userFullName = computed(() => {
  * Информация об активности пользователя
  */
 const userActiveDateAndTime = computed(() => {
-  if (userData.value.isActive) {
+  if (userData.value?.isActive) {
     return 'В сети'
   } else {
-    return `Был(а) в сети ${userActiveTime(userData.value.lastTimeActive)}`
+    return `Был(а) в сети ${userActiveTime(userData.value?.lastTimeActive)}`
   }
 })
 /**

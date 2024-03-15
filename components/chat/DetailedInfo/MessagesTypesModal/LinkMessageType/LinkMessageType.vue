@@ -4,31 +4,12 @@ interface PropsType {
   linkMessages: any[]
 }
 
-const props = defineProps<PropsType>()
-const { linkMessages } = toRefs(props)
 </script>
 
 <template>
   <div
-    v-for="messagesWithinDay in photoMessages"
     class="photo-message"
-  >
-    <div class="photo-message__date">
-      {{ messagesWithinDay?.date?.slice(0, 10) }}
-    </div>
-
-    <div class="photo-message__images-wrapper">
-      <div
-        v-for="message in messagesWithinDay.messages"
-        :key="message.url"
-        :style="{
-          backgroundImage: `url(${message.url})`
-        }"
-        class="photo-message__image"
-        alt="photo"
-      />
-    </div>
-  </div>
+  />
 </template>
 
 <style scoped lang="scss">

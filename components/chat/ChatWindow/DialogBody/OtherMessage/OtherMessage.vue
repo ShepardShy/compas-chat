@@ -3,6 +3,8 @@
 import type { GroupChatMessageType, MessageType, UserChatType } from '~/types/messages'
 import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
+import TextMessage from '~/components/chat/ChatWindow/DialogBody/MessageTypes/TextMessage/TextMessage.vue'
+import ImageMessage from '~/components/chat/ChatWindow/DialogBody/MessageTypes/ImageMessage/ImageMessage.vue'
 
 /**
  * Входящие пропсы
@@ -78,18 +80,20 @@ const messageTime = (): string => {
     <div
       class="other-msg__body"
       :class="{
-        'other-msg__triangle ': lastOfSeveralMsgs
+        'other-msg__triangle ': lastOfSeveralMsgs && (message.type === 'image' && message.comment)
       }"
     >
-      <div class="other-msg__message">
-        {{ message.message }}
-      </div>
+      <TextMessage
+        v-if="message.type === 'text'"
+        :message="message"
+        :other-message="true"
+      />
 
-      <div class="other-msg__time-and-status">
-        <div class="other-msg__time">
-          {{ messageTime() }}
-        </div>
-      </div>
+      <ImageMessage
+        v-if="message.type === 'image'"
+        :message="message"
+        :other-message="true"
+      />
     </div>
   </div>
 </template>

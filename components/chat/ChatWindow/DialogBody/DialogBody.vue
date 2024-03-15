@@ -41,6 +41,10 @@ const messageType = ref<'text' | 'voice'>('text')
  * Высота инпута изменена и не равна минимальной
  */
 const isResizing = ref(false)
+/**
+ * Ссылка на инпут отправки сообщений
+ */
+const $chatInput = ref()
 
 /**
  * Подписка на измнение чата и его очистку
@@ -184,7 +188,26 @@ function mediaRecorderStop () {
 /**
  * Отправить текстовое сообщение
  */
-const sendTextMessage = () => {
+const sendTextMessage = async () => {
+  chatsStore.sendTextMessage(messageValue.value, userId.value, openedChatId.value)
+  messageValue.value = ''
+
+  await nextTick()
+
+  scrollToDialogWrapperBottom()
+}
+
+/**
+ * Отправить картинку с или без комментария
+ */
+const sendImageMessage = async () => {
+  chatsStore.sendImageMessage(uploadedImages.value, messageValue.value, userId.value, openedChatId.value)
+  messageValue.value = ''
+  $chatInput.value.cleanLoadedImages()
+
+  await nextTick()
+
+  scrollToDialogWrapperBottom()
 }
 
 let oneClickTimer
@@ -192,6 +215,11 @@ let oneClickTimer
 const handleMessage = () => {
   oneClickTimer = setTimeout(() => {
     if (messageType.value === 'text') {
+      if (uploadedImages.value.length) {
+        sendImageMessage()
+        return
+      }
+
       sendTextMessage()
     } else if (messageType.value === 'voice') {
       if (isMakingAVoiceMessage.value) {
@@ -306,6 +334,7 @@ const deleteMessage = (_messageIdx) => {
       }"
     >
       <ChatInput
+        ref="$chatInput"
         v-model:input-value="messageValue"
         v-model:loaded-images="uploadedImages"
         v-model:loaded-documents="uploadedDocuments"

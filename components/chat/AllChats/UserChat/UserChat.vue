@@ -131,9 +131,11 @@ const onMouseClickUserChat = (_event: MouseEvent) => {
         <div class="user__message-status">
           <ViewedMessageIcon
             v-if="isMessageViewed"
+            style="color: #27AE60"
           />
           <ReceivedMessageIcon
             v-if="isMessageReceived"
+            style="color: #27AE60"
           />
 
           {{ messageTimeInfo(lastMessage) }}

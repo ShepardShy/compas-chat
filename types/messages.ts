@@ -1,11 +1,22 @@
+export interface ImageMessageType {
+    url: string
+    date: string
+    isReceived: boolean
+    isViewed: boolean
+    isUnread: boolean
+}
+
 export interface MessageType {
     id: number
-    message: string
+    message?: string
     userId: number
     isReceived: boolean
     isViewed: boolean
     isUnread: boolean
     date: string
+    type: 'text' | 'image' | 'file' | 'voice'
+    images?: Array<ImageMessageType>
+    comment?: string
 }
 
 export interface MessageInfoType {
@@ -54,8 +65,11 @@ export interface GroupChatMessageType {
     userId: number
     firstName: string
     secondName: string
-    message: string
+    message?: string
     date: string
+    type: 'text' | 'image' | 'file' | 'voice'
+    images?: Array<ImageMessageType>
+    comment?: string
 }
 
 export interface GroupChatType {

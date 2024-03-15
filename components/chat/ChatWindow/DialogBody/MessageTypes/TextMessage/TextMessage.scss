@@ -1,0 +1,17 @@
+.text-msg {
+  padding: 10px 15px 10px 15px;
+  min-width: 144px;
+}
+
+.text-msg__time-and-status {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px
+}
+
+.text-msg__time {
+  font-size: 12px;
+  font-weight: 400;
+  color: #8f8f8f;
+}

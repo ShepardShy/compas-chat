@@ -312,6 +312,7 @@ const getIconComponent = (_icon) => {
           :class="{
             'details-menu__item-icon':item.icon !== 'delete-icon'
           }"
+          style="flex: 0 0 21px;"
         />
 
         <div>{{ showModalMenuItemTitle(openModalChatData, item) }}</div>

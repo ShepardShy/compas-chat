@@ -1,8 +1,17 @@
 @use '~/assets/styles/_variables.scss' as variables;
 
 .message-info {
-  padding: 10px 25px;
+  padding: 10px 15px;
   text-align: center;
-  color: variables.$color-dark-grey;
+  color: variables.$color-white;
+  background-color: variables.$color-grey;
+  border-radius: 30px;
+  font-weight: 400;
+  display: flex;
+  gap: 5px;
+  margin-bottom: 5px;
+}
 
+.message-info__name {
+  text-decoration: underline;
 }

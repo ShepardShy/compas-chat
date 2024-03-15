@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import AppH3 from '~/components/ui/AppH3/AppH3.vue'
 import BackIcon from 'assets/icons/back-icon.svg'
 import CloseIcon from 'assets/icons/close-icon.svg'
@@ -20,7 +19,8 @@ const {
   temporalStorageForGroupChat,
   isDetailedInfoModalOpen,
   chats,
-  openedChatData
+  openedChatData,
+  isGroupChatCreateModalOpen
 } = storeToRefs(chatsStore)
 /**
  * Подключение стора с настройками
@@ -49,6 +49,10 @@ const addedUsersLocal = ref<Array<unknown>>([])
  * Все пользователи приложения + пользователи чата
  */
 const preparedChatUsers = computed(() => {
+  if (isGroupChatCreateModalOpen.value) {
+    return [...allChatUsers.value]
+  }
+
   const _currentChatUsersId = [...openedChatData.value!.users].map(user => user.userId)
   const _allUsersToChoose = [...openedChatData.value!.users]
   const _allAppUsers = [...allChatUsers.value]
@@ -58,6 +62,12 @@ const preparedChatUsers = computed(() => {
       _allUsersToChoose.push(allChatUsers.value[i])
     }
   }
+
+  if (userSearchInputValue.value) {
+    return _allUsersToChoose.filter(user => user.firstName.toLowerCase().includes(userSearchInputValue.value.toLowerCase()) ||
+        user.secondName.toLowerCase().includes(userSearchInputValue.value.toLowerCase()))
+  }
+
   return _allUsersToChoose
 })
 
@@ -152,6 +162,8 @@ const saveChanges = async () => {
  * Сохранить удаление пользователей
  */
 const saveDeletedUsers = async () => {
+  if (isGroupChatCreateModalOpen.value) return
+
   const _deletedUsersListArray = deletedUsersLocal.value.map((user) => {
     if (user.firstName) {
       return user.firstName + ' ' + user.secondName
@@ -163,8 +175,8 @@ const saveDeletedUsers = async () => {
   const _deletedUsersListList = _deletedUsersListArray.join(', ')
 
   const deleteMessage = _deletedUsersListArray.length > 1
-    ? `${_deletedUsersListList} были удалены из чата`
-    : `${_deletedUsersListList} был удалён из чата`
+    ? `Удалены из грпуппового чата: ${_deletedUsersListList}`
+    : `Удалён из группового чата: ${_deletedUsersListList}`
 
   const _messages = chats.value.find(chat => chat.id === allChatDataLocal.value.id).messages
 
@@ -191,6 +203,8 @@ const saveDeletedUsers = async () => {
  * Сохранить добавление пользователей
  */
 const saveAddedUsers = async () => {
+  if (isGroupChatCreateModalOpen.value) return
+
   const _addedUsersListArray = addedUsersLocal.value.map((user) => {
     if (user.firstName) {
       return user.firstName + ' ' + user.secondName
@@ -202,8 +216,8 @@ const saveAddedUsers = async () => {
   const _addedUsersList = _addedUsersListArray.join(', ')
 
   const addMessage = _addedUsersListArray.length > 1
-    ? `${_addedUsersList} были добавлены в чат`
-    : `${_addedUsersList} был добавлен в чат`
+    ? `Добавлены в групповой чат: ${_addedUsersList}`
+    : `Добавлен в групповой чат: ${_addedUsersList}`
 
   const _messages = chats.value.find(chat => chat.id === allChatDataLocal.value.id).messages
 
@@ -256,7 +270,7 @@ const saveAddedUsers = async () => {
       />
 
       <ChatInput
-        v-model:input-value="userSearchInputValue"
+        v-model:inputValue="userSearchInputValue"
         class="add-user__search-input"
         placeholder="Найти"
       />
@@ -276,6 +290,13 @@ const saveAddedUsers = async () => {
           @add-to-group="userData => addToGroup(userData)"
           @remove-from-group="userId => removeFromGroup(userId)"
         />
+
+        <div
+          v-if="!preparedChatUsers.length"
+          class="add-user__no-users"
+        >
+          Пользователи чата не найдены
+        </div>
       </div>
 
       <div class="add-user__btns">
