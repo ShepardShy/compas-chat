@@ -3,8 +3,7 @@
 import type { GroupChatMessageType, MessageType, UserChatType } from '~/types/messages'
 import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
-import TextMessage from '~/components/chat/ChatWindow/DialogBody/MessageTypes/TextMessage/TextMessage.vue'
-import ImageMessage from '~/components/chat/ChatWindow/DialogBody/MessageTypes/ImageMessage/ImageMessage.vue'
+import { TextMessage, ImageMessage } from '~/components'
 
 /**
  * Входящие пропсы
@@ -44,13 +43,6 @@ const chatPhoto = computed<string>(() => {
     return 'linear-gradient(to bottom, #71d2fc 2%, #9490ff 100%)'
   }
 })
-
-/**
- * Вывод времени сообщения
- */
-const messageTime = (): string => {
-  return message.value.date.slice(-5)
-}
 </script>
 
 <template>
@@ -58,6 +50,9 @@ const messageTime = (): string => {
     class="other-msg"
     :class="{
       'other-msg_mobile': isMobileSize,
+    }"
+    :style="{
+      marginBottom: lastOfSeveralMsgs ? '5px' : '35px'
     }"
   >
     <div

@@ -78,6 +78,10 @@ const borderRadiusForActiveChat = computed(() => {
 
   return '0'
 })
+/**
+ * Собственное сообщение
+ */
+const isLastMessageOwn = computed(() => lastMessage.value?.userId === userId.value)
 
 /**
  * Событие при нажатии на чат
@@ -138,19 +142,37 @@ const onMouseClickUserChat = (_event: MouseEvent) => {
         v-if="!chatData.isTyping"
         class="group__last-message"
       >
-        <span v-if="lastMessage?.id && lastMessage?.userId === userId && lastMessage?.type !== 'message-info'">
-          <span class="group__user-message-last"> Вы: </span>
-          {{ lastMessage.message }}
+        <span v-if="chatData.textMessageDraft">
+          <span class="group__user-message-last"> Draft :</span> {{ chatData.textMessageDraft }}
         </span>
 
-        <span v-else-if="lastMessage?.id && lastMessage?.type !== 'message-info'">
-          <span class="group__user-message-last">
-            {{ lastMessage.firstName + ' ' + lastMessage.secondName }}:
+        <div v-else>
+          <span v-if="isLastMessageOwn && lastMessage?.type == 'image'">
+            <span class="group__user-message-last"> Вы :</span> {{ lastMessage?.comment ?? 'изображения' }}
           </span>
-          {{ lastMessage.message }}
-        </span>
 
-        <span v-if="lastMessage?.type === 'message-info'"> {{ lastMessage.message }}</span>
+          <span v-else-if="isLastMessageOwn && lastMessage?.type == 'text'">
+            <span class="group__user-message-last"> Вы:</span> {{ lastMessage?.message }}
+          </span>
+
+          <span v-else-if="!isLastMessageOwn && lastMessage?.type == 'image'">
+            <span class="group__user-message-last">
+              {{ lastMessage?.firstName + ' ' + lastMessage?.secondName }}:
+            </span>
+            {{ lastMessage?.comment ?? 'Изображения' }}
+          </span>
+
+          <span v-else-if="!isLastMessageOwn && lastMessage?.type == 'text'">
+            <span class="group__user-message-last">
+              {{ lastMessage?.firstName + ' ' + lastMessage?.secondName }}:
+            </span>
+            {{ lastMessage?.message }}
+          </span>
+
+          <span v-else-if="lastMessage?.type == 'message-info'">
+            {{ lastMessage?.message }}
+          </span>
+        </div>
       </div>
 
       <div

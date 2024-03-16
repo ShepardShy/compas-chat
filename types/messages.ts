@@ -47,6 +47,8 @@ export interface UserChatType {
     totalLinksMessages: number
     isMenuOpen: boolean
     isDetailedInfoOpen: boolean
+    textMessageDraft: string
+    lastTimeActive: string
 }
 
 export interface GroupChatUserType {
@@ -88,6 +90,8 @@ export interface GroupChatType {
     totalLinksMessages: number
     users: GroupChatUserType[]
     messages: Array<GroupChatMessageType | MessageInfoType>
+    textMessageDraft: string
+    lastTimeActive: string
 }
 
 export interface ChatMenuType {

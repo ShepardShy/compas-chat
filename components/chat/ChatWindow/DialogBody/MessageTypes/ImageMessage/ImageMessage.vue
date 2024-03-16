@@ -2,6 +2,7 @@
 import type { GroupChatMessageType, ImageMessageType, MessageType } from '~/types/messages'
 import ViewedMessageIcon from 'assets/icons/viewed-message-icon.svg'
 import ReceivedMessageIcon from 'assets/icons/recieved-message-icon.svg'
+import { useSettingsStore } from '~/store/settings'
 
 /**
  * Входящие пропсы
@@ -15,9 +16,23 @@ const props = defineProps<PropsType>()
 const { message, otherMessage } = toRefs(props)
 
 /**
+ * Подключение стора с настройками
+ */
+const settingsStore = useSettingsStore()
+const { isMobileSize } = toRefs(settingsStore)
+
+/**
  * Количество колонок для отображения картинок
  */
 const gridColumn = computed(() => {
+  if (isMobileSize.value) {
+    if (message.value?.images?.length <= 2) {
+      return `repeat( ${message.value?.images?.length}, 1fr)`
+    }
+
+    return 'repeat( 2, 1fr)'
+  }
+
   if (message.value?.images?.length < 3) {
     return `repeat( ${message.value?.images?.length}, 1fr)`
   }
@@ -29,17 +44,38 @@ const gridColumn = computed(() => {
  * Высота картинки
  */
 const gridRows = computed(() => {
+  if (isMobileSize.value) {
+    if (message.value?.images?.length <= 2) {
+      return '285px'
+    }
+
+    const maxImagesPerLine = 2
+    const gap = 5
+    const imagesLength = message.value?.images?.length <= 4 ? message.value?.images?.length : 4
+
+    const rowsQuantity = Math.ceil(imagesLength / maxImagesPerLine)
+
+    return `calc(${100 / rowsQuantity}% - ${gap * (rowsQuantity - 1)}px)`
+  }
+
   if (message.value?.images?.length <= 3) {
     return '323px'
   }
 
   const maxImagesPerLine = 3
   const gap = 5
+  const imagesLength = message.value?.images?.length <= 9 ? message.value?.images?.length : 9
 
-  const rowsQuantity = Math.ceil(message.value?.images?.length / maxImagesPerLine)
+  const rowsQuantity = Math.ceil(imagesLength / maxImagesPerLine)
 
   return `calc(${100 / rowsQuantity}% - ${gap * (rowsQuantity - 1)}px)`
 })
+/**
+ * Есть ли скрытые картинки
+ */
+const isImagesMoreThenShown = computed(() =>
+  (isMobileSize && message.value.images?.length > 4) ||
+    (!isMobileSize && message.value.images?.length > 9))
 /**
  * Сообщение доставлено
  */
@@ -53,6 +89,20 @@ const isMessageReceived = computed<boolean>(() => {
 const isMessageViewed = computed<boolean>(() => {
   return message.value.isViewed
 })
+/**
+ * Картинки для отображения
+ */
+const maxImagesToShow = computed(() => {
+  if (isMobileSize.value) {
+    return message.value.images?.slice(0, 4)
+  }
+
+  return message.value.images?.slice(0, 9)
+})
+/**
+ * Скрытые картинки
+ */
+const hideImagesLength = computed(() => message.value.images?.length - maxImagesToShow.value?.length)
 
 /**
  * Вывод времени сообщения
@@ -78,22 +128,34 @@ const isImageReceived = (_image: ImageMessageType) => {
 </script>
 
 <template>
-  <div class="image-message">
+  <div
+    class="image-message"
+    :class="{
+      'image-message_mobile': isMobileSize
+    }"
+  >
     <div
       class="image-message__images"
       :style="{
         gridTemplateColumns: gridColumn,
         gridTemplateRows: gridRows,
         gridAutoRows: gridRows,
+        height: isMobileSize ? '285px': '323px'
       }"
     >
       <div
-        v-for="image in message.images"
+        v-for="(image, idx) in maxImagesToShow"
         :key="image"
         class="image-message__image"
+        :class="{
+          'image-message__hide-images_last': isImagesMoreThenShown && (isMobileSize ? idx === 3 : idx === 8),
+        }"
       >
         <img :src="image.url">
-        <div class="image-message__info">
+        <div
+          v-if="!(isImagesMoreThenShown && (isMobileSize ? idx === 3 : idx === 8))"
+          class="image-message__info"
+        >
           <div class="image-message__time">
             {{ image.date.slice(-5) }}
           </div>
@@ -105,6 +167,16 @@ const isImageReceived = (_image: ImageMessageType) => {
             v-if="isImageReceived(image) && !otherMessage"
             style="color: #fff"
           />
+        </div>
+
+        <div
+          v-else
+          class="image-message__hide-images-length"
+          :style="{
+            top: isImagesMoreThenShown && isMobileSize && '30%'
+          }"
+        >
+          {{ `+${hideImagesLength}` }}
         </div>
       </div>
     </div>
@@ -122,7 +194,7 @@ const isImageReceived = (_image: ImageMessageType) => {
         class="image-message__comment-info"
       >
         <div class="image-message__comment-data">
-          {{ messageTime () }}
+          {{ messageTime() }}
         </div>
         <ViewedMessageIcon
           v-if="isMessageViewed && !otherMessage"

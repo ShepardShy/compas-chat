@@ -85,6 +85,10 @@ const isMessageViewed = computed<boolean>(() => {
   return userId.value === lastMessage.value.userId &&
       lastMessage.value.isViewed
 })
+/**
+ * Собственное сообщение
+ */
+const isLastMessageOwn = computed(() => lastMessage.value?.userId === userId.value)
 
 /**
  * Событие при нажатие на чат
@@ -146,10 +150,31 @@ const onMouseClickUserChat = (_event: MouseEvent) => {
         v-if="!chatData.isTyping"
         class="user__last-message"
       >
-        <span v-if="lastMessage?.id && lastMessage?.userId === chatData.id && lastMessage?.type !== 'message-info'">
-          <span class="user__user-message-last"> Вы: </span> {{ lastMessage.message }}
+        <span v-if="chatData.textMessageDraft">
+          <span class="user__user-message-last"> Draft :</span> {{ chatData.textMessageDraft }}
         </span>
-        <span v-else> {{ lastMessage.message ?? '' }} </span>
+
+        <div v-else>
+          <span v-if="isLastMessageOwn && lastMessage?.type == 'image'">
+            <span class="user__user-message-last"> Вы :</span> {{ lastMessage?.comment ?? 'изображения' }}
+          </span>
+
+          <span v-else-if="isLastMessageOwn && lastMessage?.type == 'text'">
+            <span class="user__user-message-last"> Вы:</span> {{ lastMessage?.message }}
+          </span>
+
+          <span v-else-if="!isLastMessageOwn && lastMessage?.type == 'image'">
+            {{ lastMessage?.comment ?? 'Изображения' }}
+          </span>
+
+          <span v-else-if="!isLastMessageOwn && lastMessage?.type == 'text'">
+            {{ lastMessage?.message }}
+          </span>
+
+          <span v-else-if="lastMessage?.type == 'message-info'"> {{
+            lastMessage?.message
+          }} </span>
+        </div>
       </div>
 
       <div

@@ -9,6 +9,7 @@ import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
 
 import AppDateInput from '~/components/ui/AppInputs/Date/Date.vue'
+import type { GroupChatMessageType, MessageType } from '~/types/messages'
 
 /**
  * Подключение стора с чатами
@@ -52,7 +53,6 @@ const $chatInput = ref()
 watch(
   () => openedChatId.value,
   async () => {
-    messageValue.value = ''
     messageType.value = 'text'
     voiceMessage.value = []
     uploadedImages.value = []
@@ -60,7 +60,24 @@ watch(
 
     await checkIfDialogBodyHeightsLessThenVH()
     scrollToDialogWrapperBottom()
+
+    if (openedChatData.value?.textMessageDraft) {
+      messageValue.value = openedChatData.value?.textMessageDraft
+    } else {
+      messageValue.value = ''
+    }
   })
+/**
+ * Подписка на ввод ссобщения
+ */
+watch(
+  () => messageValue.value,
+  () => {
+    if (messageValue.value !== openedChatData.value?.textMessageDraft) {
+      chatsStore.saveTextMessageDraft(openedChatId.value, messageValue.value)
+    }
+  }
+)
 
 /**
  * Монтирование компонента
@@ -68,6 +85,8 @@ watch(
 onMounted(async () => {
   await checkIfDialogBodyHeightsLessThenVH()
   scrollToDialogWrapperBottom()
+
+  window.addEventListener('resize', scrollToDialogWrapperBottom)
 })
 
 /**
@@ -235,10 +254,12 @@ const handleMessage = () => {
  * Является ли сообщение последним в своем типе (когда несколько своих подряд)
  * @param _idx
  */
-const checkIfLastOfSeveralMessages = (_idx: string | number): boolean => {
-  const messages = openedChatData.value!.messages
+const checkIfLastOfSeveralMessages = (
+  _idx: string | number,
+  arrayWithMessages: Array<MessageType | GroupChatMessageType>): boolean => {
+  const messages = arrayWithMessages
   if (messages[_idx + 1]) {
-    return messages[_idx].userId !== messages[_idx + 1].userId
+    return messages[_idx].userId == messages[_idx + 1].userId
   } else {
     return true
   }
@@ -288,24 +309,24 @@ const deleteMessage = (_messageIdx) => {
             :style="{
               alignSelf: message.type === 'message-info' ? 'center' :
                 message.userId == userId ? 'flex-end' : 'flex-start',
-
             }"
           >
             <MessageInfo
               v-if="message.type === 'message-info'"
               :message="message"
+              :is-next-message-info-message="checkIfLastOfSeveralMessages(idx, messagesSortedByDay?.messages)"
             />
 
             <OwnMessage
               v-if="(message.userId === userId) && (message?.type !== 'message-info')"
               :message="message"
-              :last-of-several-msgs="checkIfLastOfSeveralMessages(idx) || messagesSortedByDay?.messages.length - 1 === idx"
+              :last-of-several-msgs="checkIfLastOfSeveralMessages(idx, messagesSortedByDay?.messages)"
             />
 
             <OtherMessage
               v-if="(message.userId !== userId) && (message?.type !== 'message-info')"
               :message="message"
-              :last-of-several-msgs="checkIfLastOfSeveralMessages(idx) || messagesSortedByDay?.messages.length - 1 === idx"
+              :last-of-several-msgs="checkIfLastOfSeveralMessages(idx, messagesSortedByDay?.messages)"
             />
           </div>
         </div>

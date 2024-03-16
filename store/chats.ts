@@ -28,6 +28,7 @@ export const useChatsStore = defineStore('chats', {
           isMenuOpen: false,
           isDetailedInfoOpen: false,
           lastTimeActive: '15.02.2024 15:00',
+          textMessageDraft: '',
           messages: [
             {
               id: 1,
@@ -191,6 +192,7 @@ export const useChatsStore = defineStore('chats', {
           totalLinksMessages: 66,
           isMenuOpen: false,
           isDetailedInfoOpen: false,
+          textMessageDraft: '',
           users: [
             {
               userId: 2,
@@ -271,9 +273,11 @@ export const useChatsStore = defineStore('chats', {
           isMenuOpen: false,
           isDetailedInfoOpen: false,
           lastTimeActive: '15.02.2024 15:00',
+          textMessageDraft: '',
           messages: [
             {
               id: 1,
+              type: 'text',
               message: 'Привет',
               userId: 1,
               isReceived: true,
@@ -283,6 +287,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 2,
+              type: 'text',
               message: 'Принимаете заказ?',
               userId: 1,
               isReceived: true,
@@ -313,9 +318,11 @@ export const useChatsStore = defineStore('chats', {
           isMenuOpen: false,
           isDetailedInfoOpen: false,
           lastTimeActive: '15.02.2024 15:00',
+          textMessageDraft: '',
           messages: [
             {
               id: 1,
+              type: 'text',
               message: 'Привет',
               userId: 1,
               isReceived: true,
@@ -325,6 +332,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 2,
+              type: 'text',
               message: 'Принимаете заказ?',
               userId: 1,
               isReceived: true,
@@ -355,9 +363,11 @@ export const useChatsStore = defineStore('chats', {
           isMenuOpen: false,
           isDetailedInfoOpen: false,
           lastTimeActive: '15.02.2024 15:00',
+          textMessageDraft: '',
           messages: [
             {
               id: 1,
+              type: 'text',
               message: 'Привет',
               userId: 1,
               isReceived: true,
@@ -367,6 +377,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 2,
+              type: 'text',
               message: 'Принимаете заказ?',
               userId: 1,
               isReceived: true,
@@ -397,9 +408,11 @@ export const useChatsStore = defineStore('chats', {
           isMenuOpen: false,
           isDetailedInfoOpen: false,
           lastTimeActive: '15.02.2024 15:00',
+          textMessageDraft: '',
           messages: [
             {
               id: 1,
+              type: 'text',
               message: 'Привет',
               userId: 6,
               isReceived: true,
@@ -409,6 +422,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 2,
+              type: 'text',
               message: 'Принимаете заказ?',
               userId: 6,
               isReceived: true,
@@ -439,6 +453,7 @@ export const useChatsStore = defineStore('chats', {
           isMenuOpen: false,
           isDetailedInfoOpen: false,
           lastTimeActive: '15.02.2024 15:00',
+          textMessageDraft: '',
           messages: []
         },
         {
@@ -458,9 +473,11 @@ export const useChatsStore = defineStore('chats', {
           isMenuOpen: false,
           isDetailedInfoOpen: false,
           lastTimeActive: '15.02.2024 15:00',
+          textMessageDraft: '',
           users: [
             {
               id: 2,
+              type: 'text',
               firstName: 'Илья',
               secondName: 'Петров',
               isActive: true,
@@ -470,6 +487,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 3,
+              type: 'text',
               firstName: 'Вася',
               secondName: 'Петров',
               isActive: false,
@@ -489,6 +507,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 2,
+              type: 'text',
               userId: 2,
               firstName: 'Илья',
               secondName: 'Петров',
@@ -518,6 +537,7 @@ export const useChatsStore = defineStore('chats', {
           isMenuOpen: false,
           isDetailedInfoOpen: false,
           lastTimeActive: '15.02.2024 15:00',
+          textMessageDraft: '',
           messages: []
         },
         {
@@ -541,9 +561,11 @@ export const useChatsStore = defineStore('chats', {
           isMenuOpen: false,
           isDetailedInfoOpen: false,
           lastTimeActive: '15.02.2024 15:00',
+          textMessageDraft: '',
           messages: [
             {
               id: 1,
+              type: 'text',
               message: 'Привет',
               userId: 1,
               isReceived: true,
@@ -553,6 +575,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 2,
+              type: 'text',
               message: 'Принимаете заказ?',
               userId: 1,
               isReceived: true,
@@ -583,9 +606,11 @@ export const useChatsStore = defineStore('chats', {
           isMenuOpen: false,
           isDetailedInfoOpen: false,
           lastTimeActive: '15.02.2024 15:00',
+          textMessageDraft: '',
           messages: [
             {
               id: 1,
+              type: 'text',
               message: 'Привет',
               userId: 1,
               isReceived: true,
@@ -595,6 +620,7 @@ export const useChatsStore = defineStore('chats', {
             },
             {
               id: 2,
+              type: 'text',
               message: 'Принимаете заказ?',
               userId: 1,
               isReceived: false,
@@ -1047,6 +1073,20 @@ export const useChatsStore = defineStore('chats', {
         ? currentUser.firstName + ' ' + currentUser.secondName
         : currentUser.secondName
 
+      const _addedUsersListArray = this.temporalStorageForAddedUsers.map((user) => {
+        if (user.firstName) {
+          return user.firstName + ' ' + user.secondName
+        } else {
+          return user.secondName || ''
+        }
+      })
+
+      const _addedUsersList = _addedUsersListArray.join(', ')
+
+      const addedUsersMessage = this.temporalStorageForAddedUsers.length > 1
+        ? `Добавлены в групповой чат: ${_addedUsersList}`
+        : `Добавлен в группвой чат: ${_addedUsersList} `
+
       const newGroupChat: GroupChatType = {
         ...this.temporalStorageForGroupChat,
         id: this.chats.length + 1,
@@ -1060,12 +1100,20 @@ export const useChatsStore = defineStore('chats', {
         totalFileMessages: 0,
         totalVoiceMessages: 0,
         totalLinksMessages: 0,
+        users: [...this.temporalStorageForAddedUsers],
         messages: [{
           id: 33,
           type: 'message-info',
           message: `${fullUserName} создал(а) групповой чат`,
           date: formattedDateToday()
-        }]
+        },
+        {
+          id: formattedDateToday(),
+          type: 'message-info',
+          message: addedUsersMessage,
+          date: formattedDateToday()
+        }
+        ]
       }
 
       this.chats = [newGroupChat, ...this.chats]
@@ -1073,6 +1121,19 @@ export const useChatsStore = defineStore('chats', {
 
       this.clearTemporalStorageForNewGroupChat()
       this.closeGroupChatCreateModal()
+    },
+
+    saveTextMessageDraft (chatId: number, textMessageDraft: string) {
+      this.chats = this.chats.map((chat) => {
+        if (chat.id === chatId) {
+          return {
+            ...chat,
+            textMessageDraft
+          }
+        } else {
+          return chat
+        }
+      })
     }
   }
 }

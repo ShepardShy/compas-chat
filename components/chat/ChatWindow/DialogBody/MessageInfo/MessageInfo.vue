@@ -6,6 +6,7 @@ import type { MessageInfoType } from '~/types/messages'
  */
 interface PropsType {
   message: MessageInfoType
+  isNextMessageInfoMessage: boolean
 }
 
 const props = defineProps<PropsType>()
@@ -40,7 +41,7 @@ const messageText = computed(() => {
   return messageArray.slice(0, idx + 1).join(' ')
 })
 /**
- *
+ * Является ли сообщение о создании чата
  */
 const isMessageAboutChatCreating = computed(() => {
   return message.value.message.includes('создал')
@@ -51,14 +52,24 @@ const isMessageAboutChatCreating = computed(() => {
   <div
     class="message-info"
     :style="{
-      flexDirection: isMessageAboutChatCreating ? 'row-reverse' : 'row'
+      marginBottom: isNextMessageInfoMessage ? '5px' : '35px'
     }"
   >
-    <div class="message-info__text">
-      {{ messageText }}
+    <div
+      class="message-info__data"
+      :style="{
+        flexDirection: isMessageAboutChatCreating ? 'row-reverse' : 'row'
+      }"
+    >
+      <div class="message-info__text">
+        {{ messageText }}
+      </div>
+      <div class="message-info__name">
+        {{ messageNames }}
+      </div>
     </div>
-    <div class="message-info__name">
-      {{ messageNames }}
+    <div class="message-info__date">
+      {{ message.date.slice(-5) }}
     </div>
   </div>
 </template>
