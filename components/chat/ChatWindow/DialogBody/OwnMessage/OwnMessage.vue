@@ -26,12 +26,12 @@ const { isMobileSize } = storeToRefs(settingsStore)
   <div
     class="own-msg"
     :class="{
-      'own-msg__triangle': lastOfSeveralMsgs && (message.type === 'image' && message.comment),
+      'own-msg__triangle': lastOfSeveralMsgs || (lastOfSeveralMsgs && message.type === 'image' && message.comment),
       'own-msg_mobile': isMobileSize
     }"
     :style="{
       boxShadow: message.type === 'image' && 'none',
-      marginBottom: lastOfSeveralMsgs ? '5px' : '35px'
+      marginBottom: lastOfSeveralMsgs ? '35px' : '5px'
     }"
   >
     <TextMessage
@@ -49,7 +49,11 @@ const { isMobileSize } = storeToRefs(settingsStore)
 
     <VoiceMessage v-if="message.type === 'voice'" />
 
-    <FileMessage v-if="message.type === 'file'" />
+    <FileMessage
+      v-if="message.type === 'file'"
+      :message="message"
+      :other-message="false"
+    />
   </div>
 </template>
 

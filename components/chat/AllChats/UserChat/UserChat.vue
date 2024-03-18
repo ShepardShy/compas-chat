@@ -7,7 +7,7 @@ import { useChatsStore } from '~/store/chats'
 import type { MessageType, UserChatType } from '~/types/messages'
 
 import { ChatPhoto } from '~/components'
-import { messageTimeInfo } from '~/composables/chats'
+import { messageTimeInfo, showMessage } from '~/composables/chats'
 import { useSettingsStore } from '~/store/settings'
 
 /**
@@ -151,29 +151,41 @@ const onMouseClickUserChat = (_event: MouseEvent) => {
         class="user__last-message"
       >
         <span v-if="chatData.textMessageDraft">
-          <span class="user__user-message-last"> Draft :</span> {{ chatData.textMessageDraft }}
+          <span class="user__user-message-last"> Draft :</span>
+          {{ chatData.textMessageDraft }}
         </span>
 
         <div v-else>
           <span v-if="isLastMessageOwn && lastMessage?.type == 'image'">
-            <span class="user__user-message-last"> Вы :</span> {{ lastMessage?.comment ?? 'изображения' }}
+            <span class="user__user-message-last"> Вы :</span>
+            {{ showMessage(lastMessage.comment, lastMessage.images?.length, lastMessage.images[0].fileName, 'изображения...') }}
           </span>
 
           <span v-else-if="isLastMessageOwn && lastMessage?.type == 'text'">
-            <span class="user__user-message-last"> Вы:</span> {{ lastMessage?.message }}
+            <span class="user__user-message-last"> Вы:</span>
+            {{ showMessage(lastMessage?.message) }}
+          </span>
+
+          <span v-else-if="isLastMessageOwn && lastMessage?.type == 'file'">
+            <span class="user__user-message-last"> Вы:</span>
+            {{ showMessage(lastMessage.comment, lastMessage.files.length, lastMessage.files[0].fileName, 'файлы...') }}
           </span>
 
           <span v-else-if="!isLastMessageOwn && lastMessage?.type == 'image'">
-            {{ lastMessage?.comment ?? 'Изображения' }}
+            {{ showMessage(lastMessage.comment, lastMessage.images?.length, lastMessage.images[0].fileName, 'Изображения...') }}
           </span>
 
           <span v-else-if="!isLastMessageOwn && lastMessage?.type == 'text'">
-            {{ lastMessage?.message }}
+            {{ showMessage(lastMessage.message) }}
           </span>
 
-          <span v-else-if="lastMessage?.type == 'message-info'"> {{
-            lastMessage?.message
-          }} </span>
+          <span v-else-if="!isLastMessageOwn && lastMessage?.type == 'file'">
+            {{ showMessage(lastMessage.comment, lastMessage.files?.length, lastMessage.files[0].fileName, 'Файлы...') }}
+          </span>
+
+          <span v-else-if="lastMessage?.type == 'message-info'">
+            {{ showMessage(lastMessage.message) }}
+          </span>
         </div>
       </div>
 

@@ -55,7 +55,7 @@ const gridRows = computed(() => {
 
     const rowsQuantity = Math.ceil(imagesLength / maxImagesPerLine)
 
-    return `calc(${100 / rowsQuantity}% - ${gap * (rowsQuantity - 1)}px)`
+    return `calc(${100 / rowsQuantity}% - ${gap * (rowsQuantity - 2)}px)`
   }
 
   if (message.value?.images?.length <= 3) {
@@ -68,7 +68,7 @@ const gridRows = computed(() => {
 
   const rowsQuantity = Math.ceil(imagesLength / maxImagesPerLine)
 
-  return `calc(${100 / rowsQuantity}% - ${gap * (rowsQuantity - 1)}px)`
+  return `calc(${100 / rowsQuantity}% - ${gap * (rowsQuantity - 2)}px)`
 })
 /**
  * Есть ли скрытые картинки
@@ -140,7 +140,8 @@ const isImageReceived = (_image: ImageMessageType) => {
         gridTemplateColumns: gridColumn,
         gridTemplateRows: gridRows,
         gridAutoRows: gridRows,
-        height: isMobileSize ? '285px': '323px'
+        height: isMobileSize ? '285px': '323px',
+        borderRadius: message.comment ? '10px 10px 0 0' : '10px'
       }"
     >
       <div

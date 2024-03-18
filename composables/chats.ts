@@ -137,3 +137,26 @@ export const formattedDateToday = () => {
   const formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`
   return formattedDate
 }
+
+/**
+ * Отображение сообщения
+ * @param messageText - текст сообщения или комментария
+ * @param messagesQuantity - количсевто файлов в сообщении
+ * @param singleFileName - имя единственного отправленного файла
+ * @param commonWordForMessage - если файлов много, то слово описания их содержимого
+ */
+export const showMessage = (
+  messageText: string | undefined,
+  messagesQuantity?: number,
+  singleFileName?: string,
+  commonWordForMessage?: string): string => {
+  if (!commonWordForMessage) {
+    return messageText!
+  }
+
+  if (messagesQuantity && messagesQuantity === 1) {
+    return singleFileName!
+  }
+
+  return messageText || commonWordForMessage
+}

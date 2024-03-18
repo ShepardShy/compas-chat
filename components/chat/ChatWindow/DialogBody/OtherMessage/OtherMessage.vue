@@ -3,7 +3,7 @@
 import type { GroupChatMessageType, MessageType, UserChatType } from '~/types/messages'
 import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
-import { TextMessage, ImageMessage } from '~/components'
+import { TextMessage, ImageMessage, FileMessage } from '~/components'
 
 /**
  * Входящие пропсы
@@ -52,7 +52,7 @@ const chatPhoto = computed<string>(() => {
       'other-msg_mobile': isMobileSize,
     }"
     :style="{
-      marginBottom: lastOfSeveralMsgs ? '5px' : '35px'
+      marginBottom: lastOfSeveralMsgs ? '35px' : '5px'
     }"
   >
     <div
@@ -75,7 +75,7 @@ const chatPhoto = computed<string>(() => {
     <div
       class="other-msg__body"
       :class="{
-        'other-msg__triangle ': lastOfSeveralMsgs && (message.type === 'image' && message.comment)
+        'other-msg__triangle ': lastOfSeveralMsgs || (lastOfSeveralMsgs && message.type === 'image' && message.comment)
       }"
     >
       <TextMessage
@@ -86,6 +86,12 @@ const chatPhoto = computed<string>(() => {
 
       <ImageMessage
         v-if="message.type === 'image'"
+        :message="message"
+        :other-message="true"
+      />
+
+      <FileMessage
+        v-if="message.type === 'file'"
         :message="message"
         :other-message="true"
       />

@@ -4,11 +4,22 @@ export interface ImageMessageType {
     isReceived: boolean
     isViewed: boolean
     isUnread: boolean
+    fileName: string
+    size: string
+}
+
+export interface FileMessageType {
+    url: string
+    fileName: string
+    date: string
+    isReceived: boolean
+    isViewed: boolean
+    isUnread: boolean
+    size: string
 }
 
 export interface MessageType {
     id: number
-    message?: string
     userId: number
     isReceived: boolean
     isViewed: boolean
@@ -16,7 +27,9 @@ export interface MessageType {
     date: string
     type: 'text' | 'image' | 'file' | 'voice'
     images?: Array<ImageMessageType>
+    files?: Array<FileMessageType>
     comment?: string
+    message?: string
 }
 
 export interface MessageInfoType {
@@ -71,6 +84,7 @@ export interface GroupChatMessageType {
     date: string
     type: 'text' | 'image' | 'file' | 'voice'
     images?: Array<ImageMessageType>
+    files?: Array<FileMessageType>
     comment?: string
 }
 

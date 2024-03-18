@@ -13,8 +13,7 @@
   display: grid;
   gap: 5px;
   margin-bottom: 10px;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
 
   &::-webkit-scrollbar {
     width: 3px;

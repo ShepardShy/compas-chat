@@ -11,7 +11,7 @@ import GroupChatIcon from 'assets/icons/group-chat-icon.svg'
 import { ChatPhoto } from '~/components'
 
 import type { GroupChatMessageType, GroupChatType } from '~/types/messages'
-import { messageTimeInfo } from '~/composables/chats'
+import { messageTimeInfo, showMessage } from '~/composables/chats'
 
 /**
  * Входящие пропсы
@@ -143,30 +143,45 @@ const onMouseClickUserChat = (_event: MouseEvent) => {
         class="group__last-message"
       >
         <span v-if="chatData.textMessageDraft">
-          <span class="group__user-message-last"> Draft :</span> {{ chatData.textMessageDraft }}
+          <span class="group__user-message-last"> Draft :</span>
+          {{ chatData.textMessageDraft }}
         </span>
 
         <div v-else>
           <span v-if="isLastMessageOwn && lastMessage?.type == 'image'">
-            <span class="group__user-message-last"> Вы :</span> {{ lastMessage?.comment ?? 'изображения' }}
+            <span class="group__user-message-last"> Вы :</span>
+            {{ showMessage(lastMessage.comment, lastMessage.images.length, lastMessage.images[0].fileName, 'изображения...') }}
           </span>
 
           <span v-else-if="isLastMessageOwn && lastMessage?.type == 'text'">
-            <span class="group__user-message-last"> Вы:</span> {{ lastMessage?.message }}
+            <span class="group__user-message-last"> Вы:</span>
+            {{ showMessage(lastMessage.message) }}
+          </span>
+
+          <span v-else-if="isLastMessageOwn && lastMessage?.type == 'file'">
+            <span class="group__user-message-last"> Вы:</span>
+            {{ showMessage(lastMessage.comment, lastMessage.files.length, lastMessage.files[0].fileName, 'файлы...') }}
           </span>
 
           <span v-else-if="!isLastMessageOwn && lastMessage?.type == 'image'">
             <span class="group__user-message-last">
               {{ lastMessage?.firstName + ' ' + lastMessage?.secondName }}:
             </span>
-            {{ lastMessage?.comment ?? 'Изображения' }}
+            {{ showMessage(lastMessage.comment, lastMessage.images.length, lastMessage.images[0].fileName, 'Изображения...') }}
           </span>
 
           <span v-else-if="!isLastMessageOwn && lastMessage?.type == 'text'">
             <span class="group__user-message-last">
               {{ lastMessage?.firstName + ' ' + lastMessage?.secondName }}:
             </span>
-            {{ lastMessage?.message }}
+            {{ showMessage(lastMessage.message) }}
+          </span>
+
+          <span v-else-if="!isLastMessageOwn && lastMessage?.type == 'file'">
+            <span class="group__user-message-last">
+              {{ lastMessage?.firstName + ' ' + lastMessage?.secondName }}:
+            </span>
+            {{ showMessage(lastMessage.comment, lastMessage.files.length, lastMessage.files[0].fileName, 'Файлы...') }}
           </span>
 
           <span v-else-if="lastMessage?.type == 'message-info'">

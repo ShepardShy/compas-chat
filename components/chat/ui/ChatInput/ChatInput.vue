@@ -171,6 +171,7 @@ const onChangeChooseFiles = (_event: unknown) => {
     const _file = _files[i]
     const _imageUrl = URL.createObjectURL(_file)
     const _fileName = _files[i].name
+    const _fileSizeKB = `${(_files[i].size / 1024).toFixed(2)}KB`
 
     if (_file.type.includes('image')) {
       uploadedImages.value = [
@@ -178,7 +179,8 @@ const onChangeChooseFiles = (_event: unknown) => {
         {
           id: i,
           url: _imageUrl,
-          name: _fileName
+          name: _fileName,
+          size: _fileSizeKB
         }]
     } else {
       uploadedDocuments.value = [
@@ -186,7 +188,8 @@ const onChangeChooseFiles = (_event: unknown) => {
         {
           id: i,
           url: _imageUrl,
-          name: _fileName
+          name: _fileName,
+          size: _fileSizeKB
         }]
     }
   }
@@ -305,12 +308,17 @@ const onTextareaInput = (_event: Event) => {
 }
 
 /**
- * Очистить загруженные сообщения
+ * Очистить загруженные изображения
  */
 const cleanLoadedImages = () => uploadedImages.value = []
+/**
+ * Очистить загруженные документы
+ */
+const cleanLoadedDocuments = () => uploadedDocuments.value = []
 
 defineExpose({
-  cleanLoadedImages
+  cleanLoadedImages,
+  cleanLoadedDocuments
 })
 </script>
 

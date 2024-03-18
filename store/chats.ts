@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { MessagesTypesType, GroupChatType, UserChatType } from '~/types/messages'
-import { formattedDateToday } from '~/composables/chats'
+import { formattedDateToday, setFileSize } from '~/composables/chats'
 
 export const useChatsStore = defineStore('chats', {
   state: () => {
@@ -142,12 +142,14 @@ export const useChatsStore = defineStore('chats', {
               images: [
                 {
                   url: '/image-example.png',
+                  filename: 'image-example.png',
                   date: '15.03.2024 15:12',
                   isReceived: true,
                   isViewed: true,
                   isUnread: false
                 }, {
                   url: '/image-example.png',
+                  filename: 'image-example.png',
                   date: '15.03.2024 15:12',
                   isReceived: true,
                   isViewed: true,
@@ -166,11 +168,63 @@ export const useChatsStore = defineStore('chats', {
               date: '15.03.2024 15:12',
               images: [
                 {
+                  filename: 'image-example.png',
                   url: '/image-example.png',
                   date: '15.03.2024 15:12',
                   isReceived: true,
                   isViewed: true,
                   isUnread: false
+                }
+              ]
+            },
+            {
+              id: 9,
+              type: 'file',
+              comment: 'Пример отображения загруженных файлов',
+              userId: 2,
+              isReceived: true,
+              isViewed: false,
+              isUnread: false,
+              date: '17.03.2024 15:12',
+              files: [
+                {
+                  url: '',
+                  fileName: 'Длинный пример имени файла в формате docx для обрезки.docx',
+                  date: '17.03.2024 15:12',
+                  isReceived: true,
+                  isViewed: true,
+                  isUnread: false,
+                  size: '15KB'
+                },
+                {
+                  url: '',
+                  fileName: 'Пример имени.xls',
+                  date: '17.03.2024 15:23',
+                  isReceived: true,
+                  isViewed: true,
+                  isUnread: false,
+                  size: '7KB'
+                }
+              ]
+            },
+            {
+              id: 10,
+              type: 'file',
+              comment: '',
+              userId: 1,
+              isReceived: true,
+              isViewed: false,
+              isUnread: false,
+              date: '17.03.2024 15:12',
+              files: [
+                {
+                  url: '',
+                  fileName: 'Полезный файл.pdf',
+                  date: '17.03.2024 17:12',
+                  isReceived: true,
+                  isViewed: true,
+                  isUnread: false,
+                  size: '22KB'
                 }
               ]
             }
@@ -1029,7 +1083,7 @@ export const useChatsStore = defineStore('chats', {
       })
     },
 
-    sendImageMessage (uploadedImages: Array<string>, message: string, userId: number, chatId: number) {
+    sendImageMessage (uploadedImages: Array<unknown>, message: string, userId: number, chatId: number) {
       const userData = this.allChatUsers.find(user => user.id === userId)
       const newMessage = {
         id: formattedDateToday(),
@@ -1046,6 +1100,48 @@ export const useChatsStore = defineStore('chats', {
           ...uploadedImages.map((image) => {
             return {
               url: image.url,
+              fileName: image.fileName,
+              date: formattedDateToday(),
+              isReceived: true,
+              isViewed: false,
+              isUnread: false
+            }
+          })
+        ]
+      }
+
+      this.chats = this.chats.map((chat) => {
+        if (chat.id === chatId) {
+          return {
+            ...chat,
+            messages: [...chat.messages, newMessage]
+          }
+        } else {
+          return chat
+        }
+      })
+    },
+
+    sendFileMessage (uploadedFiles: Array<{url: string, name:string, size: string} >, message: string, userId: number, chatId: number) {
+      const userData = this.allChatUsers.find(user => user.id === userId)
+
+      const newMessage = {
+        id: formattedDateToday(),
+        userId,
+        type: 'file',
+        firstName: userData!.firstName ?? '',
+        secondName: userData!.secondName ?? '',
+        comment: message,
+        date: formattedDateToday(),
+        isReceived: true,
+        isViewed: false,
+        isUnread: false,
+        files: [
+          ...uploadedFiles.map((file) => {
+            return {
+              url: file.url,
+              fileName: file.name,
+              size: file.size,
               date: formattedDateToday(),
               isReceived: true,
               isViewed: false,

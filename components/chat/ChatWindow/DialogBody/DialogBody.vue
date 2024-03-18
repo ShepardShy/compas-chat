@@ -229,6 +229,19 @@ const sendImageMessage = async () => {
   scrollToDialogWrapperBottom()
 }
 
+/**
+ * Отправить файлы с картинкой или без
+ */
+const sendDocumentsMessage = async () => {
+  chatsStore.sendFileMessage(uploadedDocuments.value, messageValue.value, userId.value, openedChatId.value)
+  messageValue.value = ''
+  $chatInput.value.cleanLoadedDocuments()
+
+  await nextTick()
+
+  scrollToDialogWrapperBottom()
+}
+
 let oneClickTimer
 
 const handleMessage = () => {
@@ -236,6 +249,11 @@ const handleMessage = () => {
     if (messageType.value === 'text') {
       if (uploadedImages.value.length) {
         sendImageMessage()
+        return
+      }
+
+      if (uploadedDocuments.value.length) {
+        sendDocumentsMessage()
         return
       }
 
@@ -259,7 +277,7 @@ const checkIfLastOfSeveralMessages = (
   arrayWithMessages: Array<MessageType | GroupChatMessageType>): boolean => {
   const messages = arrayWithMessages
   if (messages[_idx + 1]) {
-    return messages[_idx].userId == messages[_idx + 1].userId
+    return messages[_idx].userId !== messages[_idx + 1].userId
   } else {
     return true
   }
