@@ -18,6 +18,7 @@ interface PropsType {
   loadedImages?: Array<unknown>
   loadedDocuments?: Array<unknown>
   isResizing?: boolean
+  inputHeightWithUploadedFiles: string
 }
 
 const props = defineProps<PropsType>()
@@ -31,7 +32,7 @@ const {
   isHeightResize,
   loadedImages,
   loadedDocuments,
-  isResizing
+  inputHeightWithUploadedFiles
 } = toRefs(props)
 
 /**
@@ -42,6 +43,7 @@ const emit = defineEmits<{
   (emit: 'update:loadedImages', loadedImages: Array<unknown>): void
   (emit: 'update:loadedDocuments', loadedDocuments: Array<unknown>): void
   (emit: 'update:isResizing', isResizing: boolean): void
+  (emit: 'update:inputHeightWithUploadedFiles', value: string): void
 }>()
 
 /**
@@ -66,6 +68,8 @@ const uploadedImages = ref([])
  * Загруженные документы
  */
 const uploadedDocuments = ref([])
+/** Ссылка на блок с отображаемыми выбранными файлами */
+const $files = ref<HTMLInputElement>()
 
 /**
  * Задает тип документов инпута при загрузке
@@ -127,11 +131,25 @@ const voiceMessageLengthTransformer = computed(() => {
 /**
  * Подписка на загрузку изображений и документов
  */
+let intervalToUpdateInputHeight
 watch(
   () => [uploadedImages.value, uploadedDocuments.value],
   () => {
     emit('update:loadedImages', uploadedImages.value)
     emit('update:loadedDocuments', uploadedDocuments.value)
+
+    if (uploadedImages.value?.length || uploadedDocuments.value?.length) {
+      intervalToUpdateInputHeight = setInterval(() => {
+        if ($files.value.offsetHeight) {
+          const inputPaddings = 50
+          const marginBottomFiles = 20
+          clearInterval(intervalToUpdateInputHeight)
+          emit('update:inputHeightWithUploadedFiles', `0 0 ${$files.value.offsetHeight + currentInputHeight + inputPaddings + marginBottomFiles}px`)
+        }
+      }, 100)
+    } else {
+      clearInterval(intervalToUpdateInputHeight)
+    }
   },
   {
     deep: true
@@ -331,6 +349,7 @@ defineExpose({
   >
     <div
       v-if="uploadedImages?.length || uploadedDocuments?.length"
+      ref="$files"
       class="files"
     >
       <LoadedDocuments
@@ -424,6 +443,12 @@ defineExpose({
         :accept="documentsType"
         @change="onChangeChooseFiles($event)"
       >
+
+      <div
+        v-if="isFilesTypesMenuOpen"
+        class="doc__menu-bg"
+        @click="toggleFilesMenuType()"
+      />
 
       <div
         v-if="isFilesTypesMenuOpen"

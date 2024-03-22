@@ -163,6 +163,11 @@ const onMouseClickUserChat = (_event: MouseEvent) => {
             {{ showMessage(lastMessage.comment, lastMessage.files.length, lastMessage.files[0].fileName, 'файлы...') }}
           </span>
 
+          <span v-else-if="isLastMessageOwn && lastMessage?.type == 'voice'">
+            <span class="group__user-message-last"> Вы:</span>
+            {{ showMessage('голосовое сообщение') }}
+          </span>
+
           <span v-else-if="!isLastMessageOwn && lastMessage?.type == 'image'">
             <span class="group__user-message-last">
               {{ lastMessage?.firstName + ' ' + lastMessage?.secondName }}:
@@ -182,6 +187,13 @@ const onMouseClickUserChat = (_event: MouseEvent) => {
               {{ lastMessage?.firstName + ' ' + lastMessage?.secondName }}:
             </span>
             {{ showMessage(lastMessage.comment, lastMessage.files.length, lastMessage.files[0].fileName, 'Файлы...') }}
+          </span>
+
+          <span v-else-if="!isLastMessageOwn && lastMessage?.type == 'file'">
+            <span class="group__user-message-last">
+              {{ lastMessage?.firstName + ' ' + lastMessage?.secondName }}:
+            </span>
+            {{ showMessage('Голосовое сообщение') }}
           </span>
 
           <span v-else-if="lastMessage?.type == 'message-info'">
@@ -207,6 +219,7 @@ const onMouseClickUserChat = (_event: MouseEvent) => {
         <MuteOffIcon
           v-if="chatData.isMutedOff"
           class="user__muted icon"
+          style="margin-top: 4px"
         />
 
         <div

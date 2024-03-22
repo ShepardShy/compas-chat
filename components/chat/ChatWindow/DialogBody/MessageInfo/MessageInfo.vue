@@ -22,9 +22,14 @@ const messageNames = computed(() => {
     return messageArray.slice(0, idx).join(' ')
   }
 
-  const messageArray = message.value.message.split(' ')
-  const idx = messageArray.findIndex(i => i.includes('чат:'))
-  return messageArray.slice(idx + 1).join(' ')
+  let messageWithoutText
+  for (let i = 0; i < message.value.message.length; i++) {
+    if (message.value.message[i] == ':') {
+      messageWithoutText = message.value.message.slice(i + 1)
+      break
+    }
+  }
+  return messageWithoutText.split(', ')
 })
 /**
  * Сообщение
@@ -36,9 +41,14 @@ const messageText = computed(() => {
     return messageArray.slice(idx).join(' ')
   }
 
-  const messageArray = message.value.message.split(' ')
-  const idx = messageArray.findIndex(i => i.includes('чат:'))
-  return messageArray.slice(0, idx + 1).join(' ')
+  let messageWithText
+  for (let i = 0; i < message.value.message.length; i++) {
+    if (message.value.message[i] == ':') {
+      messageWithText = message.value.message.slice(0, i + 1)
+      break
+    }
+  }
+  return messageWithText
 })
 /**
  * Является ли сообщение о создании чата
@@ -52,7 +62,7 @@ const isMessageAboutChatCreating = computed(() => {
   <div
     class="message-info"
     :style="{
-      marginBottom: isNextMessageInfoMessage ? '5px' : '35px'
+      marginBottom: isNextMessageInfoMessage ? '35px' : '5px'
     }"
   >
     <div
@@ -64,8 +74,22 @@ const isMessageAboutChatCreating = computed(() => {
       <div class="message-info__text">
         {{ messageText }}
       </div>
-      <div class="message-info__name">
-        {{ messageNames }}
+      <div>
+        <span
+          v-if="!Array.isArray(messageNames)"
+          class="message-info__user"
+        >
+          {{ messageNames }}
+        </span>
+        <span v-else>
+          <span
+            v-for="(user, idx) in messageNames"
+            :key="user.userId"
+            class="message-info__user"
+          >
+            {{ idx !== messageNames.length - 1 ? user + ', ' : user }}
+          </span>
+        </span>
       </div>
     </div>
     <div class="message-info__date">

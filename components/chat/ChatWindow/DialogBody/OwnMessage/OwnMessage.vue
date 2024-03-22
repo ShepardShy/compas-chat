@@ -47,7 +47,11 @@ const { isMobileSize } = storeToRefs(settingsStore)
       :other-message="false"
     />
 
-    <VoiceMessage v-if="message.type === 'voice'" />
+    <VoiceMessage
+      v-if="message.type === 'voice'"
+      :message="message"
+      :other-message="false"
+    />
 
     <FileMessage
       v-if="message.type === 'file'"

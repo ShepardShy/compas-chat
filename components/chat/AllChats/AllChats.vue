@@ -91,6 +91,9 @@ const openModalToCreateChat = () => {
       <div
         v-if="isCreateChatMenuOpen"
         class="chats__menu"
+        :class="{
+          'chats__menu_mobile': isMobileSize
+        }"
       >
         <div
           v-for="item in createChatMenu"

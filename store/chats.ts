@@ -1122,7 +1122,11 @@ export const useChatsStore = defineStore('chats', {
       })
     },
 
-    sendFileMessage (uploadedFiles: Array<{url: string, name:string, size: string} >, message: string, userId: number, chatId: number) {
+    sendFileMessage (uploadedFiles: Array<{
+                url: string,
+                name: string,
+                size: string
+            }>, message: string, userId: number, chatId: number) {
       const userData = this.allChatUsers.find(user => user.id === userId)
 
       const newMessage = {
@@ -1142,6 +1146,45 @@ export const useChatsStore = defineStore('chats', {
               url: file.url,
               fileName: file.name,
               size: file.size,
+              date: formattedDateToday(),
+              isReceived: true,
+              isViewed: false,
+              isUnread: false
+            }
+          })
+        ]
+      }
+
+      this.chats = this.chats.map((chat) => {
+        if (chat.id === chatId) {
+          return {
+            ...chat,
+            messages: [...chat.messages, newMessage]
+          }
+        } else {
+          return chat
+        }
+      })
+    },
+
+    sendVoiceMessage (uploadedVoiceMessages: string, message: string, userId: number, chatId: number) {
+      const userData = this.allChatUsers.find(user => user.id === userId)
+
+      const newMessage = {
+        id: formattedDateToday(),
+        userId,
+        type: 'voice',
+        firstName: userData!.firstName ?? '',
+        secondName: userData!.secondName ?? '',
+        comment: message,
+        date: formattedDateToday(),
+        isReceived: true,
+        isViewed: false,
+        isUnread: false,
+        voice: [
+          ...uploadedVoiceMessages.map((file) => {
+            return {
+              url: file,
               date: formattedDateToday(),
               isReceived: true,
               isViewed: false,
@@ -1183,6 +1226,17 @@ export const useChatsStore = defineStore('chats', {
         ? `Добавлены в групповой чат: ${_addedUsersList}`
         : `Добавлен в группвой чат: ${_addedUsersList} `
 
+      const currentUserData = {
+        userId: currentUser.userId,
+        firstName: currentUser.firstName,
+        secondName: currentUser.secondName,
+        isActive: currentUser.isActive,
+        isTyping: currentUser.isTyping,
+        photo: currentUser.photo,
+        position: currentUser.position,
+        lastTimeActive: formattedDateToday()
+      }
+
       const newGroupChat: GroupChatType = {
         ...this.temporalStorageForGroupChat,
         id: this.chats.length + 1,
@@ -1196,20 +1250,23 @@ export const useChatsStore = defineStore('chats', {
         totalFileMessages: 0,
         totalVoiceMessages: 0,
         totalLinksMessages: 0,
-        users: [...this.temporalStorageForAddedUsers],
+        users: [currentUserData, ...this.temporalStorageForAddedUsers],
         messages: [{
           id: 33,
           type: 'message-info',
           message: `${fullUserName} создал(а) групповой чат`,
           date: formattedDateToday()
-        },
-        {
+        }
+        ]
+      }
+
+      if (this.temporalStorageForAddedUsers.length) {
+        newGroupChat.messages.push({
           id: formattedDateToday(),
           type: 'message-info',
           message: addedUsersMessage,
           date: formattedDateToday()
-        }
-        ]
+        })
       }
 
       this.chats = [newGroupChat, ...this.chats]

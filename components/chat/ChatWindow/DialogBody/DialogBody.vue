@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { nextTick } from 'vue'
-import { ChatInput, OwnMessage, OtherMessage, VoiceMessage, MessageDay, MessageInfo } from '~/components'
+import {
+  ChatInput,
+  OwnMessage,
+  OtherMessage,
+  VoiceMessageType,
+  MessageDay,
+  MessageInfo,
+  DaySeparator
+} from '~/components'
 
 import SendMsgIcon from 'assets/icons/send-msg-icon.svg'
 import MicrophoneIcon from 'assets/icons/microphone-icon.svg'
@@ -37,7 +45,7 @@ const uploadedDocuments = ref([])
 /**
  * Текущий тип сообщения
  */
-const messageType = ref<'text' | 'voice'>('text')
+const messageType = ref<'text' | 'voice'>('voice')
 /**
  * Высота инпута изменена и не равна минимальной
  */
@@ -46,6 +54,18 @@ const isResizing = ref(false)
  * Ссылка на инпут отправки сообщений
  */
 const $chatInput = ref()
+/** Высота инпута при загруженный картинках */
+const inputHeightWithUploadedFiles = ref('0 0 90px')
+/**
+ * Верхнее значение границы окна диалога
+ */
+const dialogWrapperTop = ref()
+
+/** Нет данных для сообщений */
+const noMessageToSend = computed(() => !uploadedImages.value.length &&
+    !uploadedDocuments.value.length &&
+    !voiceMessage.value.length &&
+    !messageValue.value)
 
 /**
  * Подписка на измнение чата и его очистку
@@ -55,8 +75,8 @@ watch(
   async () => {
     messageType.value = 'text'
     voiceMessage.value = []
-    uploadedImages.value = []
-    uploadedDocuments.value = []
+    $chatInput.value.cleanLoadedImages()
+    $chatInput.value.cleanLoadedDocuments()
 
     await checkIfDialogBodyHeightsLessThenVH()
     scrollToDialogWrapperBottom()
@@ -76,6 +96,22 @@ watch(
     if (messageValue.value !== openedChatData.value?.textMessageDraft) {
       chatsStore.saveTextMessageDraft(openedChatId.value, messageValue.value)
     }
+    if (messageValue.value) {
+      messageType.value = 'text'
+    } else {
+      messageType.value = 'voice'
+    }
+  }
+)
+/** Подписка на загрузку сообщений */
+watch(
+  () => [uploadedDocuments.value, uploadedImages.value],
+  () => {
+    if (uploadedDocuments.value.length || uploadedImages.value.length) {
+      messageType.value = 'text'
+    }
+
+    scrollToDialogWrapperBottom()
   }
 )
 
@@ -83,27 +119,18 @@ watch(
  * Монтирование компонента
  */
 onMounted(async () => {
+  dialogWrapperTop.value = $dialogWrapper.value?.offsetTop
+
   await checkIfDialogBodyHeightsLessThenVH()
   scrollToDialogWrapperBottom()
 
   window.addEventListener('resize', scrollToDialogWrapperBottom)
+  $dialogWrapper.value.addEventListener('scroll', scrollInDialogWrapper)
 })
 
-/**
- * Выбрать тип сообщения через двойной клик
- */
-const setMessageType = () => {
-  // чтобы разделить срабатывание click и dbclick
-  clearTimeout(oneClickTimer)
-  clearTimeout(oneClickTimer - 1)
-
-  if (isMakingAVoiceMessage.value) return
-
-  if (messageType.value === 'text') {
-    messageType.value = 'voice'
-  } else if (messageType.value === 'voice') {
-    messageType.value = 'text'
-  }
+const dialogWrapperScrollTop = ref()
+const scrollInDialogWrapper = () => {
+  dialogWrapperScrollTop.value = $dialogWrapper.value.scrollTop
 }
 
 /**
@@ -198,6 +225,7 @@ function mediaRecorderStop () {
     voiceMessage.value = []
   } else {
     voiceMessage.value = [src]
+    sendVoiceMessage()
   }
 
   mediaRecorder = null
@@ -242,30 +270,43 @@ const sendDocumentsMessage = async () => {
   scrollToDialogWrapperBottom()
 }
 
-let oneClickTimer
+/**
+ * Отправить файлы с картинкой или без
+ */
+const sendVoiceMessage = async () => {
+  chatsStore.sendVoiceMessage(voiceMessage.value, messageValue.value, userId.value, openedChatId.value)
+  messageValue.value = ''
+  voiceMessage.value = []
+
+  await nextTick()
+
+  scrollToDialogWrapperBottom()
+}
 
 const handleMessage = () => {
-  oneClickTimer = setTimeout(() => {
-    if (messageType.value === 'text') {
-      if (uploadedImages.value.length) {
-        sendImageMessage()
-        return
-      }
-
-      if (uploadedDocuments.value.length) {
-        sendDocumentsMessage()
-        return
-      }
-
-      sendTextMessage()
-    } else if (messageType.value === 'voice') {
-      if (isMakingAVoiceMessage.value) {
-        setVoiceMessage(false)
-      } else {
-        setVoiceMessage(true)
-      }
+  if (messageType.value === 'text' && !noMessageToSend.value) {
+    if (uploadedImages.value.length) {
+      sendImageMessage()
+      return
     }
-  }, 300)
+
+    if (uploadedDocuments.value.length) {
+      sendDocumentsMessage()
+      return
+    }
+
+    if (messageValue.value?.length &&
+        !uploadedDocuments.value.length &&
+        !voiceMessage.value.length) {
+      sendTextMessage()
+    }
+  } else if (messageType.value === 'voice') {
+    if (isMakingAVoiceMessage.value) {
+      setVoiceMessage(false)
+    } else {
+      setVoiceMessage(true)
+    }
+  }
 }
 
 /**
@@ -281,13 +322,6 @@ const checkIfLastOfSeveralMessages = (
   } else {
     return true
   }
-}
-/**
- * Удалить сообщение
- * @param messageIdx
- */
-const deleteMessage = (_messageIdx) => {
-  voiceMessage.value = voiceMessage.value.splice(_messageIdx, -1)
 }
 </script>
 
@@ -318,7 +352,12 @@ const deleteMessage = (_messageIdx) => {
           <MessageDay
             :is-first-date="index === 0"
             :date="messagesSortedByDay.date"
+            :dialog-wrapper-scroll-top="dialogWrapperScrollTop"
+            :dialog-wrapper-offset-top="dialogWrapperTop"
+            :last-date="index === openedChatData?.messages.length - 1"
           />
+
+          <DaySeparator />
 
           <div
             v-for="(message, idx) in messagesSortedByDay?.messages"
@@ -352,24 +391,13 @@ const deleteMessage = (_messageIdx) => {
     </div>
 
     <div
-      v-if="voiceMessage.length"
-      class="dialog__voice-messages"
-    >
-      <VoiceMessage
-        class="dialog__voice"
-        :is-own-message="true"
-        date="12:01:2024 14:15"
-        :is-received="true"
-        :is-viewed="true"
-        :audio-message="voiceMessage[0]"
-        @delete-message="deleteMessage(0)"
-      />
-    </div>
-    <div
       ref="$dialogActions"
       class="dialog__actions"
       :class="{
         'dialog__actions_mobile':isMobileSize
+      }"
+      :style="{
+        flex: uploadedImages.length || uploadedDocuments.length ? inputHeightWithUploadedFiles: '0 0 90px'
       }"
     >
       <ChatInput
@@ -378,6 +406,7 @@ const deleteMessage = (_messageIdx) => {
         v-model:loaded-images="uploadedImages"
         v-model:loaded-documents="uploadedDocuments"
         v-model:is-resizing="isResizing"
+        v-model:input-height-with-uploaded-files="inputHeightWithUploadedFiles"
         class="dialog__input"
         placeholder="Напишите сообщение…"
         :add-documents="true"
@@ -391,12 +420,11 @@ const deleteMessage = (_messageIdx) => {
         :class="{
           'dialog__send-msg_active': isMakingAVoiceMessage,
         }"
-        @dblclick="setMessageType"
         @click="handleMessage"
       >
-        <SendMsgIcon v-if="messageType === 'text' || isMakingAVoiceMessage" />
+        <MicrophoneIcon v-if="!isMakingAVoiceMessage && noMessageToSend" />
 
-        <MicrophoneIcon v-if="messageType === 'voice' && !isMakingAVoiceMessage" />
+        <SendMsgIcon v-else />
       </div>
     </div>
 

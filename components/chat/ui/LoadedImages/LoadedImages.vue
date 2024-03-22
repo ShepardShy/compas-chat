@@ -25,6 +25,18 @@ const deleteImage = (url: string) => {
 
   emit('update:uploadedImages', updatedUploadedImages)
 }
+
+/**
+ * Сокращает выводимое название картинки до 19 символов
+ * @param imageTitle
+ */
+const preparedImageTitle = (imageTitle: string) => {
+  if (imageTitle.length < 20) {
+    return imageTitle
+  }
+
+  return imageTitle.slice(0, 9) + '...' + imageTitle.slice(-7)
+}
 </script>
 
 <template>
@@ -46,7 +58,7 @@ const deleteImage = (url: string) => {
     </div>
 
     <div class="images__title">
-      {{ image.name }}
+      {{ preparedImageTitle(image.name) }}
     </div>
   </div>
 </template>

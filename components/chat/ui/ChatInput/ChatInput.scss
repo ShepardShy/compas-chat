@@ -39,6 +39,11 @@
   height: 1px;
   border-radius: 1px;
   background-color: #a6b7d4;
+  transition: 0.5s all;
+}
+
+.input__resize-window:hover .input__resize-window-line {
+  background-color: #1253a2;
 }
 
 .input__body_document {
@@ -87,6 +92,16 @@
   display: none;
 }
 
+.doc__menu-bg {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: transparent;
+}
+
 .doc__menu {
   position: absolute;
   left: 15px;
@@ -95,7 +110,7 @@
   box-shadow: 0 0 3px 0 variables.$color-black;
   background-color: #fff;
   user-select: none;
-
+  z-index: 1100;
 }
 
 .doc__item {

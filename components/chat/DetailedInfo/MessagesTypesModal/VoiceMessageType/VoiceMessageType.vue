@@ -2,6 +2,7 @@
 import ReceivedIcon from 'assets/icons/recieved-message-icon.svg'
 import ViewedIcon from 'assets/icons/viewed-message-icon.svg'
 import DeleteIcon from 'assets/icons/delete-icon.svg'
+import { useSettingsStore } from '~/store/settings'
 
 interface PropsType {
   isViewed: boolean | undefined
@@ -15,6 +16,9 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 const { isViewed, isReceived, isOwnMessage, date, audioMessage, isInVoiceMessagesList, senderFullName } = toRefs(props)
+
+const settingsStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingsStore)
 
 const emit = defineEmits<{(emit: 'deleteMessage'): void }>()
 
@@ -224,6 +228,9 @@ onMounted(() => {
         <div
           ref="$visualizationContainer"
           class="audio-msg__columns"
+          :class="{
+            'audio-msg__columns_mobile': isMobileSize
+          }"
         />
 
         <div class="audio-msg__info">
@@ -349,6 +356,10 @@ onMounted(() => {
   height: 20px;
   width: 220px;
   margin-bottom: 9px;
+}
+
+.audio-msg__columns_mobile {
+  width: 185px;
 }
 
 .audio-msg__info {

@@ -3,21 +3,21 @@
 .dialog {
   height: calc(100vh - 81px);
   border-top: solid 1px #eeeff1;
-  padding: 10px 10px 0 0;
-  background-color: variables.$color-pale-grey;
+  padding: 0 5px 0 0;
+  background-color: #f7f8fa;
   display: flex;
   flex-direction: column;
 }
 
 .dialog_mobile {
-  padding: 15px 0 0 0;
+  padding: 0;
 }
 
 .dialog__wrapper {
   flex: 1 1 auto;
   margin-bottom: 35px;
   overflow-y: auto;
-  padding-right: 50px;
+  padding-right: 45px;
 
   &::-webkit-scrollbar {
     width: 3px;
@@ -54,11 +54,11 @@
   flex-direction: column;
   justify-content: flex-end;
   overflow: hidden;
+  position: relative;
 }
 
 .dialog__actions {
-  flex: 0 0 50px;
-  padding: 25px 50px 25px 25px;
+  padding: 25px 45px 25px 25px;
   display: flex;
   gap: 10px;
   align-items: flex-end;
@@ -107,7 +107,6 @@
 .dialog__send-msg_active {
   background-color: variables.$color-red;
   animation: pulse 1s infinite;
-  align-items: flex-end;
 }
 
 @keyframes pulse {

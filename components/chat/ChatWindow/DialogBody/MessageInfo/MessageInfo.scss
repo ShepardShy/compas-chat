@@ -16,8 +16,13 @@
   margin-bottom: 5px;
 }
 
-.message-info__name {
+.message-info__user {
   text-decoration: underline;
+  cursor: pointer;
+}
+
+.message-info__user:hover {
+  text-decoration: none;
 }
 
 .message-info__date {

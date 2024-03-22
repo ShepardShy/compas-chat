@@ -96,7 +96,7 @@ const chatUsers = computed(() => {
 
   return temporalStorageForGroupChat.value?.users
 })
-watch(() => temporalStorageForGroupChat.value, () => console.log(temporalStorageForGroupChat.value.users), { deep: true })
+
 /**
  * Подписка на изменение названия или фото чата
  */
@@ -179,7 +179,7 @@ const deleteUserFromChatLocal = async (userId: number) => {
  * @param userId
  */
 const updateTemporalStorageForGroupChat = async (userId?: number) => {
-  const _userToDelete = temporalStorageForGroupChat.value?.users.find(user => user.id === userId)
+  const _userToDelete = temporalStorageForGroupChat.value?.users.find(user => user.userId === userId)
 
   const actualUsers = userId
     ? temporalStorageForGroupChat.value?.users.filter(user => user.userId != userId)

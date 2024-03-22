@@ -1,26 +1,18 @@
 @use '~/assets/styles/_variables.scss' as variables;
 
 .message-block {
-  position: sticky;
+  position: absolute;
   top: 0;
-  z-index: 50;
-  margin-top: 35px;
-  margin-bottom: 35px;
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+  left: calc(50%);
+  transform: translateX(-40%);
 }
 
 .message-block__wrapper {
   display: flex;
   justify-content: center;
-  position: relative;
-}
-
-.message-block__wrapper_today::before {
-  content: '';
-  position: absolute;
-  height: 1px;
-  top: 50%;
-  width: calc(100vw - 400px);
-  background-color: #eeeff1;
 }
 
 .message-block__wrapper_mobile::before {

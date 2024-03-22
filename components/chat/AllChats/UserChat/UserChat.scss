@@ -91,6 +91,9 @@
 
 .user__unread-msg {
   padding: 1px 5px;
+  height: 16px;
+  display: grid;
+  place-items: center;
   border-radius: 9px;
   font-size: 12px;
   color: #fff;

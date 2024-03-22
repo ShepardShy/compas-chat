@@ -4,6 +4,7 @@ import type { GroupChatMessageType, MessageType, UserChatType } from '~/types/me
 import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
 import { TextMessage, ImageMessage, FileMessage } from '~/components'
+import VoiceMessage from '~/components/chat/ChatWindow/DialogBody/MessageTypes/VoiceMessage/VoiceMessage.vue'
 
 /**
  * Входящие пропсы
@@ -52,7 +53,8 @@ const chatPhoto = computed<string>(() => {
       'other-msg_mobile': isMobileSize,
     }"
     :style="{
-      marginBottom: lastOfSeveralMsgs ? '35px' : '5px'
+      marginBottom: lastOfSeveralMsgs ? '35px' : '5px',
+      maxWidth: message.type === 'image' && isMobileSize && '335px'
     }"
   >
     <div
@@ -92,6 +94,12 @@ const chatPhoto = computed<string>(() => {
 
       <FileMessage
         v-if="message.type === 'file'"
+        :message="message"
+        :other-message="true"
+      />
+
+      <VoiceMessage
+        v-if="message.type === 'voice'"
         :message="message"
         :other-message="true"
       />

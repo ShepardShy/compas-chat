@@ -70,7 +70,12 @@ const setUsersQuantity = computed(() => {
           class="group__title-icon"
         />
 
-        <div class="user__name">
+        <div
+          class="user__name"
+          :class="{
+            'user__name_is-group': openedChatData.isGroupChat
+          }"
+        >
           {{ userFullName }}
         </div>
 

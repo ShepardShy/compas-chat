@@ -30,6 +30,14 @@
   text-decoration: none;
 }
 
+.user__name_is-group {
+  text-decoration: underline;
+}
+
+.user__name_is-group:hover {
+  text-decoration: underline;
+}
+
 .user__status {
   font-size: 12px;
   font-weight: 400;

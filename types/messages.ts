@@ -8,6 +8,15 @@ export interface ImageMessageType {
     size: string
 }
 
+export interface VoiceMessageType {
+    url: string
+    date: string
+    isReceived: boolean
+    isViewed: boolean
+    isUnread: boolean
+    size: string
+}
+
 export interface FileMessageType {
     url: string
     fileName: string
@@ -28,6 +37,7 @@ export interface MessageType {
     type: 'text' | 'image' | 'file' | 'voice'
     images?: Array<ImageMessageType>
     files?: Array<FileMessageType>
+    voice?: Array<VoiceMessageType>
     comment?: string
     message?: string
 }
@@ -85,6 +95,7 @@ export interface GroupChatMessageType {
     type: 'text' | 'image' | 'file' | 'voice'
     images?: Array<ImageMessageType>
     files?: Array<FileMessageType>
+    voice: Array<VoiceMessageType>
     comment?: string
 }
 

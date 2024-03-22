@@ -27,6 +27,18 @@ const deleteDocument = (url: string) => {
 
   emit('update:uploadedDocuments', updatedUploadedDocuments)
 }
+
+/**
+ * Сокращает выводимое название документа до 19 символов
+ * @param documentTitle
+ */
+const prepareDocumentTitle = (documentTitle: string) => {
+  if (documentTitle.length < 20) {
+    return documentTitle
+  }
+
+  return documentTitle.slice(0, 9) + '...' + documentTitle.slice(-7)
+}
 </script>
 
 <template>
@@ -75,7 +87,7 @@ const deleteDocument = (url: string) => {
     </div>
 
     <div class="document__title">
-      {{ document.name }}
+      {{ prepareDocumentTitle(document.name) }}
     </div>
   </div>
 </template>
