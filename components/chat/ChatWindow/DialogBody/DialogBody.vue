@@ -18,6 +18,7 @@ import { useSettingsStore } from '~/store/settings'
 
 import AppDateInput from '~/components/ui/AppInputs/Date/Date.vue'
 import type { GroupChatMessageType, MessageType } from '~/types/messages'
+import { setMessageDay } from '~/composables/chats'
 
 /**
  * Подключение стора с чатами
@@ -50,6 +51,14 @@ const messageType = ref<'text' | 'voice'>('voice')
  * Высота инпута изменена и не равна минимальной
  */
 const isResizing = ref(false)
+/**
+ *
+ * Показывает скрытую дату сообщений при скролле */
+const shownDate = ref(openedChatData?.value.messages[openedChatData?.value.messages.length - 1].date)
+/**
+ * Отображение shownDate
+ * */
+const preparedDay = computed(() => setMessageDay(shownDate.value))
 /**
  * Ссылка на инпут отправки сообщений
  */
@@ -333,6 +342,19 @@ const checkIfLastOfSeveralMessages = (
     }"
   >
     <div
+      class="dialog__date"
+      :class="{
+        'dialog__date_today': preparedDay === 'Сегодня',
+        'dialog__date_hide': !shownDate
+      }"
+      :style="{
+        transform: isMobileSize ? `translateX(calc(-50%))` : `translateX(calc(-50% + 14px))`,
+        opacity: $dialogWrapper?.offsetHeight < $dialogWrapperScroll?.offsetHeight ? '1' : '0',
+      }"
+    >
+      {{ preparedDay }}
+    </div>
+    <div
       ref="$dialogWrapper"
       class="dialog__wrapper"
       :class="{
@@ -350,10 +372,10 @@ const checkIfLastOfSeveralMessages = (
           class="dialog__body"
         >
           <MessageDay
+            v-model:shown-date="shownDate"
             :is-first-date="index === 0"
             :date="messagesSortedByDay.date"
             :dialog-wrapper-scroll-top="dialogWrapperScrollTop"
-            :dialog-wrapper-offset-top="dialogWrapperTop"
             :last-date="index === openedChatData?.messages.length - 1"
           />
 

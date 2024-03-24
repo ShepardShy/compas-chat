@@ -183,6 +183,12 @@ onMounted(() => {
   top: 25px;
   left: 20px;
   cursor: pointer;
+  color: #0584fe;
+  transition: 0.2s all;
+}
+
+.message-type__back-icon:hover {
+  color: #1253a2;
 }
 
 .message-type__close-icon {

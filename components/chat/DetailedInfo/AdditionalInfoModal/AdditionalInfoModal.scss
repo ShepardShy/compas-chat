@@ -136,7 +136,7 @@
   color: variables.$color-dark;
   display: flex;
   gap: 10px;
-  align-content: center;
+  align-items: center;
 }
 
 .menu__item_last {
@@ -152,6 +152,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.menu__item-icon span {
+  display: grid;
+  place-items: center;
+  padding: 1px 0;
 }
 
 .menu__item-icon_not-selected {

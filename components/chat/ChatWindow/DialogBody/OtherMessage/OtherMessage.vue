@@ -67,7 +67,7 @@ const chatPhoto = computed<string>(() => {
       }"
     >
       <div
-        v-if="!chatUser.photo"
+        v-if="!chatUser.photo && lastOfSeveralMsgs"
         class="other-msg__first-name-letter"
       >
         {{ chatUser?.firstName ? chatUser?.firstName[0] : '' }}

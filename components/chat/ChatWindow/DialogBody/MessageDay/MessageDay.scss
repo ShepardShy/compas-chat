@@ -7,7 +7,7 @@
   justify-content: center;
   z-index: 100;
   left: calc(50%);
-  transform: translateX(-40%);
+  will-change: transform;
 }
 
 .message-block__wrapper {

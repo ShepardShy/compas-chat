@@ -7,6 +7,34 @@
   background-color: #f7f8fa;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.dialog__date {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 110;
+  padding: 10px 16px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
+  border: solid 1px #eeeff1;
+  font-size: 16px;
+  font-weight: 400;
+  color: variables.$color-dark-grey;
+  background-color: variables.$color-white;
+}
+
+.dialog__date_today {
+  background-color: #2f8cff;
+  color: variables.$color-white;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
+  border: 1px solid transparent;
+}
+
+.dialog__date_hide {
+  opacity: 0 !important;
 }
 
 .dialog_mobile {

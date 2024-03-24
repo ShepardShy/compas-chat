@@ -36,7 +36,7 @@ const isCreateChatMenuOpen = ref(false)
 /**
  * Высота блока с сообщенями
  */
-const allMessagesHeight = computed(() => `${window.innerHeight - 155}px`)
+const allMessagesHeight = ref(`${window.innerHeight - 155}px`)
 
 /**
  * Подписка на поиск чата
@@ -47,6 +47,13 @@ watch(
     await chatsStore.filterChats(searchChatValue.value)
   }
 )
+
+/** После монтирования */
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    allMessagesHeight.value = `${window.innerHeight - 155}px`
+  })
+})
 
 /**
  * Открытие/закрытие меню создания чата

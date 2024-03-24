@@ -10,12 +10,19 @@ interface PropsType {
   date: string
   isFirstDate: boolean
   dialogWrapperScrollTop: number
-  dialogWrapperOffsetTop: number
   lastDate: boolean
+  shownDate: string
 }
 
 const props = defineProps<PropsType>()
-const { date, isFirstDate, dialogWrapperScrollTop, dialogWrapperOffsetTop, lastDate } = toRefs(props)
+const { date, isFirstDate, dialogWrapperScrollTop, lastDate } = toRefs(props)
+
+/**
+ * События
+ */
+const emit = defineEmits<{
+  (emit: 'update:shownDate', value: string): void
+}>()
 
 /**
  * Подключение стора с настройками
@@ -53,10 +60,26 @@ watch(
 )
 
 const setTopPosition = () => {
-  if (dialogBody.value.offsetTop < dialogWrapperScrollTop.value + 81) {
-    topPosition.value = dialogWrapperScrollTop.value + 81 - dialogBody.value.offsetTop.toFixed(0) + 'px'
-  } else {
-    topPosition.value = '0px'
+  const nextDatePosition = dialogBody.value.nextElementSibling?.offsetTop
+  const currentShownDatePosition = dialogBody.value.offsetTop
+  const lastDialogBody = $messageBlock.value.closest('.dialog__body').offsetHeight
+
+  if (dialogWrapperScrollTop.value > currentShownDatePosition &&
+      (nextDatePosition && dialogWrapperScrollTop.value < (nextDatePosition - 41))) {
+    emit('update:shownDate', date.value)
+    return
+  } else if (lastDate.value) {
+    emit('update:shownDate', date.value)
+  }
+
+  // console.log((currentShownDatePosition + lastDialogBody), dialogWrapperScrollTop.value)
+  // if (lastDate.value && (currentShownDatePosition + lastDialogBody) > dialogWrapperScrollTop.value) {
+  //   emit('update:shownDate', date.value)
+  // }
+
+  if (dialogWrapperScrollTop.value > currentShownDatePosition &&
+      (nextDatePosition && dialogWrapperScrollTop.value < nextDatePosition)) {
+    emit('update:shownDate', '')
   }
 }
 </script>
@@ -67,7 +90,7 @@ const setTopPosition = () => {
     class="message-block"
     :style="{
       marginTop: isFirstDate && '0',
-      top: topPosition
+      transform: isMobileSize ? `translateX(calc(-50%))`: `translateX(calc(-50% + 40px))`,
     }"
   >
     <div

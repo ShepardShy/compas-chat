@@ -293,7 +293,7 @@ const getIconComponent = (_icon) => {
           />
         </div>
 
-        {{ item.title }}
+        <span>{{ item.title }} </span>
       </div>
 
       <div

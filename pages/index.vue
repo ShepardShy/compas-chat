@@ -71,9 +71,9 @@ const isAdditionalInfoModalVisible = computed(() => {
       !isOpenMessageTypeModal.value
 })
 /**
- * Высота блока в 100vh
+ * Высота блока на весь экран
  */
-const windowHeight = computed(() => `${window.innerHeight}px`)
+const windowHeight = ref()
 
 /**
  * Подписка на измнение открытого чата
@@ -92,6 +92,8 @@ watch(
  */
 onMounted(async () => {
   chatsStore.$patch(state => state.filteredChats = state.chats)
+
+  windowHeight.value = `${window.innerHeight}px`
 
   checkMobileSize()
   window.addEventListener('resize', checkMobileSize)
@@ -115,6 +117,7 @@ const maxWindowWidthForMobile = 950
  */
 const checkMobileSize = () => {
   settingsStore.$patch(state => state.isMobileSize = window.innerWidth < maxWindowWidthForMobile)
+  windowHeight.value = `${window.innerHeight}px`
 }
 /**
  * Закрыть все открытые моадбные окна
