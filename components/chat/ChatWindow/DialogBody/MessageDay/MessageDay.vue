@@ -66,7 +66,7 @@ const setTopPosition = () => {
   const nextDatePosition = dialogBody.value.nextElementSibling?.offsetTop
   const currentShownDatePosition = dialogBody.value.offsetTop
 
-  if (dialogWrapperScrollTop.value > currentShownDatePosition &&
+  if (dialogWrapperScrollTop.value > (currentShownDatePosition + 10) &&
       (nextDatePosition && dialogWrapperScrollTop.value < (nextDatePosition - 41))) {
     emit('update:shownDate', date.value)
     return

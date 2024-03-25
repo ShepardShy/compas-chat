@@ -295,7 +295,7 @@ const saveAddedUsers = async () => {
           v-if="!preparedChatUsers.length"
           class="add-user__no-users"
         >
-          Пользователи чата не найдены
+          Пользователь не найден
         </div>
       </div>
 

@@ -64,7 +64,6 @@ const gridRows = computed(() => {
 })
 
 const imageOne = computed(() => {
-  console.log(isMobileSize.value)
   const shownImagesLength = message.value.images?.slice(0, 4).length
   if (shownImagesLength === 1) {
     return '1'

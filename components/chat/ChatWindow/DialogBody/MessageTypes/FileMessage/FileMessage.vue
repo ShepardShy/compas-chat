@@ -66,6 +66,21 @@ const fileTitle = (fileData: FileMessageType) => {
     return fileData.fileName
   }
 }
+
+/**
+ * Скачать файл
+ * @param fileData
+ */
+const downloadFile = (fileData: FileMessageType) => {
+  const link = document.createElement('a')
+  link.href = fileData.url
+  link.download = fileData.fileName
+
+  document.body.appendChild(link)
+  link.click()
+
+  document.body.removeChild(link)
+}
 </script>
 
 <template>
@@ -100,8 +115,11 @@ const fileTitle = (fileData: FileMessageType) => {
               {{ file.size }}
             </div>
           </div>
-          <div class="file-message__open">
-            Открыть с помощью
+          <div
+            class="file-message__open"
+            @click="downloadFile(file)"
+          >
+            Скачать
           </div>
         </div>
       </div>

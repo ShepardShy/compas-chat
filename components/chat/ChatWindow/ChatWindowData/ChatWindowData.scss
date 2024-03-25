@@ -31,11 +31,8 @@
 }
 
 .user__name_is-group {
-  text-decoration: underline;
-}
-
-.user__name_is-group:hover {
-  text-decoration: underline;
+  text-decoration: none;
+  cursor: unset;
 }
 
 .user__status {

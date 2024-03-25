@@ -367,7 +367,7 @@ const addMessagesAboutDeletesAndAddedUsers = () => {
           v-if="!chatUsers.length && !isGroupChatCreateModalOpen"
           class="edit-group__no-users"
         >
-          Пользователи чата не найдены
+          Пользователь не найден
         </div>
       </div>
 

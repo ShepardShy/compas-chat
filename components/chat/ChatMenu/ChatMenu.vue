@@ -73,6 +73,8 @@ const onClickDoMenuAction = async (_menuItem: ChatMenuType) => {
       await chatsStore.$patch(state => state.temporalStorageForGroupChat = openedChatData.value)
 
       chatsStore.$patch(state => state.isDetailedInfoModalOpen = true)
+
+      emit('closeChat')
       break
     }
     case 'editChat': {
@@ -109,9 +111,6 @@ const onClickDoMenuAction = async (_menuItem: ChatMenuType) => {
       v-for="item in chatItems"
       :key="item.title"
       class="menu__item"
-      :class="{
-        'menu__item_active': item.title === activeMenuItem,
-      }"
       @click="onClickDoMenuAction(item)"
     >
       <div

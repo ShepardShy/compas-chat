@@ -53,6 +53,18 @@ watch(
 )
 
 /**
+ * После монтирования компонента
+ */
+onMounted(
+  () => {
+    window.addEventListener('resize', () => {
+      if (isMobileSize.value) {
+        isSearchInDialogOpen.value = false
+      }
+    })
+  }
+)
+/**
  * Вкл/выкл поиск по чату
  */
 const toggleSearchInput = () => {
@@ -106,7 +118,7 @@ const openAllChats = () => {
       <div class="window__user-data">
         <ChatWindowData v-if="!isSearchInDialogOpen" />
         <ChatInput
-          v-if="isSearchInDialogOpen"
+          v-if="isSearchInDialogOpen && !isMobileSize"
           v-model:input-value="searchInDialogValue"
           placeholder="Поиск по чату"
           width="100%"
