@@ -13,6 +13,7 @@ interface PropsType {
   message: GroupChatMessageType | MessageType
   lastOfSeveralMsgs: boolean
 }
+
 const props = defineProps<PropsType>()
 const { message, lastOfSeveralMsgs } = toRefs(props)
 
@@ -77,7 +78,8 @@ const chatPhoto = computed<string>(() => {
     <div
       class="other-msg__body"
       :class="{
-        'other-msg__triangle ': lastOfSeveralMsgs || (lastOfSeveralMsgs && message.type === 'image' && message.comment)
+        'other-msg__triangle ': (lastOfSeveralMsgs && message.type !== 'image')
+          || (lastOfSeveralMsgs && message.type === 'image' && message.comment)
       }"
     >
       <TextMessage

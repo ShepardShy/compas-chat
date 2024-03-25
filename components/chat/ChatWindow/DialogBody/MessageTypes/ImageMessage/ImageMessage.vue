@@ -28,54 +28,74 @@ const gridColumn = computed(() => {
   if (isMobileSize.value) {
     if (message.value?.images?.length <= 2) {
       return `repeat( ${message.value?.images?.length}, 1fr)`
+    } else if (message.value?.images?.length === 3) {
+      return 'calc(66.66% - 5px) 33.33%'
     }
 
-    return 'repeat( 2, 1fr)'
+    return 'repeat(2,calc(50% - 2.5px))'
   }
 
   if (message.value?.images?.length < 3) {
     return `repeat( ${message.value?.images?.length}, 1fr)`
   }
 
-  return 'repeat( 3, 1fr)'
+  return 'calc(66.66% - 5px) 33.33%'
 })
 
 /**
  * Высота картинки
  */
 const gridRows = computed(() => {
+  const imagesLength = message.value?.images?.length <= 4 ? message.value?.images?.length : 4
+
   if (isMobileSize.value) {
-    if (message.value?.images?.length <= 2) {
+    if (imagesLength <= 2) {
       return '285px'
+    } else {
+      return 'repeat(2, calc(285px / 2))'
     }
-
-    const maxImagesPerLine = 2
-    const gap = 5
-    const imagesLength = message.value?.images?.length <= 4 ? message.value?.images?.length : 4
-
-    const rowsQuantity = Math.ceil(imagesLength / maxImagesPerLine)
-
-    return `calc(${100 / rowsQuantity}% - ${gap * (rowsQuantity - 2)}px)`
   }
 
-  if (message.value?.images?.length <= 3) {
+  if (message.value?.images?.length <= 2) {
     return '323px'
   }
 
-  const maxImagesPerLine = 3
-  const gap = 5
-  const imagesLength = message.value?.images?.length <= 9 ? message.value?.images?.length : 9
-
-  const rowsQuantity = Math.ceil(imagesLength / maxImagesPerLine)
-
-  return `calc(${100 / rowsQuantity}% - ${gap * (rowsQuantity - 2)}px)`
+  return imagesLength === 3 ? 'repeat(2, calc(323px / 2))' : 'repeat(3, calc(323px / 3))'
 })
+
+const imageOne = computed(() => {
+  console.log(isMobileSize.value)
+  const shownImagesLength = message.value.images?.slice(0, 4).length
+  if (shownImagesLength === 1) {
+    return '1'
+  } else if (shownImagesLength <= 3) {
+    return '1 / span 2'
+  } else if (isMobileSize.value && shownImagesLength === 4) {
+    return 'span 1'
+  } else if (!isMobileSize.value && shownImagesLength === 4) {
+    return '1 / span 3'
+  }
+})
+
+const imageTwo = computed(() => {
+  const shownImagesLength = message.value.images?.slice(0, 4).length
+  return (isMobileSize.value && shownImagesLength === 4) ? 'span 1' : '1 / 2'
+})
+
+const imageThree = computed(() => {
+  const shownImagesLength = message.value.images?.slice(0, 4).length
+  return (isMobileSize.value && shownImagesLength === 4) ? 'span 1' : '2 / 3'
+})
+
+const imageFour = computed(() => {
+  const shownImagesLength = message.value.images?.slice(0, 4).length
+  return (isMobileSize.value && shownImagesLength === 4) ? 'span 1' : '3 / 4'
+})
+
 /**
  * Есть ли скрытые картинки
  */
-const isImagesMoreThenShown = computed(() =>
-  (isMobileSize && message.value.images?.length > 4) ||
-    (!isMobileSize && message.value.images?.length > 9))
+const isImagesMoreThenShown = computed(() => message.value.images?.length > 4)
 /**
  * Сообщение доставлено
  */
@@ -92,13 +112,7 @@ const isMessageViewed = computed<boolean>(() => {
 /**
  * Картинки для отображения
  */
-const maxImagesToShow = computed(() => {
-  if (isMobileSize.value) {
-    return message.value.images?.slice(0, 4)
-  }
-
-  return message.value.images?.slice(0, 9)
-})
+const maxImagesToShow = computed(() => message.value.images?.slice(0, 4))
 /**
  * Скрытые картинки
  */
@@ -139,7 +153,6 @@ const isImageReceived = (_image: ImageMessageType) => {
       :style="{
         gridTemplateColumns: gridColumn,
         gridTemplateRows: gridRows,
-        gridAutoRows: gridRows,
         height: isMobileSize ? '285px': '323px',
         borderRadius: message.comment ? '10px 10px 0 0' : '10px'
       }"
@@ -149,12 +162,15 @@ const isImageReceived = (_image: ImageMessageType) => {
         :key="image"
         class="image-message__image"
         :class="{
-          'image-message__hide-images_last': isImagesMoreThenShown && (isMobileSize ? idx === 3 : idx === 8),
+          'image-message__hide-images_last': isImagesMoreThenShown && idx === 3,
+        }"
+        :style="{
+          gridRow: (idx === 0 && imageOne) || (idx === 1 && imageTwo) || (idx === 2 && imageThree) || (idx === 3 && imageFour),
         }"
       >
         <img :src="image.url">
         <div
-          v-if="!(isImagesMoreThenShown && (isMobileSize ? idx === 3 : idx === 8))"
+          v-if="!(isImagesMoreThenShown && idx === 3)"
           class="image-message__info"
         >
           <div class="image-message__time">
@@ -173,9 +189,6 @@ const isImageReceived = (_image: ImageMessageType) => {
         <div
           v-else
           class="image-message__hide-images-length"
-          :style="{
-            top: isImagesMoreThenShown && isMobileSize && '30%'
-          }"
         >
           {{ `+${hideImagesLength}` }}
         </div>

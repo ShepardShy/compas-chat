@@ -34,11 +34,6 @@ const searchChatValue = ref<string | undefined>()
 const isCreateChatMenuOpen = ref(false)
 
 /**
- * Высота блока с сообщенями
- */
-const allMessagesHeight = ref(`${window.innerHeight - 155}px`)
-
-/**
  * Подписка на поиск чата
  */
 watch(
@@ -47,13 +42,6 @@ watch(
     await chatsStore.filterChats(searchChatValue.value)
   }
 )
-
-/** После монтирования */
-onMounted(() => {
-  window.addEventListener('resize', () => {
-    allMessagesHeight.value = `${window.innerHeight - 155}px`
-  })
-})
 
 /**
  * Открытие/закрытие меню создания чата
@@ -124,7 +112,7 @@ const openModalToCreateChat = () => {
     <div
       class="chats__wrapper"
       :style="{
-        height: allMessagesHeight
+        height: 'calc(100dvh - 155px)'
       }"
     >
       <ChatsWithPinnedUsers

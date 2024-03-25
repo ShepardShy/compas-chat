@@ -59,23 +59,20 @@ watch(
   }
 )
 
+/**
+ * Проверяет как далеко скролл сообщений и задает значение для div, который динамически отражает дату
+ */
 const setTopPosition = () => {
   const nextDatePosition = dialogBody.value.nextElementSibling?.offsetTop
   const currentShownDatePosition = dialogBody.value.offsetTop
-  const lastDialogBody = $messageBlock.value.closest('.dialog__body').offsetHeight
 
   if (dialogWrapperScrollTop.value > currentShownDatePosition &&
       (nextDatePosition && dialogWrapperScrollTop.value < (nextDatePosition - 41))) {
     emit('update:shownDate', date.value)
     return
-  } else if (lastDate.value) {
+  } else if ((dialogWrapperScrollTop.value > currentShownDatePosition) && lastDate.value) {
     emit('update:shownDate', date.value)
   }
-
-  // console.log((currentShownDatePosition + lastDialogBody), dialogWrapperScrollTop.value)
-  // if (lastDate.value && (currentShownDatePosition + lastDialogBody) > dialogWrapperScrollTop.value) {
-  //   emit('update:shownDate', date.value)
-  // }
 
   if (dialogWrapperScrollTop.value > currentShownDatePosition &&
       (nextDatePosition && dialogWrapperScrollTop.value < nextDatePosition)) {

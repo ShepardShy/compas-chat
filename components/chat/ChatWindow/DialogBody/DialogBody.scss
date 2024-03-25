@@ -1,7 +1,7 @@
 @use '~/assets/styles/_variables.scss' as variables;
 
 .dialog {
-  height: calc(100vh - 81px);
+  height: calc(100dvh - 81px);
   border-top: solid 1px #eeeff1;
   padding: 0 5px 0 0;
   background-color: #f7f8fa;

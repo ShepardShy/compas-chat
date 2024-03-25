@@ -26,7 +26,8 @@ const { isMobileSize } = storeToRefs(settingsStore)
   <div
     class="own-msg"
     :class="{
-      'own-msg__triangle': lastOfSeveralMsgs || (lastOfSeveralMsgs && message.type === 'image' && message.comment),
+      'own-msg__triangle': (lastOfSeveralMsgs && message.type !== 'image')
+        || (lastOfSeveralMsgs && message.type === 'image' && message.comment),
       'own-msg_mobile': isMobileSize
     }"
     :style="{
