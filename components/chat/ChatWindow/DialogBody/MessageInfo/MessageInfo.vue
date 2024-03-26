@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { MessageInfoType } from '~/types/messages'
+import { useSettingsStore } from '~/store/settings'
 
 /**
  * Входящие пропсы
@@ -12,6 +13,10 @@ interface PropsType {
 const props = defineProps<PropsType>()
 const { message } = storeToRefs(props)
 
+/** Стор с настройками */
+
+const settingStore = useSettingsStore()
+const { isMobileSize } = storeToRefs(settingStore)
 /**
  * Имена
  */
@@ -62,7 +67,8 @@ const isMessageAboutChatCreating = computed(() => {
   <div
     class="message-info"
     :style="{
-      marginBottom: isNextMessageInfoMessage ? '35px' : '5px'
+      marginBottom: isNextMessageInfoMessage ? '35px' : '5px',
+      marginLeft: isMobileSize ? '0' : '25px'
     }"
   >
     <div

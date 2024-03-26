@@ -90,12 +90,13 @@
 }
 
 .user__unread-msg {
-  padding: 1px 5px;
+  padding: 0px 5px 2px;
   height: 16px;
   display: grid;
   place-items: center;
   border-radius: 9px;
   font-size: 12px;
+  line-height: 16px;
   color: #fff;
   font-weight: 400;
   background-color: variables.$color-blue-grey;

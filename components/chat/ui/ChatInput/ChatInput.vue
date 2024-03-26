@@ -52,6 +52,8 @@ const emit = defineEmits<{
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
+/** Открыто ли приложение в сафари */
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 /**
  * Открыто ли меню для подгрузки файлов
  */
@@ -382,7 +384,8 @@ defineExpose({
         :placeholder="placeholderValue"
         :style="{
           width: width,
-          height: currentInputHeight + 'px'
+          height: currentInputHeight + 'px',
+          paddingTop: isSafari ? '14px': '11px'
         }"
         @input="onTextareaInput($event)"
       />
@@ -399,7 +402,8 @@ defineExpose({
         :placeholder="placeholderValue"
         :style="{
           width: width,
-          height: currentInputHeight + 'px'
+          height: currentInputHeight + 'px',
+          paddingTop: isSafari ? '14px': '11px'
         }"
         @input="onTextareaInput($event)"
       >

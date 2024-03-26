@@ -24,7 +24,7 @@ const { isMobileSize } = storeToRefs(settingsStore)
   z-index: 1;
   margin-top: 35px;
   margin-bottom: 35px;
-  margin-left: 50px;
+  margin-left: 25px;
 }
 
 .day-separator_mobile {

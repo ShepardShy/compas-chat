@@ -11,12 +11,14 @@ import CrossIcon from 'assets/icons/cross-icon.svg'
 import { createChatMenu } from '~/shared'
 import { useSettingsStore } from '~/store/settings'
 import { useChatsStore } from '~/store/chats'
+import type { UserChatType } from '~/types/messages'
+import { formattedDateToday } from '~/composables/chats'
 
 /**
  * Подключение стора с сообщениями
  */
 const chatsStore = useChatsStore()
-const { chatsWithPinnedUsers, chatsWithoutPinned } = storeToRefs(chatsStore)
+const { chatsWithPinnedUsers, chatsWithoutPinned, chats, userId } = storeToRefs(chatsStore)
 
 /**
  * Подключение стора с настройками
@@ -51,6 +53,23 @@ const toggleAllChatsMenu = () => isCreateChatMenuOpen.value = !isCreateChatMenuO
  * Открытие модалки для создания группового чата
  */
 const openModalToCreateChat = () => {
+  const currentUser: UserChatType = chats.value.find(chat => chat.id === userId.value && !chat.isGroupChat)
+
+  const currentUserData = {
+    userId: currentUser.userId,
+    firstName: currentUser.firstName,
+    secondName: currentUser.secondName,
+    isActive: currentUser.isActive,
+    isTyping: currentUser.isTyping,
+    photo: currentUser.photo,
+    position: currentUser.position,
+    lastTimeActive: formattedDateToday()
+  }
+
+  chatsStore.$patch(state => state.temporalStorageForGroupChat = {
+    ...state.temporalStorageForGroupChat,
+    users: [currentUserData]
+  })
   chatsStore.$patch(state => state.isGroupChatCreateModalOpen = true)
   toggleAllChatsMenu()
 }

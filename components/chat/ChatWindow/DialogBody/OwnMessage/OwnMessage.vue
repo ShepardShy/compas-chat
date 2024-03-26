@@ -32,7 +32,7 @@ const { isMobileSize } = storeToRefs(settingsStore)
     }"
     :style="{
       boxShadow: message.type === 'image' && 'none',
-      marginBottom: lastOfSeveralMsgs ? '35px' : '5px'
+      marginBottom: lastOfSeveralMsgs ? '25px' : '5px'
     }"
   >
     <TextMessage

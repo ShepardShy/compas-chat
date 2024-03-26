@@ -66,7 +66,7 @@ const setTopPosition = () => {
   const nextDatePosition = dialogBody.value.nextElementSibling?.offsetTop
   const currentShownDatePosition = dialogBody.value.offsetTop
 
-  if (dialogWrapperScrollTop.value > (currentShownDatePosition + 10) &&
+  if (dialogWrapperScrollTop.value > (currentShownDatePosition + 41) &&
       (nextDatePosition && dialogWrapperScrollTop.value < (nextDatePosition - 41))) {
     emit('update:shownDate', date.value)
     return
@@ -87,7 +87,7 @@ const setTopPosition = () => {
     class="message-block"
     :style="{
       marginTop: isFirstDate && '0',
-      transform: isMobileSize ? `translateX(calc(-50%))`: `translateX(calc(-50% + 40px))`,
+      transform: isMobileSize ? `translateX(calc(-50%))`: `translateX(calc(-50% + 15px))`,
     }"
   >
     <div

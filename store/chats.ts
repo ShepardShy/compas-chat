@@ -348,6 +348,36 @@ export const useChatsStore = defineStore('chats', {
               isViewed: true,
               isUnread: true,
               date: '14.02.2024 15:12'
+            },
+            {
+              id: 3,
+              type: 'text',
+              message: 'Принимаете заказ?',
+              userId: 1,
+              isReceived: true,
+              isViewed: true,
+              isUnread: true,
+              date: '14.02.2024 15:12'
+            },
+            {
+              id: 4,
+              type: 'text',
+              message: 'Принимаете заказ?',
+              userId: 1,
+              isReceived: true,
+              isViewed: true,
+              isUnread: true,
+              date: '14.02.2024 15:12'
+            },
+            {
+              id: 5,
+              type: 'text',
+              message: 'Принимаете заказ?',
+              userId: 1,
+              isReceived: true,
+              isViewed: true,
+              isUnread: true,
+              date: '14.02.2024 15:12'
             }
           ]
         },
@@ -1226,17 +1256,6 @@ export const useChatsStore = defineStore('chats', {
         ? `Добавлены в групповой чат: ${_addedUsersList}`
         : `Добавлен в группвой чат: ${_addedUsersList} `
 
-      const currentUserData = {
-        userId: currentUser.userId,
-        firstName: currentUser.firstName,
-        secondName: currentUser.secondName,
-        isActive: currentUser.isActive,
-        isTyping: currentUser.isTyping,
-        photo: currentUser.photo,
-        position: currentUser.position,
-        lastTimeActive: formattedDateToday()
-      }
-
       const newGroupChat: GroupChatType = {
         ...this.temporalStorageForGroupChat,
         id: this.chats.length + 1,
@@ -1250,7 +1269,7 @@ export const useChatsStore = defineStore('chats', {
         totalFileMessages: 0,
         totalVoiceMessages: 0,
         totalLinksMessages: 0,
-        users: [currentUserData, ...this.temporalStorageForAddedUsers],
+        users: [...this.temporalStorageForAddedUsers],
         messages: [{
           id: 33,
           type: 'message-info',

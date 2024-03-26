@@ -84,7 +84,7 @@ const chatFullName = computed<string>(() => {
   return openModalChatData.value.title
 })
 /**
- *
+ * Поиск по пользователям чата
  */
 const chatUsers = computed(() => {
   if (userSearchValue.value) {

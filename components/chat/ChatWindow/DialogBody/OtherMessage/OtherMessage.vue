@@ -54,7 +54,7 @@ const chatPhoto = computed<string>(() => {
       'other-msg_mobile': isMobileSize,
     }"
     :style="{
-      marginBottom: lastOfSeveralMsgs ? '35px' : '5px',
+      marginBottom: lastOfSeveralMsgs ? '25px' : '5px',
       maxWidth: message.type === 'image' && isMobileSize && '335px'
     }"
   >
