@@ -39,6 +39,9 @@ const { isMobileSize } = storeToRefs(settingsStore)
 const chatsStore = useChatsStore()
 const { openedChatData } = storeToRefs(chatsStore)
 
+/** Открыто ли приложение в сафари */
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+
 /**
  * Выбраный элемент меню чата
  */
@@ -131,7 +134,14 @@ const onClickDoMenuAction = async (_menuItem: ChatMenuType) => {
         />
       </div>
 
-      {{ item.title }}
+      <span
+        class="menu__item-title"
+        :style="{
+          paddingTop: isSafari ? '2px' : '0'
+        }"
+      >
+        {{ item.title }}
+      </span>
     </div>
   </div>
 </template>

@@ -1,6 +1,12 @@
 import { daysOfWeek, daysOfWeekLongName } from '~/shared/const'
 import type { DetailedInfoMenuItem, GroupChatMessageType, GroupChatType, UserChatType } from '~/types/messages'
 
+export const closeOpenChatAfterOpeningAnother = () => {
+  const openAnotherChat = [...document.querySelectorAll('.menu__bg_active')]
+  openAnotherChat.forEach((chat) => {
+    chat.click()
+  })
+}
 /**
  *
  * @param _openModalChatData
@@ -106,6 +112,7 @@ export const userActiveTime = (lastTimeActive: string) => {
 }
 
 export const setMessageDay = (dateFromMessage: string) => {
+  if (!dateFromMessage) return
   const dateParts = dateFromMessage.slice(0, 10).split('.')
   const date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0])
   const today = new Date()

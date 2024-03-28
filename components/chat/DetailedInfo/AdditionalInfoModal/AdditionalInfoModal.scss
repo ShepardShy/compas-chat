@@ -157,7 +157,6 @@
 .menu__item-icon span {
   display: grid;
   place-items: center;
-  padding: 1px 0;
 }
 
 .menu__item-icon_not-selected {
@@ -190,6 +189,10 @@
   align-items: center;
   transition: 0.5s all;
   border-bottom: 1px solid transparent;
+}
+
+.details-menu__item-title {
+  line-height: 16px;
 }
 
 .details-menu__item-icon {

@@ -58,13 +58,14 @@ const imageUrl = (fileData: FileMessageType) => {
  * Заголовок файла
  */
 const fileTitle = (fileData: FileMessageType) => {
-  const maxLength = isMobileSize.value ? 24 : 42
-
-  if (fileData.fileName.length > maxLength) {
-    return fileData.fileName.slice(0, (maxLength - 3) / 2) + '...' + fileData.fileName.slice(-(maxLength - 3) / 2)
-  } else {
-    return fileData.fileName
-  }
+  return fileData.fileName
+  // const maxLength = isMobileSize.value ? 24 : 42
+  //
+  // if (fileData.fileName.length > maxLength) {
+  //   return fileData.fileName.slice(0, (maxLength - 3) / 2) + '...' + fileData.fileName.slice(-(maxLength - 3) / 2)
+  // } else {
+  //   return fileData.fileName
+  // }
 }
 
 /**

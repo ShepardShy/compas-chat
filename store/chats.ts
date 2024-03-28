@@ -1269,7 +1269,7 @@ export const useChatsStore = defineStore('chats', {
         totalFileMessages: 0,
         totalVoiceMessages: 0,
         totalLinksMessages: 0,
-        users: [...this.temporalStorageForAddedUsers],
+        users: [...this.temporalStorageForGroupChat.users, ...this.temporalStorageForAddedUsers],
         messages: [{
           id: 33,
           type: 'message-info',

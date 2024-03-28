@@ -35,6 +35,9 @@ const { openModalChatData, chats, chatIdForOpenModal } = storeToRefs(chatsStore)
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
 
+/** Открыто ли приложение в сафари */
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+
 /**
  * Выбранный тип сообщений для просмотра в модалке
  */
@@ -293,7 +296,12 @@ const getIconComponent = (_icon) => {
           />
         </div>
 
-        <span>{{ item.title }} </span>
+        <span
+          :style="{
+            paddingTop: isSafari ? '2px' : '0'
+          }"
+        >
+          {{ item.title }} </span>
       </div>
 
       <div
@@ -315,7 +323,14 @@ const getIconComponent = (_icon) => {
           style="flex: 0 0 21px;"
         />
 
-        <div>{{ showModalMenuItemTitle(openModalChatData, item) }}</div>
+        <div
+          class="details-menu__item-title"
+          :style="{
+            paddingTop: isSafari ? '2px' : '0'
+          }"
+        >
+          {{ showModalMenuItemTitle(openModalChatData, item) }}
+        </div>
       </div>
 
       <div

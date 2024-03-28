@@ -82,10 +82,11 @@
   display: flex;
   gap: 10px;
   border-radius: 7px;
+  transition: 0.2s all;
 }
 
 .chats__menu-item:hover {
-  background-color: variables.$color-light-grey;
+  background-color: variables.$color-hover;
 }
 
 //.chats__menu-item:nth-of-type(1) {
@@ -102,6 +103,13 @@
 
 .chats__add-chat {
   cursor: pointer;
+  color: rgb(139, 171, 216);
+  transition: 0.2s all;
+  z-index: 500;
+}
+
+.chats__add-chat:hover{
+  color: #1253a2 !important;
 }
 
 .chats__input {

@@ -66,6 +66,10 @@
   transition: 0.2s all;
 }
 
+.input__add-doc-icon {
+  z-index: 500;
+}
+
 .input__add-doc-icon:hover {
   color: #1253a2;
 }
@@ -99,7 +103,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 190;
   background-color: transparent;
 }
 
@@ -111,16 +115,16 @@
   box-shadow: 0 0 3px 0 variables.$color-black;
   background-color: #fff;
   user-select: none;
-  z-index: 1100;
+  z-index: 200;
 }
 
 .doc__item {
   cursor: pointer;
   width: 179px;
   padding: 7px 10px;
+  transition: 0.2s all;
 }
 
-.doc__item:hover,
-.doc__item_active {
-  background-color: variables.$color-light-grey;
+.doc__item:hover {
+  background-color: variables.$color-hover;
 }

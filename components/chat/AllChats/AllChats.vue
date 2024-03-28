@@ -12,7 +12,7 @@ import { createChatMenu } from '~/shared'
 import { useSettingsStore } from '~/store/settings'
 import { useChatsStore } from '~/store/chats'
 import type { UserChatType } from '~/types/messages'
-import { formattedDateToday } from '~/composables/chats'
+import { closeOpenChatAfterOpeningAnother, formattedDateToday } from '~/composables/chats'
 
 /**
  * Подключение стора с сообщениями
@@ -48,7 +48,18 @@ watch(
 /**
  * Открытие/закрытие меню создания чата
  */
-const toggleAllChatsMenu = () => isCreateChatMenuOpen.value = !isCreateChatMenuOpen.value
+const toggleAllChatsMenu = () => {
+  closeOpenChatAfterOpeningAnother()
+
+  isCreateChatMenuOpen.value = !isCreateChatMenuOpen.value
+}
+/**
+ * Закрыть меню создания чата
+ */
+const closeAllChatsMenu = () => {
+  isCreateChatMenuOpen.value = false
+}
+
 /**
  * Открытие модалки для создания группового чата
  */
@@ -93,13 +104,16 @@ const openModalToCreateChat = () => {
       </AppH1>
       <CrossIcon
         class="chats__add-chat"
+        :style="{
+          color: isCreateChatMenuOpen ? '#1253a2' : '#8BABD8'
+        }"
         @click.prevent="toggleAllChatsMenu"
       />
 
       <div
         v-if="isCreateChatMenuOpen"
-        class="chats__menu-bg"
-        @click="toggleAllChatsMenu"
+        class="chats__menu-bg menu__bg_active"
+        @click="closeAllChatsMenu"
       />
 
       <div

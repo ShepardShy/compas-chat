@@ -9,15 +9,11 @@
   padding: 10px;
 }
 
-.file-messages__wrapper {
-  margin-bottom: 5px;
-}
-
 .file-message {
   margin-bottom: 10px;
   display: flex;
   gap: 10px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .file-messages__image {

@@ -13,6 +13,7 @@ import {
 
 import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
+import { closeOpenChatAfterOpeningAnother } from '~/composables/chats'
 
 /**
  * Подключение стора с чатами
@@ -49,6 +50,7 @@ watch(
   () => openedChatId.value,
   () => {
     isMenuOpen.value = false
+    isSearchInDialogOpen.value = false
   }
 )
 
@@ -76,9 +78,16 @@ const toggleSearchInput = () => {
  * Открыть/закрыть меню чата
  */
 const toggleMenuOpen = () => {
+  closeOpenChatAfterOpeningAnother()
+
   isMenuOpen.value = !isMenuOpen.value
   isMakingACall.value = false
   isSearchInDialogOpen.value = false
+}
+
+/** Закрыть меню чата */
+const closeMenuOpen = () => {
+  isMenuOpen.value = false
 }
 /**
  * Начать/завершить звонок
@@ -161,8 +170,8 @@ const openAllChats = () => {
 
       <div
         v-if="isMenuOpen"
-        class="window__menu-bg"
-        @click="toggleMenuOpen"
+        class="window__menu-bg menu__bg_active"
+        @click="closeMenuOpen"
       />
 
       <ChatMenu

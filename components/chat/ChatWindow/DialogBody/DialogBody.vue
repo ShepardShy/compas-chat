@@ -54,7 +54,7 @@ const isResizing = ref(false)
 /**
  *
  * Показывает скрытую дату сообщений при скролле */
-const shownDate = ref(openedChatData?.value.messages[openedChatData?.value.messages.length - 1].date)
+const shownDate = ref(openedChatData?.value.messages[openedChatData?.value.messages.length - 1]?.date)
 /**
  * Отображение shownDate
  * */
@@ -348,7 +348,7 @@ const checkIfLastOfSeveralMessages = (
         'dialog__date_hide': !shownDate
       }"
       :style="{
-        transform: isMobileSize ? `translateX(calc(-50%))` : `translateX(calc(-50% + 14px))`,
+        transform: isMobileSize ? `translateX(calc(-50%))` : `translateX(calc(-50% - 11px))`,
         opacity: $dialogWrapper?.offsetHeight < $dialogWrapperScroll?.offsetHeight ? '1' : '0',
       }"
     >

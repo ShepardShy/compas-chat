@@ -22,6 +22,7 @@
   font-weight: 400;
   color: variables.$color-dark;
   display: flex;
+  align-items: center;
   gap: 10px;
 }
 
@@ -35,6 +36,10 @@
   justify-content: center;
   align-items: center;
   transition: 0.2s all;
+}
+
+.menu__item-title {
+  line-height: 14px;
 }
 
 .menu__item-icon_not-selected {

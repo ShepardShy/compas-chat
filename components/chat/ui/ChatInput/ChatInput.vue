@@ -3,6 +3,7 @@ import AddDocuments from 'assets/icons/add-doc-icon.svg'
 import { docTypes, imagesTypes, inputFilesTypes } from '~/shared/const'
 import { LoadedDocuments, LoadedImages } from '~/components'
 import { useSettingsStore } from '~/store/settings'
+import { closeOpenChatAfterOpeningAnother } from '~/composables/chats'
 
 /**
  * Входящие пропсы
@@ -173,7 +174,16 @@ const $uploadDocuments = ref<HTMLInputElement>()
 const filesData = ref()
 
 // Открыть/закрыть меню выбора типа загружаемых файлов
-const toggleFilesMenuType = () => isFilesTypesMenuOpen.value = !isFilesTypesMenuOpen.value
+const toggleFilesMenuType = () => {
+  closeOpenChatAfterOpeningAnother()
+
+  isFilesTypesMenuOpen.value = !isFilesTypesMenuOpen.value
+}
+
+// Закрыть меню выбора типа загружаемых файлов
+const closeFilesMenuType = () => {
+  isFilesTypesMenuOpen.value = false
+}
 
 // Задать активнй тип файла и открыть меню для выбора файлов
 const setActiveFileType = async (fileType: typeof inputFilesTypes) => {
@@ -450,8 +460,8 @@ defineExpose({
 
       <div
         v-if="isFilesTypesMenuOpen"
-        class="doc__menu-bg"
-        @click="toggleFilesMenuType()"
+        class="doc__menu-bg menu__bg_active"
+        @click="closeFilesMenuType"
       />
 
       <div

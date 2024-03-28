@@ -35,13 +35,26 @@ export const chatMenuItems: ChatMenuType[] = [
 
 export const inputFilesTypes = ['Фото', 'Файл'] as const
 
-export const imagesTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/svg+xml']
+export const imagesTypes = [
+  'image/jpeg',
+  'image/png',
+  'image/jpg',
+  'image/webp',
+  'image/svg',
+  'image/bmp',
+  'image/gif',
+  'image/svg+xml'
+]
 
 export const docTypes = [
+  'application/pdf',
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'application/pdf',
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/mp3',
+  'application/txt',
+  'application/pptx',
+  'application/mp4'
 ]
 
 export const detailedInfoMenuItems: DetailedInfoMenuItem[] = [
