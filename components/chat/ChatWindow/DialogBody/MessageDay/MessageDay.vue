@@ -46,10 +46,10 @@ onMounted(() => {
   dialogWrapper.value = $messageBlock.value.closest('.dialog__wrapper')
   dialogBody.value = $messageBlock.value.closest('.dialog__body')
 
-  if (dialogBody.value.offsetTop < dialogWrapper.value.offsetTop && lastDate.value) {
+  if ((dialogBody.value?.offsetTop < dialogWrapper.value?.offsetTop) && lastDate.value) {
     topPosition.value = dialogWrapper.value.offsetTop + 'px'
   } else {
-    topPosition.value = '0px'
+    topPosition.value = '0'
   }
 })
 watch(

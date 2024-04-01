@@ -63,12 +63,8 @@ const preparedDay = computed(() => setMessageDay(shownDate.value))
  * Ссылка на инпут отправки сообщений
  */
 const $chatInput = ref()
-/** Высота инпута при загруженный картинках */
-const inputHeightWithUploadedFiles = ref('0 0 90px')
-/**
- * Верхнее значение границы окна диалога
- */
-const dialogWrapperTop = ref()
+/** Высота области с инпутом */
+const dialogActionsHeight = ref('0 0 90px')
 
 /** Нет данных для сообщений */
 const noMessageToSend = computed(() => !uploadedImages.value.length &&
@@ -101,7 +97,7 @@ watch(
  */
 watch(
   () => messageValue.value,
-  () => {
+  async () => {
     if (messageValue.value !== openedChatData.value?.textMessageDraft) {
       chatsStore.saveTextMessageDraft(openedChatId.value, messageValue.value)
     }
@@ -110,6 +106,9 @@ watch(
     } else {
       messageType.value = 'voice'
     }
+
+    await nextTick()
+    scrollToDialogWrapperBottom()
   }
 )
 /** Подписка на загрузку сообщений */
@@ -119,17 +118,26 @@ watch(
     if (uploadedDocuments.value.length || uploadedImages.value.length) {
       messageType.value = 'text'
     }
-
-    scrollToDialogWrapperBottom()
+  },
+  {
+    deep: true
   }
 )
+
+/**
+ * Подписка на изменение высоты инпута чтобы скролить вниз чат
+ */
+watch(
+  () => dialogActionsHeight.value,
+  async () => {
+    await nextTick()
+    scrollToDialogWrapperBottom()
+  }, { deep: true })
 
 /**
  * Монтирование компонента
  */
 onMounted(async () => {
-  dialogWrapperTop.value = $dialogWrapper.value?.offsetTop
-
   await checkIfDialogBodyHeightsLessThenVH()
   scrollToDialogWrapperBottom()
 
@@ -152,7 +160,7 @@ const $dialogActions = ref<HTMLDivElement>()
 const isDialogBodyHeightsLessThenVH = ref(true)
 
 const scrollToDialogWrapperBottom = () => {
-  $dialogWrapper.value.scrollTop = $dialogWrapper.value.scrollHeight
+  $dialogWrapper.value!.scrollTop = $dialogWrapper.value!.scrollHeight
 }
 
 const checkIfDialogBodyHeightsLessThenVH = async () => {
@@ -251,6 +259,7 @@ const sendTextMessage = async () => {
   await nextTick()
 
   scrollToDialogWrapperBottom()
+  $chatInput.value.resetInputHeight()
 }
 
 /**
@@ -264,6 +273,7 @@ const sendImageMessage = async () => {
   await nextTick()
 
   scrollToDialogWrapperBottom()
+  $chatInput.value.resetInputHeight()
 }
 
 /**
@@ -277,6 +287,7 @@ const sendDocumentsMessage = async () => {
   await nextTick()
 
   scrollToDialogWrapperBottom()
+  $chatInput.value.resetInputHeight()
 }
 
 /**
@@ -294,17 +305,20 @@ const sendVoiceMessage = async () => {
 
 const handleMessage = () => {
   if (messageType.value === 'text' && !noMessageToSend.value) {
+    /** Если смешанная отправка фото и доков, то текст сообщения дублируется */
+    let temporalStorageForTextMessage
+
     if (uploadedImages.value.length) {
+      uploadedDocuments.value.length && (temporalStorageForTextMessage = messageValue.value)
       sendImageMessage()
-      return
     }
 
     if (uploadedDocuments.value.length) {
+      temporalStorageForTextMessage && (messageValue.value = temporalStorageForTextMessage)
       sendDocumentsMessage()
-      return
     }
 
-    if (messageValue.value?.length &&
+    if (messageValue.value &&
         !uploadedDocuments.value.length &&
         !voiceMessage.value.length) {
       sendTextMessage()
@@ -419,7 +433,7 @@ const checkIfLastOfSeveralMessages = (
         'dialog__actions_mobile':isMobileSize
       }"
       :style="{
-        flex: uploadedImages.length || uploadedDocuments.length ? inputHeightWithUploadedFiles: '0 0 90px'
+        flex: dialogActionsHeight
       }"
     >
       <ChatInput
@@ -428,13 +442,13 @@ const checkIfLastOfSeveralMessages = (
         v-model:loaded-images="uploadedImages"
         v-model:loaded-documents="uploadedDocuments"
         v-model:is-resizing="isResizing"
-        v-model:input-height-with-uploaded-files="inputHeightWithUploadedFiles"
+        v-model:dialog-actions-height="dialogActionsHeight"
         class="dialog__input"
         placeholder="Напишите сообщение…"
         :add-documents="true"
         :is-making-a-voice-message="isMakingAVoiceMessage"
         :message-duration="messageDuration"
-        :is-height-resize="true"
+        :is-height-resizable="true"
       />
 
       <div

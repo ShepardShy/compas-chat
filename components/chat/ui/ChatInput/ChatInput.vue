@@ -3,7 +3,7 @@ import AddDocuments from 'assets/icons/add-doc-icon.svg'
 import { docTypes, imagesTypes, inputFilesTypes } from '~/shared/const'
 import { LoadedDocuments, LoadedImages } from '~/components'
 import { useSettingsStore } from '~/store/settings'
-import { closeOpenChatAfterOpeningAnother } from '~/composables/chats'
+import { useChatsStore } from '~/store/chats'
 
 /**
  * Входящие пропсы
@@ -15,11 +15,11 @@ interface PropsType {
   width?: string
   isMakingAVoiceMessage?: boolean
   messageDuration?: number
-  isHeightResize?: boolean
+  isHeightResizable?: boolean
   loadedImages?: Array<unknown>
   loadedDocuments?: Array<unknown>
   isResizing?: boolean
-  inputHeightWithUploadedFiles: string
+  dialogActionsHeight: string
 }
 
 const props = defineProps<PropsType>()
@@ -30,10 +30,9 @@ const {
   width,
   isMakingAVoiceMessage,
   messageDuration,
-  isHeightResize,
+  isHeightResizable,
   loadedImages,
-  loadedDocuments,
-  inputHeightWithUploadedFiles
+  loadedDocuments
 } = toRefs(props)
 
 /**
@@ -44,14 +43,16 @@ const emit = defineEmits<{
   (emit: 'update:loadedImages', loadedImages: Array<unknown>): void
   (emit: 'update:loadedDocuments', loadedDocuments: Array<unknown>): void
   (emit: 'update:isResizing', isResizing: boolean): void
-  (emit: 'update:inputHeightWithUploadedFiles', value: string): void
+  (emit: 'update:dialogActionsHeight', value: string): void
 }>()
 
-/**
- * Подключение стора с настройками
- */
+/** Подключение стора с настройками */
 const settingsStore = useSettingsStore()
 const { isMobileSize } = storeToRefs(settingsStore)
+
+/** Подключение стора с данными чата */
+const chatsStore = useChatsStore()
+const { openedChatId } = storeToRefs(chatsStore)
 
 /** Открыто ли приложение в сафари */
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
@@ -134,20 +135,31 @@ const voiceMessageLengthTransformer = computed(() => {
 /**
  * Подписка на загрузку изображений и документов
  */
+
+const inputPaddings = 50
+const marginBottomFiles = 20
 let intervalToUpdateInputHeight
 watch(
-  () => [uploadedImages.value, uploadedDocuments.value],
+  () => [uploadedImages.value, uploadedDocuments.value, inputValue.value],
   () => {
-    emit('update:loadedImages', uploadedImages.value)
-    emit('update:loadedDocuments', uploadedDocuments.value)
+    if (!uploadedImages.value?.length && !uploadedDocuments.value?.length && !inputValue.value) {
+      resetInputHeight()
+      return
+    }
+
+    uploadedImages.value?.length && emit('update:loadedImages', uploadedImages.value)
+    uploadedDocuments.value?.length && emit('update:loadedDocuments', uploadedDocuments.value)
 
     if (uploadedImages.value?.length || uploadedDocuments.value?.length) {
       intervalToUpdateInputHeight = setInterval(() => {
-        if ($files.value.offsetHeight) {
-          const inputPaddings = 50
-          const marginBottomFiles = 20
+        if ($files.value?.offsetHeight) {
           clearInterval(intervalToUpdateInputHeight)
-          emit('update:inputHeightWithUploadedFiles', `0 0 ${$files.value.offsetHeight + currentInputHeight + inputPaddings + marginBottomFiles}px`)
+          emit('update:dialogActionsHeight', `0 0 ${$files.value.offsetHeight + currentInputHeight + inputPaddings + marginBottomFiles}px`)
+        }
+
+        if ($inputBody.value?.offsetHeight > minHeight) {
+          clearInterval(intervalToUpdateInputHeight)
+          emit('update:dialogActionsHeight', `0 0 ${currentInputHeight + inputPaddings + marginBottomFiles}px`)
         }
       }, 100)
     } else {
@@ -159,12 +171,28 @@ watch(
   }
 )
 
+/** Подписка на смену чата */
+watch(
+  () => openedChatId.value,
+  () => {
+    currentInputHeight = 40
+    $inputBody.value.style.height = `${currentInputHeight}px`
+  })
+
 /**
  * Монтирование компонента
  */
 onMounted(() => {
   uploadedImages.value = loadedImages.value
   uploadedDocuments.value = loadedDocuments.value
+
+  window.addEventListener('click', (event) => {
+    if (isFilesTypesMenuOpen.value &&
+        !event.target.closest('.doc__menu') &&
+        !event.target.closest('.input__add-doc-icon')) {
+      isFilesTypesMenuOpen.value = false
+    }
+  })
 })
 
 /**
@@ -175,14 +203,7 @@ const filesData = ref()
 
 // Открыть/закрыть меню выбора типа загружаемых файлов
 const toggleFilesMenuType = () => {
-  closeOpenChatAfterOpeningAnother()
-
   isFilesTypesMenuOpen.value = !isFilesTypesMenuOpen.value
-}
-
-// Закрыть меню выбора типа загружаемых файлов
-const closeFilesMenuType = () => {
-  isFilesTypesMenuOpen.value = false
 }
 
 // Задать активнй тип файла и открыть меню для выбора файлов
@@ -282,6 +303,8 @@ const keepInputHeightResizing = (event: MouseEvent) => {
     $input.value.style.height = `${newHeight}px`
     currentInputHeight = newHeight
   }
+
+  emit('update:dialogActionsHeight', `0 0 ${currentInputHeight + inputPaddings + marginBottomFiles}px`)
 }
 
 // Завершение изменение высоты инпута
@@ -320,7 +343,7 @@ const autoResizeTextarea = () => {
   textareaWrapper.style.height = 'auto'
   textareaWrapper.style.height = textarea.scrollHeight + 'px'
 
-  if (textarea.scrollHeight > 57) {
+  if (textarea.scrollHeight > 52) {
     currentInputHeight = textarea.scrollHeight
   } else {
     currentInputHeight = minHeight
@@ -332,7 +355,7 @@ const autoResizeTextarea = () => {
  */
 const onTextareaInput = (_event: Event) => {
   emit('update:inputValue', _event.target.value)
-  if (isHeightResize?.value) {
+  if (isHeightResizable?.value) {
     autoResizeTextarea()
   }
 }
@@ -345,10 +368,21 @@ const cleanLoadedImages = () => uploadedImages.value = []
  * Очистить загруженные документы
  */
 const cleanLoadedDocuments = () => uploadedDocuments.value = []
+/**
+ * Скинуть высоту
+ */
+const resetInputHeight = () => {
+  emit('update:dialogActionsHeight', '0 0 90px')
+
+  $inputBody.value.style.height = `${minHeight}px`
+  $input.value.style.height = `${minHeight}px`
+  currentInputHeight = minHeight
+}
 
 defineExpose({
   cleanLoadedImages,
-  cleanLoadedDocuments
+  cleanLoadedDocuments,
+  resetInputHeight
 })
 </script>
 
@@ -383,7 +417,7 @@ defineExpose({
       }"
     >
       <textarea
-        v-if="isHeightResizing"
+        v-if="isHeightResizable"
         ref="$inputBody"
         :value="inputValue"
         class="input__body"
@@ -401,7 +435,7 @@ defineExpose({
       />
 
       <input
-        v-if="!isHeightResizing"
+        v-if="!isHeightResizable"
         ref="$inputBody"
         :value="inputValue"
         class="input__body"
@@ -419,7 +453,7 @@ defineExpose({
       >
 
       <div
-        v-if="isHeightResize && !isMobileSize"
+        v-if="isHeightResizable && !isMobileSize"
         ref="$inputResizeIcon"
         class="input__resize-window"
         @mousedown.prevent="startInputHeightResizing($event)"
@@ -457,12 +491,6 @@ defineExpose({
         :accept="documentsType"
         @change="onChangeChooseFiles($event)"
       >
-
-      <div
-        v-if="isFilesTypesMenuOpen"
-        class="doc__menu-bg menu__bg_active"
-        @click="closeFilesMenuType"
-      />
 
       <div
         v-if="isFilesTypesMenuOpen"

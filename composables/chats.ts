@@ -1,12 +1,6 @@
 import { daysOfWeek, daysOfWeekLongName } from '~/shared/const'
 import type { DetailedInfoMenuItem, GroupChatMessageType, GroupChatType, UserChatType } from '~/types/messages'
 
-export const closeOpenChatAfterOpeningAnother = () => {
-  const openAnotherChat = [...document.querySelectorAll('.menu__bg_active')]
-  openAnotherChat.forEach((chat) => {
-    chat.click()
-  })
-}
 /**
  *
  * @param _openModalChatData

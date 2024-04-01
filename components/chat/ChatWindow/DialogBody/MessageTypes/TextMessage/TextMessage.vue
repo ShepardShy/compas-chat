@@ -47,9 +47,10 @@ const messageTime = (): string => {
   <div
     class="text-msg"
   >
-    <div class="text-msg__message">
-      {{ message.message }}
-    </div>
+    <div
+      class="text-msg__message"
+      v-html="message.message!.replace(/\n/g, '<br>')"
+    />
 
     <div class="text-msg__time-and-status">
       <div class="text-msg__time">

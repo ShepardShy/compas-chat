@@ -12,7 +12,7 @@ import { createChatMenu } from '~/shared'
 import { useSettingsStore } from '~/store/settings'
 import { useChatsStore } from '~/store/chats'
 import type { UserChatType } from '~/types/messages'
-import { closeOpenChatAfterOpeningAnother, formattedDateToday } from '~/composables/chats'
+import { formattedDateToday } from '~/composables/chats'
 
 /**
  * Подключение стора с сообщениями
@@ -44,20 +44,21 @@ watch(
     await chatsStore.filterChats(searchChatValue.value)
   }
 )
-
+/** После монтирования компонента */
+onMounted(() => {
+  window.addEventListener('click', (event) => {
+    if (isCreateChatMenuOpen.value &&
+        !event.target.closest('.chats__menu') &&
+        !event.target.closest('.chats__add-chat')) {
+      isCreateChatMenuOpen.value = false
+    }
+  })
+})
 /**
  * Открытие/закрытие меню создания чата
  */
 const toggleAllChatsMenu = () => {
-  closeOpenChatAfterOpeningAnother()
-
   isCreateChatMenuOpen.value = !isCreateChatMenuOpen.value
-}
-/**
- * Закрыть меню создания чата
- */
-const closeAllChatsMenu = () => {
-  isCreateChatMenuOpen.value = false
 }
 
 /**
@@ -108,12 +109,6 @@ const openModalToCreateChat = () => {
           color: isCreateChatMenuOpen ? '#1253a2' : '#8BABD8'
         }"
         @click.prevent="toggleAllChatsMenu"
-      />
-
-      <div
-        v-if="isCreateChatMenuOpen"
-        class="chats__menu-bg menu__bg_active"
-        @click="closeAllChatsMenu"
       />
 
       <div

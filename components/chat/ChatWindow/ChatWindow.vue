@@ -13,7 +13,6 @@ import {
 
 import { useChatsStore } from '~/store/chats'
 import { useSettingsStore } from '~/store/settings'
-import { closeOpenChatAfterOpeningAnother } from '~/composables/chats'
 
 /**
  * Подключение стора с чатами
@@ -64,6 +63,13 @@ onMounted(
         isSearchInDialogOpen.value = false
       }
     })
+    window.addEventListener('click', (event) => {
+      if (isMenuOpen.value &&
+          !event.target.closest('.window__menu') &&
+          !event.target.closest('.window__icon')) {
+        isMenuOpen.value = false
+      }
+    })
   }
 )
 /**
@@ -78,17 +84,11 @@ const toggleSearchInput = () => {
  * Открыть/закрыть меню чата
  */
 const toggleMenuOpen = () => {
-  closeOpenChatAfterOpeningAnother()
-
   isMenuOpen.value = !isMenuOpen.value
   isMakingACall.value = false
   isSearchInDialogOpen.value = false
 }
 
-/** Закрыть меню чата */
-const closeMenuOpen = () => {
-  isMenuOpen.value = false
-}
 /**
  * Начать/завершить звонок
  */
@@ -167,12 +167,6 @@ const openAllChats = () => {
           />
         </div>
       </div>
-
-      <div
-        v-if="isMenuOpen"
-        class="window__menu-bg menu__bg_active"
-        @click="closeMenuOpen"
-      />
 
       <ChatMenu
         v-if="isMenuOpen"

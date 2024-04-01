@@ -129,9 +129,8 @@ const downloadFile = (fileData: FileMessageType) => {
       <div
         v-if="message.comment"
         class="file-messages__comment"
-      >
-        {{ message.comment }}
-      </div>
+        v-html="message.comment!.replace(/\n/g, '<br>')"
+      />
       <div class="file-messages__time-status">
         <div class="file-messages__time">
           {{ message.date.slice(-5) }}

@@ -42,6 +42,13 @@ const gridColumn = computed(() => {
   return 'calc(66.66% - 5px) 33.33%'
 })
 
+/** Задает borderRadius для оболочки отражения картинок */
+const borderRadius = computed(() => message.value.comment
+  ? '10px 10px 0 0'
+  : otherMessage.value
+    ? '10px 10px 10px 6px'
+    : '10px 10px 6px 10px')
+
 /**
  * Высота картинки
  */
@@ -153,7 +160,7 @@ const isImageReceived = (_image: ImageMessageType) => {
         gridTemplateColumns: gridColumn,
         gridTemplateRows: gridRows,
         height: isMobileSize ? '285px': '323px',
-        borderRadius: message.comment ? '10px 10px 0 0' : '10px'
+        borderRadius,
       }"
     >
       <div
@@ -164,7 +171,10 @@ const isImageReceived = (_image: ImageMessageType) => {
           'image-message__hide-images_last': isImagesMoreThenShown && idx === 3,
         }"
         :style="{
-          gridRow: (idx === 0 && imageOne) || (idx === 1 && imageTwo) || (idx === 2 && imageThree) || (idx === 3 && imageFour),
+          gridRow: (idx === 0 && imageOne)
+            || (idx === 1 && imageTwo)
+            || (idx === 2 && imageThree)
+            || (idx === 3 && imageFour),
         }"
       >
         <img :src="image.url">
@@ -200,8 +210,7 @@ const isImageReceived = (_image: ImageMessageType) => {
         textAlign: otherMessage ? 'right': 'left'
       }"
     >
-      {{ message.comment }}
-      <div />
+      <div v-html="message.comment!.replace(/\n/g, '<br>')" />
       <div
         v-if="message.comment"
         class="image-message__comment-info"
