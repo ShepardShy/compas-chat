@@ -1,146 +1,142 @@
 export interface ImageMessageType {
-    url: string
-    date: string
-    isReceived: boolean
-    isViewed: boolean
-    isUnread: boolean
-    fileName: string
-    size: string
+	url: string;
+	date: string;
+	isReceived: boolean;
+	isViewed: boolean;
+	isUnread: boolean;
+	fileName: string;
+	size: string;
 }
 
 export interface VoiceMessageType {
-    url: string
-    date: string
-    isReceived: boolean
-    isViewed: boolean
-    isUnread: boolean
-    size: string
+	url: string;
+	date: string;
+	isReceived: boolean;
+	isViewed: boolean;
+	isUnread: boolean;
+	size: string;
 }
 
 export interface FileMessageType {
-    url: string
-    fileName: string
-    date: string
-    isReceived: boolean
-    isViewed: boolean
-    isUnread: boolean
-    size: string
+	url: string;
+	fileName: string;
+	date: string;
+	isReceived: boolean;
+	isViewed: boolean;
+	isUnread: boolean;
+	size: string;
 }
 
 export interface MessageType {
-    id: number
-    userId: number
-    isReceived: boolean
-    isViewed: boolean
-    isUnread: boolean
-    date: string
-    type: 'text' | 'image' | 'file' | 'voice'
-    images?: Array<ImageMessageType>
-    files?: Array<FileMessageType>
-    voice?: Array<VoiceMessageType>
-    comment?: string
-    message?: string
+	id: number;
+	userId: number;
+	isReceived: boolean;
+	isViewed: boolean;
+	isUnread: boolean;
+	date: string;
+	type: "text" | "image" | "file" | "voice";
+	images?: Array<ImageMessageType>;
+	files?: Array<FileMessageType>;
+	voice?: Array<VoiceMessageType>;
+	comment?: string;
+	messages?: string;
 }
 
 export interface MessageInfoType {
-    id: number
-    type: string
-    message: string
-    date: string
+	id: number;
+	type: string;
+	message: string;
+	date: string;
 }
 
 export interface UserChatType {
-    id: number
-    userId: number
-    isGroupChat: boolean
-    firstName: string
-    secondName: string
-    isPinned: boolean
-    isActive: boolean
-    isTyping: boolean
-    photo: string | undefined
-    isMutedOff: boolean
-    position: string
-    messages: Array<MessageType | MessageInfoType>
-    totalTextMessages: number
-    totalPhotoMessages: number
-    totalVideoMessages: number
-    totalFileMessages: number
-    totalVoiceMessages: number
-    totalLinksMessages: number
-    isMenuOpen: boolean
-    isDetailedInfoOpen: boolean
-    textMessageDraft: string
-    lastTimeActive: string
+	id: number;
+	userId: number;
+	isGroupChat: boolean;
+	firstName: string;
+	secondName: string;
+	isPinned: boolean;
+	isActive: boolean;
+	isTyping: boolean;
+	photo: string | undefined;
+	isMutedOff: boolean;
+	position: string;
+	messages: Array<MessageType | MessageInfoType>;
+	totalTextMessages: number;
+	totalPhotoMessages: number;
+	totalVideoMessages: number;
+	totalFileMessages: number;
+	totalVoiceMessages: number;
+	totalLinksMessages: number;
+	isMenuOpen: boolean;
+	isDetailedInfoOpen: boolean;
+	textMessageDraft: string;
+	lastTimeActive: string;
 }
 
 export interface GroupChatUserType {
-    id: number
-    firstName: string
-    secondName: string
-    isActive: boolean
-    isTyping: boolean
-    lastTimeActive: string
-    photo: string | undefined
-    position: string
+	id: number;
+	firstName: string;
+	secondName: string;
+	isActive: boolean;
+	isTyping: boolean;
+	lastTimeActive: string;
+	photo: string | undefined;
+	position: string;
 }
 
 export interface GroupChatMessageType {
-    id: number
-    userId: number
-    firstName: string
-    secondName: string
-    message?: string
-    date: string
-    type: 'text' | 'image' | 'file' | 'voice'
-    images?: Array<ImageMessageType>
-    files?: Array<FileMessageType>
-    voice: Array<VoiceMessageType>
-    comment?: string
+	id: number;
+	userId: number;
+	firstName: string;
+	secondName: string;
+	message?: string;
+	date: string;
+	type: "text" | "image" | "file" | "voice";
+	images?: Array<ImageMessageType>;
+	files?: Array<FileMessageType>;
+	voice: Array<VoiceMessageType>;
+	comment?: string;
 }
 
 export interface GroupChatType {
-    id: number
-    isGroupChat: boolean
-    title: string
-    photo: string
-    isPinned: boolean
-    isTyping: boolean
-    isMutedOff: boolean
-    totalTextMessages: number
-    totalPhotoMessages: number
-    totalVideoMessages: number
-    totalFileMessages: number
-    totalVoiceMessages: number
-    totalLinksMessages: number
-    users: GroupChatUserType[]
-    messages: Array<GroupChatMessageType | MessageInfoType>
-    textMessageDraft: string
-    lastTimeActive: string
+	id: number;
+	isGroupChat: boolean;
+	title: string;
+	photo: string;
+	isPinned: boolean;
+	isTyping: boolean;
+	isMutedOff: boolean;
+	totalTextMessages: number;
+	totalPhotoMessages: number;
+	totalVideoMessages: number;
+	totalFileMessages: number;
+	totalVoiceMessages: number;
+	totalLinksMessages: number;
+	users: GroupChatUserType[];
+	messages: Array<GroupChatMessageType | MessageInfoType>;
+	textMessageDraft?: string;
+	lastTimeActive?: string;
 }
 
 export interface ChatMenuType {
-    title: string
-    icon: string
-    action: 'detailedChatInfo' | 'editChat' | 'pinChat' | 'muteChat' | 'deleteChat'
-    alternativeTitle?: string
+	title: string;
+	icon: string;
+	action: "detailedChatInfo" | "editChat" | "pinChat" | "muteChat" | "deleteChat";
+	alternativeTitle?: string;
 }
 
 export interface DetailedInfoMenuItem {
-    titleOne: string
-    titleTwo: string
-    titleThree: string
-    icon: string
-    action: 'text-messages' | 'images-messages' | 'video-messages' | 'file-messages' | 'voice-messages' | 'link-messages' | 'delete-messages'
+	titleOne: string;
+	titleTwo: string;
+	titleThree: string;
+	icon: string;
+	action: "text-messages" | "images-messages" | "video-messages" | "file-messages" | "voice-messages" | "link-messages" | "delete-messages";
 }
 
-export type MessagesTypesTitleType = 'Текстовые сообщения'
-    | 'Фотографии'
-    | 'Видео'
-    | 'Файлы'
-    | 'Голосовые сообщения' | 'Ссылки'
+export type MessagesTypesTitleType = "Текстовые сообщения" | "Фотографии" | "Видео" | "Файлы" | "Голосовые сообщения" | "Ссылки";
 
 export interface MessagesTypesType {
-    action: 'text-messages' | 'images-messages' | 'video-messages' | 'file-messages' | 'voice-messages' | 'link-messages' | 'delete-messages'
-    title: MessagesTypesTitleType
+	action: "text-messages" | "images-messages" | "video-messages" | "file-messages" | "voice-messages" | "link-messages" | "delete-messages";
+	title: MessagesTypesTitleType;
 }

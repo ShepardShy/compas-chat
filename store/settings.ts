@@ -1,19 +1,20 @@
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
 
-export const useSettingsStore = defineStore('settings', {
-  state: () => {
-    return {
-      isMobileSize: undefined as undefined | boolean,
-      isChatsShown: false,
-      isLoading: true
-    }
-  },
+export const useSettingsStore = defineStore("settings", {
+	state: () => {
+		return {
+			isMobileSize: undefined as undefined | boolean,
+			isChatsShown: false,
+			isLoading: true,
+			chatIdForOpenModal: 0 as undefined | number,
+		};
+	},
 
-  getters: {},
+	getters: {},
 
-  actions: {
-    setIsMobileSize (isMobileSize: boolean) {
-      this.isMobileSize = isMobileSize
-    }
-  }
-})
+	actions: {
+		setIsMobileSize(isMobileSize: boolean) {
+			this.isMobileSize = isMobileSize;
+		},
+	},
+});

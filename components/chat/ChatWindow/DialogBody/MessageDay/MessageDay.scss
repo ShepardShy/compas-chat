@@ -1,41 +1,41 @@
-@use '~/assets/styles/_variables.scss' as variables;
+@use "~/assets/styles/_variables.scss" as variables;
 
 .message-block {
-  position: absolute;
-  top: 10px;
-  display: flex;
-  justify-content: center;
-  z-index: 100;
-  left: calc(50%);
-  will-change: transform;
+	position: absolute;
+	top: 10px;
+	display: flex;
+	justify-content: center;
+	z-index: 100;
+	left: calc(50%);
+	will-change: transform;
 }
 
 .message-block__wrapper {
-  display: flex;
-  justify-content: center;
+	display: flex;
+	justify-content: center;
 }
 
 .message-block__wrapper_mobile::before {
-  width: 100vw;
+	width: 100vw;
 }
 
 .message-block__date {
-  cursor: pointer;
-  position: relative;
-  padding: 10px 16px;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
-  border: solid 1px #eeeff1;
-  font-size: 16px;
-  font-weight: 400;
-  color: variables.$color-dark-grey;
-  background-color: variables.$color-white;
-  z-index: 50;
+	cursor: pointer;
+	position: relative;
+	padding: 10px 16px;
+	border-radius: 10px;
+	box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
+	border: solid 1px #eeeff1;
+	font-size: 16px;
+	font-weight: 400;
+	color: variables.$color-dark-grey;
+	background-color: variables.$color-white;
+	z-index: 50;
 }
 
 .message-block__date_today {
-  background-color: #2f8cff;
-  color: variables.$color-white;
-  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
-  border: 1px solid transparent;
+	background-color: #2f8cff;
+	color: variables.$color-white;
+	box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
+	border: 1px solid transparent;
 }
