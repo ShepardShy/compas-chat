@@ -26,7 +26,7 @@
 	/**
 	 * Тест сообщения
 	 */
-	const messageValue = ref<string>();
+	const messageValue = ref<string>("");
 	/**
 	 * Загруженные картинки
 	 */
@@ -59,7 +59,7 @@
 	const dialogActionsHeight = ref("0 0 90px");
 
 	/** Нет данных для сообщений */
-	const noMessageToSend = computed(() => !uploadedImages.value.length && !uploadedDocuments.value.length && !voiceMessage.value.length && !messageValue.value);
+	const noMessageToSend = computed(() => !uploadedImages.value.length && !uploadedDocuments.value.length && !voiceMessage.value.length && !messageValue.value?.trim());
 
 	/**
 	 * Подписка на измнение чата и его очистку
@@ -91,7 +91,7 @@
 			if (messageValue.value !== openedChatData.value?.textMessageDraft) {
 				chatsStore.saveTextMessageDraft(openedChatId.value, messageValue.value);
 			}
-			if (messageValue.value) {
+			if (messageValue.value.trim()) {
 				messageType.value = "text";
 			} else {
 				messageType.value = "voice";
@@ -345,7 +345,7 @@
 			dialog_mobile: isMobileSize,
 		}"
 	>
-		<!-- <div
+		<div
 			class="dialog__date"
 			:class="{
 				dialog__date_today: preparedDay === 'Сегодня',
@@ -357,7 +357,7 @@
       }"
 		>
 			{{ preparedDay }}
-		</div> -->
+		</div>
 		<div
 			ref="$dialogWrapper"
 			class="dialog__wrapper"

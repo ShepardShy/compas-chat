@@ -1,71 +1,72 @@
-@use '~/assets/styles/_variables.scss' as variables;
+@use "~/assets/styles/_variables.scss" as variables;
 
 .images {
-  width: 64px;
+	width: 64px;
 }
 
 .images__delete-and-icon {
-  display: flex;
-  flex-direction: column;
-  height: 64px;
-  width: 100%;
-  border-radius: 5px;
-  background-color: #f6f5f3;
-  padding: 4px;
-  margin-bottom: 5px;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 64px;
+	width: 100%;
+	border-radius: 5px;
+	background-color: #f6f5f3;
+	padding: 4px;
+	margin-bottom: 5px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	position: relative;
 }
 
 .images__delete-wrapper {
-  flex: 0 0 17px;
-  align-self: flex-end;
-  cursor: pointer;
-  width: 17px;
-  height: 17px;
-  padding: 2px;
-  border-radius: 50%;
-  background-color: #fff;
-  margin-bottom: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	flex: 0 0 17px;
+	align-self: flex-end;
+	cursor: pointer;
+	width: 17px;
+	height: 17px;
+	padding: 2px;
+	border-radius: 50%;
+	background-color: #fff;
+	margin-bottom: 1px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .images__delete {
-  position: absolute;
-  height: 20px;
-  width: 20px;
-  cursor: pointer;
-  transition: 0.2s all;
-  color: #A6B7D4;
-  top: -2px;
-  right: 3px;
+	position: absolute;
+	height: 20px;
+	width: 20px;
+	cursor: pointer;
+	overflow: visible;
+	transition: 0.2s all;
+	color: #a6b7d4;
+	top: -2px;
+	right: 3px;
 }
 
 .images__delete:hover {
-  color: #1253a2;
+	color: #1253a2;
 }
 
 .images__delete-line {
-  transform: rotate(45deg);
-  width: 9px;
-  height: 1px;
-  background-color: variables.$color-blue-grey;
-  border-radius: 50%;
-  margin-right: 0;
+	transform: rotate(45deg);
+	width: 9px;
+	height: 1px;
+	background-color: variables.$color-blue-grey;
+	border-radius: 50%;
+	margin-right: 0;
 }
 
 .images__delete-line:last-of-type {
-  transform: rotate(135deg);
-  margin-left: -9px;
+	transform: rotate(135deg);
+	margin-left: -9px;
 }
 
 .images__title {
-  font-size: 14px;
-  font-weight: 400;
-  color: #bcbcbc;
-  word-wrap: break-word;
+	font-size: 14px;
+	font-weight: 400;
+	color: #bcbcbc;
+	word-wrap: break-word;
 }

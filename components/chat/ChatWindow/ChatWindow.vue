@@ -35,7 +35,7 @@
 	/**
 	 * Значение поиска по чату
 	 */
-	const searchInDialogValue = ref<string>();
+	const searchInDialogValue = ref<string>("");
 
 	/**
 	 * Подписка на открытие другого чата

@@ -4,6 +4,7 @@
 	import { LoadedDocuments, LoadedImages } from "~/components";
 	import { useSettingsStore } from "~/store/settings";
 	import { useChatsStore } from "~/store/chats";
+	import { setInterval } from "#imports";
 
 	/**
 	 * Входящие пропсы
@@ -134,7 +135,7 @@
 		() => [uploadedImages.value, uploadedDocuments.value, inputValue.value],
 		() => {
 			if (!uploadedImages.value?.length && !uploadedDocuments.value?.length && !inputValue.value) {
-				resetInputHeight();
+				// resetInputHeight();
 				return;
 			}
 
@@ -167,7 +168,7 @@
 		() => openedChatId.value,
 		() => {
 			currentInputHeight = 40;
-			$inputBody.value.style.height = `${currentInputHeight}px`;
+			emit("update:dialogActionsHeight", `0 0 ${currentInputHeight + inputPaddings + marginBottomFiles}px`);
 		}
 	);
 
@@ -179,7 +180,7 @@
 		uploadedDocuments.value = loadedDocuments.value;
 
 		window.addEventListener("click", event => {
-			if (isFilesTypesMenuOpen.value && !event.target.closest(".doc__menu") && !event.target.closest(".input__add-doc-icon")) {
+			if (isFilesTypesMenuOpen.value && !(event.target as HTMLUnknownElement).closest(".doc__menu") && !(event.target as HTMLUnknownElement).closest(".input__add-doc-icon")) {
 				isFilesTypesMenuOpen.value = false;
 			}
 		});
@@ -246,7 +247,20 @@
 	const $inputResizeIcon = ref<HTMLDivElement>();
 	let startPosition;
 	let currentInputHeight = 40;
-	const minHeight = 40;
+	const maxInputHeight = 300;
+	const countOfLines = computed(() => {
+		const lines = inputValue.value ? inputValue.value.split("\n").length - 1 : 0;
+		return 16 * lines;
+	});
+	let minHeight = 40;
+	watchEffect(() => {
+		minHeight = 40 + countOfLines.value;
+	});
+
+	// setInterval(() => {
+	// 	console.log(minHeight.value);
+	// }, 1000);
+
 	let isHeightResizing = false;
 	let inputHeightWhenStartResizing;
 
@@ -269,32 +283,38 @@
 	const keepInputHeightResizing = (event: MouseEvent) => {
 		if (!isHeightResizing) return;
 
-		emit("update:isResizing", $inputBody.value.style.height !== 40);
+		emit("update:isResizing", $inputBody.value.style.height !== minHeight);
 
 		const currentMousePosition = event.pageY;
 		const windowHeight = window.innerHeight;
 
 		let newHeight;
-		if (startPosition > currentMousePosition) {
-			newHeight = inputHeightWhenStartResizing + startPosition - currentMousePosition;
-		} else {
-			newHeight = currentInputHeight - (currentMousePosition - startPosition);
-			startPosition = event.pageY;
-		}
+		newHeight = inputHeightWhenStartResizing + startPosition - currentMousePosition;
+		// if (startPosition > currentMousePosition) {
+		// 	newHeight = inputHeightWhenStartResizing + startPosition - currentMousePosition;
+		// 	console.log(1);
+		// } else {
+		// 	startPosition = event.pageY;
+		// 	newHeight = currentInputHeight - (currentMousePosition - startPosition);
+		// 	console.log(2);
+		// }
 
-		if (newHeight > windowHeight * 0.45) {
-			$inputBody.value.style.height = `${windowHeight * 0.45}px`;
-			$input.value.style.height = `${windowHeight * 0.45}px`;
-			currentInputHeight = windowHeight * 0.45;
-		} else if (newHeight < minHeight) {
-			$inputBody.value.style.height = `${minHeight}px`;
-			$input.value.style.height = `${minHeight}px`;
-			currentInputHeight = minHeight;
-		} else {
-			$inputBody.value.style.height = `${newHeight}px`;
-			$input.value.style.height = `${newHeight}px`;
-			currentInputHeight = newHeight;
-		}
+		currentInputHeight = Math.min(Math.max(minHeight, newHeight), maxInputHeight);
+		$inputBody.value.style.height = `${currentInputHeight}px`;
+
+		// if (newHeight > windowHeight * 0.45) {
+		// 	$inputBody.value.style.height = `${windowHeight * 0.45}px`;
+		// 	$input.value.style.height = `${windowHeight * 0.45}px`;
+		// 	currentInputHeight = windowHeight * 0.45;
+		// } else if (newHeight < minHeight) {
+		// 	$inputBody.value.style.height = `${minHeight}px`;
+		// 	$input.value.style.height = `${minHeight}px`;
+		// 	currentInputHeight = minHeight;
+		// } else {
+		// 	$inputBody.value.style.height = `${newHeight}px`;
+		// 	$input.value.style.height = `${newHeight}px`;
+		// 	currentInputHeight = newHeight;
+		// }
 
 		emit("update:dialogActionsHeight", `0 0 ${currentInputHeight + inputPaddings + marginBottomFiles}px`);
 	};
@@ -328,18 +348,25 @@
 	 */
 	const autoResizeTextarea = () => {
 		const textarea = $inputBody.value;
-		const textareaWrapper = $input.value;
+		// const textareaWrapper = $input.value;
 
-		textarea.style.height = "auto";
-		textarea.style.height = textarea.scrollHeight + "px";
-		textareaWrapper.style.height = "auto";
-		textareaWrapper.style.height = textarea.scrollHeight + "px";
+		// textarea.style.height = "auto";
+		// textarea.style.height = textarea.scrollHeight + "px";
+		// textareaWrapper.style.height = "auto";
+		// textareaWrapper.style.height = textarea.scrollHeight + "px";
 
-		if (textarea.scrollHeight > 52) {
-			currentInputHeight = textarea.scrollHeight;
-		} else {
-			currentInputHeight = minHeight;
-		}
+		setTimeout(() => {
+			currentInputHeight = Math.min(Math.max(minHeight, currentInputHeight), maxInputHeight);
+			$inputBody.value.style.height = `${currentInputHeight}px`;
+			emit("update:dialogActionsHeight", `0 0 ${currentInputHeight + inputPaddings + marginBottomFiles}px`);
+			$inputBody.value.scrollTop = $inputBody.value.scrollHeight;
+		}, 10);
+
+		// if (textarea.scrollHeight > 52) {
+		// 	currentInputHeight = textarea.scrollHeight;
+		// } else {
+		// 	currentInputHeight = minHeight;
+		// }
 	};
 
 	// Перенос строки у инпута
@@ -353,7 +380,7 @@
 	 * При вводе данных в инпут
 	 */
 	const onTextareaInput = (_event: Event) => {
-		emit("update:inputValue", _event.target.value);
+		emit("update:inputValue", (<HTMLTextAreaElement>_event.target).value);
 		if (isHeightResizable?.value) {
 			autoResizeTextarea();
 		}
@@ -362,20 +389,28 @@
 	/**
 	 * Очистить загруженные изображения
 	 */
-	const cleanLoadedImages = () => (uploadedImages.value = []);
+	const cleanLoadedImages = () => {
+		($uploadDocuments.value.value as unknown) = [];
+		uploadedImages.value = [];
+	};
 	/**
 	 * Очистить загруженные документы
 	 */
-	const cleanLoadedDocuments = () => (uploadedDocuments.value = []);
+	const cleanLoadedDocuments = () => {
+		($uploadDocuments.value.value as unknown) = [];
+		uploadedDocuments.value = [];
+	};
 	/**
 	 * Скинуть высоту
 	 */
 	const resetInputHeight = () => {
-		emit("update:dialogActionsHeight", "0 0 90px");
+		if ($inputBody.value) {
+			emit("update:dialogActionsHeight", "0 0 90px");
 
-		$inputBody.value.style.height = `${minHeight}px`;
-		$input.value.style.height = `${minHeight}px`;
-		currentInputHeight = minHeight;
+			$inputBody.value.style.height = `${minHeight}px`;
+			$input.value.style.height = `${minHeight}px`;
+			currentInputHeight = minHeight;
+		}
 	};
 
 	defineExpose({
@@ -431,11 +466,11 @@
 					paddingTop: isSafari ? '14px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
-				@keydown.enter.prevent.exact="emit('sendMessage')"
+				@keydown.enter.prevent.exact="activeFileType !== 'voice' || inputValue.length > 0 ? emit('sendMessage') : 0"
 				@keyup.shift.enter.prevent="newLine"
 			/>
 
-			<input
+			<!-- <input
 				v-if="!isHeightResizable"
 				ref="$inputBody"
 				:value="inputValue"
@@ -451,7 +486,7 @@
 					paddingTop: isSafari ? '14px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
-			/>
+			/> -->
 
 			<div
 				v-if="isHeightResizable && !isMobileSize"

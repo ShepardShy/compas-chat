@@ -1,131 +1,135 @@
-@use '~/assets/styles/_variables.scss' as variables;
+@use "~/assets/styles/_variables.scss" as variables;
 
 .input {
-  position: relative;
+	position: relative;
 }
 
 .files {
-  margin-bottom: 20px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+	margin-bottom: 20px;
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
 }
 
 .input__body {
-  font-size: 16px;
-  font-weight: 400;
-  overflow: hidden;
-  line-height: 16px;
-  white-space: normal;
+	font-size: 16px;
+	font-weight: 400;
+	overflow: hidden;
+	line-height: 16px;
+	white-space: normal;
+	overflow-y: auto;
+	&::-webkit-scrollbar {
+		display: none;
+	}
 
-  &::placeholder {
-    color: variables.$color-dark-grey;
-  }
+	&::placeholder {
+		color: variables.$color-dark-grey;
+	}
 }
 
 .input__resize-window {
-  position: absolute;
-  z-index: 10;
-  cursor: grab;
-  top: 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0 10px 5px;
+	position: absolute;
+	z-index: 10;
+	cursor: grab;
+	top: 5px;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 0 10px 5px;
 }
 
 .input__resize-window-line {
-  width: 15px;
-  height: 1px;
-  border-radius: 1px;
-  background-color: #a6b7d4;
-  transition: 0.5s all;
+	width: 15px;
+	height: 1px;
+	border-radius: 1px;
+	background-color: #a6b7d4;
+	transition: 0.5s all;
 }
 
 .input__resize-window:hover .input__resize-window-line {
-  background-color: #1253a2;
+	background-color: #1253a2;
 }
 
 .input__body_document {
-  padding-left: 48px;
+	padding-left: 48px;
 }
 
 .input__body_voice::placeholder {
-  text-align: center;
+	text-align: center;
 }
 
 .input__add-doc-icon,
 .input__voice-msg-length,
 .input__voice-msg-circle {
-  position: absolute;
-  top: 12px;
-  left: 15px;
-  color: #A6B7D4;
-  cursor: pointer;
-  transition: 0.2s all;
+	position: absolute;
+	top: 12px;
+	left: 15px;
+	color: #a6b7d4;
+	cursor: pointer;
+	transition: 0.2s all;
 }
 
 .input__add-doc-icon {
-  z-index: 500;
+	z-index: 500;
 }
 
 .input__add-doc-icon:hover {
-  color: #1253a2;
+	color: #1253a2;
 }
 
 .input__voice-msg-length {
-  color: variables.$color-black;
-  left: 42px;
-  top: 12px;
+	color: variables.$color-black;
+	left: 42px;
+	top: 12px;
 }
 
 .input__voice-msg-circle {
-  width: 12px;
-  height: 12px;
-  margin: 1px 15px 3px 0;
-  border-radius: 12px;
-  box-shadow: 0 0 5px 0 rgba(199, 73, 35, 0.5);
-  background-color: #c74923;
+	width: 12px;
+	height: 12px;
+	margin: 1px 15px 3px 0;
+	border-radius: 12px;
+	box-shadow: 0 0 5px 0 rgba(199, 73, 35, 0.5);
+	background-color: #c74923;
 }
 
 .input__add-doc-icon_active {
-  color: #1253a2;
+	color: #1253a2;
 }
 
 .input__documents {
-  display: none;
+	display: none;
 }
 
 .doc__menu-bg {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 190;
-  background-color: transparent;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 190;
+	background-color: transparent;
 }
 
 .doc__menu {
-  position: absolute;
-  left: 15px;
-  top: -55px;
-  border-radius: 5px;
-  box-shadow: 0 0 3px 0 variables.$color-black;
-  background-color: #fff;
-  user-select: none;
-  z-index: 200;
+	position: absolute;
+	left: 15px;
+	top: -55px;
+	border-radius: 5px;
+	box-shadow: 0 0 3px 0 variables.$color-black;
+	background-color: #fff;
+	user-select: none;
+	z-index: 200;
 }
 
 .doc__item {
-  cursor: pointer;
-  width: 179px;
-  padding: 7px 10px;
-  transition: 0.2s all;
+	cursor: pointer;
+	width: 179px;
+	padding: 7px 10px;
+	transition: 0.2s all;
 }
 
 .doc__item:hover {
-  background-color: variables.$color-hover;
+	background-color: variables.$color-hover;
 }

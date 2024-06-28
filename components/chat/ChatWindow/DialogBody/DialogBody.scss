@@ -1,166 +1,167 @@
-@use '~/assets/styles/_variables.scss' as variables;
+@use "~/assets/styles/_variables.scss" as variables;
 
 .dialog {
-  height: calc(100dvh - 81px);
-  border-top: solid 1px #eeeff1;
-  padding: 0 5px 0 0;
-  background-color: #f7f8fa;
-  display: flex;
-  flex-direction: column;
-  position: relative;
+	height: calc(100dvh - 81px);
+	border-top: solid 1px #eeeff1;
+	padding: 0 5px 0 0;
+	background-color: #f7f8fa;
+	display: flex;
+	flex-direction: column;
+	position: relative;
 }
 
 .dialog__date {
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  z-index: 110;
-  padding: 10px 16px;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
-  border: solid 1px #eeeff1;
-  font-size: 16px;
-  font-weight: 400;
-  color: variables.$color-dark-grey;
-  background-color: variables.$color-white;
+	cursor: pointer;
+	position: absolute;
+	top: 10px;
+	left: 50%;
+	z-index: 110;
+	padding: 10px 16px;
+	border-radius: 10px;
+	box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
+	border: solid 1px #eeeff1;
+	font-size: 16px;
+	font-weight: 400;
+	color: variables.$color-dark-grey;
+	background-color: variables.$color-white;
 }
 
 .dialog__date_today {
-  background-color: #2f8cff;
-  color: variables.$color-white;
-  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
-  border: 1px solid transparent;
+	background-color: #2f8cff;
+	color: variables.$color-white;
+	box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
+	border: 1px solid transparent;
 }
 
 .dialog__date_hide {
-  opacity: 0 !important;
+	opacity: 0 !important;
 }
 
 .dialog_mobile {
-  padding: 0;
+	padding: 0;
 }
 
 .dialog__wrapper {
-  flex: 1 1 auto;
-  margin-bottom: 35px;
-  overflow-y: auto;
-  padding-right: 45px;
+	flex: 1 1 auto;
+	margin-bottom: 35px;
+	overflow-y: auto;
+	padding-right: 45px;
 
-  &::-webkit-scrollbar {
-    width: 3px;
-    height: 122px;
-  }
+	&::-webkit-scrollbar {
+		width: 3px;
+		height: 122px;
+	}
 
-  &::-webkit-scrollbar-thumb {
-    background-color: variables.$color-blue-grey;
-    border-radius: 2px;
-  }
+	&::-webkit-scrollbar-thumb {
+		background-color: variables.$color-blue-grey;
+		border-radius: 2px;
+	}
 
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
+	&::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
 }
 
 .dialog__wrapper_mobile {
-  padding-right: 5px;
-  padding-left: 5px;
+	padding-right: 5px;
+	padding-left: 5px;
 }
 
 .dialog__wrapper_flex {
-  display: flex;
-  align-items: flex-end;
+	display: flex;
+	align-items: flex-end;
 }
 
 .dialog__wrapper-scroll {
-  flex: 1 1 auto;
+	flex: 1 1 auto;
 }
 
 .dialog__body {
-  padding-top: 10px;
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  overflow: hidden;
-  position: relative;
+	padding-top: 10px;
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	overflow: hidden;
+	position: relative;
 }
 
 .dialog__actions {
-  padding: 25px 45px 25px 25px;
-  display: flex;
-  gap: 10px;
-  align-items: flex-end;
-  justify-content: center;
+	padding: 25px 45px 25px 25px;
+	display: flex;
+	gap: 10px;
+	align-items: flex-end;
+	justify-content: center;
 }
 
 .dialog__actions_mobile {
-  padding: 25px 10px;
+	padding: 25px 10px;
 }
 
 .dialog__voice-messages {
-  background-color: #f7f8fa;
-  padding: 25px;
+	background-color: #f7f8fa;
+	padding: 25px;
 }
 
 .dialog__message {
-  position: relative;
-  z-index: 10;
+	position: relative;
+	z-index: 10;
 }
 
 .dialog__input {
-  flex: 1 1 auto;
+	flex: 1 1 auto;
 }
 
 .dialog__send-msg {
-  flex: 0 0 40px;
-  width: 40px;
-  height: 40px;
-  border-radius: 40px;
-  background-color: variables.$color-blue-grey;
-  cursor: pointer;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 150;
-  transition: 0.5s all;
+	flex: 0 0 40px;
+	padding: 0;
+	width: 40px;
+	height: 40px;
+	border-radius: 40px;
+	background-color: variables.$color-blue-grey;
+	cursor: pointer;
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	z-index: 150;
+	transition: 0.5s all;
 }
 
 .dialog__send-msg:active {
-  background-color: variables.$color-blue-grey;
-  opacity: 0.6;
+	background-color: variables.$color-blue-grey;
+	opacity: 0.6;
 }
 
 .dialog__send-msg_active {
-  background-color: variables.$color-red;
-  animation: pulse 1s infinite;
+	background-color: variables.$color-red;
+	animation: pulse 1s infinite;
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
 }
 
 .dialog__voice-bg {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  z-index: 100;
-  background-color: transparent;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	z-index: 100;
+	background-color: transparent;
 }
 
 .dialog__voice {
-  width: 400px;
-  align-self: flex-end;
+	width: 400px;
+	align-self: flex-end;
 }
