@@ -181,7 +181,7 @@
 		</div>
 
 		<div class="window__body">
-			<DialogBody />
+			<DialogBody @send-voice-message="console.log(1123)" />
 		</div>
 	</div>
 </template>

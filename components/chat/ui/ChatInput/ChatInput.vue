@@ -466,7 +466,7 @@
 					paddingTop: isSafari ? '14px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
-				@keydown.enter.prevent.exact="activeFileType !== 'voice' || inputValue.length > 0 ? emit('sendMessage') : 0"
+				@keydown.enter.prevent.exact="inputValue.length > 0 ? emit('sendMessage') : 0"
 				@keyup.shift.enter.prevent="newLine"
 			/>
 

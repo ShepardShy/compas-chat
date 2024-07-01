@@ -12,6 +12,8 @@
 	import type { GroupChatMessageType, MessageType } from "~/types/messages";
 	import { setMessageDay } from "~/composables/chats";
 
+	defineEmits(["sendVoiceMessage"]);
+
 	/**
 	 * Подключение стора с чатами
 	 */
@@ -232,6 +234,7 @@
 
 		if (doNotSaveVoiceMessage) {
 			voiceMessage.value = [];
+			doNotSaveVoiceMessage = false;
 		} else {
 			voiceMessage.value = [src];
 			sendVoiceMessage();
@@ -458,6 +461,7 @@
 			v-if="isMakingAVoiceMessage"
 			class="dialog__voice-bg"
 			@click="setVoiceMessage(false, true)"
+			@keydown.enter.prevent.exact="emit('sendVoiceMessage')"
 		/>
 
 		<!--    <AppDateInput-->
