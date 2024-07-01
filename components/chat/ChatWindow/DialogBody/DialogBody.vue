@@ -193,7 +193,12 @@
 	 * Начала записи голосового сообщения
 	 */
 	async function startRecord() {
-		if (!navigator.mediaDevices && !navigator.mediaDevices.getUserMedia) {
+		if (
+			!navigator.mediaDevices &&
+			!navigator.mediaDevices.getUserMedia({
+				audio: true,
+			})
+		) {
 			return console.warn("Not supported");
 		}
 
@@ -202,6 +207,7 @@
 				const stream = await navigator.mediaDevices.getUserMedia({
 					audio: true,
 				});
+
 				mediaRecorder = new MediaRecorder(stream);
 				mediaRecorder.start();
 
@@ -339,6 +345,19 @@
 			return true;
 		}
 	};
+
+	/**
+	 * Является ли сообщение последним в своем типе (когда несколько своих подряд)
+	 * @param _idx
+	 */
+	const checkIfFirstOfSeveralMessages = (_idx: string | number, arrayWithMessages: Array<MessageType | GroupChatMessageType>): boolean => {
+		const messages = arrayWithMessages;
+		if (messages[(_idx as number) - 1]) {
+			return messages[_idx].userId !== messages[(_idx as number) - 1].userId;
+		} else {
+			return true;
+		}
+	};
 </script>
 
 <template>
@@ -409,9 +428,12 @@
 						/>
 
 						<OtherMessage
+							:isFirst="idx == 0"
 							v-if="message.userId !== userId && message?.type !== 'message-info'"
 							:message="message"
 							:last-of-several-msgs="checkIfLastOfSeveralMessages(idx, messagesSortedByDay?.messages)"
+							:first-of-several-msgs="checkIfFirstOfSeveralMessages(idx, messagesSortedByDay?.messages)"
+							:is-show-name="openedChatData.isGroupChat"
 						/>
 					</div>
 				</div>
@@ -461,7 +483,7 @@
 			v-if="isMakingAVoiceMessage"
 			class="dialog__voice-bg"
 			@click="setVoiceMessage(false, true)"
-			@keydown.enter.prevent.exact="emit('sendVoiceMessage')"
+			@keydown.enter.prevent.exact="$emit('sendVoiceMessage')"
 		/>
 
 		<!--    <AppDateInput-->

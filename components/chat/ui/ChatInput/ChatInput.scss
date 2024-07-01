@@ -16,8 +16,9 @@
 	font-weight: 400;
 	overflow: hidden;
 	line-height: 16px;
-	white-space: normal;
+	// white-space: normal;
 	overflow-y: auto;
+	white-space: pre-wrap;
 	&::-webkit-scrollbar {
 		display: none;
 	}

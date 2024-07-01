@@ -1,50 +1,50 @@
-@use '@/assets/variables.scss' as variables;
-@use '@/assets/mixins.scss' as mixins;
+@use "~/assets/styles/variables.scss" as variables;
+@use "~/assets/styles/mixins.scss" as mixins;
 
 .status__option {
-    gap: 5px;
-    display: flex;
-    align-items: center;
+	gap: 5px;
+	display: flex;
+	align-items: center;
 
-    &.status__preview {
-        .status-option__rect {   
-            &::before {
-                border-radius: 5px 0px 0px 5px;
-            }
+	&.status__preview {
+		.status-option__rect {
+			&::before {
+				border-radius: 5px 0px 0px 5px;
+			}
 
-            &::after {
-                content: url('/public/icons/selectTriangle.svg');
-                display: flex;
-                justify-content: center;
-                width: 16px;
-                height: 25px;
-                padding: 0px;
-                background-color: variables.$color-white;
-                @include mixins.borderOptions(1px, solid, variables.$color-grey, 0px 5px 5px 0px);
-            }
-        }
-    }
-   
-    .status-option__rect {
-        display: flex;
-        align-items: center;
-        position: relative;
+			&::after {
+				content: url("/public/icons/selectTriangle.svg");
+				display: flex;
+				justify-content: center;
+				width: 16px;
+				height: 25px;
+				padding: 0px;
+				background-color: variables.$color-white;
+				@include mixins.borderOptions(1px, solid, variables.$color-grey, 0px 5px 5px 0px);
+			}
+		}
+	}
 
-        img {
-            position: absolute;
-            object-fit: contain;
-            width: 25px;
-            height: 100%;
-            left: 0px;
-            top: 0px;
-            border-radius: 5px 0px 0px 5px;
-        }
+	.status-option__rect {
+		display: flex;
+		align-items: center;
+		position: relative;
 
-        &::before {
-            content: '';
-            border-radius: 5px;
-            background-color: var(--backgroundColor);
-            @include mixins.elemResolutionOptions(25px, 25px);
-        }
-    }
+		img {
+			position: absolute;
+			object-fit: contain;
+			width: 25px;
+			height: 100%;
+			left: 0px;
+			top: 0px;
+			border-radius: 5px 0px 0px 5px;
+		}
+
+		&::before {
+			content: "";
+			border-radius: 5px;
+			background-color: var(--backgroundColor);
+			@include mixins.elemResolutionOptions(25px, 25px);
+		}
+	}
 }

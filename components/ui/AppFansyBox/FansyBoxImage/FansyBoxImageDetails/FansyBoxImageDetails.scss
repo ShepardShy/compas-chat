@@ -1,8 +1,8 @@
-@use '@/assets/variables.scss' as variables;
-@use '@/assets/mixins.scss' as mixins;
+@use "~/assets/styles/variables.scss" as variables;
+@use "~/assets/styles/mixins.scss" as mixins;
 
 .popup__summary {
-    .icon__dots {
-      @include mixins.flexBlock($vertical: center);
-    }
+	.icon__dots {
+		@include mixins.flexBlock($vertical: center);
+	}
 }

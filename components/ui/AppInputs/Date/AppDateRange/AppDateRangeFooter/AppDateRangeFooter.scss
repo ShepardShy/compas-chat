@@ -1,26 +1,26 @@
-@use '@/assets/variables.scss' as variables;
-@use '@/assets/mixins.scss' as mixins;
+@use "~/assets/styles/variables.scss" as variables;
+@use "~/assets/styles/mixins.scss" as mixins;
 
 .datapicker__footer {
-    padding: 15px;
-    border-top: 1px solid variables.$color-grey;
+	padding: 15px;
+	border-top: 1px solid variables.$color-grey;
 
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: 1fr auto;
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns: 1fr auto;
 
-    .datepicker__inputs {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        justify-content: center;
+	.datepicker__inputs {
+		display: flex;
+		gap: 10px;
+		align-items: center;
+		justify-content: center;
 
-        .form__item {
-            width: 120px;
+		.form__item {
+			width: 120px;
 
-            input {
-                text-align: center;
-            }
-        }
-    }
+			input {
+				text-align: center;
+			}
+		}
+	}
 }

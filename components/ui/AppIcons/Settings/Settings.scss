@@ -1,15 +1,15 @@
-@use '@/assets/variables.scss' as variables;
-@use '@/assets/mixins.scss' as mixins;
+@use "~/assets/styles/variables.scss" as variables;
+@use "~/assets/styles/mixins.scss" as mixins;
 
 .icon__settings {
-    cursor: pointer;
-    @include mixins.elemResolutionOptions(15px, 15px);
+	cursor: pointer;
+	@include mixins.elemResolutionOptions(15px, 15px);
 
-    &:hover {
-        svg {
-            * {
-                fill: variables.$color-active;
-            }
-        }
-    }
+	&:hover {
+		svg {
+			* {
+				fill: variables.$color-active;
+			}
+		}
+	}
 }

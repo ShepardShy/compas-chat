@@ -1,104 +1,102 @@
-@use '@/assets/variables.scss' as variables;
-@use '@/assets/mixins.scss' as mixins;
+@use "~/assets/styles/variables.scss" as variables;
+@use "~/assets/styles/mixins.scss" as mixins;
 
 .relation {
-    .relation__item {
-        width: 100%;
-        padding: 15px;
-        border-radius: 10px;
-        background-color: variables.$color-pale-grey;
-        border: 1px solid variables.$color-light-grey;
+	.relation__item {
+		width: 100%;
+		padding: 15px;
+		border-radius: 10px;
+		background-color: variables.$color-pale-grey;
+		border: 1px solid variables.$color-light-grey;
 
-        &.relation__item_hidden {
-            display: none;
-        }
+		&.relation__item_hidden {
+			display: none;
+		}
 
-        .relation__icon {
-            border-radius: 50%; 
-            overflow: hidden;
-            min-width: 30px;
-            cursor: pointer;
-            @include mixins.elemResolutionOptions(30px, 30px);
-        
-            figcaption {
-                display: grid;
-                font-family: VAG;
-                place-items: center;
-                color: variables.$color-white;
-                background: var(--backgroundColor);
-                @include mixins.elemResolutionOptions(100%, 100%);
-            }
-        }
-    
-        .autocomplete__active-option {
-            left: 0px;
-            @include mixins.elemResolutionOptions(calc(100% - 120px), 40px);
-        }
+		.relation__icon {
+			border-radius: 50%;
+			overflow: hidden;
+			min-width: 30px;
+			cursor: pointer;
+			@include mixins.elemResolutionOptions(30px, 30px);
 
-        .relation__link {
-            width: 20px;
-            height: calc(100% - 2px);
-            position: absolute;
-            display: grid;
-            place-items: center;
-            right: 1px;
-            top: 1px;
-            background-color: #eeeff1;
-            cursor: pointer;
-            border-radius: 0px 5px 5px 0px;
+			figcaption {
+				display: grid;
+				font-family: VAG;
+				place-items: center;
+				color: variables.$color-white;
+				background: var(--backgroundColor);
+				@include mixins.elemResolutionOptions(100%, 100%);
+			}
+		}
 
-            &::after {
-                transform: rotate(270deg);
-                content: url('/public/icons/selectTriangle.svg');
-                display: flex;
-                justify-content: center;
-                position: relative;
-                left: -2px;
-            }
-        }
+		.autocomplete__active-option {
+			left: 0px;
+			@include mixins.elemResolutionOptions(calc(100% - 120px), 40px);
+		}
 
-        &.relation__item_empty {
-            .relation__link {
-                display: none;
-            }
+		.relation__link {
+			width: 20px;
+			height: calc(100% - 2px);
+			position: absolute;
+			display: grid;
+			place-items: center;
+			right: 1px;
+			top: 1px;
+			background-color: #eeeff1;
+			cursor: pointer;
+			border-radius: 0px 5px 5px 0px;
 
-            .popup {
-                .popup__summary {
-                    .form-item__input {
-                        .form-item__substring {
-                            right: 15px;
-                        }
-                    }
-                }
-            }
-        }
+			&::after {
+				transform: rotate(270deg);
+				content: url("/public/icons/selectTriangle.svg");
+				display: flex;
+				justify-content: center;
+				position: relative;
+				left: -2px;
+			}
+		}
 
-        .popup {
-            &.popup_readonly {
-                .popup__summary {
-                    .relation__link {
-                        display: none;
-                    }
-                }
-            }
+		&.relation__item_empty {
+			.relation__link {
+				display: none;
+			}
 
-            .popup__summary {
-                .form-item__input {
-                    .form-item__substring {
-                        z-index: 2;
-                        right: 30px;
-                        white-space: nowrap;
-                        background: variables.$color-white;
-                    }
-                }
-            }
+			.popup {
+				.popup__summary {
+					.form-item__input {
+						.form-item__substring {
+							right: 15px;
+						}
+					}
+				}
+			}
+		}
 
-            .popup__content {
-                left: 40px;
-                width: calc(100% - 40px);
-            }  
-        }
-    }
+		.popup {
+			&.popup_readonly {
+				.popup__summary {
+					.relation__link {
+						display: none;
+					}
+				}
+			}
+
+			.popup__summary {
+				.form-item__input {
+					.form-item__substring {
+						z-index: 2;
+						right: 30px;
+						white-space: nowrap;
+						background: variables.$color-white;
+					}
+				}
+			}
+
+			.popup__content {
+				left: 40px;
+				width: calc(100% - 40px);
+			}
+		}
+	}
 }
-
-

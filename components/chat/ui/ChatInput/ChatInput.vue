@@ -135,7 +135,7 @@
 		() => [uploadedImages.value, uploadedDocuments.value, inputValue.value],
 		() => {
 			if (!uploadedImages.value?.length && !uploadedDocuments.value?.length && !inputValue.value) {
-				// resetInputHeight();
+				resetInputHeight();
 				return;
 			}
 
@@ -164,13 +164,13 @@
 	);
 
 	/** Подписка на смену чата */
-	watch(
-		() => openedChatId.value,
-		() => {
-			currentInputHeight = 40;
-			emit("update:dialogActionsHeight", `0 0 ${currentInputHeight + inputPaddings + marginBottomFiles}px`);
-		}
-	);
+	// watch(
+	// 	() => openedChatId.value,
+	// 	() => {
+	// 		currentInputHeight = 40;
+	// 		emit("update:dialogActionsHeight", `0 0 ${currentInputHeight + inputPaddings + marginBottomFiles}px`);
+	// 	}
+	// );
 
 	/**
 	 * Монтирование компонента
@@ -252,14 +252,27 @@
 		const lines = inputValue.value ? inputValue.value.split("\n").length - 1 : 0;
 		return 16 * lines;
 	});
-	let minHeight = 40;
-	watchEffect(() => {
-		minHeight = 40 + countOfLines.value;
-	});
+	console.log(isHeightResizable.value);
 
-	// setInterval(() => {
-	// 	console.log(minHeight.value);
-	// }, 1000);
+	// Дефолтное значение
+	const local = localStorage.getItem("defaultInputHeight");
+	let defaultInputHeight = local ? local : 40;
+	let minHeight = 40;
+	if (isHeightResizable.value) {
+		currentInputHeight = +defaultInputHeight;
+		autoResizeTextarea();
+	}
+	watch(
+		() => countOfLines.value,
+		() => {
+			minHeight = 40 + countOfLines.value;
+			if (countOfLines.value == 0) {
+				currentInputHeight = minHeight;
+
+				autoResizeTextarea();
+			}
+		}
+	);
 
 	let isHeightResizing = false;
 	let inputHeightWhenStartResizing;
@@ -290,31 +303,10 @@
 
 		let newHeight;
 		newHeight = inputHeightWhenStartResizing + startPosition - currentMousePosition;
-		// if (startPosition > currentMousePosition) {
-		// 	newHeight = inputHeightWhenStartResizing + startPosition - currentMousePosition;
-		// 	console.log(1);
-		// } else {
-		// 	startPosition = event.pageY;
-		// 	newHeight = currentInputHeight - (currentMousePosition - startPosition);
-		// 	console.log(2);
-		// }
-
 		currentInputHeight = Math.min(Math.max(minHeight, newHeight), maxInputHeight);
+		localStorage.setItem("defaultInputHeight", String(currentInputHeight));
+		defaultInputHeight = currentInputHeight;
 		$inputBody.value.style.height = `${currentInputHeight}px`;
-
-		// if (newHeight > windowHeight * 0.45) {
-		// 	$inputBody.value.style.height = `${windowHeight * 0.45}px`;
-		// 	$input.value.style.height = `${windowHeight * 0.45}px`;
-		// 	currentInputHeight = windowHeight * 0.45;
-		// } else if (newHeight < minHeight) {
-		// 	$inputBody.value.style.height = `${minHeight}px`;
-		// 	$input.value.style.height = `${minHeight}px`;
-		// 	currentInputHeight = minHeight;
-		// } else {
-		// 	$inputBody.value.style.height = `${newHeight}px`;
-		// 	$input.value.style.height = `${newHeight}px`;
-		// 	currentInputHeight = newHeight;
-		// }
 
 		emit("update:dialogActionsHeight", `0 0 ${currentInputHeight + inputPaddings + marginBottomFiles}px`);
 	};
@@ -346,33 +338,19 @@
 	/**
 	 * Подгонять высоту инпута при вводе на мобилке
 	 */
-	const autoResizeTextarea = () => {
-		const textarea = $inputBody.value;
-		// const textareaWrapper = $input.value;
-
-		// textarea.style.height = "auto";
-		// textarea.style.height = textarea.scrollHeight + "px";
-		// textareaWrapper.style.height = "auto";
-		// textareaWrapper.style.height = textarea.scrollHeight + "px";
-
+	function autoResizeTextarea() {
 		setTimeout(() => {
-			currentInputHeight = Math.min(Math.max(minHeight, currentInputHeight), maxInputHeight);
+			currentInputHeight = Math.min(Math.max(minHeight, +defaultInputHeight), maxInputHeight);
 			$inputBody.value.style.height = `${currentInputHeight}px`;
-			emit("update:dialogActionsHeight", `0 0 ${currentInputHeight + inputPaddings + marginBottomFiles}px`);
+			emit("update:dialogActionsHeight", `0 0 ${currentInputHeight}px`);
 			$inputBody.value.scrollTop = $inputBody.value.scrollHeight;
 		}, 10);
-
-		// if (textarea.scrollHeight > 52) {
-		// 	currentInputHeight = textarea.scrollHeight;
-		// } else {
-		// 	currentInputHeight = minHeight;
-		// }
-	};
+	}
 
 	// Перенос строки у инпута
 	const newLine = e => {
 		let caret = e.target.selectionStart;
-		e.target.setRangeText("\n", caret, caret, "end");
+		e.target.setRangeText("\r\n", caret, caret, "end");
 		onTextareaInput(e);
 	};
 
@@ -466,11 +444,11 @@
 					paddingTop: isSafari ? '14px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
-				@keydown.enter.prevent.exact="inputValue.length > 0 ? emit('sendMessage') : 0"
+				@keydown.enter.prevent.exact="uploadedImages.length > 0 || uploadedDocuments.length > 0 || inputValue.trim().length > 0 ? emit('sendMessage') : 0"
 				@keyup.shift.enter.prevent="newLine"
 			/>
 
-			<!-- <input
+			<input
 				v-if="!isHeightResizable"
 				ref="$inputBody"
 				:value="inputValue"
@@ -486,7 +464,7 @@
 					paddingTop: isSafari ? '14px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
-			/> -->
+			/>
 
 			<div
 				v-if="isHeightResizable && !isMobileSize"

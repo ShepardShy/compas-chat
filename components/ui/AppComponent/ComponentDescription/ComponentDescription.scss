@@ -1,68 +1,66 @@
-@use '@/assets/variables.scss' as variables;
-@use '@/assets/mixins.scss' as mixins;
-
-
+@use "~/assets/styles/variables.scss" as variables;
+@use "~/assets/styles/mixins.scss" as mixins;
 
 .component__description {
-    &:not(:last-child) {
-        margin-bottom: 10px;
-    }
+	&:not(:last-child) {
+		margin-bottom: 10px;
+	}
 
-    .ibg_copy {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        cursor: pointer;
-        @include mixins.elemResolutionOptions(20px, 20px);
-    
-        img {
-            object-fit: contain;
-        }
-    }
+	.ibg_copy {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		cursor: pointer;
+		@include mixins.elemResolutionOptions(20px, 20px);
+
+		img {
+			object-fit: contain;
+		}
+	}
 }
 
 .component__details {
-    &[open] {
-        .component-details__title {
-            &::after {
-                transform: rotate(180deg);
-            }
-        }
-    }
+	&[open] {
+		.component-details__title {
+			&::after {
+				transform: rotate(180deg);
+			}
+		}
+	}
 }
 
 .component-details__title {
-    z-index: 2;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 2px;
-    padding: 10px 15px;
-    position: relative;
-    color: variables.$color-white;
-    background: variables.$color-blue;
-    @include mixins.userSelect($value: none);
+	z-index: 2;
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-radius: 2px;
+	padding: 10px 15px;
+	position: relative;
+	color: variables.$color-white;
+	background: variables.$color-blue;
+	@include mixins.userSelect($value: none);
 
-    &::after {
-        content: url('/public/icons/componentArrow.svg');
-    }
+	&::after {
+		content: url("/public/icons/componentArrow.svg");
+	}
 
-    &:hover {
-        filter: brightness(0.95);
-        transition: 0.2s all;
-    }
+	&:hover {
+		filter: brightness(0.95);
+		transition: 0.2s all;
+	}
 }
 
 .component-details__content {
-    top: -1px;
-    border-top: 0px;
-    padding: 10px 15px;
-    position: relative;
-    border: 1px solid #000;
-    border-radius: 0px 0px 2px 2px;
+	top: -1px;
+	border-top: 0px;
+	padding: 10px 15px;
+	position: relative;
+	border: 1px solid #000;
+	border-radius: 0px 0px 2px 2px;
 }
 
 .component-details__code {
-    white-space: break-spaces;
+	white-space: break-spaces;
 }
