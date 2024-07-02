@@ -135,7 +135,7 @@
 		() => [uploadedImages.value, uploadedDocuments.value, inputValue.value],
 		() => {
 			if (!uploadedImages.value?.length && !uploadedDocuments.value?.length && !inputValue.value) {
-				resetInputHeight();
+				// resetInputHeight();
 				return;
 			}
 
@@ -146,12 +146,12 @@
 				intervalToUpdateInputHeight = setInterval(() => {
 					if ($files.value?.offsetHeight) {
 						clearInterval(intervalToUpdateInputHeight);
-						emit("update:dialogActionsHeight", `0 0 ${$files.value.offsetHeight + currentInputHeight + inputPaddings + marginBottomFiles}px`);
+						emit("update:dialogActionsHeight", `0 0 ${$files.value.offsetHeight + currentInputHeight}px`);
 					}
 
 					if ($inputBody.value?.offsetHeight > minHeight) {
 						clearInterval(intervalToUpdateInputHeight);
-						emit("update:dialogActionsHeight", `0 0 ${currentInputHeight + inputPaddings + marginBottomFiles}px`);
+						emit("update:dialogActionsHeight", `0 0 ${currentInputHeight}px`);
 					}
 				}, 100);
 			} else {
@@ -246,13 +246,12 @@
 	const $input = ref();
 	const $inputResizeIcon = ref<HTMLDivElement>();
 	let startPosition;
-	let currentInputHeight = 40;
+	let currentInputHeight: number;
 	const maxInputHeight = 300;
 	const countOfLines = computed(() => {
 		const lines = inputValue.value ? inputValue.value.split("\n").length - 1 : 0;
 		return 16 * lines;
 	});
-	console.log(isHeightResizable.value);
 
 	// Дефолтное значение
 	const local = localStorage.getItem("defaultInputHeight");
@@ -261,6 +260,8 @@
 	if (isHeightResizable.value) {
 		currentInputHeight = +defaultInputHeight;
 		autoResizeTextarea();
+	} else {
+		defaultInputHeight = 40;
 	}
 	watch(
 		() => countOfLines.value,
@@ -271,6 +272,12 @@
 
 				autoResizeTextarea();
 			}
+		}
+	);
+	watch(
+		() => inputValue.value,
+		() => {
+			autoResizeTextarea();
 		}
 	);
 
@@ -308,7 +315,7 @@
 		defaultInputHeight = currentInputHeight;
 		$inputBody.value.style.height = `${currentInputHeight}px`;
 
-		emit("update:dialogActionsHeight", `0 0 ${currentInputHeight + inputPaddings + marginBottomFiles}px`);
+		emit("update:dialogActionsHeight", `0 0 ${currentInputHeight}px`);
 	};
 
 	// Завершение изменение высоты инпута
@@ -339,12 +346,9 @@
 	 * Подгонять высоту инпута при вводе на мобилке
 	 */
 	function autoResizeTextarea() {
-		setTimeout(() => {
-			currentInputHeight = Math.min(Math.max(minHeight, +defaultInputHeight), maxInputHeight);
-			$inputBody.value.style.height = `${currentInputHeight}px`;
-			emit("update:dialogActionsHeight", `0 0 ${currentInputHeight}px`);
-			$inputBody.value.scrollTop = $inputBody.value.scrollHeight;
-		}, 10);
+		currentInputHeight = Math.min(Math.max(minHeight, +defaultInputHeight), maxInputHeight);
+		emit("update:dialogActionsHeight", `0 0 ${currentInputHeight}px`);
+		$inputBody.value?.scrollTop ? ($inputBody.value.scrollTop = $inputBody.value.scrollHeight) : 0;
 	}
 
 	// Перенос строки у инпута
@@ -359,9 +363,9 @@
 	 */
 	const onTextareaInput = (_event: Event) => {
 		emit("update:inputValue", (<HTMLTextAreaElement>_event.target).value);
-		if (isHeightResizable?.value) {
-			autoResizeTextarea();
-		}
+		// if (isHeightResizable?.value) {
+		// 	autoResizeTextarea();
+		// }
 	};
 
 	/**
@@ -383,12 +387,22 @@
 	 */
 	const resetInputHeight = () => {
 		if ($inputBody.value) {
-			emit("update:dialogActionsHeight", "0 0 90px");
+			// emit("update:dialogActionsHeight", "0 0 90px");
 
-			$inputBody.value.style.height = `${minHeight}px`;
-			$input.value.style.height = `${minHeight}px`;
-			currentInputHeight = minHeight;
+			// $inputBody.value.style.height = `${minHeight}px`;
+			// $input.value.style.height = `${minHeight}px`;
+			// currentInputHeight = minHeight;
+
+			currentInputHeight = Math.min(Math.max(minHeight, +defaultInputHeight), maxInputHeight);
+			$inputBody.value.style.height = `${currentInputHeight}px`;
+			emit("update:dialogActionsHeight", `0 0 ${currentInputHeight}px`);
 		}
+	};
+
+	// Скролл в начало при закрытии клавиатуры
+
+	const scrollToTop = () => {
+		setTimeout(() => window.scrollTo(0, 0), 10);
 	};
 
 	defineExpose({
@@ -444,6 +458,8 @@
 					paddingTop: isSafari ? '14px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
+				@blur="scrollToTop"
+				@focus="scrollToTop"
 				@keydown.enter.prevent.exact="uploadedImages.length > 0 || uploadedDocuments.length > 0 || inputValue.trim().length > 0 ? emit('sendMessage') : 0"
 				@keyup.shift.enter.prevent="newLine"
 			/>

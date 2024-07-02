@@ -101,14 +101,29 @@
 				barHeight = maxBarHeight;
 			}
 
+			const barWrapper = document.createElement("div");
+			barWrapper.classList.add("audio-msg__bar");
+			barWrapper.style.cursor = "pointer";
+			barWrapper.style.height = "20px";
+			barWrapper.style.display = "flex";
+			barWrapper.style.alignItems = "center";
+			barWrapper.style.backgroundColor = "transparent";
+			barWrapper.style.width = barWidth + "px";
 			const bar = document.createElement("div");
+			barWrapper.append(bar);
+			bar.id = String(i);
+			barWrapper.addEventListener("click", e => {
+				setTimeVoiceMessage(i);
+				currentCallNumber.value = i;
+				updateVisualizationColors();
+			});
 			bar.style.width = barWidth + "px";
 			bar.style.height = barHeight + "px";
 			bar.style.backgroundColor = "#8babd8";
 			bar.style.borderRadius = "10px";
 			bar.style.marginRight = barSpacing + "px";
 
-			visualizationDiv.appendChild(bar);
+			visualizationDiv.appendChild(barWrapper);
 		}
 	}
 
@@ -127,7 +142,7 @@
 
 	function updateVisualizationColors() {
 		const visualizationDiv = $visualizationContainer.value;
-		const bars = visualizationDiv.querySelectorAll("div");
+		const bars = visualizationDiv.querySelectorAll(".audio-msg__bar div");
 
 		bars.forEach((bar, index) => {
 			if (index <= currentCallNumber.value) {
@@ -169,6 +184,23 @@
 
 	const audioStore = useAudioStore();
 	const { pauseAudios } = audioStore;
+
+	const setTimeVoiceMessage = time => {
+		if (!isVoiceMessageActive.value) {
+			currentCallNumber.value = 0;
+			startVoiceMessage();
+			clearTimeout(visualizationTimeoutId);
+		} else {
+			currentCallNumber.value = 0;
+			clearTimeout(visualizationTimeoutId);
+		}
+
+		const oneBar = 100 / 64;
+		const timePercents = time * oneBar;
+		const duration = audioDuration.value;
+		const resultTime = duration * (timePercents * 0.01);
+		$audioElement.value.currentTime = resultTime;
+	};
 
 	const startVoiceMessage = () => {
 		pauseAudios();
@@ -269,134 +301,5 @@
 </template>
 
 <style scoped lang="scss">
-	@use "~/assets/styles/_variables.scss" as variables;
-
-	.audio-msg {
-		padding: 10px 15px;
-		position: relative;
-	}
-
-	.audio-msg__body {
-		display: flex;
-		gap: 15px;
-	}
-
-	.audio-msg__btn {
-		flex: 0 0 40px;
-		width: 40px;
-		height: 40px;
-		margin: 0 15px 0 0;
-		padding: 11.7px 10.1px 11.7px 13.8px;
-		background-color: #8babd8;
-		border-radius: 40px;
-		cursor: pointer;
-		transition: 0.2s all;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.audio-msg__btn:active {
-		opacity: 0.7;
-	}
-
-	.audio-msg__triangle {
-		width: 16px;
-		height: 16px;
-		border-top: 9px solid transparent;
-		border-left: 16px solid variables.$color-white;
-		border-bottom: 9px solid transparent;
-		border-radius: 2px;
-	}
-
-	.audio-msg__pause {
-		position: relative;
-	}
-
-	.audio-msg__pause:before {
-		content: "";
-		position: absolute;
-		top: -8px;
-		width: 4px;
-		height: 16px;
-		border-radius: 2px;
-		background-color: variables.$color-white;
-	}
-
-	.audio-msg__pause:after {
-		content: "";
-		position: absolute;
-		top: -8px;
-		right: 4px;
-		width: 4px;
-		height: 16px;
-		border-radius: 2px;
-		background-color: variables.$color-white;
-	}
-
-	.audio-msg__time-status {
-		display: flex;
-		justify-content: flex-end;
-		gap: 5px;
-	}
-
-	.audioPlayer {
-	}
-
-	.audio-msg__columns {
-		display: flex;
-		align-items: center;
-		height: 20px;
-		width: 220px;
-		margin-bottom: 9px;
-	}
-
-	.audio-msg__columns_mobile {
-		width: 185px;
-	}
-
-	.audio-msg__info {
-		display: flex;
-		gap: 10px;
-	}
-
-	.audio-msg__length,
-	.audio-msg__weight {
-		font-size: 12px;
-		font-weight: 400;
-		color: #8babd8;
-	}
-
-	.audio-msg__sender {
-		font-size: 12px;
-		font-weight: 400;
-		color: variables.$color-black;
-	}
-
-	.audio-msg__delete {
-		position: absolute;
-		top: -5px;
-		right: -5px;
-		width: 25px;
-		height: 25px;
-		border-radius: 5px;
-		background-color: variables.$color-white;
-		box-shadow: 0 0 3px 0 variables.$color-black;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		border: 1px solid variables.$color-light-grey;
-		cursor: pointer;
-		transition: 0.2s scale;
-	}
-
-	.audio-msg__delete-icon {
-		color: variables.$color-red;
-	}
-
-	.audio-msg__time-status {
-		font-size: 12px;
-		font-weight: 400;
-		color: #8f8f8f;
-	}
+	@import url(./VoiceMessage.scss);
 </style>

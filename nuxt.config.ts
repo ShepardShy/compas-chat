@@ -20,6 +20,11 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+	app: {
+		head: {
+			viewport: 'initial-scale=1, maximum-scale=1, user-scalable=0"',
+		},
+	},
 	typescript: {
 		typeCheck: false,
 		strict: false,

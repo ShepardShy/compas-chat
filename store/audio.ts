@@ -11,8 +11,6 @@ export const useAudioStore = defineStore("auth", {
 
 	actions: {
 		pauseAudios() {
-			console.log(this.audiosPauses);
-
 			this.audiosPauses.forEach(pauseAudio => pauseAudio());
 		},
 	},

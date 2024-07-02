@@ -1,226 +1,226 @@
-@use '~/assets/styles/_variables.scss' as variables;
+@use "~/assets/styles/_variables.scss" as variables;
 
 .edit-group {
-  z-index: 1100;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+	z-index: 1100;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 .edit-group_mobile {
-  left: 0;
-  transform: translateX(0);
-  width: 100vw;
-  height: 100%;
+	left: 0;
+	transform: translateX(0);
+	width: 100vw;
+	height: 100%;
 }
 
 .edit-group__modal {
-  position: relative;
-  width: 400px;
-  background-color: variables.$color-white;
-  z-index: 1100;
-  border-radius: 15px;
-  padding-right: 2px;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  border: 1px solid #979797;
+	position: relative;
+	width: 400px;
+	background-color: variables.$color-white;
+	z-index: 1100;
+	border-radius: 15px;
+	padding-right: 2px;
+	padding-top: 25px;
+	padding-bottom: 25px;
+	border: 1px solid #979797;
 }
 
 .edit-group__modal_mobile {
-  width: 100%;
-  border: 1px solid transparent;
-  border-radius: 0;
-  height: 100%;
-  max-height: 100%;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  overflow-y: auto;
+	width: 100%;
+	border: 1px solid transparent;
+	border-radius: 0;
+	height: 100%;
+	max-height: 100%;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	overflow-y: auto;
 }
 
 .edit-group__back-icon {
-  height: 25px;
-  position: absolute;
-  top: 25px;
-  left: 10px;
-  cursor: pointer;
+	height: 25px;
+	position: absolute;
+	top: 25px;
+	left: 10px;
+	cursor: pointer;
 }
 
 .edit-group__group-title {
-  margin-bottom: 20px;
-  margin-right: 20px;
-  margin-left: 25px;
-
+	margin-bottom: 20px;
+	margin-right: 20px;
+	margin-left: 25px;
 }
 
 .edit-group__img {
-  margin: 0 auto 10px;
+	margin: 0 auto 10px;
 }
 
 .edit-group__active {
-  font-size: 12px;
-  font-weight: 400;
-  color: variables.$color-dark-grey;
-  margin-bottom: 0px;
-  text-align: center;
+	font-size: 12px;
+	font-weight: 400;
+	color: variables.$color-dark-grey;
+	margin-bottom: 0px;
+	text-align: center;
 }
 
 .edit-group__title {
-  margin-bottom: 25px;
-  text-align: left !important;
-  font-size: 21px;
-  font-weight: 400;
-  color: variables.$color-black;
-  padding-left: 25px;
+	margin-bottom: 25px;
+	text-align: left !important;
+	font-size: 21px;
+	font-weight: 400;
+	color: variables.$color-black;
+	padding-left: 25px;
 }
 
 .edit-group__participants {
-  margin-bottom: 5px;
-  font-size: 12px;
-  font-weight: 400;
-  text-align: center;
-  color: variables.$color-dark-grey;
+	margin-bottom: 5px;
+	font-size: 12px;
+	font-weight: 400;
+	text-align: center;
+	color: variables.$color-dark-grey;
 }
 
 .edit-group__img {
-  margin: 0 auto 10px;
+	margin: 0 auto 10px;
 }
 
 .edit-group__close-icon {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  cursor: pointer;
-  transition: 0.3s all;
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	cursor: pointer;
+	transition: 0.3s all;
 }
 
 .edit-group__close-icon:hover {
-  scale: 1.1;
+	scale: 1.1;
 }
 
 .menu__item {
-  padding: 10px 25px 10px 25px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 400;
-  color: variables.$color-dark;
-  display: flex;
-  gap: 10px;
-  align-items: center;
+	padding: 10px 25px 10px 25px;
+	cursor: pointer;
+	font-size: 16px;
+	font-weight: 400;
+	color: variables.$color-dark;
+	display: flex;
+	gap: 10px;
+	align-items: center;
 }
 
 .menu__item_last {
-  padding: 10px 25px 20px 25px;
+	padding: 10px 25px 20px 25px;
 }
 
 .menu__item-icon {
-  border-radius: 5px;
-  background-color: #0584fe;
-  width: 18px;
-  height: 18px;
-  margin: 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	border-radius: 5px;
+	background-color: #0584fe;
+	width: 18px;
+	height: 18px;
+	margin: 1px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .edit-group__item {
-  padding: 10px 25px;
-  background-color: #f7f8fa;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 400;
-  color: variables.$color-dark;
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  transition: 0.2s all;
+	padding: 10px 25px;
+	background-color: #f7f8fa;
+	cursor: pointer;
+	font-size: 16px;
+	font-weight: 400;
+	color: variables.$color-dark;
+	display: flex;
+	gap: 10px;
+	align-items: flex-start;
+	transition: 0.2s all;
 }
 
 .edit-group__item_last {
-  padding-top: 20px;
-  padding-bottom: 0;
-  color: variables.$color-red;
-  background-color: variables.$color-white;
-  margin-bottom: 25px;
+	padding-top: 20px;
+	padding-bottom: 0;
+	color: variables.$color-red;
+	background-color: variables.$color-white;
+	// margin-bottom: 25px;
 }
 
 .edit-group__group-users-data {
-  margin-top: 25px;
-  border-bottom: 1px solid #f7f8fa;
+	margin-top: 25px;
+	border-bottom: 1px solid #f7f8fa;
 }
 
 .edit-group__group-users {
-  max-height: 350px;
-  overflow-y: auto;
+	max-height: 350px;
+	overflow-y: auto;
 
-  &::-webkit-scrollbar {
-    width: 3px;
-    height: 122px;
-  }
+	&::-webkit-scrollbar {
+		width: 3px;
+		height: 122px;
+	}
 
-  &::-webkit-scrollbar-thumb {
-    background-color: variables.$color-blue-grey;
-    border-radius: 2px;
-  }
+	&::-webkit-scrollbar-thumb {
+		background-color: variables.$color-blue-grey;
+		border-radius: 2px;
+	}
 
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
+	&::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
 }
 
 .edit-group__group-users-action {
-  display: flex;
-  padding: 20px 20px 20px 25px;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #f7f8fa;
+	display: flex;
+	padding: 20px 20px 20px 25px;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #f7f8fa;
 }
 
 .edit-group__group-users-action_no-users {
-  margin-bottom: 25px;
+	margin-bottom: 25px;
 }
 
 .edit-group__group-users-info {
-  display: flex;
-  gap: 5px;
-  align-items: center;
+	display: flex;
+	gap: 5px;
+	align-items: center;
 }
 
 .edit-group__add-user {
-  cursor: pointer;
-  transition: 0.2s all;
-  color: #A6B7D4;
+	cursor: pointer;
+	transition: 0.2s all;
+	color: #a6b7d4;
 }
 
 .edit-group__add-user:hover {
-  color: #1253a2 ;
+	color: #1253a2;
 }
 
 .edit-group__user-search-input {
-  padding: 0 25px;
-  margin-bottom: 15px;
+	padding: 0 25px;
+	margin-bottom: 15px;
 }
 
 .edit-group__btns {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+	padding-top: 25px;
+	display: flex;
+	justify-content: center;
+	gap: 10px;
 }
 
 .edit-group__btn:first-of-type {
-  background-color: #2f8cff;
-  color: variables.$color-white;
+	background-color: #2f8cff;
+	color: variables.$color-white;
 }
 
-.edit-group__bg-padding{
-  height: 10vh;
-  background-color: transparent;
+.edit-group__bg-padding {
+	height: 10vh;
+	background-color: transparent;
 }
 
 .edit-group__no-users {
-  text-align: center;
-  padding: 10px 0;
+	text-align: center;
+	padding: 10px 0;
 }

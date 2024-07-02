@@ -15,7 +15,7 @@ export const useModalStore = defineStore("modal", {
 				link: `/objects/user/${this.modals.length}`,
 				slug: "slug",
 				title: `Пользователь`,
-				color: "#2F8CFF",
+				color: "#13A276",
 				status: true,
 			});
 		},

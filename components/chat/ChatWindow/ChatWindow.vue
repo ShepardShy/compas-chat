@@ -75,8 +75,6 @@
 	 * Открыть/закрыть меню чата
 	 */
 	const toggleMenuOpen = () => {
-		console.log(123);
-
 		isMenuOpen.value = !isMenuOpen.value;
 		isMakingACall.value = false;
 		isSearchInDialogOpen.value = false;

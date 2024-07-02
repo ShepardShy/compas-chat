@@ -576,6 +576,8 @@ export const useChatsStore = defineStore("chats", {
 							secondName: "Петров",
 							isActive: true,
 							isTyping: false,
+							lastTimeActive: "15.02.2024 15:00",
+
 							photo: "/photo.png",
 							position: "Менеджер по работе с клиентами",
 						},
@@ -585,6 +587,8 @@ export const useChatsStore = defineStore("chats", {
 							firstName: "Вася",
 							secondName: "Петров",
 							isActive: false,
+							lastTimeActive: "15.02.2024 15:00",
+
 							isTyping: false,
 							photo: "",
 							position: "Менеджер",
@@ -1295,6 +1299,7 @@ export const useChatsStore = defineStore("chats", {
 							isTyping: false,
 							photo: "/photo.png",
 							position: "Менеджер по работе с клиентами",
+							lastTimeActive: "20.02.2024 14:00",
 						},
 						{
 							id: 3,
@@ -1305,6 +1310,7 @@ export const useChatsStore = defineStore("chats", {
 							isTyping: false,
 							photo: "",
 							position: "Менеджер",
+							lastTimeActive: "20.02.2024 14:00",
 						},
 					],
 					messages: [
@@ -1453,7 +1459,7 @@ export const useChatsStore = defineStore("chats", {
 
 			openMessageTypeModal: undefined as undefined | MessagesTypesType,
 			isOpenMessageTypeModal: false,
-			dataFromSelectedTypeOfChatMessage: [] as unknown,
+			dataFromSelectedTypeOfChatMessage: [] as unknown[],
 
 			temporalStorageForGroupChat: {
 				title: "",

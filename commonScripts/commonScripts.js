@@ -1,6 +1,6 @@
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
-// import { useUserStore } from '@/stores/userStore.js'
+// import { useUserStore } from '~/store/userStore.js'
 
 export default {
 	// Очистка выделений

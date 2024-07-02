@@ -1,7 +1,7 @@
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
 
-// import { useUserStore } from '@/stores/userStore.js'
+// import { useUserStore } from '~/store/userStore.js'
 import { useTableStore } from "~/stores/tableStore";
 import { useTableDetailsStore } from "~/stores/tableDetailsStore";
 

@@ -1,123 +1,117 @@
 <template>
-  <FormItem
-    class="form-item__action"
-  >
-    <FormLabel
-      v-show="props.item.title != null && props.item.title != ''"
-      :title="props.item.title"
-    />
+	<FormItem class="form-item__action">
+		<FormLabel
+			v-show="props.item.title != null && props.item.title != ''"
+			:title="props.item.title"
+		/>
 
-    <AppPopup
-      ref="popupRef"
-      class="popup_actions"
-      :close-by-click="false"
-      @click="(e) => props.disabled ? e.preventDefault() : openPopup(true)"
-      @click-outside="() => openPopup(false)"
-    >
-      <template #summary>
-        <IconDots />
-      </template>
-      <template #content>
-        <template v-if="menu.activeTab == null">
-          <PopupOption
-            v-for="tab in actions[props.item.slug]"
-            :key="tab.action"
-            class="popup-option__sublink"
-            :class="tab.class"
-            @click="() => tab.children.length > 0 ?
-              callAction({action: 'changeTab', value: tab}) :
-              callAction({action: 'callAction', value: tab.action})"
-          >
-            {{ tab.title }}
+		<AppPopup
+			ref="popupRef"
+			class="popup_actions"
+			:close-by-click="false"
+			@click="e => (props.disabled ? e.preventDefault() : openPopup(true))"
+			@click-outside="() => openPopup(false)"
+		>
+			<template #summary>
+				<IconDots />
+			</template>
+			<template #content>
+				<template v-if="menu.activeTab == null">
+					<PopupOption
+						v-for="tab in actions[props.item.slug]"
+						:key="tab.action"
+						class="popup-option__sublink"
+						:class="tab.class"
+						@click="() => (tab.children.length > 0 ? callAction({ action: 'changeTab', value: tab }) : callAction({ action: 'callAction', value: tab.action }))"
+					>
+						{{ tab.title }}
 
-            <IconArrow v-show="tab.children.length > 0" />
-          </PopupOption>
-        </template>
+						<IconArrow v-show="tab.children.length > 0" />
+					</PopupOption>
+				</template>
 
-        <template v-else>
-          <PopupOption
-            class="popup-option__sublink popup-option__sublink_back"
-            @click="() => callAction({action: 'changeTab', value: null})"
-          >
-            <IconArrow />
+				<template v-else>
+					<PopupOption
+						class="popup-option__sublink popup-option__sublink_back"
+						@click="() => callAction({ action: 'changeTab', value: null })"
+					>
+						<IconArrow />
 
-            {{ menu.activeTab.title }}
-          </PopupOption>
+						{{ menu.activeTab.title }}
+					</PopupOption>
 
-          <PopupOption
-            v-for="option in menu.activeTab.children"
-            :key="option.action"
-            @click="() => callAction({action: 'callAction', value: option.action})"
-          >
-            {{ option.title }}
-          </PopupOption>
-        </template>
-      </template>
-    </AppPopup>
-  </FormItem>
+					<PopupOption
+						v-for="option in menu.activeTab.children"
+						:key="option.action"
+						@click="() => callAction({ action: 'callAction', value: option.action })"
+					>
+						{{ option.title }}
+					</PopupOption>
+				</template>
+			</template>
+		</AppPopup>
+	</FormItem>
 </template>
 
 <script setup>
-import './Actions.scss'
+	import "./Actions.scss";
 
-import { ref } from 'vue'
+	import { ref } from "vue";
 
-import actions from './actions.json'
-import IconDots from '@/components/AppIcons/Dots/Dots.vue'
-import IconArrow from '@/components/AppIcons/Arrow/Arrow.vue'
+	import actions from "./actions.json";
+	import IconDots from "~/components/ui/AppIcons/Dots/Dots.vue";
+	import IconArrow from "~/components/ui/AppIcons/Arrow/Arrow.vue";
 
-import AppPopup from '@/components/AppPopup/Popup.vue'
-import FormItem from '@/components/AppForm/FormItem/FormItem.vue'
-import FormLabel from '@/components/AppForm/FormLabel/FormLabel.vue'
-import PopupOption from '@/components/AppPopup/PopupOption/PopupOption.vue'
+	import AppPopup from "~/components/ui/AppPopup/Popup.vue";
+	import FormItem from "~/components/ui/AppForm/FormItem/FormItem.vue";
+	import FormLabel from "~/components/ui/AppForm/FormLabel/FormLabel.vue";
+	import PopupOption from "~/components/ui/AppPopup/PopupOption/PopupOption.vue";
 
-const menu = ref({
-  activeTab: null
-})
+	const menu = ref({
+		activeTab: null,
+	});
 
-const popupRef = ref(null)
+	const popupRef = ref(null);
 
-const props = defineProps({
-  item: {
-    default: {
-      title: 'Действие',
-      slug: 'views'
-    },
-    type: () => Object
-  },
-  disabled: {
-    default: false,
-    type: Boolean
-  }
-})
+	const props = defineProps({
+		item: {
+			default: {
+				title: "Действие",
+				slug: "views",
+			},
+			type: () => Object,
+		},
+		disabled: {
+			default: false,
+			type: Boolean,
+		},
+	});
 
-const emit = defineEmits([
-  'callAction'
-])
+	const emit = defineEmits(["callAction"]);
 
-// Вызов действия
-const callAction = (data) => {
-  if (data.action == 'changeTab') {
-    setTimeout(() => {
-      menu.value.activeTab = data.value
-    }, 10)
-  } else if (data.action == 'callAction') {
-    popupRef.value.popupRef.removeAttribute('open')
-    menu.value.activeTab = null
-    emit('callAction', {
-      action: data.action,
-      value: data.value
-    })
-  }
-}
+	// Вызов действия
+	const callAction = data => {
+		if (data.action == "changeTab") {
+			setTimeout(() => {
+				menu.value.activeTab = data.value;
+			}, 10);
+		} else if (data.action == "callAction") {
+			popupRef.value.popupRef.removeAttribute("open");
+			menu.value.activeTab = null;
+			emit("callAction", {
+				action: data.action,
+				value: data.value,
+			});
+		}
+	};
 
-// Открыть попап
-const openPopup = (state) => {
-  if (state) {
-    popupRef.value.popupRef.closest('.table__item').classList.add('table__item_clicked')
-  } else {
-    menu.value.activeTab = null
-    popupRef.value.popupRef.closest('.table__item').classList.remove('table__item_clicked')
-  }
-}
+	// Открыть попап
+	const openPopup = state => {
+		if (state) {
+			popupRef.value.popupRef.closest(".table__item").classList.add("table__item_clicked");
+		} else {
+			menu.value.activeTab = null;
+			popupRef.value.popupRef.closest(".table__item").classList.remove("table__item_clicked");
+		}
+	};
 </script>

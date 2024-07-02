@@ -278,6 +278,13 @@
 		$chatInput.value.resetInputHeight();
 	};
 
+	watch(
+		() => uploadedImages.value,
+		() => {
+			console.log(uploadedImages.value);
+		}
+	);
+
 	/**
 	 * Отправить файлы с картинкой или без
 	 */

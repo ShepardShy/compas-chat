@@ -1,119 +1,119 @@
-@use '~/assets/styles/_variables.scss' as variables;
+@use "~/assets/styles/_variables.scss" as variables;
 
 .add-user {
-  z-index: 1100;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 400px;
+	z-index: 1100;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 400px;
 }
 
 .add-user_mobile {
-  left: 0;
-  transform: translateX(0);
-  width: 100vw;
-  height: 100%;
+	left: 0;
+	transform: translateX(0);
+	width: 100vw;
+	height: 100%;
 }
 
 .add-user__modal {
-  background-color: variables.$color-white;
-  border-radius: 15px;
-  padding-right: 2px;
-  padding-top: 25px;
-  padding-bottom: 15px;
-  border: 1px solid #979797;
-  position: relative;
+	background-color: variables.$color-white;
+	border-radius: 15px;
+	padding-right: 2px;
+	padding-top: 25px;
+	padding-bottom: 25px;
+	border: 1px solid #979797;
+	position: relative;
 }
 
 .add-user__modal_mobile {
-  width: 100%;
-  border: 1px solid transparent;
-  border-radius: 0;
-  height: 100%;
-  max-height: 100%;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  overflow-y: auto;
+	width: 100%;
+	border: 1px solid transparent;
+	border-radius: 0;
+	height: 100%;
+	max-height: 100%;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	overflow-y: auto;
 }
 
 .add-user__back-icon {
-  position: absolute;
-  height: 28px;
-  top: 25px;
-  left: 17px;
-  cursor: pointer;
-  color: #0584fe;
+	position: absolute;
+	height: 28px;
+	top: 25px;
+	left: 17px;
+	cursor: pointer;
+	color: #0584fe;
 }
 
 .add-user__back-icon:hover {
-  color: #1253a2;
+	color: #1253a2;
 }
 
 .add-user__close-icon {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  cursor: pointer;
-  color: #0584fe;
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	cursor: pointer;
+	color: #0584fe;
 }
 
 .add-user__title {
-  padding: 0px 69px 25px;
-  font-size: 20px;
-  font-weight: 400;
-  color: variables.$color-black;
+	padding: 0px 69px 25px;
+	font-size: 20px;
+	font-weight: 400;
+	color: variables.$color-black;
 }
 
 .add-user__search-input {
-  padding: 0 25px 25px;
+	padding: 0 25px 25px;
 }
 
 .add-user__group-users-wrapper {
-  max-height: 500px;
-  overflow-y: auto;
-  margin-bottom: 25px;
-  border-bottom: 1px solid #f7f8fa;
+	max-height: 500px;
+	overflow-y: auto;
+	margin-bottom: 25px;
+	border-bottom: 1px solid #f7f8fa;
 
-  &::-webkit-scrollbar {
-    width: 3px;
-    height: 122px;
-  }
+	&::-webkit-scrollbar {
+		width: 3px;
+		height: 122px;
+	}
 
-  &::-webkit-scrollbar-thumb {
-    background-color: variables.$color-blue-grey;
-    border-radius: 2px;
-  }
+	&::-webkit-scrollbar-thumb {
+		background-color: variables.$color-blue-grey;
+		border-radius: 2px;
+	}
 
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
+	&::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
 }
 
 .add-user__group-users-wrapper_mobile {
-  max-height: 100%;
+	max-height: calc(100% - 216px);
 }
 
 .add-user__btns {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 25px;
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	// margin-bottom: 25px;
 }
 
 .add-user__btn:first-of-type {
-  background-color: #2f8cff;
-  color: variables.$color-white;
+	background-color: #2f8cff;
+	color: variables.$color-white;
 }
 
 .add-user__bg-padding {
-  height: 10vh;
-  background-color: transparent;
+	height: 10vh;
+	background-color: transparent;
 }
 
 .add-user__no-users {
-  text-align: center;
-  padding: 10px 0;
+	text-align: center;
+	padding: 10px 0;
 }

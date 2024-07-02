@@ -98,8 +98,9 @@
 			}
 		}
 
+		console.log(modals.value);
 		if (event.target.classList.contains("modal__background") && !preventClick.value && mouseEventDown.value.classList.contains("modal__background")) {
-			modals.value ? modals.pop() : null;
+			modals ? modals.pop() : null;
 		}
 	};
 
