@@ -1,67 +1,67 @@
-@use '~/assets/styles/_variables.scss' as variables;
+@use "~/assets/styles/_variables.scss" as variables;
 
 .group-chat-user {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 25px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 25px;
 }
 
 .group-chat-user__data {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+	display: flex;
+	gap: 10px;
+	align-items: center;
 }
 
 .group-chat-user__name {
-  font-size: 16px;
-  font-weight: 400;
-  color: variables.$color-active;
-  text-decoration: underline;
-  margin-bottom: 5px;
-  cursor: pointer;
-  transition: 0.2s all;
+	font-size: 16px;
+	font-weight: 400;
+	color: variables.$color-active;
+	text-decoration: underline;
+	margin-bottom: 5px;
+	cursor: pointer;
+	transition: 0.2s all;
 }
 
 .group-chat-user__name:hover {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 .group-chat-user__active {
-  font-family: MyriadPro;
-  font-size: 12px;
-  font-weight: 400;
-  color: variables.$color-dark-grey;
+	font-family: PT Sans;
+	font-size: 12px;
+	font-weight: 400;
+	color: variables.$color-dark-grey;
 }
 
 .action__add-user {
-  width: 19px;
-  height: 19px;
-  border: 1px solid #c8c8c8;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.2s all;
+	width: 19px;
+	height: 19px;
+	border: 1px solid #c8c8c8;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: 0.2s all;
 }
 
 .action__add-user_active {
-  background-color: #0584fe;
-  border: 1px solid #0584fe;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	background-color: #0584fe;
+	border: 1px solid #0584fe;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .action__add-user-icon {
-  color: variables.$color-white;
-  scale: 0.7;
+	color: variables.$color-white;
+	scale: 0.7;
 }
 
 .group-chat-user__delete {
-  cursor: pointer;
-  color: #a6b7d4;
-  transition: 0.2s all;
+	cursor: pointer;
+	color: #a6b7d4;
+	transition: 0.2s all;
 }
 
 .group-chat-user__delete:hover {
-  color: #1253a2;
+	color: #1253a2;
 }

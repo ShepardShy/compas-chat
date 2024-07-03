@@ -21,6 +21,7 @@
 
 .message-block__date {
 	cursor: pointer;
+	user-select: none;
 	position: relative;
 	padding: 10px 16px;
 	border-radius: 10px;

@@ -8,11 +8,14 @@
 	display: flex;
 	flex-direction: column;
 	position: relative;
+	overflow-y: auto;
+	// margin-top: calc(-1 * (100vh - (190% - 65px)));
 }
 
 .dialog__date {
 	cursor: pointer;
 	position: absolute;
+	user-select: none;
 	top: 10px;
 	left: 50%;
 	z-index: 110;
@@ -42,6 +45,7 @@
 }
 
 .dialog__wrapper {
+	user-select: none;
 	flex: 1 1 auto;
 	// margin-bottom: 35px;
 	overflow-y: auto;

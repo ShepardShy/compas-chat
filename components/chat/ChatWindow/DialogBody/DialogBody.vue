@@ -11,6 +11,7 @@
 	import AppDateInput from "~/components/ui/AppInputs/Date/Date.vue";
 	import type { GroupChatMessageType, MessageType } from "~/types/messages";
 	import { setMessageDay } from "~/composables/chats";
+	import type { string } from "yup";
 
 	defineEmits(["sendVoiceMessage"]);
 
@@ -149,6 +150,8 @@
 	 */
 	const $dialogWrapperScroll = ref<HTMLDivElement>();
 	const $dialogWrapper = ref<HTMLDivElement>();
+	const $dialog = ref<HTMLDivElement>();
+	provide("dialog", $dialog);
 	const $dialogActions = ref<HTMLDivElement>();
 
 	const isDialogBodyHeightsLessThenVH = ref(true);
@@ -183,7 +186,8 @@
 	};
 
 	let chunks = [];
-	let mediaRecorder = null;
+	let mediaRecorder: MediaRecorder | null = null;
+	let stream = null;
 	let audioBlob = null;
 	let startTime;
 	const messageDuration = ref(0);
@@ -193,20 +197,18 @@
 	 * Начала записи голосового сообщения
 	 */
 	async function startRecord() {
-		if (
-			!navigator.mediaDevices &&
-			!navigator.mediaDevices.getUserMedia({
-				audio: true,
-			})
-		) {
+		const supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
+
+		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
 			return console.warn("Not supported");
 		}
 
 		if (!mediaRecorder) {
 			try {
-				const stream = await navigator.mediaDevices.getUserMedia({
+				stream = await navigator.mediaDevices.getUserMedia({
 					audio: true,
 				});
+				stream.getTracks;
 
 				mediaRecorder = new MediaRecorder(stream);
 				mediaRecorder.start();
@@ -224,10 +226,19 @@
 				console.error(e);
 			}
 		} else {
-			mediaRecorder.stop();
+			mediaRecorder?.stop();
 			clearInterval(messageIntervalId);
 			messageDuration.value = 0;
 		}
+	}
+
+	//// stop mic
+	function stopAudioOnly(stream) {
+		stream?.getTracks()?.forEach(track => {
+			if (track.readyState == "live" && track.kind === "audio") {
+				track.stop();
+			}
+		});
 	}
 
 	/**
@@ -246,14 +257,23 @@
 			sendVoiceMessage();
 		}
 
+		stopAudioOnly(stream);
+		mediaRecorder?.stop();
+		console.log(mediaRecorder);
 		mediaRecorder = null;
 		chunks = [];
 	}
+
+	// Функция для удаления лишних переносов в конце строки
+	const removeTrailingNewlines = (text: globalThis.Ref<string>) => {
+		text.value = text.value.replace(/(\n|\r\n)+$/, "");
+	};
 
 	/**
 	 * Отправить текстовое сообщение
 	 */
 	const sendTextMessage = async () => {
+		removeTrailingNewlines(messageValue);
 		chatsStore.sendTextMessage(messageValue.value, userId.value, openedChatId.value);
 		messageValue.value = "";
 
@@ -277,13 +297,6 @@
 		scrollToDialogWrapperBottom();
 		$chatInput.value.resetInputHeight();
 	};
-
-	watch(
-		() => uploadedImages.value,
-		() => {
-			console.log(uploadedImages.value);
-		}
-	);
 
 	/**
 	 * Отправить файлы с картинкой или без
@@ -370,6 +383,7 @@
 <template>
 	<div
 		class="dialog"
+		ref="$dialog"
 		:class="{
 			dialog_mobile: isMobileSize,
 		}"

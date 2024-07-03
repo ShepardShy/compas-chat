@@ -72,8 +72,12 @@
 	color: #8f8f8f;
 }
 
+.other-msg__first-name-letter {
+	user-select: none;
+}
+
 .other-msg__name {
-	font-family: MyriadPro;
+	font-family: PT Sans;
 	font-size: 16px;
 	font-weight: 600;
 	line-height: 1;

@@ -237,6 +237,9 @@
 				];
 			}
 		}
+		setTimeout(() => {
+			scrollToDialogBottom();
+		}, 10);
 	};
 
 	/**
@@ -250,6 +253,7 @@
 	const maxInputHeight = 300;
 	const countOfLines = computed(() => {
 		const lines = inputValue.value ? inputValue.value.split("\n").length - 1 : 0;
+		console.log(lines, "lines");
 		return 16 * lines;
 	});
 
@@ -299,14 +303,20 @@
 		window.addEventListener("mouseup", stopInputHeightResizing);
 	};
 
+	const dialog: globalThis.Ref<HTMLDivElement> = inject("dialog");
+	const scrollToDialogBottom = () => {
+		dialog?.value ? (dialog.value!.scrollTop = dialog.value!.scrollHeight) : 0;
+	};
+
 	// Изменение высоты инпута
 	const keepInputHeightResizing = (event: MouseEvent) => {
 		if (!isHeightResizing) return;
-
 		emit("update:isResizing", $inputBody.value.style.height !== minHeight);
 
 		const currentMousePosition = event.pageY;
 		const windowHeight = window.innerHeight;
+
+		scrollToDialogBottom();
 
 		let newHeight;
 		newHeight = inputHeightWhenStartResizing + startPosition - currentMousePosition;
@@ -353,8 +363,9 @@
 
 	// Перенос строки у инпута
 	const newLine = e => {
+		console.log("строка");
 		let caret = e.target.selectionStart;
-		e.target.setRangeText("\r\n", caret, caret, "end");
+		e.target.setRangeText("\n", caret, caret, "end");
 		onTextareaInput(e);
 	};
 
@@ -363,6 +374,8 @@
 	 */
 	const onTextareaInput = (_event: Event) => {
 		emit("update:inputValue", (<HTMLTextAreaElement>_event.target).value);
+		console.log(countOfLines.value);
+
 		// if (isHeightResizable?.value) {
 		// 	autoResizeTextarea();
 		// }
@@ -462,6 +475,7 @@
 				@focus="scrollToTop"
 				@keydown.enter.prevent.exact="uploadedImages.length > 0 || uploadedDocuments.length > 0 || inputValue.trim().length > 0 ? emit('sendMessage') : 0"
 				@keyup.shift.enter.prevent="newLine"
+				@keyup.ctrl.enter.prevent="newLine"
 			/>
 
 			<input

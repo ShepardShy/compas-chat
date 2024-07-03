@@ -65,9 +65,9 @@
 	 * Бордер радиус, если чат попал в закрепленные и стал первым и последним закрепленным чатом
 	 */
 	const borderRadiusForActiveChat = computed(() => {
-		if (chatData.value.isPinned && chatsWithPinnedUsers.value[chatsWithPinnedUsers.value.length - 1].id === chatData.value.id) {
+		if (chatData.value.isPinned && chatsWithPinnedUsers.value[chatsWithPinnedUsers.value.length - 1]?.id === chatData.value.id) {
 			return "0 0 9px 9px";
-		} else if (chatData.value.isPinned && chatsWithPinnedUsers.value[0].id === chatData.value.id) {
+		} else if (chatData.value.isPinned && chatsWithPinnedUsers.value?.[0]?.id === chatData.value?.id) {
 			return "9px 9px 0 0";
 		}
 

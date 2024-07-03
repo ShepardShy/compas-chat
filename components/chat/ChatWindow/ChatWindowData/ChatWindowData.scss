@@ -19,6 +19,7 @@
 }
 
 .user__name {
+	user-select: text;
 	font-size: 16px;
 	font-weight: 400;
 	color: variables.$color-active;
@@ -37,6 +38,7 @@
 }
 
 .user__status {
+	user-select: text;
 	font-size: 12px;
 	font-weight: 400;
 	color: variables.$color-dark-grey;
@@ -61,6 +63,7 @@
 }
 
 .user__chat-users {
+	user-select: text;
 	display: flex;
 	flex-wrap: wrap;
 	-webkit-line-clamp: 2;
