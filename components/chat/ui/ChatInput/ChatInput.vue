@@ -445,6 +445,7 @@
 		:style="{
 			width: width,
 		}"
+		v-bind="$attrs"
 	>
 		<div
 			ref="$input"
