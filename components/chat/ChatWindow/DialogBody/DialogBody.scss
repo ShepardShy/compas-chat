@@ -99,6 +99,9 @@
 	gap: 10px;
 	align-items: flex-end;
 	justify-content: center;
+	&:has(.files) {
+		padding-top: 20px;
+	}
 	// overflow: hidden;
 }
 

@@ -139,6 +139,9 @@
 				return;
 			}
 
+			console.log(uploadedImages.value, "uploadedImages");
+			console.log(uploadedDocuments.value, "uploadedDocuments");
+
 			uploadedImages.value?.length && emit("update:loadedImages", uploadedImages.value);
 			uploadedDocuments.value?.length && emit("update:loadedDocuments", uploadedDocuments.value);
 
@@ -199,6 +202,8 @@
 
 	// Задать активнй тип файла и открыть меню для выбора файлов
 	const setActiveFileType = async (fileType: typeof inputFilesTypes) => {
+		console.log(fileType);
+
 		activeFileType.value = fileType;
 		toggleFilesMenuType();
 		await nextTick();
@@ -253,7 +258,6 @@
 	const maxInputHeight = 300;
 	const countOfLines = computed(() => {
 		const lines = inputValue.value ? inputValue.value.split("\n").length - 1 : 0;
-		console.log(lines, "lines");
 		return 16 * lines;
 	});
 
@@ -363,7 +367,6 @@
 
 	// Перенос строки у инпута
 	const newLine = e => {
-		console.log("строка");
 		let caret = e.target.selectionStart;
 		e.target.setRangeText("\n", caret, caret, "end");
 		onTextareaInput(e);
@@ -374,7 +377,6 @@
 	 */
 	const onTextareaInput = (_event: Event) => {
 		emit("update:inputValue", (<HTMLTextAreaElement>_event.target).value);
-		console.log(countOfLines.value);
 
 		// if (isHeightResizable?.value) {
 		// 	autoResizeTextarea();
@@ -468,7 +470,7 @@
 				:style="{
 					width: width,
 					height: currentInputHeight + 'px',
-					paddingTop: isSafari ? '14px' : '11px',
+					paddingTop: isSafari ? '13px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
 				@blur="scrollToTop"
@@ -491,7 +493,7 @@
 				:style="{
 					width: width,
 					height: currentInputHeight + 'px',
-					paddingTop: isSafari ? '14px' : '11px',
+					paddingTop: isSafari ? '13px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
 			/>

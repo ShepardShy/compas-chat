@@ -507,22 +507,22 @@
 			@keydown.enter.prevent.exact="$emit('sendVoiceMessage')"
 		/>
 
-		<!--    <AppDateInput-->
-		<!--      style="position: absolute"-->
-		<!--      :item="{-->
-		<!--        id: 0,-->
-		<!--        required: true,-->
-		<!--        substring: null,-->
-		<!--        type: 'date',-->
-		<!--        title: 'Дата',-->
-		<!--        placeholder: '..____,',-->
-		<!--        value: null,-->
-		<!--        key: 'dateKey',-->
-		<!--        focus: true,-->
-		<!--      }"-->
-		<!--      :is-multiple="false"-->
-		<!--      :is-read-only="false"-->
-		<!--    />-->
+		<!-- <AppDateInput
+			style="position: absolute"
+			:item="{
+				id: 0,
+				required: true,
+				substring: null,
+				type: 'date',
+				title: 'Дата',
+				placeholder: '..____,',
+				value: null,
+				key: 'dateKey',
+				focus: true,
+			}"
+			:is-multiple="false"
+			:is-read-only="false"
+		/> -->
 	</div>
 </template>
 
