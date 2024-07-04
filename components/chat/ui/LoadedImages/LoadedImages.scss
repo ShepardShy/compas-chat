@@ -1,6 +1,7 @@
 @use "~/assets/styles/_variables.scss" as variables;
 
 .images {
+	min-width: 64px;
 	width: 64px;
 }
 

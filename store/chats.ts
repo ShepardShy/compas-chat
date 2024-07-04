@@ -111,12 +111,13 @@ export const useChatsStore = defineStore("chats", {
 					this.filteredChats = [...this.chats];
 					return;
 				}
+				this.filteredChats = [];
 				const l = (string: string) => string?.toLowerCase();
 
 				// Поиск по имени и фамилии
-				this.filteredChats = [
+				const chatsWithNames = [
 					...this.chats.filter(chatData => {
-						const isChatNameIncludes = l(chatData?.firstName)?.includes(l(chatSearch)) || l(chatData?.secondName)?.includes(l(chatSearch));
+						const isChatNameIncludes = l(chatData?.firstName)?.includes(l(chatSearch)) || l(chatData?.secondName)?.includes(l(chatSearch)) || l(chatData?.title)?.includes(l(chatSearch));
 						if (isChatNameIncludes) {
 							return true;
 						}
@@ -124,17 +125,9 @@ export const useChatsStore = defineStore("chats", {
 				];
 
 				// Поиск по сообщениям
-				this.filteredChats = [
-					...this.filteredChats,
-					...this.chats.filter(chatData => {
-						const isMessageNameIncludes = chatData?.messages?.find(m => l(m?.message)?.includes(l(chatSearch)));
-						// есть ли в имени и фамилии
-						const alreadyIn = this.filteredChats.find(chat => isMessageNameIncludes == chat);
-						if (isMessageNameIncludes && !alreadyIn) {
-							return true;
-						}
-					}),
-				];
+				const chatsWithMessages = [];
+
+				this.filteredChats = [...chatsWithNames, ...chatsWithMessages];
 			} catch (e) {
 				console.log(e);
 			}

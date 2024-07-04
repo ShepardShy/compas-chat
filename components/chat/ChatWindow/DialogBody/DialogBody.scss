@@ -18,7 +18,9 @@
 	user-select: none;
 	top: 10px;
 	left: 50%;
-	z-index: 110;
+	width: 110px;
+	text-align: center;
+	z-index: 100;
 	padding: 10px 16px;
 	border-radius: 10px;
 	box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
@@ -92,10 +94,12 @@
 
 .dialog__actions {
 	padding: 25px 45px 25px 25px;
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr 40px;
 	gap: 10px;
 	align-items: flex-end;
 	justify-content: center;
+	// overflow: hidden;
 }
 
 .dialog__actions_mobile {
@@ -114,6 +118,10 @@
 
 .dialog__input {
 	flex: 1 1 auto;
+	overflow-x: hidden;
+	&::-webkit-scrollbar {
+		display: none;
+	}
 }
 
 .dialog__send-msg {

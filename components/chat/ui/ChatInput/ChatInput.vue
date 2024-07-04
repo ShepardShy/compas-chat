@@ -135,7 +135,7 @@
 		() => [uploadedImages.value, uploadedDocuments.value, inputValue.value],
 		() => {
 			if (!uploadedImages.value?.length && !uploadedDocuments.value?.length && !inputValue.value) {
-				// resetInputHeight();
+				resetInputHeight();
 				return;
 			}
 
@@ -427,26 +427,25 @@
 
 <template>
 	<div
+		v-if="uploadedImages?.length || uploadedDocuments?.length"
+		ref="$files"
+		class="files"
+	>
+		<LoadedDocuments
+			v-if="uploadedDocuments.length"
+			v-model:uploaded-documents="uploadedDocuments"
+		/>
+		<LoadedImages
+			v-if="uploadedImages?.length"
+			v-model:uploaded-images="uploadedImages"
+		/>
+	</div>
+	<div
 		class="custom-input"
 		:style="{
 			width: width,
 		}"
 	>
-		<div
-			v-if="uploadedImages?.length || uploadedDocuments?.length"
-			ref="$files"
-			class="files"
-		>
-			<LoadedDocuments
-				v-if="uploadedDocuments.length"
-				v-model:uploaded-documents="uploadedDocuments"
-			/>
-			<LoadedImages
-				v-if="uploadedImages?.length"
-				v-model:uploaded-images="uploadedImages"
-			/>
-		</div>
-
 		<div
 			ref="$input"
 			class="input"

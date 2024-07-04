@@ -8,7 +8,13 @@
 	margin-bottom: 20px;
 	display: flex;
 	gap: 10px;
+	grid-column: span 2;
 	flex-wrap: wrap;
+	@media (max-width: 950px) {
+		display: flex;
+		overflow: auto;
+		flex-wrap: nowrap;
+	}
 }
 
 .input__body {
@@ -20,9 +26,9 @@
 	// white-space: normal;
 	overflow-y: auto;
 	white-space: pre-wrap;
-	&::-webkit-scrollbar {
-		display: none;
-	}
+	// &::-webkit-scrollbar {
+	// 	display: none;
+	// }
 
 	&::placeholder {
 		color: variables.$color-dark-grey;

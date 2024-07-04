@@ -396,7 +396,7 @@
 			}"
 			:style="{
         transform: isMobileSize ? `translateX(calc(-50%))` : `translateX(calc(-50% - 11px))`,
-        opacity: $dialogWrapper!?.offsetHeight < $dialogWrapperScroll!?.offsetHeight ? '1' : '0',
+        opacity: $dialogWrapper!?.offsetHeight  < ($dialogWrapperScroll!?.offsetHeight - 42) ? '1' : '0',
       }"
 		>
 			{{ preparedDay }}
