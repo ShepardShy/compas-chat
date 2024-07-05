@@ -192,6 +192,7 @@
 	let startTime;
 	const messageDuration = ref(0);
 	let messageIntervalId;
+	let fullDuration = null
 
 	/**
 	 * Начала записи голосового сообщения
@@ -219,7 +220,7 @@
 					chunks.push(e.data);
 				};
 
-				messageIntervalId = setInterval(() => (messageDuration.value = (new Date().getTime() - startTime) / 1000), 1000);
+				messageIntervalId = setInterval(() => (messageDuration.value = (new Date().getTime() - startTime) / 1000), 100);
 
 				mediaRecorder.onstop = mediaRecorderStop;
 			} catch (e) {
@@ -489,6 +490,7 @@
 
 			<button
 				class="dialog__send-msg"
+				:disabled="isMakingAVoiceMessage && messageDuration < 1"  
 				:class="{
 					'dialog__send-msg_active': isMakingAVoiceMessage,
 				}"

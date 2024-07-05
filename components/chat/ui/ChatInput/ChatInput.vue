@@ -100,6 +100,8 @@
 		const oneHourInSeconds = 60 * 60;
 
 		const messageDurationSeconds = messageDuration.value.toFixed(0) as unknown as number;
+		console.log(messageDuration.value);
+		
 
 		const hours = Math.floor(messageDurationSeconds / oneHourInSeconds);
 		const minutes = Math.floor((messageDurationSeconds - hours * oneHourInSeconds) / oneMinuteInSeconds);
@@ -107,19 +109,20 @@
 
 		let finalDuration = "";
 
-		function addTime(time: number, isSeconds: boolean = false) {
+		function addTime(time: number, isLast: boolean = false) {
 			if (time < 10) {
 				finalDuration += "0" + time;
 			} else {
 				finalDuration += time;
 			}
 
-			!isSeconds && (finalDuration += ":");
+			!isLast && (finalDuration += ":");
 		}
 
-		addTime(hours);
+		// addTime(hours);
 		addTime(minutes);
-		addTime(seconds, true);
+		addTime(seconds);
+		finalDuration += +messageDuration.value.toFixed(1)
 
 		return finalDuration;
 	});
@@ -470,7 +473,7 @@
 				:style="{
 					width: width,
 					height: currentInputHeight + 'px',
-					paddingTop: isSafari ? '13px' : '11px',
+					paddingTop: isSafari ? '11px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
 				@blur="scrollToTop"
@@ -493,7 +496,7 @@
 				:style="{
 					width: width,
 					height: currentInputHeight + 'px',
-					paddingTop: isSafari ? '13px' : '11px',
+					paddingTop: isSafari ? '11px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
 			/>
