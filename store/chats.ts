@@ -18,6 +18,7 @@ export const useChatsStore = defineStore("chats", {
 			isAddUserModalOpen: false,
 			isGroupChatEditModalOpen: false,
 			isGroupChatCreateModalOpen: false,
+			isDatePickModalOpen: false,
 
 			openMessageTypeModal: undefined as undefined | MessagesTypesType,
 			isOpenMessageTypeModal: false,
@@ -188,6 +189,10 @@ export const useChatsStore = defineStore("chats", {
 
 		closeAddUserModal() {
 			this.isAddUserModalOpen = false;
+		},
+
+		closeDatePickModal() {
+			this.isDatePickModalOpen = false;
 		},
 
 		closeGroupChatEditModal() {

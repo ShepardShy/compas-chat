@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import { setMessageDay } from "~/composables/chats";
+	import { useChatsStore } from "~/store/chats";
 	import { useSettingsStore } from "~/store/settings";
 
 	/**
@@ -22,6 +23,26 @@
 	const emit = defineEmits<{
 		(emit: "update:shownDate", value: string): void;
 	}>();
+
+	const chatsStore = useChatsStore();
+
+	/**
+	 * Открытие модалки для выбора даты
+	 */
+	const openModalToDatePick = () => {
+		const currentUserData = {
+			lastTimeActive: formattedDateToday(),
+		};
+
+		// chatsStore.$patch(
+		// 	state =>
+		// 		(state.temporalStorageForGroupChat = {
+		// 			...state.temporalStorageForGroupChat,
+		// 			users: [currentUserData],
+		// 		})
+		// );
+		chatsStore.$patch(state => (state.isDatePickModalOpen = true));
+	};
 
 	/**
 	 * Подключение стора с настройками
@@ -92,6 +113,7 @@
 		>
 			<div
 				v-if="!(shownDate == date)"
+				@click="chatsStore.isDatePickModalOpen = true"
 				class="message-block__date"
 				:class="{
 					'message-block__date_today': preparedDay === 'Сегодня',

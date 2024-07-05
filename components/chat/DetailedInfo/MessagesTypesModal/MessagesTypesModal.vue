@@ -129,7 +129,7 @@
 	</div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 	@use "~/assets/styles/_variables.scss" as variables;
 	.message-type {
 		z-index: 1100;

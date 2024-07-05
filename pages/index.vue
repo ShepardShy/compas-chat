@@ -4,7 +4,7 @@
 	import { useRoute, useRouter } from "vue-router";
 	import { ERouteName } from "~/shared/routes";
 
-	import { AllChats, ChatWindow, ChatLoader, GroupAddUserModal, AdditionalInfoModal, GroupChatCreateEditModal, MessagesTypesModal } from "~/components";
+	import { AllChats, ChatWindow, ChatLoader, GroupAddUserModal, AdditionalInfoModal, GroupChatCreateEditModal, MessagesTypesModal, DatePickModal } from "~/components";
 
 	import { useChatsStore } from "~/store/chats";
 	import { useSettingsStore } from "~/store/settings";
@@ -21,7 +21,7 @@
 	 * Подюклчение стора с сообщениями
 	 */
 	const chatsStore = useChatsStore();
-	const { isAddUserModalOpen, isDetailedInfoModalOpen, isGroupChatEditModalOpen, isGroupChatCreateModalOpen, isOpenMessageTypeModal, chats, openedChatId } = storeToRefs(chatsStore);
+	const { isAddUserModalOpen, isDetailedInfoModalOpen, isGroupChatEditModalOpen, isGroupChatCreateModalOpen, isOpenMessageTypeModal, isDatePickModalOpen, chats, openedChatId } = storeToRefs(chatsStore);
 	/**
 	 * Подюклчение стора с настройками
 	 */
@@ -37,14 +37,14 @@
 	 * Открыта ли любая моадка
 	 */
 	const isAnyModalOpen = computed(() => {
-		return isAddUserModalOpen.value || isDetailedInfoModalOpen.value || isGroupChatEditModalOpen.value || isOpenMessageTypeModal.value || isGroupChatCreateModalOpen.value;
+		return isAddUserModalOpen.value || isDetailedInfoModalOpen.value || isGroupChatEditModalOpen.value || isOpenMessageTypeModal.value || isGroupChatCreateModalOpen.value || isDatePickModalOpen.value;
 	});
 
 	/**
 	 * Показывать ли модалку с дополнительной информацией
 	 */
 	const isAdditionalInfoModalVisible = computed(() => {
-		return isDetailedInfoModalOpen.value && !isAddUserModalOpen.value && !isGroupChatEditModalOpen.value && !isGroupChatCreateModalOpen.value && !isOpenMessageTypeModal.value;
+		return isDetailedInfoModalOpen.value && !isAddUserModalOpen.value && !isGroupChatEditModalOpen.value && !isGroupChatCreateModalOpen.value && !isOpenMessageTypeModal.value && !isDatePickModalOpen.value;
 	});
 	/**
 	 * Высота блока на весь экран
@@ -107,6 +107,7 @@
 		chatsStore.closeGroupChatEditModal();
 		chatsStore.closeGroupChatCreateModal();
 		chatsStore.closeMessageTypeModal();
+		chatsStore.closeDatePickModal();
 	};
 </script>
 
@@ -153,6 +154,7 @@
 						class="modal__bg-padding"
 					/>
 
+					<DatePickModal v-if="isDatePickModalOpen" />
 					<AdditionalInfoModal v-if="isAdditionalInfoModalVisible" />
 					<GroupChatCreateEditModal v-if="isGroupChatEditModalOpen && !isAddUserModalOpen" />
 					<GroupChatCreateEditModal v-if="isGroupChatCreateModalOpen && !isAddUserModalOpen" />

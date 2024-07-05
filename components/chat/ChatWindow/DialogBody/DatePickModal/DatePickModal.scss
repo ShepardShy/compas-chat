@@ -1,0 +1,154 @@
+@use "~/assets/styles/_variables.scss" as variables;
+.date-pick {
+	z-index: 1100;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	& .form-item__title {
+		color: #8f8f8f;
+	}
+}
+
+.date-pick_mobile {
+	left: 0;
+	transform: translateX(0);
+	width: 100vw;
+	height: 100%;
+}
+
+.date-pick__modal {
+	position: relative;
+	width: 400px;
+	min-height: 300px;
+	z-index: 1100;
+	border-radius: 15px;
+	padding: 25px;
+	border: 1px solid #979797;
+	background-color: #f7f8fa;
+}
+
+.date-pick__modal_mobile {
+	width: 100%;
+	border: 1px solid transparent;
+	border-radius: 0;
+	height: 100%;
+
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	overflow-y: auto;
+}
+
+.date-pick__top {
+	margin-bottom: 25px;
+}
+
+.date-pick__back-icon {
+	position: absolute;
+	height: 28px;
+	top: 25px;
+	left: 20px;
+	cursor: pointer;
+	color: #0584fe;
+	transition: 0.2s all;
+}
+
+.date-pick__back-icon:hover {
+	color: #1253a2;
+}
+
+.date-pick__close-icon {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	cursor: pointer;
+}
+
+.date-pick__title {
+	font-size: 20px;
+	font-weight: 400;
+	color: variables.$color-black;
+}
+
+.date-pick__input {
+	padding-bottom: 15px;
+	overflow: visible;
+	& .dp__overlay {
+		width: 100% !important;
+	}
+}
+
+.date-pick__month {
+	& .dp__selection_grid_header {
+		display: none;
+	}
+}
+
+.date-pick__picker {
+	& .dp__calendar_item {
+		display: flex;
+		justify-content: center;
+	}
+	& .dp__cell_inner {
+		border-radius: 10px;
+	}
+	& .dp__today {
+		border: none;
+		color: #ad0b0a;
+		font-weight: bold;
+	}
+	& .dp__active_date {
+		border: solid 1px variables.$color-active;
+		background-color: #f6f5f3;
+		color: inherit;
+	}
+	& .dp__menu_inner {
+		background-color: #fbfcfd;
+	}
+	& .dp__calendar_header_separator {
+		display: none;
+	}
+	& .dp__calendar_header_item {
+		text-transform: capitalize;
+		font-weight: 400;
+	}
+	& .dp__menu {
+		border: solid 1px #eeeff1;
+		top: 0 !important;
+	}
+	& .dp__menu_inner {
+		padding: 10px 0;
+	}
+	& .dp__calendar_item {
+		&:nth-child(n + 6) {
+			color: #b9b9b9;
+		}
+	}
+}
+
+.date-pick__body {
+	max-height: calc(96vh - 155px);
+	overflow-y: auto;
+	padding-bottom: 25px;
+
+	&::-webkit-scrollbar {
+		width: 3px;
+		height: 122px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: variables.$color-blue-grey;
+		border-radius: 2px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
+}
+
+.date-pick__bg-padding {
+	height: 10vh;
+	background-color: transparent;
+}

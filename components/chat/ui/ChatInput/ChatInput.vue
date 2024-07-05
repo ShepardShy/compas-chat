@@ -560,6 +560,6 @@
 	</div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 	@import "./ChatInput";
 </style>

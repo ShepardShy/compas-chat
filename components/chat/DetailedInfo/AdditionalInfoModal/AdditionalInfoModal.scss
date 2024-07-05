@@ -199,6 +199,7 @@
 .details-menu__item-icon {
 	color: #a6b7d4;
 	transition: 0.2s all;
+	will-change: color;
 }
 
 .details-menu__item:hover .details-menu__item-icon {
