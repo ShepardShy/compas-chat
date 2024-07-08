@@ -7,9 +7,6 @@ import type { DetailedInfoMenuItem, GroupChatMessageType, GroupChatType, UserCha
  * @param _item
  */
 export const showModalMenuItemTitle = (_openModalChatData: UserChatType | GroupChatType, _item: DetailedInfoMenuItem) => {
-	console.log(_openModalChatData, "_openModalChatData");
-	console.log(_item, "_item");
-
 	switch (_item.action) {
 		case "text-messages": {
 			return setCorrectTitle(_openModalChatData.totalTextMessages, _item);

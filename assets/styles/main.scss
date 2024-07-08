@@ -40,6 +40,12 @@ h6 {
 	font-weight: inherit;
 }
 
+.app,
+#__nuxt,
+#__nuxt > div {
+	overflow: hidden;
+}
+
 * {
 	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 	-webkit-tap-highlight-color: transparent;
@@ -64,14 +70,23 @@ body {
 	font-size: variables.$font-size-default;
 	color: variables.$color-black;
 	font-family: PT Sans, sans-serif;
-	overflow-x: hidden;
-	min-height: 100vh;
-	height: 100vh;
+	overflow: hidden;
+	min-height: 100dvh;
+	height: 100dvh;
+	transform: translateZ(0);
+	-webkit-overflow-scrolling: touch;
+	// overscroll-behavior: none;
+	overscroll-behavior-block: none;
 
 	&.body_uncscroll {
 		overflow: hidden;
 	}
 }
+
+// body.disable-scroll {
+// 	height: 100%;
+// 	overflow: hidden;
+// }
 
 html {
 	body {

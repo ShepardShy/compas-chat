@@ -35,6 +35,8 @@ export const useChatsStore = defineStore("chats", {
 
 			testTextMessages: testTextMessages,
 			testPhotoMessages: testPhotoMessages,
+
+			openMessageTypeItem: null,
 		};
 	},
 

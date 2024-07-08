@@ -6,6 +6,8 @@
 	import CloseIcon from "~/assets/icons/close-icon.svg";
 
 	import AppH3 from "~/components/ui/AppH3/AppH3.vue";
+	import { useDatePickStore } from "~/store/datePick";
+	import moment from "moment";
 
 	const chatsStore = useChatsStore();
 	const { userId, openMessageTypeModal, dataFromSelectedTypeOfChatMessage } = storeToRefs(chatsStore);
@@ -16,6 +18,15 @@
 	const searchInputValue = ref();
 
 	const page = ref(1);
+	const datePickStore = useDatePickStore();
+	const { date } = storeToRefs(datePickStore);
+
+	// Получение даты
+	date.value = new Date(date.value.split(".").reverse().join("-"));
+	const dateMonth = computed(() => {
+		return { month: date.value.getMonth(), year: date.value.getFullYear() };
+	});
+	const dateYear = computed(() => date.value.getFullYear());
 
 	const closeDatePickModal = () => {
 		// chatsStore.clearDataFromSelectedTypeOfChatMessage();
@@ -23,36 +34,54 @@
 		chatsStore.closeDatePickModal();
 	};
 
-	const datePickYear = {
+	// Выбор года
+	const datePickYear = reactive({
 		id: 0,
 		key: "",
-		value: "",
+		value: dateYear,
 		type: "text",
 		focus: false,
 		placeholder: "",
 		substring: null,
 		title: "Год",
+	});
+	const pickYearHandler = data => {
+		date.value.setFullYear(data.value);
+		datePickDay.value = {
+			...datePickDay.value,
+			value: date.value,
+		};
 	};
-	const datePickMonth = {
+
+	// Выбор месяца
+	const datePickMonth = reactive({
 		id: 0,
 		key: "",
-		value: "",
+		value: dateMonth.value,
 		type: "text",
 		focus: false,
 		placeholder: "",
 		substring: null,
 		title: "Месяц",
+	});
+	const pickMonthHandler = data => {
+		date.value.setMonth(data.value);
+		datePickDay.value = {
+			...datePickDay.value,
+			value: date.value,
+		};
 	};
-	const datePickDay = {
+
+	const datePickDay = ref({
 		id: 0,
 		key: "",
-		value: "",
+		value: date.value,
 		type: "text",
 		focus: false,
 		placeholder: "",
 		substring: null,
 		title: "День",
-	};
+	});
 
 	// Настройки календарей
 	const datePickYearSettings = {
@@ -100,6 +129,7 @@
 				:item="datePickYear"
 				:isYear="true"
 				:calendarSettings="datePickYearSettings"
+				@changeValue="pickYearHandler"
 			/>
 			<UiAppInputsDate
 				class="date-pick__input date-pick__month"
@@ -107,7 +137,7 @@
 				:item="datePickMonth"
 				:isMonth="true"
 				:calendarSettings="datePickMonthSettings"
-				@changeValue="data => console.log(data)"
+				@changeValue="pickMonthHandler"
 			/>
 			<UiAppInputsDate
 				class="date-pick__picker"

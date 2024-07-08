@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import { useChatsStore } from "~/store/chats";
 	import { useSettingsStore } from "~/store/settings";
+	import { showModalMenuItemTitle } from "#imports";
 
 	import BackIcon from "~/assets/icons/back-icon.svg";
 	import CloseIcon from "~/assets/icons/close-icon.svg";
@@ -13,7 +14,7 @@
 	import { Empty } from "~/components/chat/ui/Empty";
 
 	const chatsStore = useChatsStore();
-	const { userId, openMessageTypeModal, dataFromSelectedTypeOfChatMessage } = storeToRefs(chatsStore);
+	const { userId, openMessageTypeItem, openMessageTypeModal, openModalChatData, dataFromSelectedTypeOfChatMessage } = storeToRefs(chatsStore);
 
 	const settingStore = useSettingsStore();
 	const { isMobileSize } = storeToRefs(settingStore);
@@ -118,7 +119,7 @@
 					<LinkMessageType :link-message="dataFromSelectedTypeOfChatMessage" />
 				</div>
 
-				<Empty v-if="dataFromSelectedTypeOfChatMessage?.length == 0" />
+				<Empty v-if="dataFromSelectedTypeOfChatMessage?.length == 0">Нет {{ openMessageTypeItem.titleThree }}</Empty>
 			</div>
 		</div>
 

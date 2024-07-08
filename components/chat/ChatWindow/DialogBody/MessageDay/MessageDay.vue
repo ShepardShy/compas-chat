@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import { setMessageDay } from "~/composables/chats";
 	import { useChatsStore } from "~/store/chats";
+	import { useDatePickStore } from "~/store/datePick";
 	import { useSettingsStore } from "~/store/settings";
 
 	/**
@@ -25,6 +26,7 @@
 	}>();
 
 	const chatsStore = useChatsStore();
+	const datePickStore = useDatePickStore();
 
 	/**
 	 * Открытие модалки для выбора даты
@@ -41,7 +43,8 @@
 		// 			users: [currentUserData],
 		// 		})
 		// );
-		chatsStore.$patch(state => (state.isDatePickModalOpen = true));
+		datePickStore.date = date.value;
+		chatsStore.isDatePickModalOpen = true;
 	};
 
 	/**
@@ -113,7 +116,7 @@
 		>
 			<div
 				v-if="!(shownDate == date)"
-				@click="chatsStore.isDatePickModalOpen = true"
+				@click="openModalToDatePick"
 				class="message-block__date"
 				:class="{
 					'message-block__date_today': preparedDay === 'Сегодня',

@@ -192,7 +192,7 @@
 	let startTime;
 	const messageDuration = ref(0);
 	let messageIntervalId;
-	let fullDuration = null
+	let fullDuration = null;
 
 	/**
 	 * Начала записи голосового сообщения
@@ -229,6 +229,7 @@
 		} else {
 			mediaRecorder?.stop();
 			clearInterval(messageIntervalId);
+			fullDuration = messageDuration.value;
 			messageDuration.value = 0;
 		}
 	}
@@ -249,6 +250,9 @@
 	function mediaRecorderStop() {
 		audioBlob = new Blob(chunks, { type: "audio/mp3" });
 		const src = URL.createObjectURL(audioBlob);
+		if (fullDuration < 0.8) {
+			doNotSaveVoiceMessage = true;
+		}
 
 		if (doNotSaveVoiceMessage) {
 			voiceMessage.value = [];
@@ -260,7 +264,6 @@
 
 		stopAudioOnly(stream);
 		mediaRecorder?.stop();
-		console.log(mediaRecorder);
 		mediaRecorder = null;
 		chunks = [];
 	}
@@ -490,7 +493,6 @@
 
 			<button
 				class="dialog__send-msg"
-				:disabled="isMakingAVoiceMessage && messageDuration < 1"  
 				:class="{
 					'dialog__send-msg_active': isMakingAVoiceMessage,
 				}"

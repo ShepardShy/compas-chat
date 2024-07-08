@@ -125,6 +125,7 @@
 				detailedMenuActiveDataType.value = _item.action;
 				chatsStore.$patch(state => (state.openMessageTypeModal = _item.action));
 				chatsStore.$patch(state => (state.isOpenMessageTypeModal = true));
+				chatsStore.$patch(state => (state.openMessageTypeItem = _item));
 
 				if (_item.action === "text-messages") {
 					chatsStore.getTextMessages();

@@ -1,5 +1,5 @@
 <template>
-	<div class="empty">Нет Данных</div>
+	<div class="empty"><slot /></div>
 </template>
 
 <script setup lang="ts"></script>

@@ -10,9 +10,10 @@
 		locale="ru"
 		:month-name-format="monthNames"
 		position="left"
+		:open-date="openDate"
 		hide-offset-dates
 		:format-locale="ru"
-		:format="props.isMonth ? 'MMMM' : 'dd.MM.yyyy'"
+		:format="props.isMonth ? 'MMMM' : props.isYear ? 'yyyy' : 'dd.MM.yyyy'"
 		placeholder="__.__.____"
 		:enable-time-picker="false"
 		:max-time="{ hours: 0, minutes: 0, seconds: 0 }"
@@ -102,6 +103,8 @@
 
 	import "@vuepic/vue-datepicker/dist/main.css";
 
+	const datepicker = ref(null);
+
 	const props = defineProps({
 		item: {
 			default: {
@@ -144,7 +147,9 @@
 
 	const emit = defineEmits(["changeValue"]);
 
+	const { item } = toRefs(props);
 	const localDate = ref(null);
+	const openDate = ref(null);
 	const rangeStart = ref("");
 	const rangeEnd = ref("");
 
@@ -245,11 +250,19 @@
 			const request = new Date(dateWithMonth).toLocaleDateString("default", { month: "long" });
 			emit("changeValue", { key: props.item.key, value: value.month, string: request });
 		};
+		// Изменение в календаре по годам
+		const changeYear = value => {
+			console.log(value);
+			localDate.value = value;
+			emit("changeValue", { key: props.item.key, value });
+		};
 
 		if (props.isMultiple) {
 			changeMultiple(value);
 		} else if (props.isMonth) {
 			changeMonth(value);
+		} else if (props.isYear) {
+			changeYear(value);
 		} else {
 			changeDefault(value);
 		}
@@ -257,10 +270,16 @@
 
 	// Установка значения по умолчанию
 	const setValue = () => {
+		if (props.isYear) {
+			localDate.value = props.item.value;
+			return;
+		}
+
 		if (props.isMultiple) {
 			localDate.value = Array.isArray(props.item.value) ? JSON.parse(JSON.stringify(props.item.value)) : [];
 		} else {
 			localDate.value = typeof props.item.value != "string" || [null, undefined].includes(props.item.value) ? null : JSON.parse(JSON.stringify(new Date(props.item.value)));
+			localDate.value = typeof props.item.value == "object" ? props.item.value : null;
 		}
 	};
 
@@ -305,9 +324,17 @@
 	});
 
 	watch(
-		() => props.item.value,
-		() => {
-			setValue();
+		() => item.value,
+		async () => {
+			// localDate.value = item.value.value;
+			datepicker.value.updateInternalModelValue(item.value.value);
+
+			datepicker.value.selectDate();
+			await nextTick();
+			datepicker.value.clearValue();
+			// openDate.value = item.value.value;
+			// console.log(openDate.value);
+			// setValue();
 		}
 	);
 </script>

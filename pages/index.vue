@@ -13,6 +13,26 @@
 		name: ERouteName.PAGE_HOME,
 	});
 
+	/** Отключение скролла */
+	onMounted(() => {
+		document.addEventListener("touchmove", function (e) {
+			e.preventDefault();
+		});
+
+		document.body.addEventListener("touchstart", function (e) {
+			const target = e.currentTarget as unknown as HTMLBodyElement;
+			if (target.scrollTop === 0) {
+				target.scrollTop = 1;
+			} else if (target.scrollHeight === target.scrollTop + target.offsetHeight) {
+				target.scrollTop -= 1;
+			}
+		});
+
+		document.body.addEventListener("touchmove", function (e) {
+			e.stopPropagation();
+		});
+	});
+
 	/** Маршрутризатор */
 	const router = useRouter();
 	const route = useRoute();
@@ -69,7 +89,7 @@
 	onMounted(async () => {
 		chatsStore.$patch(state => (state.filteredChats = state.chats));
 
-		windowHeight.value = `${window.innerHeight - 15}px`;
+		windowHeight.value = `${window.visualViewport.height - 15}px`;
 
 		checkMobileSize();
 		window.addEventListener("resize", checkMobileSize);
@@ -93,7 +113,7 @@
 	 */
 	const checkMobileSize = () => {
 		settingsStore.$patch(state => (state.isMobileSize = window.innerWidth < maxWindowWidthForMobile));
-		windowHeight.value = `${window.innerHeight}px`;
+		windowHeight.value = `${window.visualViewport.height}px`;
 	};
 	/**
 	 * Закрыть все открытые моадбные окна
@@ -170,6 +190,7 @@
 <style>
 	.chat {
 		display: flex;
+		overflow: hidden;
 	}
 
 	.chat__users {

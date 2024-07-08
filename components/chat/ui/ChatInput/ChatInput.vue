@@ -99,9 +99,10 @@
 		const oneMinuteInSeconds = 60;
 		const oneHourInSeconds = 60 * 60;
 
-		const messageDurationSeconds = messageDuration.value.toFixed(0) as unknown as number;
-		console.log(messageDuration.value);
-		
+		const duration = (messageDuration.value += 0);
+
+		const messageDurationSeconds = Math.floor(messageDuration.value);
+		const messageDurationMilliseconds = Math.floor((messageDuration.value - messageDurationSeconds) * 1000);
 
 		const hours = Math.floor(messageDurationSeconds / oneHourInSeconds);
 		const minutes = Math.floor((messageDurationSeconds - hours * oneHourInSeconds) / oneMinuteInSeconds);
@@ -109,8 +110,8 @@
 
 		let finalDuration = "";
 
-		function addTime(time: number, isLast: boolean = false) {
-			if (time < 10) {
+		function addTime(time: number, isLast: boolean = false, isNeedNull = true) {
+			if (time < 10 && isNeedNull) {
 				finalDuration += "0" + time;
 			} else {
 				finalDuration += time;
@@ -122,8 +123,7 @@
 		// addTime(hours);
 		addTime(minutes);
 		addTime(seconds);
-		finalDuration += +messageDuration.value.toFixed(1)
-
+		addTime(Math.floor(messageDurationMilliseconds / 100), true, false);
 		return finalDuration;
 	});
 
@@ -417,10 +417,17 @@
 		}
 	};
 
-	// Скролл в начало при закрытии клавиатуры
+	// Клавиатура safari
 
-	const scrollToTop = () => {
-		setTimeout(() => window.scrollTo(0, 0), 10);
+	const preventScrollWhenSoftKeyboardFocus = e => {
+		// setTimeout(() => {
+		// 	document.body.style.maxHeight = `${window.visualViewport.height}px`;
+		// 	document.body.style.minHeight = `${window.visualViewport.height}px`;
+		// }, 200);
+	};
+	const preventScrollWhenSoftKeyboardBlur = e => {
+		// document.body.style.maxHeight = `unset`;
+		// document.body.style.minHeight = `unset`;
 	};
 
 	defineExpose({
@@ -476,8 +483,8 @@
 					paddingTop: isSafari ? '11px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
-				@blur="scrollToTop"
-				@focus="scrollToTop"
+				@focus="preventScrollWhenSoftKeyboardFocus"
+				@focusout="preventScrollWhenSoftKeyboardBlur"
 				@keydown.enter.prevent.exact="uploadedImages.length > 0 || uploadedDocuments.length > 0 || inputValue.trim().length > 0 ? emit('sendMessage') : 0"
 				@keyup.shift.enter.prevent="newLine"
 				@keyup.ctrl.enter.prevent="newLine"

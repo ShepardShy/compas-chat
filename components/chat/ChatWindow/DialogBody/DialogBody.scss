@@ -9,6 +9,7 @@
 	flex-direction: column;
 	position: relative;
 	overflow-y: auto;
+	justify-content: end;
 	// margin-top: calc(-1 * (100vh - (190% - 65px)));
 }
 
@@ -47,8 +48,12 @@
 }
 
 .dialog__wrapper {
+	transform: translateZ(0);
+	// -webkit-overflow-scrolling: touch;
+	-webkit-overflow-scrolling: auto;
+	overscroll-behavior: contain;
 	user-select: none;
-	flex: 1 1 auto;
+	// flex: 1 1 auto;
 	// margin-bottom: 35px;
 	overflow-y: auto;
 	padding-right: 45px;
