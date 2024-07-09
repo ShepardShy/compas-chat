@@ -96,13 +96,13 @@
 	}
 	& .dp__today {
 		border: none;
-		color: #ad0b0a;
+		color: #ad0b0a !important;
 		font-weight: bold;
 	}
 	& .dp__active_date {
 		border: solid 1px variables.$color-active;
 		background-color: #f6f5f3;
-		color: inherit;
+		color: var(--dp-text-color);
 	}
 	& .dp__menu_inner {
 		background-color: #fbfcfd;

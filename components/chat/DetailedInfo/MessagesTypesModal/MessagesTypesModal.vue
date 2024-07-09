@@ -69,6 +69,7 @@
 			</div>
 			<ChatInput
 				v-model:input-value="searchInputValue"
+				v-if="dataFromSelectedTypeOfChatMessage?.length != 0"
 				placeholder="Найти"
 				class="message-type__search-input"
 			/>
@@ -147,9 +148,11 @@
 	}
 
 	.message-type__modal {
+		display: flex;
+		flex-direction: column;
 		position: relative;
 		width: 400px;
-		min-height: 300px;
+		min-height: 400px;
 		z-index: 1100;
 		border-radius: 15px;
 		padding-right: 2px;
@@ -210,6 +213,9 @@
 	}
 
 	.message-type__body {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
 		max-height: calc(96vh - 155px);
 		overflow-y: auto;
 		padding-bottom: 25px;

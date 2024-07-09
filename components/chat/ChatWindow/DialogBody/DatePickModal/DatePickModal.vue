@@ -10,7 +10,7 @@
 	import moment from "moment";
 
 	const chatsStore = useChatsStore();
-	const { userId, openMessageTypeModal, dataFromSelectedTypeOfChatMessage } = storeToRefs(chatsStore);
+	const { openedChatData } = storeToRefs(chatsStore);
 
 	const settingStore = useSettingsStore();
 	const { isMobileSize } = storeToRefs(settingStore);
@@ -23,9 +23,15 @@
 
 	// Получение даты
 	date.value = new Date(date.value.split(".").reverse().join("-"));
-	const dateMonth = computed(() => {
-		return { month: date.value.getMonth(), year: date.value.getFullYear() };
-	});
+	const dateMonth = ref({ month: date.value.getMonth(), year: date.value.getFullYear() });
+	watch(
+		() => date.value,
+		() => {
+			dateMonth.value = { month: date.value.getMonth(), year: date.value.getFullYear() };
+			datePickMonth.value.value = dateMonth.value;
+		}
+	);
+
 	const dateYear = computed(() => date.value.getFullYear());
 
 	const closeDatePickModal = () => {
@@ -35,7 +41,7 @@
 	};
 
 	// Выбор года
-	const datePickYear = reactive({
+	const datePickYear = ref({
 		id: 0,
 		key: "",
 		value: dateYear,
@@ -46,15 +52,16 @@
 		title: "Год",
 	});
 	const pickYearHandler = data => {
-		date.value.setFullYear(data.value);
+		date.value = new Date(date.value.setFullYear(data.value));
 		datePickDay.value = {
 			...datePickDay.value,
 			value: date.value,
 		};
+		datePickMonth.value.value.year = data.value;
 	};
 
 	// Выбор месяца
-	const datePickMonth = reactive({
+	const datePickMonth = ref({
 		id: 0,
 		key: "",
 		value: dateMonth.value,
@@ -65,13 +72,14 @@
 		title: "Месяц",
 	});
 	const pickMonthHandler = data => {
-		date.value.setMonth(data.value);
+		date.value = new Date(date.value.setMonth(data.value));
 		datePickDay.value = {
 			...datePickDay.value,
 			value: date.value,
 		};
 	};
 
+	// Выбор дня
 	const datePickDay = ref({
 		id: 0,
 		key: "",
@@ -82,18 +90,32 @@
 		substring: null,
 		title: "День",
 	});
+	const pickDayHandler = data => {
+		console.log(data);
+		closeDatePickModal();
+	};
 
 	// Настройки календарей
+	const minDateYear = moment(openedChatData.value.dateRangeStart).startOf("year").toISOString();
+	const maxDateYear = moment(openedChatData.value.dateRangeEnd).endOf("year").toISOString();
 	const datePickYearSettings = {
 		"year-picker": true,
+		"min-date": minDateYear,
+		"max-date": maxDateYear,
 	};
+	const minDateMonth = moment(openedChatData.value.dateRangeStart).startOf("month").toISOString();
+	const maxDateMonth = moment(openedChatData.value.dateRangeEnd).endOf("month").toISOString();
 	const datePickMonthSettings = {
 		"month-picker": true,
 		"disable-month-year-select": true,
+		"min-date": minDateMonth,
+		"max-date": maxDateMonth,
 	};
 	const datePickDaySettings = {
 		inline: true,
 		"disable-month-year-select": true,
+		"min-date": openedChatData.value.dateRangeStart,
+		"max-date": openedChatData.value.dateRangeEnd,
 	};
 
 	onMounted(() => {
@@ -122,7 +144,6 @@
 					@click="closeDatePickModal"
 				/>
 			</div>
-
 			<UiAppInputsDate
 				class="date-pick__input"
 				:isShowRightSidebar="false"
@@ -144,6 +165,7 @@
 				:isShowRightSidebar="false"
 				:item="datePickDay"
 				:isDay="true"
+				@changeValue="pickDayHandler"
 				:calendarSettings="datePickDaySettings"
 			/>
 		</div>

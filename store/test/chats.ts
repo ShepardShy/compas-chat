@@ -21,7 +21,39 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2020-05-03T16:34:09.000000Z",
+		dateRangeEnd: "2024-03-17T16:34:09.000000Z",
 		messages: [
+			{
+				id: 6,
+				type: "text",
+				message: "Принимаете заказ?",
+				userId: 1,
+				isReceived: false,
+				isViewed: false,
+				isUnread: false,
+				date: "05.03.2020 15:12",
+			},
+			{
+				id: 6,
+				type: "text",
+				message: "Принимаете заказ?",
+				userId: 1,
+				isReceived: false,
+				isViewed: false,
+				isUnread: false,
+				date: "05.04.2021 15:12",
+			},
+			{
+				id: 6,
+				type: "text",
+				message: "Принимаете заказ?",
+				userId: 1,
+				isReceived: false,
+				isViewed: false,
+				isUnread: false,
+				date: "05.01.2022 15:12",
+			},
 			{
 				id: 1,
 				type: "text",
@@ -30,7 +62,7 @@ export const chats = [
 				isReceived: true,
 				isViewed: true,
 				isUnread: false,
-				date: "14.02.2024 15:12",
+				date: "14.05.2023 15:12",
 			},
 			{
 				id: 2,
@@ -272,6 +304,8 @@ export const chats = [
 				lastTimeActive: "20.02.2024 14:00",
 			},
 		],
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-03-08T16:34:09.000000Z",
 		messages: [
 			{
 				id: 33,
@@ -330,6 +364,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-14T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -405,6 +441,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-14T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -450,6 +488,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-14T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -495,6 +535,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-13T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-13T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -540,6 +582,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "",
+		dateRangeEnd: "",
 		messages: [],
 	},
 	{
@@ -586,6 +630,8 @@ export const chats = [
 				position: "Менеджер",
 			},
 		],
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-14T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -628,6 +674,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "",
+		dateRangeEnd: "",
 		messages: [],
 	},
 	{
@@ -652,6 +700,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-14T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -697,6 +747,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-14T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -742,6 +794,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-03-17T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -993,6 +1047,8 @@ export const chats = [
 				lastTimeActive: "20.02.2024 14:00",
 			},
 		],
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-03-08T16:34:09.000000Z",
 		messages: [
 			{
 				id: 33,
@@ -1051,6 +1107,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-14T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -1126,6 +1184,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-14T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -1171,6 +1231,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-14T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -1216,6 +1278,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-13T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-13T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -1261,6 +1325,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "",
+		dateRangeEnd: "",
 		messages: [],
 	},
 	{
@@ -1305,6 +1371,8 @@ export const chats = [
 				lastTimeActive: "20.02.2024 14:00",
 			},
 		],
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-14T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -1347,6 +1415,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "",
+		dateRangeEnd: "",
 		messages: [],
 	},
 	{
@@ -1371,6 +1441,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-14T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,
@@ -1416,6 +1488,8 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
+		dateRangeStart: "2024-02-14T16:34:09.000000Z",
+		dateRangeEnd: "2024-02-14T16:34:09.000000Z",
 		messages: [
 			{
 				id: 1,

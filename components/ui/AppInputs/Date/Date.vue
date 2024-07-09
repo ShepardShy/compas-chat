@@ -20,6 +20,7 @@
 			:isDay
 			:isMonth
 			:isYear
+			:isShowOnPropsChange
 			:item="props.item"
 			:disabled="props.disabled"
 			:is-multiple="props.isMultiple"
@@ -86,6 +87,10 @@
 		},
 		isYear: {
 			default: false,
+			type: Boolean,
+		},
+		isShowOnPropsChange: {
+			default: true,
 			type: Boolean,
 		},
 	});

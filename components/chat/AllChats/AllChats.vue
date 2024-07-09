@@ -42,7 +42,7 @@
 	);
 	/** После монтирования компонента */
 	onMounted(() => {
-		window.addEventListener("click", event => {
+		window.addEventListener("pointerdown", event => {
 			if (isCreateChatMenuOpen.value && !event.target.closest(".chats__menu") && !event.target.closest(".chats__add-chat")) {
 				isCreateChatMenuOpen.value = false;
 			}

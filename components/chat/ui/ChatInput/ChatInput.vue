@@ -83,7 +83,7 @@
 	 */
 	const placeholderValue = computed(() => {
 		if (isMakingAVoiceMessage.value) {
-			return "Для отмены кликните курсором вне поля";
+			return "Отменить";
 		} else {
 			return placeholder.value;
 		}
@@ -185,7 +185,7 @@
 		uploadedImages.value = loadedImages.value;
 		uploadedDocuments.value = loadedDocuments.value;
 
-		window.addEventListener("click", event => {
+		window.addEventListener("pointerdown", event => {
 			if (isFilesTypesMenuOpen.value && !(event.target as HTMLUnknownElement).closest(".doc__menu") && !(event.target as HTMLUnknownElement).closest(".input__add-doc-icon")) {
 				isFilesTypesMenuOpen.value = false;
 			}

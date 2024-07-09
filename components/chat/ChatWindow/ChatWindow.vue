@@ -57,7 +57,7 @@
 				isSearchInDialogOpen.value = false;
 			}
 		});
-		window.addEventListener("click", (event: any) => {
+		window.addEventListener("pointerdown", (event: any) => {
 			if (isMenuOpen.value && !event.target.closest(".window__menu") && !event.target.closest(".window__icon")) {
 				isMenuOpen.value = false;
 			}

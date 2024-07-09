@@ -3,14 +3,13 @@
 		v-bind="props.settings"
 		ref="datepicker"
 		v-model="localDate"
-		:class="props.isMultiple ? 'datepicker_multiple' : ''"
+		:class="{ datepicker_multiple: props.isMultiple, 'hide-selected-date': !isShowSelectedDate }"
 		auto-apply
 		:multi-calendars="props.isMultiple"
 		:range="props.isMultiple"
 		locale="ru"
-		:month-name-format="monthNames"
+		month-name-format="long"
 		position="left"
-		:open-date="openDate"
 		hide-offset-dates
 		:format-locale="ru"
 		:format="props.isMonth ? 'MMMM' : props.isYear ? 'yyyy' : 'dd.MM.yyyy'"
@@ -100,6 +99,7 @@
 	import VueDatePicker from "@vuepic/vue-datepicker";
 	import AppButton from "~/components/ui/AppButton/AppButton.vue";
 	import AppInput from "~/components/ui/AppInputs/Input/Input.vue";
+	import moment from "moment";
 
 	import "@vuepic/vue-datepicker/dist/main.css";
 
@@ -143,15 +143,24 @@
 			default: false,
 			type: Boolean,
 		},
+		isShowRightSidebar: {
+			default: true,
+			type: Boolean,
+		},
+		isShowOnPropsChange: {
+			default: false,
+			type: Boolean,
+		},
 	});
 
-	const emit = defineEmits(["changeValue"]);
+	const emit = defineEmits(["changeValue", "openDatepicker"]);
 
-	const { item } = toRefs(props);
+	const { item, settings } = toRefs(props);
+	const rangeStart = settings.value?.["min-date"];
+	const rangeEnd = settings.value?.["max-date"];
+	const isShowSelectedDate = ref(true);
 	const localDate = ref(null);
-	const openDate = ref(null);
-	const rangeStart = ref("");
-	const rangeEnd = ref("");
+	const selectedDate = JSON.parse(JSON.stringify(item.value));
 
 	const presetDates = {
 		plural: [
@@ -259,13 +268,17 @@
 
 		if (props.isMultiple) {
 			changeMultiple(value);
-		} else if (props.isMonth) {
-			changeMonth(value);
-		} else if (props.isYear) {
-			changeYear(value);
-		} else {
-			changeDefault(value);
+			return;
 		}
+		if (props.isMonth) {
+			changeMonth(value);
+			return;
+		}
+		if (props.isYear) {
+			changeYear(value);
+			return;
+		}
+		changeDefault(value);
 	};
 
 	// Установка значения по умолчанию
@@ -274,13 +287,12 @@
 			localDate.value = props.item.value;
 			return;
 		}
-
 		if (props.isMultiple) {
 			localDate.value = Array.isArray(props.item.value) ? JSON.parse(JSON.stringify(props.item.value)) : [];
-		} else {
-			localDate.value = typeof props.item.value != "string" || [null, undefined].includes(props.item.value) ? null : JSON.parse(JSON.stringify(new Date(props.item.value)));
-			localDate.value = typeof props.item.value == "object" ? props.item.value : null;
+			return;
 		}
+		localDate.value = typeof props.item.value != "string" || [null, undefined].includes(props.item.value) ? null : JSON.parse(JSON.stringify(new Date(props.item.value)));
+		localDate.value = typeof props.item.value == "object" ? props.item.value : null;
 	};
 
 	// Действия с инпутами в множественном календаре
@@ -321,20 +333,71 @@
 
 	onMounted(() => {
 		setValue();
-	});
 
-	watch(
-		() => item.value,
-		async () => {
-			// localDate.value = item.value.value;
-			datepicker.value.updateInternalModelValue(item.value.value);
-
-			datepicker.value.selectDate();
-			await nextTick();
-			datepicker.value.clearValue();
-			// openDate.value = item.value.value;
-			// console.log(openDate.value);
-			// setValue();
+		// Подписка на пропсы если календарь по месяцам
+		if (props.isMonth) {
+			watch(
+				() => item.value,
+				() => {
+					if (props.isMonth) {
+						if (moment(rangeEnd).set(item.value.value).isAfter(rangeEnd)) {
+							item.value.value.month = moment(rangeEnd).month();
+						}
+						if (moment(rangeStart).set(item.value.value).isBefore(rangeStart)) {
+							item.value.value.month = moment(rangeStart).month();
+						}
+						localDate.value = item.value.value;
+						return;
+					}
+				},
+				{ deep: true }
+			);
+			return;
 		}
-	);
+		// Подписка на пропсы если календарь который не выделяет дату
+		if (props.isShowOnPropsChange) {
+			watch(
+				() => item.value,
+				() => {
+					// Проверка выводит ли изменение пропса за границы диапазона дат
+					if (moment(item.value.value).isAfter(rangeEnd)) {
+						item.value.value = moment(item.value.value).set({ month: moment(rangeEnd).month() });
+					}
+					if (moment(item.value.value).isBefore(rangeStart)) {
+						item.value.value = moment(item.value.value).set({ month: moment(rangeStart).month() });
+					}
+					// Выделять дату только если месяц тот же что при инициализации, иначе скрыть выделение
+					const scrollDate = new Date(item.value.value);
+					const isScrollDateInRangeOfMonth = moment(scrollDate).isSame(new Date(selectedDate.value), "month");
+					if (isScrollDateInRangeOfMonth) {
+						datepicker.value.parseModel(selectedDate.value);
+						isShowSelectedDate.value = true;
+					} else {
+						datepicker.value.parseModel(item.value.value);
+						isShowSelectedDate.value = false;
+					}
+				}
+			);
+			return;
+		}
+		// Подписка на пропсы
+		watch(
+			() => item.value,
+			() => {
+				setValue();
+			}
+		);
+	});
 </script>
+<style lang="scss">
+	.hide-selected-date {
+		.dp__active_date {
+			border: 1px solid rgba(0, 0, 0, 0) !important;
+			background: none !important;
+			color: var(--dp-text-color) !important;
+			&.dp__cell_disabled {
+				color: var(--dp-secondary-color) !important;
+			}
+		}
+	}
+</style>

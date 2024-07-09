@@ -17,4 +17,12 @@
 	const modals = modalStore.modals;
 
 	provide("modals", modals);
+
+	// Скрытие клавиатуры Safari
+
+	onMounted(() => {
+		document.body.addEventListener("pointerdown", () => {
+			document.body.firstElementChild.tabIndex = 1;
+		});
+	});
 </script>

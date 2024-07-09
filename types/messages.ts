@@ -40,6 +40,8 @@ export interface MessageType {
 	voice?: Array<VoiceMessageType>;
 	comment?: string;
 	messages?: string;
+	dateRangeStart?: string;
+	dateRangeEnd?: string;
 }
 
 export interface MessageInfoType {
@@ -62,6 +64,8 @@ export interface UserChatType {
 	isMutedOff: boolean;
 	position: string;
 	messages: Array<MessageType | MessageInfoType>;
+	dateRangeStart?: string;
+	dateRangeEnd?: string;
 	totalTextMessages: number;
 	totalPhotoMessages: number;
 	totalVideoMessages: number;
@@ -115,6 +119,8 @@ export interface GroupChatType {
 	totalLinksMessages: number;
 	users: GroupChatUserType[];
 	messages: Array<GroupChatMessageType | MessageInfoType>;
+	dateRangeStart?: string;
+	dateRangeEnd?: string;
 	textMessageDraft?: string;
 	lastTimeActive?: string;
 }
