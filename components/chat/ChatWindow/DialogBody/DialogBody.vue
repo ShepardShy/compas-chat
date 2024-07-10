@@ -12,6 +12,8 @@
 	import type { GroupChatMessageType, MessageType } from "~/types/messages";
 	import { setMessageDay } from "~/composables/chats";
 	import type { string } from "yup";
+	import { useDatePickStore } from "~/store/datePick";
+	import moment from "moment";
 
 	defineEmits(["sendVoiceMessage"]);
 
@@ -234,7 +236,7 @@
 		}
 	}
 
-	//// stop mic
+	// stop mic
 	function stopAudioOnly(stream) {
 		stream?.getTracks()?.forEach(track => {
 			if (track.readyState == "live" && track.kind === "audio") {
@@ -382,6 +384,98 @@
 			return true;
 		}
 	};
+
+	// Клик по плавающей дате
+
+	const $dialogDate = ref(null);
+	const clickDateHandler = async () => {
+		const message = messagesWithIsoDates.value.find(p => p.date == preparedDay.value.split(".").reverse().join("-"));
+		const messageToScroll = $dialogBody.value?.[message.index] as HTMLDivElement;
+
+		// Рассчитываем позицию прокрутки для центровки элемента
+		const messageOffsetTop = messageToScroll.offsetTop;
+		const scrollPosition = messageOffsetTop - 0.4;
+		await nextTick();
+		// messageToScroll.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+		$dialogWrapper.value.scrollTo({ top: scrollPosition, behavior: "smooth" });
+	};
+	watch(
+		() => dialogWrapperScrollTop.value,
+		async () => {
+			if (dialogWrapperScrollTop.value == 0) {
+				console.log(0);
+				await nextTick();
+				shownDate.value = "";
+				setTimeout(() => {
+					console.log(shownDate.value);
+				}, 1000);
+			}
+		}
+	);
+
+	// Дата из модалки выбора даты
+
+	const datePickStore = useDatePickStore();
+	const { selectedDate } = storeToRefs(datePickStore);
+	const $dialogBody = ref(null);
+
+	// Ближайшая дата к массиву дат
+
+	const findClosest = (list, date = new Date().toLocaleDateString("en-GB")) => {
+		const parseDate = date => Date.parse(date);
+		const findDate = parseDate(date);
+
+		return list.reduce(
+			(acc, cur) => {
+				const delta = Math.abs(parseDate(cur.date) - (findDate + 1));
+				return delta >= 0 && delta < acc.delta ? { delta, el: cur } : acc;
+			},
+			{ delta: Number.MAX_SAFE_INTEGER, el: null }
+		).el;
+	};
+
+	// Сообщения с отформатированной датой
+
+	const messagesWithIsoDates = computed(() =>
+		openedChatData.value.messages.map((message, index) => {
+			return { ...message, date: message.date.split(".").reverse().join("-"), index };
+		})
+	);
+
+	// Скролл при выборе даты
+
+	watch(
+		() => selectedDate.value,
+		() => {
+			if (selectedDate.value) {
+				const closestMessageToDate = findClosest(messagesWithIsoDates.value, selectedDate.value);
+
+				const messageToScroll = $dialogBody.value?.[closestMessageToDate.index] as HTMLDivElement;
+
+				if (messageToScroll) {
+					const container = $dialogWrapper.value;
+
+					// Рассчитываем позицию прокрутки для центровки элемента
+					const messageOffsetTop = messageToScroll.offsetTop;
+					const containerHeight = container.clientHeight;
+					const scrollPosition = messageOffsetTop - containerHeight / 2 + messageToScroll.clientHeight / 2 - 100;
+
+					// Выполняем прокрутку
+					container.scrollTo({ top: scrollPosition, behavior: "smooth" });
+
+					// Добавляем класс активного сообщения
+					messageToScroll.classList.add("active-message");
+					setTimeout(() => {
+						messageToScroll.classList.remove("active-message");
+					}, 1000);
+
+					// Сброс значения даты после прокрутки
+					selectedDate.value = null;
+				}
+			}
+		},
+		{ deep: true }
+	);
 </script>
 
 <template>
@@ -393,19 +487,6 @@
 		}"
 	>
 		<div
-			class="dialog__date"
-			:class="{
-				dialog__date_today: preparedDay === 'Сегодня',
-				dialog__date_hide: !shownDate,
-			}"
-			:style="{
-        transform: isMobileSize ? `translateX(calc(-50%))` : `translateX(calc(-50% - 11px))`,
-        opacity: $dialogWrapper!?.offsetHeight  < ($dialogWrapperScroll!?.offsetHeight - 42) ? '1' : '0',
-      }"
-		>
-			{{ preparedDay }}
-		</div>
-		<div
 			ref="$dialogWrapper"
 			class="dialog__wrapper"
 			:class="{
@@ -414,6 +495,22 @@
 			}"
 		>
 			<div
+				v-if="dialogWrapperScrollTop > 0"
+				@click="clickDateHandler"
+				class="dialog__date"
+				ref="$dialogDate"
+				:class="{
+					dialog__date_today: preparedDay === 'Сегодня',
+					dialog__date_hide: !shownDate,
+				}"
+				:style="{
+        transform: isMobileSize ? `translateX(calc(-50%))` : `translateX(calc(-50% + 15px))`,
+        opacity: $dialogWrapper!?.offsetHeight < ($dialogWrapperScroll!?.offsetHeight - 42) ? '1' : '0',
+      }"
+			>
+				{{ preparedDay }}
+			</div>
+			<div
 				ref="$dialogWrapperScroll"
 				class="dialog__wrapper-scroll"
 			>
@@ -421,6 +518,8 @@
 					v-for="(messagesSortedByDay, index) in openedChatData?.messages"
 					:key="messagesSortedByDay.date"
 					class="dialog__body"
+					ref="$dialogBody"
+					:id="`$dialogBody`"
 				>
 					<MessageDay
 						v-model:shown-date="shownDate"
@@ -436,8 +535,9 @@
 						v-for="(message, idx) in messagesSortedByDay?.messages"
 						:key="message.id"
 						class="dialog__message"
+						:class="{ 'message-start': message.userId != userId, 'message-end': message.userId == userId }"
 						:style="{
-							alignSelf: message.type === 'message-info' ? 'center' : message.userId == userId ? 'flex-end' : 'flex-start',
+							justifyContent: message.type === 'message-info' ? 'center' : message.userId == userId ? 'flex-end' : 'flex-start',
 						}"
 					>
 						<MessageInfo

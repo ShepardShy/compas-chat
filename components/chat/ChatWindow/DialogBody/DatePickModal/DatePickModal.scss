@@ -121,11 +121,6 @@
 	& .dp__menu_inner {
 		padding: 10px 0;
 	}
-	& .dp__calendar_item {
-		&:nth-child(n + 6) {
-			color: #b9b9b9;
-		}
-	}
 }
 
 .date-pick__body {

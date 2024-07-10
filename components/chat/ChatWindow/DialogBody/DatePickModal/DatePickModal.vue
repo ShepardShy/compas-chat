@@ -19,7 +19,7 @@
 
 	const page = ref(1);
 	const datePickStore = useDatePickStore();
-	const { date } = storeToRefs(datePickStore);
+	const { date, selectedDate } = storeToRefs(datePickStore);
 
 	// Получение даты
 	date.value = new Date(date.value.split(".").reverse().join("-"));
@@ -35,8 +35,6 @@
 	const dateYear = computed(() => date.value.getFullYear());
 
 	const closeDatePickModal = () => {
-		// chatsStore.clearDataFromSelectedTypeOfChatMessage();
-		// chatsStore.closeMessageTypeModal();
 		chatsStore.closeDatePickModal();
 	};
 
@@ -91,7 +89,9 @@
 		title: "День",
 	});
 	const pickDayHandler = data => {
-		console.log(data);
+		console.log(data.value);
+
+		selectedDate.value = String(data.value);
 		closeDatePickModal();
 	};
 
@@ -117,10 +117,6 @@
 		"min-date": openedChatData.value.dateRangeStart,
 		"max-date": openedChatData.value.dateRangeEnd,
 	};
-
-	onMounted(() => {
-		// messageType.value = messagesTypesList.find(type => type.action === openMessageTypeModal.value)?.title;
-	});
 </script>
 
 <template>

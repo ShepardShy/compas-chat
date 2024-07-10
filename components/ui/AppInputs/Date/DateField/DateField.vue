@@ -249,7 +249,7 @@
 		const changeDefault = value => {
 			localDate.value = new Date(value);
 			const request = new Date(value).toLocaleDateString("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" });
-			emit("changeValue", { key: props.item.key, value: request });
+			emit("changeValue", { key: props.item.key, value: request }, true);
 		};
 		// Изменение в календаре по месяцам
 		const changeMonth = value => {
@@ -261,7 +261,6 @@
 		};
 		// Изменение в календаре по годам
 		const changeYear = value => {
-			console.log(value);
 			localDate.value = value;
 			emit("changeValue", { key: props.item.key, value });
 		};

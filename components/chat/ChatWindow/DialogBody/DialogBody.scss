@@ -15,8 +15,9 @@
 
 .dialog__date {
 	cursor: pointer;
-	position: absolute;
+	position: sticky;
 	user-select: none;
+	margin-bottom: -42px;
 	top: 10px;
 	left: 50%;
 	width: 110px;
@@ -55,6 +56,7 @@
 	user-select: none;
 	// flex: 1 1 auto;
 	// margin-bottom: 35px;
+	position: relative;
 	overflow-y: auto;
 	padding-right: 45px;
 
@@ -93,8 +95,13 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
-	overflow: hidden;
+	// overflow-x: hidden;
 	position: relative;
+	&.active-message .dialog__message:nth-child(3) {
+		&::before {
+			background-color: rgba(26, 55, 85, 0.4) !important;
+		}
+	}
 }
 
 .dialog__actions {
@@ -122,6 +129,35 @@
 .dialog__message {
 	position: relative;
 	z-index: 10;
+	width: 100%;
+	display: flex;
+	&::before {
+		content: "";
+		position: absolute;
+		width: calc(100% + 45px);
+		margin-top: -5px;
+		height: calc(100% + 5px);
+		transition: 2s;
+		z-index: -1;
+		@media (max-width: 950px) {
+			width: calc(100% + 5px);
+		}
+	}
+	&.message-start {
+		justify-content: start;
+		&::before {
+			left: 0;
+		}
+	}
+	&.message-end {
+		justify-content: end;
+		&::before {
+			right: -45px;
+			@media (max-width: 950px) {
+				right: -5px;
+			}
+		}
+	}
 }
 
 .dialog__input {

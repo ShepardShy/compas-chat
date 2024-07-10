@@ -21,7 +21,7 @@ export const chats = [
 		isDetailedInfoOpen: false,
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
-		dateRangeStart: "2020-05-03T16:34:09.000000Z",
+		dateRangeStart: "2020-03-05T16:34:09.000000Z",
 		dateRangeEnd: "2024-03-17T16:34:09.000000Z",
 		messages: [
 			{

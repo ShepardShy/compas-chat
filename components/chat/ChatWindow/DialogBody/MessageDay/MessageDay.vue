@@ -85,6 +85,7 @@
 	/**
 	 * Проверяет как далеко скролл сообщений и задает значение для div, который динамически отражает дату
 	 */
+
 	const setTopPosition = () => {
 		const nextDatePosition = dialogBody.value.nextElementSibling?.offsetTop;
 		const currentShownDatePosition = dialogBody.value.offsetTop;
@@ -95,6 +96,12 @@
 		} else if (dialogWrapperScrollTop.value > currentShownDatePosition && +lastDate.value - 41) {
 			emit("update:shownDate", date.value);
 		}
+
+		// console.log((dialogWrapperScrollTop.value = nextDatePosition));
+		// if (dialogWrapperScrollTop.value == nextDatePosition) {
+		// 	console.log(1234);
+		// 	emit("update:shownDate", "");
+		// }
 	};
 </script>
 
@@ -116,7 +123,7 @@
 		>
 			<div
 				v-if="!(shownDate == date)"
-				@click="openModalToDatePick"
+				@click.stop="openModalToDatePick"
 				class="message-block__date"
 				:class="{
 					'message-block__date_today': preparedDay === 'Сегодня',
