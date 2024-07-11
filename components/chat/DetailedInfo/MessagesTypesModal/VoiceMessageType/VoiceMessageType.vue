@@ -210,7 +210,7 @@
 		<div class="audio-msg__body">
 			<div
 				class="audio-msg__btn"
-				@click="onClickStartVoiceMessage"
+				@pointerup.left.stop="onClickStartVoiceMessage"
 			>
 				<div
 					v-if="!isVoiceMessageActive"
@@ -258,7 +258,7 @@
 		<div
 			v-if="!isInVoiceMessagesList"
 			class="audio-msg__delete"
-			@click="deleteMessage"
+			@pointerup.left.stop="deleteMessage"
 		>
 			<DeleteIcon class="audio-msg__delete-icon" />
 		</div>

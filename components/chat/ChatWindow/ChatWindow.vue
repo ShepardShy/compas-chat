@@ -92,6 +92,7 @@
 	 * Вернуться ко всем чатам (мобильная версия)
 	 */
 	const openAllChats = () => {
+		openedChatId.value = null;
 		settingsStore.$patch(state => (state.isChatsShown = true));
 		settingsStore.$patch(state => (state.chatIdForOpenModal = undefined));
 	};
@@ -112,7 +113,7 @@
 				:class="{
 					'window__back-icon_mobile': isMobileSize,
 				}"
-				@click="openAllChats"
+				@pointerup.left.stop="openAllChats"
 			/>
 
 			<div class="window__user-data">
@@ -133,7 +134,7 @@
 			>
 				<div
 					class="window__icon-wrapper"
-					@click.stop="toggleSearchInput"
+					@pointerup.left.stop="toggleSearchInput"
 				>
 					<SearchIcon
 						v-if="!isMobileSize"
@@ -149,11 +150,11 @@
 				<!--            color: isMakingACall ? '#1253a2' : '#8BABD8',-->
 				<!--          }"-->
 				<!--          class="window__icon"-->
-				<!--          @click="toggleIsCalling"-->
+				<!--          @pointerup.left.stop="toggleIsCalling"-->
 				<!--        />-->
 				<div
 					class="window__icon-wrapper"
-					@click.stop="toggleMenuOpen"
+					@pointerup.left.stop="toggleMenuOpen"
 				>
 					<MoreIcon
 						:style="{

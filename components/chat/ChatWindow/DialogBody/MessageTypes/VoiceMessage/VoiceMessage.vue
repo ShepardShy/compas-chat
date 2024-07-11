@@ -250,7 +250,7 @@
 		<div class="audio-msg__body">
 			<div
 				class="audio-msg__btn"
-				@click="onClickStartVoiceMessage"
+				@pointerup.left.stop="onClickStartVoiceMessage"
 			>
 				<div
 					v-if="!isVoiceMessageActive"

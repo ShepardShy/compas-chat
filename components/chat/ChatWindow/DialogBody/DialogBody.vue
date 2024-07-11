@@ -131,14 +131,22 @@
 		{ deep: true }
 	);
 
+	const dialogWidth = ref(`${0}px`);
+	const setDialogWidth = () => {
+		dialogWidth.value = $dialog.value.offsetWidth - 5 + "px";
+	};
 	/**
 	 * Монтирование компонента
 	 */
 	onMounted(async () => {
 		await checkIfDialogBodyHeightsLessThenVH();
+		// setTimeout(() => {
 		scrollToDialogWrapperBottom();
+		// }, 10);
+		setDialogWidth();
 
 		window.addEventListener("resize", scrollToDialogWrapperBottom);
+		window.addEventListener("resize", setDialogWidth);
 		$dialogWrapper.value.addEventListener("scroll", scrollInDialogWrapper);
 	});
 
@@ -385,30 +393,29 @@
 		}
 	};
 
+	// Скролл до элемента
+	const scrollToMessage = async message => {
+		const messageOffsetTop = message.offsetTop;
+		// const scrollPosition = messageOffsetTop - 0.5;
+		const scrollPosition = messageOffsetTop;
+		await nextTick();
+		$dialogWrapper.value.scrollTo({ top: scrollPosition, behavior: "smooth" });
+	};
+
 	// Клик по плавающей дате
 
 	const $dialogDate = ref(null);
 	const clickDateHandler = async () => {
 		const message = messagesWithIsoDates.value.find(p => p.date == preparedDay.value.split(".").reverse().join("-"));
 		const messageToScroll = $dialogBody.value?.[message.index] as HTMLDivElement;
-
-		// Рассчитываем позицию прокрутки для центровки элемента
-		const messageOffsetTop = messageToScroll.offsetTop;
-		const scrollPosition = messageOffsetTop - 0.4;
-		await nextTick();
-		// messageToScroll.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
-		$dialogWrapper.value.scrollTo({ top: scrollPosition, behavior: "smooth" });
+		scrollToMessage(messageToScroll);
 	};
 	watch(
 		() => dialogWrapperScrollTop.value,
 		async () => {
 			if (dialogWrapperScrollTop.value == 0) {
-				console.log(0);
 				await nextTick();
 				shownDate.value = "";
-				setTimeout(() => {
-					console.log(shownDate.value);
-				}, 1000);
 			}
 		}
 	);
@@ -455,13 +462,7 @@
 				if (messageToScroll) {
 					const container = $dialogWrapper.value;
 
-					// Рассчитываем позицию прокрутки для центровки элемента
-					const messageOffsetTop = messageToScroll.offsetTop;
-					const containerHeight = container.clientHeight;
-					const scrollPosition = messageOffsetTop - containerHeight / 2 + messageToScroll.clientHeight / 2 - 100;
-
-					// Выполняем прокрутку
-					container.scrollTo({ top: scrollPosition, behavior: "smooth" });
+					scrollToMessage(messageToScroll);
 
 					// Добавляем класс активного сообщения
 					messageToScroll.classList.add("active-message");
@@ -482,6 +483,7 @@
 	<div
 		class="dialog"
 		ref="$dialog"
+		:style="`--dialogWidth: ${dialogWidth}`"
 		:class="{
 			dialog_mobile: isMobileSize,
 		}"
@@ -489,6 +491,7 @@
 		<div
 			ref="$dialogWrapper"
 			class="dialog__wrapper"
+			@scroll.passive
 			:class="{
 				dialog__wrapper_flex: isDialogBodyHeightsLessThenVH,
 				dialog__wrapper_mobile: isMobileSize,
@@ -496,7 +499,7 @@
 		>
 			<div
 				v-if="dialogWrapperScrollTop > 0"
-				@click="clickDateHandler"
+				@pointerup.left.stop="clickDateHandler"
 				class="dialog__date"
 				ref="$dialogDate"
 				:class="{
@@ -526,6 +529,7 @@
 						:is-first-date="index === 0"
 						:date="messagesSortedByDay.date"
 						:dialog-wrapper-scroll-top="dialogWrapperScrollTop"
+						:dialogWidth="dialogWidth"
 						:last-date="index === openedChatData?.messages.length - 1"
 					/>
 
@@ -596,7 +600,7 @@
 				:class="{
 					'dialog__send-msg_active': isMakingAVoiceMessage,
 				}"
-				@click="handleMessage"
+				@pointerup.left.stop="handleMessage"
 			>
 				<MicrophoneIcon v-if="!isMakingAVoiceMessage && noMessageToSend" />
 
@@ -607,7 +611,7 @@
 		<div
 			v-if="isMakingAVoiceMessage"
 			class="dialog__voice-bg"
-			@click="setVoiceMessage(false, true)"
+			@pointerup.left.stop="setVoiceMessage(false, true)"
 			@keydown.enter.prevent.exact="$emit('sendVoiceMessage')"
 		/>
 

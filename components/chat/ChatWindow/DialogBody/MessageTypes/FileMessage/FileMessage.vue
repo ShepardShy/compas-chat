@@ -118,7 +118,7 @@
 					</div>
 					<div
 						class="file-message__open"
-						@click="downloadFile(file)"
+						@pointerup.left.stop="downloadFile(file)"
 					>
 						Скачать
 					</div>

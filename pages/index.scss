@@ -1,0 +1,51 @@
+.chat {
+	display: flex;
+	overflow: hidden;
+}
+
+.chat__empty {
+	flex-grow: 1;
+	height: 100dvh;
+}
+
+.chat__users {
+	flex: 0 0 419px;
+}
+
+.chat__users_mobile {
+	flex: 0 0 100%;
+}
+
+.chat__window {
+	flex: 1 1 auto;
+}
+
+.chat__window_mobile {
+	flex: 1 1 100%;
+}
+
+.modal__bg {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.8);
+	z-index: 1000;
+}
+
+.modal__bg-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(10, 13, 18, 0.2);
+	z-index: 1001;
+	overflow-y: auto;
+}
+
+.modal__bg-padding {
+	height: 10vh;
+	background-color: transparent;
+}

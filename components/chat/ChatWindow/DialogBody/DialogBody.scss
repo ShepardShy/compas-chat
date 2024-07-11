@@ -59,6 +59,8 @@
 	position: relative;
 	overflow-y: auto;
 	padding-right: 45px;
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior-block: none;
 
 	&::-webkit-scrollbar {
 		width: 3px;
@@ -97,7 +99,7 @@
 	justify-content: flex-end;
 	// overflow-x: hidden;
 	position: relative;
-	&.active-message .dialog__message:nth-child(3) {
+	&.active-message .message-block:nth-child(1) {
 		&::before {
 			background-color: rgba(26, 55, 85, 0.4) !important;
 		}
@@ -131,33 +133,21 @@
 	z-index: 10;
 	width: 100%;
 	display: flex;
-	&::before {
-		content: "";
-		position: absolute;
-		width: calc(100% + 45px);
-		margin-top: -5px;
-		height: calc(100% + 5px);
-		transition: 2s;
-		z-index: -1;
-		@media (max-width: 950px) {
-			width: calc(100% + 5px);
-		}
-	}
-	&.message-start {
-		justify-content: start;
-		&::before {
-			left: 0;
-		}
-	}
-	&.message-end {
-		justify-content: end;
-		&::before {
-			right: -45px;
-			@media (max-width: 950px) {
-				right: -5px;
-			}
-		}
-	}
+	// &.message-start {
+	// 	justify-content: start;
+	// 	&::before {
+	// 		left: 0;
+	// 	}
+	// }
+	// &.message-end {
+	// 	justify-content: end;
+	// 	&::before {
+	// 		right: -45px;
+	// 		@media (max-width: 950px) {
+	// 			right: -5px;
+	// 		}
+	// 	}
+	// }
 }
 
 .dialog__input {

@@ -204,18 +204,18 @@
 			:class="{
 				'add-info__modal_mobile': isMobileSize,
 			}"
-			@click.stop
+			@pointerup.left.stop
 		>
 			<BackIcon
 				v-if="isMobileSize"
 				class="add-info__back-icon"
-				@click="closeModal"
+				@pointerup.left.stop="closeModal"
 			/>
 
 			<CloseIcon
 				v-if="!isMobileSize"
 				class="add-info__close-icon"
-				@click="closeModal"
+				@pointerup.left.stop="closeModal"
 			/>
 
 			<AppH3
@@ -248,7 +248,7 @@
 			<div
 				v-if="!isGroupChat"
 				class="menu__name"
-				@click="() => modalStore.showModal()"
+				@pointerup.left.stop="() => modalStore.showModal()"
 			>
 				{{ chatFullName }}
 			</div>
@@ -281,7 +281,7 @@
 				:class="{
 					menu__item_last: idx === chatMenuValues.length - 1,
 				}"
-				@click="onClickDoAction(item)"
+				@pointerup.left.stop="onClickDoAction(item)"
 			>
 				<div
 					v-if="item.icon"
@@ -319,7 +319,7 @@
 					'details-menu__item_pre-last': !isGroupChat && idx === detailedInfoMenuItems.length - 2,
 					'details-menu__item_last': !isGroupChat && idx === detailedInfoMenuItems.length - 1,
 				}"
-				@click="onClickDetailedInfoMenuItem(item)"
+				@pointerup.left.stop="onClickDetailedInfoMenuItem(item)"
 			>
 				<component
 					:is="getIconComponent(item.icon)"
@@ -352,7 +352,7 @@
 					</div>
 					<AddUserIcon
 						class="details-menu__add-user"
-						@click="openAddUserModal"
+						@pointerup.left.stop="openAddUserModal"
 					/>
 				</div>
 				<div class="details-menu__group-users">
@@ -367,7 +367,7 @@
 			<div
 				v-if="isGroupChat"
 				class="details-menu__item details-menu__item_last"
-				@click="onClickDetailedInfoMenuItem(lastDetailedInfoMenuItem)"
+				@pointerup.left.stop="onClickDetailedInfoMenuItem(lastDetailedInfoMenuItem)"
 			>
 				<DeleteIcon />
 

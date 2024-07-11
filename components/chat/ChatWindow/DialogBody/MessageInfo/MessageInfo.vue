@@ -90,7 +90,7 @@
 				<span
 					v-if="!Array.isArray(messageNames)"
 					class="message-info__user"
-					@click="modalStore.showModal"
+					@pointerup.left.stop="modalStore.showModal"
 				>
 					{{ messageNames }}
 				</span>
@@ -99,7 +99,7 @@
 						v-for="(user, idx) in messageNames"
 						:key="user.userId"
 						class="message-info__user"
-						@click="modalStore.showModal"
+						@pointerup.left.stop="modalStore.showModal"
 					>
 						{{ idx !== messageNames.length - 1 ? user + ", " : user }}
 					</span>

@@ -52,19 +52,19 @@
 			:class="{
 				'message-type__modal_mobile': isMobileSize,
 			}"
-			@click.stop
+			@pointerup.left.stop
 		>
 			<div class="message-type__top">
 				<BackIcon
 					class="message-type__back-icon"
-					@click="backToDetailedInfo"
+					@pointerup.left.stop="backToDetailedInfo"
 				/>
 				<AppH3 class="message-type__title">
 					{{ messageType }}
 				</AppH3>
 				<CloseIcon
 					class="message-type__close-icon"
-					@click="closeDetailsInfoModal"
+					@pointerup.left.stop="closeDetailsInfoModal"
 				/>
 			</div>
 			<ChatInput

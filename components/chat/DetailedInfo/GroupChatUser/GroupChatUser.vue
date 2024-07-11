@@ -111,7 +111,7 @@
 			/>
 			<div class="group-chat-user__info">
 				<div
-					@click="modalStore.showModal"
+					@pointerup.left.stop="modalStore.showModal"
 					class="group-chat-user__name"
 				>
 					{{ userFullName }}
@@ -128,14 +128,14 @@
 				:class="{
 					'action__add-user_active': isInOpenGroup,
 				}"
-				@click="toggleInGroup"
+				@pointerup.left.stop="toggleInGroup"
 			>
 				<CheckIcon class="action__add-user-icon" />
 			</div>
 			<DeleteIcon
 				v-if="isDeleteIcon"
 				class="group-chat-user__delete"
-				@click="deleteUserFromGroupBeforeSave"
+				@pointerup.left.stop="deleteUserFromGroupBeforeSave"
 			/>
 		</div>
 	</div>

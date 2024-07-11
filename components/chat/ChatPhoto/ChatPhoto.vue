@@ -18,10 +18,11 @@
 		isDetailedMenu?: boolean;
 		isOpenDialogImage?: boolean;
 		isPhotoCanBaChanged?: boolean;
+		isShowWhite?: boolean;
 		groupPhoto?: unknown;
 	}
 	const props = defineProps<PropsType>();
-	const { chatId, isPinned, isActive, photo, chatName, isGroupChat, isDetailedMenu, isOpenDialogImage, isPhotoCanBaChanged, groupPhoto } = toRefs(props);
+	const { chatId, isPinned, isActive, photo, chatName, isGroupChat, isDetailedMenu, isOpenDialogImage, isPhotoCanBaChanged, groupPhoto, isShowWhite } = toRefs(props);
 
 	/**
 	 * Событие компонента
@@ -60,11 +61,14 @@
 		if (isDetailedMenu.value) {
 			return "#fff";
 		}
+		if (isShowWhite.value) {
+			return "#fff";
+		}
 
 		if (chatId.value === openedChatId.value) {
 			return "#eef3f9";
 		} else if (isPinned.value) {
-			return "#eeeff1";
+			return "#f7f8fa";
 		} else {
 			return "#fff";
 		}
@@ -140,7 +144,7 @@
 		:style="{
 			backgroundImage: chatPhoto,
 		}"
-		@click="loadPhoto"
+		@pointerup.left.stop="loadPhoto"
 	>
 		<div
 			v-if="!photo && !isPhotoCanBaChanged"

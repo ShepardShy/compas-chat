@@ -142,9 +142,6 @@
 				return;
 			}
 
-			console.log(uploadedImages.value, "uploadedImages");
-			console.log(uploadedDocuments.value, "uploadedDocuments");
-
 			uploadedImages.value?.length && emit("update:loadedImages", uploadedImages.value);
 			uploadedDocuments.value?.length && emit("update:loadedDocuments", uploadedDocuments.value);
 
@@ -472,6 +469,7 @@
 				ref="$inputBody"
 				:value="inputValue"
 				class="input__body"
+				@pointerup.left.self="e => (e.target as HTMLInputElement).focus()"
 				:class="{
 					input__body_document: addDocuments && !isMakingAVoiceMessage,
 					input__body_voice: isMakingAVoiceMessage,
@@ -495,6 +493,7 @@
 				ref="$inputBody"
 				:value="inputValue"
 				class="input__body"
+				@pointerup.left.self="e => (e.target as HTMLInputElement).focus()"
 				:class="{
 					input__body_document: addDocuments && !isMakingAVoiceMessage,
 					input__body_voice: isMakingAVoiceMessage,
@@ -524,7 +523,7 @@
 				:class="{
 					'input__add-doc-icon_active': isFilesTypesMenuOpen || filesData,
 				}"
-				@click="toggleFilesMenuType"
+				@pointerup.left.stop="toggleFilesMenuType"
 			/>
 
 			<div
@@ -558,7 +557,7 @@
 					:style="{
 						borderRadius: setBorderRadiusForFirstAndLastItem(idx),
 					}"
-					@click="setActiveFileType(fileType)"
+					@pointerup.left.stop="setActiveFileType(fileType)"
 				>
 					{{ fileType }}
 				</div>

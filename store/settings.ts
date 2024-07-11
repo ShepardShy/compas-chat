@@ -4,7 +4,7 @@ export const useSettingsStore = defineStore("settings", {
 	state: () => {
 		return {
 			isMobileSize: undefined as undefined | boolean,
-			isChatsShown: false,
+			isChatsShown: true,
 			isLoading: true,
 			chatIdForOpenModal: 0 as undefined | number,
 		};

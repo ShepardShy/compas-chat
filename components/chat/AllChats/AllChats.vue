@@ -14,7 +14,7 @@
 	 * Подключение стора с сообщениями
 	 */
 	const chatsStore = useChatsStore();
-	const { chatsWithPinnedUsers, chatsWithoutPinned, chats, userId } = storeToRefs(chatsStore);
+	const { chatsWithPinnedUsers, chatsWithoutPinned, chats, userId, chatSearch } = storeToRefs(chatsStore);
 
 	/**
 	 * Подключение стора с настройками
@@ -25,7 +25,7 @@
 	/**
 	 * Значение инпута для поиска чата
 	 */
-	const searchChatValue = ref<string | undefined>();
+	// const searchChatValue = ref<string | undefined>();
 	/**
 	 * Открыто ли меню создания группового чата
 	 */
@@ -34,12 +34,12 @@
 	/**
 	 * Подписка на поиск чата
 	 */
-	watch(
-		() => searchChatValue.value,
-		async () => {
-			await chatsStore.filterChats(searchChatValue.value);
-		}
-	);
+	// watch(
+	// 	() => searchChatValue.value,
+	// 	async () => {
+	// 		await chatsStore.filterChats(searchChatValue.value);
+	// 	}
+	// );
 	/** После монтирования компонента */
 	onMounted(() => {
 		window.addEventListener("pointerdown", event => {
@@ -103,7 +103,7 @@
 				:style="{
 					color: isCreateChatMenuOpen ? '#1253a2' : '#8BABD8',
 				}"
-				@click.prevent="toggleAllChatsMenu"
+				@pointerup.left.stop.prevent="toggleAllChatsMenu"
 			/>
 
 			<div
@@ -116,14 +116,14 @@
 				<div
 					v-for="item in createChatMenu"
 					class="chats__menu-item"
-					@click="openModalToCreateChat"
+					@pointerup.left.stop="openModalToCreateChat"
 				>
 					{{ item }}
 				</div>
 			</div>
 		</div>
 		<ChatInput
-			v-model:inputValue="searchChatValue"
+			v-model:inputValue="chatSearch"
 			class="chats__input"
 			:class="{
 				chats__input_mobile: isMobileSize,
@@ -133,6 +133,7 @@
 
 		<div
 			class="chats__wrapper"
+			@scroll.passive
 			:style="{
 				height: 'calc(100dvh - 155px)',
 			}"

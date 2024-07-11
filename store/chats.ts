@@ -10,8 +10,9 @@ export const useChatsStore = defineStore("chats", {
 		return {
 			userId: 1,
 			chats: chats as Array<UserChatType | GroupChatType>,
-			filteredChats: [] as Array<UserChatType | GroupChatType> | [],
+			// filteredChats: [] as Array<UserChatType | GroupChatType> | [],
 			openedChatId: undefined as undefined | number,
+			chatSearch: "" as string,
 
 			chatIdForOpenModal: undefined as undefined | number,
 			isDetailedInfoModalOpen: false,
@@ -69,8 +70,35 @@ export const useChatsStore = defineStore("chats", {
 				messages: preparedMessages,
 			};
 		},
-		openModalChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find(chat => chat.id === state.chatIdForOpenModal),
+		openModalChatData: (state): UserChatType | GroupChatType | undefined => state.filteredChats.find(chat => chat.id === state.chatIdForOpenModal),
 		allChatUsers: state => state.chats.filter(chat => !chat.isGroupChat),
+		filteredChats: state => {
+			try {
+				if (!state.chatSearch) {
+					return [...state.chats];
+				}
+				// this.filteredChats = [];
+				const l = (string: string) => string?.toLowerCase();
+
+				// Поиск по имени и фамилии
+				const chatsWithNames = [
+					...state.chats.filter(chatData => {
+						const isChatNameIncludes = l(chatData?.firstName)?.includes(l(state.chatSearch)) || l(chatData?.secondName)?.includes(l(state.chatSearch)) || l(chatData?.title)?.includes(l(state.chatSearch));
+						if (isChatNameIncludes) {
+							return true;
+						}
+					}),
+				];
+
+				// Поиск по сообщениям
+				const chatsWithMessages = [];
+
+				return [...chatsWithNames, ...chatsWithMessages];
+			} catch (e) {
+				console.log(e);
+				return [];
+			}
+		},
 	},
 
 	actions: {
@@ -108,33 +136,7 @@ export const useChatsStore = defineStore("chats", {
 			}
 		},
 
-		async filterChats(chatSearch: string) {
-			try {
-				if (!chatSearch) {
-					this.filteredChats = [...this.chats];
-					return;
-				}
-				this.filteredChats = [];
-				const l = (string: string) => string?.toLowerCase();
-
-				// Поиск по имени и фамилии
-				const chatsWithNames = [
-					...this.chats.filter(chatData => {
-						const isChatNameIncludes = l(chatData?.firstName)?.includes(l(chatSearch)) || l(chatData?.secondName)?.includes(l(chatSearch)) || l(chatData?.title)?.includes(l(chatSearch));
-						if (isChatNameIncludes) {
-							return true;
-						}
-					}),
-				];
-
-				// Поиск по сообщениям
-				const chatsWithMessages = [];
-
-				this.filteredChats = [...chatsWithNames, ...chatsWithMessages];
-			} catch (e) {
-				console.log(e);
-			}
-		},
+		async filterChats(chatSearch: string) {},
 
 		async deleteChat(chatId: string | number) {
 			try {

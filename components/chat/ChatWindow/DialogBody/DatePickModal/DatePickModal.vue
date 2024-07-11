@@ -131,13 +131,13 @@
 			:class="{
 				'date-pick__modal_mobile': isMobileSize,
 			}"
-			@click.stop
+			@pointerup.left.stop
 		>
 			<div class="date-pick__top">
 				<AppH3 class="date-pick__title">Дата</AppH3>
 				<CloseIcon
 					class="date-pick__close-icon"
-					@click="closeDatePickModal"
+					@pointerup.left.stop="closeDatePickModal"
 				/>
 			</div>
 			<UiAppInputsDate

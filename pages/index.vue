@@ -8,6 +8,7 @@
 
 	import { useChatsStore } from "~/store/chats";
 	import { useSettingsStore } from "~/store/settings";
+	import Empty from "~/components/chat/ui/Empty/Empty.vue";
 
 	definePageMeta({
 		name: ERouteName.PAGE_HOME,
@@ -41,6 +42,7 @@
 	 * Подюклчение стора с сообщениями
 	 */
 	const chatsStore = useChatsStore();
+	const { openedChatData } = storeToRefs(chatsStore);
 	const { isAddUserModalOpen, isDetailedInfoModalOpen, isGroupChatEditModalOpen, isGroupChatCreateModalOpen, isOpenMessageTypeModal, isDatePickModalOpen, chats, openedChatId } = storeToRefs(chatsStore);
 	/**
 	 * Подюклчение стора с настройками
@@ -77,6 +79,10 @@
 	watch(
 		() => openedChatId.value,
 		async () => {
+			if (!openedChatId.value) {
+				await router.replace({ path: "/" });
+				return;
+			}
 			if (openedChatId.value !== route.query?.chatId) {
 				await router.replace({ path: "/", query: { chatId: openedChatId.value } });
 			}
@@ -97,11 +103,15 @@
 		settingsStore.$patch(state => (state.isLoading = false));
 
 		if (route.query?.chatId) {
+			isChatsShown.value = false;
 			await chatsStore.$patch(state => (state.openedChatId = +route.query.chatId));
 		} else {
-			await router.replace({ path: "/", query: { chatId: chats.value[0].id } });
-			chatsStore.$patch(state => (state.openedChatId = chats.value[0].id));
+			isChatsShown.value = true;
 		}
+		// else {
+		// 	await router.replace({ path: "/", query: { chatId: chats.value[0].id } });
+		// 	chatsStore.$patch(state => (state.openedChatId = chats.value[0].id));
+		// }
 	});
 
 	/**
@@ -150,7 +160,7 @@
 				}"
 			/>
 			<ChatWindow
-				v-if="(isMobileSize && !isChatsShown) || !isMobileSize"
+				v-if="openedChatId && ((isMobileSize && !isChatsShown) || !isMobileSize)"
 				class="chat__window"
 				:class="{
 					chat__window_mobile: isMobileSize,
@@ -159,6 +169,11 @@
 					height: windowHeight,
 				}"
 			/>
+			<Empty
+				class="chat__empty"
+				v-else
+				>Выберите сообщение</Empty
+			>
 
 			<div
 				v-if="isAnyModalOpen"
@@ -187,51 +202,6 @@
 	</div>
 </template>
 
-<style>
-	.chat {
-		display: flex;
-		overflow: hidden;
-	}
-
-	.chat__users {
-		flex: 0 0 419px;
-	}
-
-	.chat__users_mobile {
-		flex: 0 0 100%;
-	}
-
-	.chat__window {
-		flex: 1 1 auto;
-	}
-
-	.chat__window_mobile {
-		flex: 1 1 100%;
-	}
-
-	.modal__bg {
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		right: 0;
-		left: 0;
-		background-color: rgba(0, 0, 0, 0.8);
-		z-index: 1000;
-	}
-
-	.modal__bg-overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(10, 13, 18, 0.2);
-		z-index: 1001;
-		overflow-y: auto;
-	}
-
-	.modal__bg-padding {
-		height: 10vh;
-		background-color: transparent;
-	}
+<style lang="scss" scoped>
+	@import "index.scss";
 </style>

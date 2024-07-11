@@ -49,11 +49,45 @@
 	});
 
 	const modalStore = useModalStore();
+
+	// Просмотр сообщения
+
+	// Выбираем элемент, за которым будем наблюдать
+	const $otherMsg = ref(null);
+
+	// Создаем callback-функцию, которая будет вызываться при пересечении
+	const callback = (entries, observer) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				message.value.isUnread = false;
+				$otherMsg.value.classList.add("other-msg_unread");
+				setTimeout(() => {
+					$otherMsg.value.classList.remove("other-msg_unread");
+				}, 2000);
+				observer.unobserve(entry.target);
+			}
+		});
+	};
+
+	// Создаем экземпляр IntersectionObserver с указанным callback
+	const observer = new IntersectionObserver(callback, {
+		root: null, // null означает, что будем использовать viewport как область видимости
+		rootMargin: "0px",
+		threshold: 0.1, // Процент видимости элемента, при котором будет вызван callback (0.1 = 10%)
+	});
+
+	// Начинаем наблюдение за элементом
+	onMounted(() => {
+		if (message.value.isUnread) {
+			observer.observe($otherMsg.value);
+		}
+	});
 </script>
 
 <template>
 	<div
 		class="other-msg"
+		ref="$otherMsg"
 		:class="{
 			'other-msg_mobile': isMobileSize,
 		}"
@@ -86,7 +120,7 @@
 			}"
 		>
 			<p
-				@click="() => modalStore.showModal()"
+				@pointerup.left.stop="() => modalStore.showModal()"
 				v-if="firstOfSeveralMsgs && isShowName"
 				class="other-msg__name"
 			>

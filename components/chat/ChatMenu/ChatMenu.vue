@@ -114,7 +114,7 @@
 			v-for="item in chatItems"
 			:key="item.title"
 			class="menu__item"
-			@click="onClickDoMenuAction(item)"
+			@pointerup.left.stop="onClickDoMenuAction(item)"
 		>
 			<div
 				v-if="item.icon"

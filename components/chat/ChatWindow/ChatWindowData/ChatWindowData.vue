@@ -55,6 +55,7 @@
 			:is-active="openedChatData.isActive"
 			:chat-name="userFullName"
 			:chat-id="openedChatData.id"
+			:is-show-white="true"
 			:is-group-chat="openedChatData.isGroupChat"
 			:is-open-dialog-image="true"
 		/>
@@ -73,7 +74,7 @@
 
 				<div
 					class="user__name"
-					@click="!openedChatData.isGroupChat && modalStore.showModal()"
+					@pointerup.left.stop="!openedChatData.isGroupChat && modalStore.showModal()"
 					:class="{
 						'user__name_is-group': openedChatData.isGroupChat,
 					}"
