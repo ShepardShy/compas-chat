@@ -44,6 +44,12 @@ export const useChatsStore = defineStore("chats", {
 	getters: {
 		chatsWithPinnedUsers: state => state.filteredChats.filter(chat => chat.isPinned),
 		chatsWithoutPinned: state => state.filteredChats.filter(chat => !chat.isPinned),
+		chatsNotMyMessagesCount: state => {
+			return state.chats.reduce((acc, chat) => {
+				acc += chat.messages.filter(message => message.userId != state.userId)?.length;
+				return acc;
+			}, 0);
+		},
 		openedChatData: (state): UserChatType | GroupChatType | undefined => {
 			const chatData = state.chats.find(chat => chat.id === state.openedChatId);
 			const messages = chatData?.messages;

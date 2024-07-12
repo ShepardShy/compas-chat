@@ -62,14 +62,20 @@
 			<!--        width="64px"-->
 			<!--        height="64px"-->
 			<!--      />-->
+			<div
+				v-if="document.isImage"
+				class="images__delete-and-icon"
+				:style="{ backgroundImage: `url(${document.url})` }"
+				:alt="document.name"
+			></div>
 
 			<WordDocIcon
-				v-if="document.name.includes('.doc')"
+				v-else-if="document.name.includes('.doc')"
 				class="document__icon"
 			/>
 
 			<AnyDocIcon
-				v-if="document.name.includes('.pdf')"
+				v-else-if="document.name.includes('.pdf')"
 				class="document__icon"
 			/>
 

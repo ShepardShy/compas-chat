@@ -60,9 +60,9 @@
 		entries.forEach(entry => {
 			if (entry.isIntersecting) {
 				message.value.isUnread = false;
-				$otherMsg.value.classList.add("other-msg_unread");
+				$otherMsg.value.classList?.add("other-msg_unread");
 				setTimeout(() => {
-					$otherMsg.value.classList.remove("other-msg_unread");
+					$otherMsg.value?.classList?.remove("other-msg_unread");
 				}, 2000);
 				observer.unobserve(entry.target);
 			}
@@ -79,7 +79,9 @@
 	// Начинаем наблюдение за элементом
 	onMounted(() => {
 		if (message.value.isUnread) {
-			observer.observe($otherMsg.value);
+			setTimeout(() => {
+				observer.observe($otherMsg.value);
+			}, 10);
 		}
 	});
 </script>

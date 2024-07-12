@@ -202,8 +202,6 @@
 
 	// Задать активнй тип файла и открыть меню для выбора файлов
 	const setActiveFileType = async (fileType: typeof inputFilesTypes) => {
-		console.log(fileType);
-
 		activeFileType.value = fileType;
 		toggleFilesMenuType();
 		await nextTick();
@@ -220,7 +218,7 @@
 			const _fileName = _files[i].name;
 			const _fileSizeKB = `${(_files[i].size / 1024).toFixed(2)}KB`;
 
-			if (_file.type.includes("image")) {
+			if (_file.type.includes("image") && activeFileType.value == "Фото") {
 				uploadedImages.value = [
 					...uploadedImages.value,
 					{
@@ -238,6 +236,7 @@
 						url: _imageUrl,
 						name: _fileName,
 						size: _fileSizeKB,
+						isImage: _file.type.includes("image"),
 					},
 				];
 			}

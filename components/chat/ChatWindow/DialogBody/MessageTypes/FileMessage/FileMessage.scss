@@ -21,6 +21,8 @@
 	flex: 0 0 64px;
 	height: 64px;
 	user-select: none;
+	object-fit: cover;
+	max-width: 64px;
 }
 
 .file-message__info {
@@ -32,6 +34,8 @@
 	font-weight: 600;
 	color: variables.$color-black;
 	margin-bottom: 5px;
+	max-width: 300px;
+	word-break: break-word;
 }
 
 .file-message__time-size {

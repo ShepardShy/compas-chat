@@ -115,7 +115,9 @@
 		font-weight: 400;
 	}
 	& .dp__menu {
+		border-radius: 5px;
 		border: solid 1px #eeeff1;
+		overflow: hidden;
 		top: 0 !important;
 	}
 	& .dp__menu_inner {

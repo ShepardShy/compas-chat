@@ -9,6 +9,7 @@
 	import { useChatsStore } from "~/store/chats";
 	import { useSettingsStore } from "~/store/settings";
 	import Empty from "~/components/chat/ui/Empty/Empty.vue";
+	import moment from "moment";
 
 	definePageMeta({
 		name: ERouteName.PAGE_HOME,
@@ -42,8 +43,7 @@
 	 * Подюклчение стора с сообщениями
 	 */
 	const chatsStore = useChatsStore();
-	const { openedChatData } = storeToRefs(chatsStore);
-	const { isAddUserModalOpen, isDetailedInfoModalOpen, isGroupChatEditModalOpen, isGroupChatCreateModalOpen, isOpenMessageTypeModal, isDatePickModalOpen, chats, openedChatId } = storeToRefs(chatsStore);
+	const { isAddUserModalOpen, isDetailedInfoModalOpen, isGroupChatEditModalOpen, isGroupChatCreateModalOpen, isOpenMessageTypeModal, isDatePickModalOpen, chats, openedChatId, openedChatData, chatsNotMyMessagesCount, filteredChats } = storeToRefs(chatsStore);
 	/**
 	 * Подюклчение стора с настройками
 	 */
@@ -89,11 +89,48 @@
 		}
 	);
 
+	// Вызов аудо прихода сообщения
+	const playReceiveMessage = () => {
+		const audio = new Audio();
+		audio.volume = 0.2;
+		audio.src = "/audio/receive-msg.wav";
+		audio.play();
+	};
+
+	// Подписка на приход сообщений;
+	let currentCountNotMyMessages = chatsNotMyMessagesCount.value;
+	watch(
+		() => chats.value,
+		() => {
+			if (chatsNotMyMessagesCount.value > currentCountNotMyMessages) {
+				playReceiveMessage();
+			}
+			currentCountNotMyMessages = chatsNotMyMessagesCount.value;
+		},
+		{ deep: true }
+	);
+
+	// Тестовое новое сообщение
+	onMounted(() => {
+		setInterval(() => {
+			chats.value[0].messages.push({
+				id: 2,
+				type: "text",
+				message: "Принимаете заказ?",
+				userId: 2,
+				isReceived: false,
+				isViewed: false,
+				isUnread: true,
+				date: moment().format("DD.MM.YYYY H:mm"),
+			});
+		}, 7000);
+	});
+
 	/**
 	 * После монтирования компоненты
 	 */
 	onMounted(async () => {
-		chatsStore.$patch(state => (state.filteredChats = state.chats));
+		// chatsStore.$patch(state => (state.filteredChats = state.chats));
 
 		windowHeight.value = `${window.visualViewport.height - 15}px`;
 

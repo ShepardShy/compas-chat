@@ -44,6 +44,19 @@
 
 		const fileName = fileData.fileName;
 
+		const conditions = ["jpeg", "png", "jpg", "webp", "bmp", "gif", "svg"];
+
+		// run the tests against every element in the array
+		const isImg = conditions.some(el => fileName?.slice(-4).includes(el));
+
+		if (isImg) {
+			return fileData.url;
+		}
+
+		if (fileName?.slice(-3) === "pdf") {
+			return "/pdf-doc-icon.svg";
+		}
+
 		if (fileName?.slice(-3) === "xls" || fileName?.slice(-4) === "xlsx") {
 			return "/xls-doc-icon.svg";
 		}
@@ -58,14 +71,14 @@
 	 * Заголовок файла
 	 */
 	const fileTitle = (fileData: FileMessageType) => {
-		return fileData.fileName;
-		// const maxLength = isMobileSize.value ? 24 : 42
-		//
-		// if (fileData.fileName.length > maxLength) {
-		//   return fileData.fileName.slice(0, (maxLength - 3) / 2) + '...' + fileData.fileName.slice(-(maxLength - 3) / 2)
-		// } else {
-		//   return fileData.fileName
-		// }
+		// return fileData.fileName;
+		const maxLength = isMobileSize.value ? 19 : 32;
+
+		if (fileData.fileName.length > maxLength) {
+			return fileData.fileName.slice(0, (maxLength - 3) / 2) + "..." + fileData.fileName.slice(-(maxLength - 3) / 2);
+		} else {
+			return fileData.fileName;
+		}
 	};
 
 	/**

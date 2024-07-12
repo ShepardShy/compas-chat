@@ -1,11 +1,11 @@
-@use '@/assets/variables' as variables;
-@use '@/assets/mixins' as mixins;
+@use "@/assets/styles/variables" as variables;
+@use "@/assets/styles/mixins" as mixins;
 
 .map__wrapper {
-    position: relative;
+	position: relative;
 
-    .map__canvas {
-        position: absolute;
+	.map__canvas {
+		position: absolute;
 		top: 0;
 		@include mixins.elemResolutionOptions(100%, 100%);
 	}

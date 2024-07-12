@@ -5,7 +5,7 @@
 	width: 64px;
 }
 
-.images__delete-and-icon {
+:global(.images__delete-and-icon) {
 	display: flex;
 	flex-direction: column;
 	height: 64px;

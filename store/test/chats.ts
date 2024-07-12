@@ -22,7 +22,7 @@ export const chats = [
 		lastTimeActive: "15.02.2024 15:00",
 		textMessageDraft: "",
 		dateRangeStart: "2020-03-05T16:34:09.000000Z",
-		dateRangeEnd: "2024-03-17T16:34:09.000000Z",
+		dateRangeEnd: "2024-03-18T16:34:09.000000Z",
 		messages: [
 			{
 				id: 6,
@@ -250,6 +250,27 @@ export const chats = [
 						isViewed: true,
 						isUnread: false,
 						size: "22KB",
+					},
+				],
+			},
+			{
+				id: 11,
+				type: "file",
+				comment: "",
+				userId: 2,
+				isReceived: true,
+				isViewed: false,
+				isUnread: true,
+				date: "18.03.2024 15:12",
+				files: [
+					{
+						url: "/2557850_cam_camera_photo_img_media_icon2557850_cam_camera_12photo_img_media_icon.svg",
+						fileName: "2557850_cam_camera_photo_img_media_icon2557850_cam_camera_12photo_img_media_icon.svg",
+						date: "18.03.2024 17:12",
+						isReceived: true,
+						isViewed: true,
+						isUnread: false,
+						size: "1.2KB",
 					},
 				],
 			},

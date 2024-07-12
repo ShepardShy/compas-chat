@@ -1,6 +1,7 @@
 import path from "path";
 import svgLoader from "vite-svg-loader";
 import { createResolver } from "@nuxt/kit";
+import { fileURLToPath } from "url";
 
 const { resolve } = createResolver(import.meta.url);
 
@@ -11,6 +12,9 @@ export default defineNuxtConfig({
 		"@vueuse/nuxt",
 		"@vee-validate/nuxt",
 	],
+	alias: {
+		// "~": "./",
+	},
 
 	css: [resolve("./assets/styles/main.scss")],
 
@@ -18,7 +22,8 @@ export default defineNuxtConfig({
 		plugins: [svgLoader({})],
 		resolve: {
 			alias: {
-				"@": path.resolve(__dirname, "./src"),
+				"@": path.resolve(__dirname, "./"),
+				"~": path.resolve(__dirname, "./"),
 			},
 		},
 	},

@@ -4,6 +4,7 @@
 	import ReceivedMessageIcon from "assets/icons/recieved-message-icon.svg";
 	import FansyBox from "~/components/ui/AppFansyBox/FansyBox.vue";
 	import FansyBoxImage from "~/components/ui/AppFansyBox/FansyBoxImage/FansyBoxImage.vue";
+	import AppFile from "~/components/ui/AppInputs/File/File.vue";
 	import { useSettingsStore } from "~/store/settings";
 
 	/**
@@ -170,14 +171,27 @@
 					gridRow: (idx === 0 && imageOne) || (idx === 1 && imageTwo) || (idx === 2 && imageThree) || (idx === 3 && imageFour),
 				}"
 			>
-				<!-- <template #item="{ element: image }">
-					<FansyBoxImage
-						:id="idx"
-						:image="{ id: 1, title: '123', key: 1, required: true, buttonName: null, value: row[item.key] }"
-					/>
-				</template> -->
-
-				<img :src="image.url" />
+				<!-- <AppFile
+					:item="{
+						id: 0,
+						title: 'Фото',
+						key: 'photo',
+						required: false,
+						buttonName: null,
+						value: [
+							{ id: 1700634105674, name: '2.1.svg', url: 'https://opt6.compas.pro/storage/tenantopt6/app/public/files/kRFx3iGTKT5ix5oZwgXzSsYR25Gh1jbxtLgEKS7E.svg', file: 'https://opt6.compas.pro/storage/tenantopt6/app/public/files/kRFx3iGTKT5ix5oZwgXzSsYR25Gh1jbxtLgEKS7E.svg', extension: 'svg', uid: '1700634105674', status: 'success' },
+							{ id: 1703657482946, name: '4.pdf', url: 'https://opt6.compas.pro/storage/tenantopt6/app/public/2401/conversions/gtLzTgAGu90QJ7js8SIf91VeJ1JbgBoZBfegVKjf-thumb.jpg', file: 'https://opt6.compas.pro/storage/tenantopt6/app/public/files/gtLzTgAGu90QJ7js8SIf91VeJ1JbgBoZBfegVKjf.pdf', extension: 'pdf', uid: '1703657482946', status: 'success' },
+						],
+					}"
+					:isReadOnly="true"
+					:isShowFileName="false"
+					:isMultiple="false"
+					:isOneFile="true"
+				/> -->
+				<img
+					data-fancybox="gallery"
+					:src="image.url"
+				/>
 				<div
 					v-if="!(isImagesMoreThenShown && idx === 3)"
 					class="image-message__info"

@@ -106,6 +106,30 @@
 			scrollToDialogWrapperBottom();
 		}
 	);
+
+	// Сообщения от собеседника
+	const notMyMessages = computed(() => openedChatData.value.messages?.filter(message => message?.userId != userId.value)?.length);
+	let notMyMessagesCurrent = notMyMessages.value;
+
+	// Подписка на приход сообщений
+	watch(
+		() => openedChatData.value,
+		async () => {
+			if (notMyMessages.value > notMyMessagesCurrent) {
+				scrollToDialogWrapperBottom();
+			}
+			notMyMessagesCurrent = notMyMessages.value;
+			const messagesCount = openedChatData.value.messages?.length;
+
+			// openedChatData.value.dateRangeEnd = moment(openedChatData.value.messages[messagesCount - 1].date).toISOString();
+
+			// Если чат пролистан до конца, тогда пролистать до нового сообщения
+			if (dialogWrapperScrollTop.value + $dialogWrapper.value.offsetHeight + 50 >= $dialogWrapper.value.scrollHeight) {
+				await nextTick();
+				scrollToDialogWrapperBottom();
+			}
+		}
+	);
 	/** Подписка на загрузку сообщений */
 	watch(
 		() => [uploadedDocuments.value, uploadedImages.value],
@@ -140,9 +164,11 @@
 	 */
 	onMounted(async () => {
 		await checkIfDialogBodyHeightsLessThenVH();
-		// setTimeout(() => {
 		scrollToDialogWrapperBottom();
-		// }, 10);
+		// console.log($dialogWrapper.value.scrollHeight);
+		// setTimeout(() => {
+		// 	console.log($dialogWrapper.value.scrollHeight);
+		// }, 1000);
 		setDialogWidth();
 
 		window.addEventListener("resize", scrollToDialogWrapperBottom);
@@ -270,6 +296,7 @@
 		} else {
 			voiceMessage.value = [src];
 			sendVoiceMessage();
+			playSendMessageAudio();
 		}
 
 		stopAudioOnly(stream);
@@ -340,6 +367,14 @@
 		scrollToDialogWrapperBottom();
 	};
 
+	// Звук отправки сообщения
+	const $sendAudio = ref<HTMLAudioElement>(null);
+	const playSendMessageAudio = () => {
+		$sendAudio.value.pause();
+		$sendAudio.value.play();
+	};
+
+	// Обработчик отправки сообщения
 	const handleMessage = () => {
 		if (messageType.value === "text" && !noMessageToSend.value) {
 			/** Если смешанная отправка фото и доков, то текст сообщения дублируется */
@@ -358,6 +393,8 @@
 			if (messageValue.value && !uploadedDocuments.value.length && !voiceMessage.value.length) {
 				sendTextMessage();
 			}
+
+			playSendMessageAudio();
 		} else if (messageType.value === "voice") {
 			if (isMakingAVoiceMessage.value) {
 				setVoiceMessage(false);
@@ -602,6 +639,10 @@
 				}"
 				@pointerup.left.stop="handleMessage"
 			>
+				<audio
+					ref="$sendAudio"
+					src="/audio/send-msg.wav"
+				/>
 				<MicrophoneIcon v-if="!isMakingAVoiceMessage && noMessageToSend" />
 
 				<SendMsgIcon v-else />

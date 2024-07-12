@@ -54,7 +54,7 @@
 	import { ref } from "vue";
 
 	import IconLoadFile from "~/components/ui/AppIcons/LoadFile/LoadFile.vue";
-	import Input from "~/components/ui/Appautocomplete/input.vue";
+	import Input from "~/components/ui/AppAutocomplete/Input.vue";
 	import IconClose from "~/components/ui/AppIcons/Close/Close.vue";
 
 	const props = defineProps({
