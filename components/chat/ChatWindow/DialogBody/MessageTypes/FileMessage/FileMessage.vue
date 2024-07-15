@@ -3,6 +3,7 @@
 	import { useSettingsStore } from "~/store/settings";
 	import ReceivedMessageIcon from "assets/icons/recieved-message-icon.svg";
 	import ViewedMessageIcon from "assets/icons/viewed-message-icon.svg";
+	import moment from "moment";
 
 	/**
 	 * Входящие пропсы
@@ -146,7 +147,7 @@
 			/>
 			<div class="file-messages__time-status">
 				<div class="file-messages__time">
-					{{ message.date.slice(-5) }}
+					{{ moment(message.date)?.format("H:mm") }}
 				</div>
 
 				<ViewedMessageIcon

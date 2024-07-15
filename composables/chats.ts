@@ -1,3 +1,4 @@
+import moment from "moment";
 import { daysOfWeek, daysOfWeekLongName } from "~/shared/const";
 import type { DetailedInfoMenuItem, GroupChatMessageType, GroupChatType, UserChatType } from "~/types/messages";
 
@@ -50,8 +51,7 @@ export function setCorrectTitle(_quantity: number, _item: DetailedInfoMenuItem) 
 
 export const messageTimeInfo = (lastMessage: GroupChatMessageType | {}) => {
 	if (lastMessage?.id) {
-		const dateParts = lastMessage.date.slice(0, 10).split(".");
-		const date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+		const date = new Date(lastMessage.date);
 		const today = new Date();
 
 		const timeDiff = today.getTime() - date.getTime();
@@ -61,11 +61,11 @@ export const messageTimeInfo = (lastMessage: GroupChatMessageType | {}) => {
 		const dayOfWeek = daysOfWeek[date.getDay()];
 
 		if (date.setHours(0, 0, 0, 0) === today.setHours(0, 0, 0, 0)) {
-			return lastMessage.date.slice(-5);
+			return moment(lastMessage.date)?.format("DD.MM");
 		} else if (diffDays <= 7) {
 			return dayOfWeek;
 		} else if (diffDays > 7) {
-			return lastMessage.date.slice(0, 5);
+			return moment(lastMessage.date)?.format("DD.MM");
 		}
 	}
 
@@ -105,8 +105,7 @@ export const userActiveTime = (lastTimeActive: string) => {
 
 export const setMessageDay = (dateFromMessage: string) => {
 	if (!dateFromMessage) return;
-	const dateParts = dateFromMessage.slice(0, 10).split(".");
-	const date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+	const date = new Date(dateFromMessage);
 	const today = new Date();
 
 	const timeDiff = today.getTime() - date.getTime();
@@ -120,7 +119,7 @@ export const setMessageDay = (dateFromMessage: string) => {
 	} else if (diffDays <= 7) {
 		return dayOfWeek;
 	} else if (diffDays > 7) {
-		return dateFromMessage.slice(0, 10);
+		return dateFromMessage.split("-").reverse().join(".");
 	}
 };
 

@@ -103,6 +103,7 @@
 		class="user"
 		:class="{
 			user__chat_open: openedChatId === chatData.id,
+			user__chat_receive: chatData.isNewMessage,
 		}"
 		:style="{
 			'border-bottom': chatData.isPinned ? 'none' : 'solid 1px #eeeff1',
@@ -213,7 +214,7 @@
 				/>
 
 				<div
-					v-if="unreadMessagesLength"
+					v-if.="unreadMessagesLength && !chatData.isScrolled"
 					class="user__unread-msg"
 				>
 					<span>

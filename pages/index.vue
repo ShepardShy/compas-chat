@@ -43,7 +43,8 @@
 	 * Подюклчение стора с сообщениями
 	 */
 	const chatsStore = useChatsStore();
-	const { isAddUserModalOpen, isDetailedInfoModalOpen, isGroupChatEditModalOpen, isGroupChatCreateModalOpen, isOpenMessageTypeModal, isDatePickModalOpen, chats, openedChatId, openedChatData, chatsNotMyMessagesCount, filteredChats } = storeToRefs(chatsStore);
+	const { isAddUserModalOpen, isDetailedInfoModalOpen, isGroupChatEditModalOpen, isGroupChatCreateModalOpen, isOpenMessageTypeModal, isDatePickModalOpen, chats, openedChatId, openedChatData, chatsNotMyMessagesCount, filteredChats, getChat } = storeToRefs(chatsStore);
+	const { raiseChat } = chatsStore;
 	/**
 	 * Подюклчение стора с настройками
 	 */
@@ -89,41 +90,63 @@
 		}
 	);
 
-	// Вызов аудо прихода сообщения
 	const playReceiveMessage = () => {
-		const audio = new Audio();
-		audio.volume = 0.2;
+		const audio = new Audio("/audio/receive-msg.wav");
 		audio.src = "/audio/receive-msg.wav";
+		audio.volume = 0.2;
 		audio.play();
 	};
 
-	// Подписка на приход сообщений;
-	let currentCountNotMyMessages = chatsNotMyMessagesCount.value;
-	watch(
-		() => chats.value,
-		() => {
-			if (chatsNotMyMessagesCount.value > currentCountNotMyMessages) {
-				playReceiveMessage();
+	// Поднятие вверх чата с новыми сообщениями
+	for (let chat of chats.value) {
+		const chatCount = computed(() => getChat.value(chat.id).messages.length);
+		watch(
+			() => chatCount.value,
+			(newValCount, oldValCount) => {
+				if (newValCount > oldValCount) {
+					raiseChat(chat.id);
+				}
+			},
+			{
+				deep: true,
 			}
-			currentCountNotMyMessages = chatsNotMyMessagesCount.value;
-		},
-		{ deep: true }
-	);
+		);
+	}
+
+	// Подсветка нового непрочитанного чата и уведомление
+	for (let chat of chats.value) {
+		const chatRef = computed(() => getChat.value(chat.id));
+		const chatNotMyMessagesCount = computed(() => getChat.value(chat.id).messages.filter(msg => msg.isUnread));
+		watch(
+			() => chatNotMyMessagesCount.value,
+			(newValCount, oldValCount) => {
+				if (newValCount > oldValCount) {
+					if (!chatRef.value.isMutedOff) {
+						playReceiveMessage();
+						chat.isNewMessage = true;
+						setTimeout(() => {
+							chat.isNewMessage = false;
+						}, 1000);
+					}
+				}
+			}
+		);
+	}
 
 	// Тестовое новое сообщение
 	onMounted(() => {
 		setInterval(() => {
 			chats.value[0].messages.push({
-				id: 2,
+				id: new Date().getTime(),
 				type: "text",
 				message: "Принимаете заказ?",
 				userId: 2,
 				isReceived: false,
 				isViewed: false,
 				isUnread: true,
-				date: moment().format("DD.MM.YYYY H:mm"),
+				date: moment().toISOString(),
 			});
-		}, 7000);
+		}, 10000);
 	});
 
 	/**

@@ -99,11 +99,13 @@
 	justify-content: flex-end;
 	// overflow-x: hidden;
 	position: relative;
-	&.active-message .message-block:nth-child(1) {
-		&::before {
-			background-color: rgba(26, 55, 85, 0.4) !important;
-		}
+	&.active-message .message-block__date {
+		background-color: rgba(26, 55, 85, 0.4) !important;
 	}
+}
+:global(.dialog__body.active-message .message-block__date) {
+	background-color: rgba(26, 55, 85);
+	color: #fff;
 }
 
 .dialog__actions {

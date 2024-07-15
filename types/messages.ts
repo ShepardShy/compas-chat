@@ -76,6 +76,8 @@ export interface UserChatType {
 	isDetailedInfoOpen: boolean;
 	textMessageDraft: string;
 	lastTimeActive: string;
+	isNewMessage?: boolean;
+	isScrolled?: boolean;
 }
 
 export interface GroupChatUserType {

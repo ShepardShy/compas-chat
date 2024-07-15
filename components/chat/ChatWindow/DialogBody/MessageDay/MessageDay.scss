@@ -8,28 +8,11 @@
 	z-index: 100;
 	left: calc(50%);
 	will-change: transform;
-	&::before {
-		content: "";
-		position: absolute;
-		width: var(--dialogWidth);
-		bottom: -5px;
-		top: -5px;
-		height: calc(100% + 10px);
-		transition: 2s;
-		z-index: -1;
-		@media (max-width: 950px) {
-			width: var(--dialogWidth);
-		}
-	}
 }
 
 .message-block__wrapper {
 	display: flex;
 	justify-content: center;
-}
-
-.message-block__wrapper_mobile::before {
-	width: 100vw;
 }
 
 .message-block__date {
@@ -44,6 +27,7 @@
 	border: solid 1px #eeeff1;
 	font-size: 16px;
 	font-weight: 400;
+	transition: 1s ease;
 	color: variables.$color-dark-grey;
 	background-color: variables.$color-white;
 	z-index: 50;

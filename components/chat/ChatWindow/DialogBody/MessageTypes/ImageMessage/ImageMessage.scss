@@ -13,7 +13,6 @@
 	width: 100%;
 	display: grid;
 	gap: 5px;
-	margin-bottom: 10px;
 	overflow: hidden;
 
 	&::-webkit-scrollbar {
@@ -34,6 +33,9 @@
 	position: relative;
 	height: 100%;
 	z-index: 50;
+	& img {
+		cursor: pointer;
+	}
 }
 
 .image-message__hide-images_last::before {
@@ -74,7 +76,7 @@
 }
 
 .image-message__text {
-	padding: 0 15px 10px;
+	padding: 10px 15px;
 	font-size: 16px;
 	font-weight: 400;
 	color: variables.$color-black;

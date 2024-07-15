@@ -11,9 +11,7 @@
 	import AppDateInput from "~/components/ui/AppInputs/Date/Date.vue";
 	import type { GroupChatMessageType, MessageType } from "~/types/messages";
 	import { setMessageDay } from "~/composables/chats";
-	import type { string } from "yup";
 	import { useDatePickStore } from "~/store/datePick";
-	import moment from "moment";
 
 	defineEmits(["sendVoiceMessage"]);
 
@@ -21,7 +19,7 @@
 	 * Подключение стора с чатами
 	 */
 	const chatsStore = useChatsStore();
-	const { openedChatData, userId, openedChatId } = storeToRefs(chatsStore);
+	const { openedChatData, userId, openedChatId, getChatIndex, chats } = storeToRefs(chatsStore);
 	/**
 	 * Подключение стора с настройками
 	 */
@@ -63,6 +61,38 @@
 	/** Высота области с инпутом */
 	const dialogActionsHeight = ref("0 0 90px");
 
+	/**
+	 * Проверка высоты блока с сообщениями и скролл к последнему сообщению
+	 */
+	const $dialogWrapperScroll = ref<HTMLDivElement>();
+	const $dialogWrapper = ref<HTMLDivElement>();
+	const $dialog = ref<HTMLDivElement>();
+	provide("dialog", $dialog);
+	const $dialogActions = ref<HTMLDivElement>();
+
+	const isDialogBodyHeightsLessThenVH = ref(true);
+
+	const scrollToDialogWrapperBottom = () => {
+		$dialogWrapper.value!.scrollTop = $dialogWrapper.value!.scrollHeight;
+	};
+
+	const checkIfDialogBodyHeightsLessThenVH = async () => {
+		await nextTick();
+
+		const dialogBodyHeight = $dialogWrapperScroll.value!.offsetHeight;
+		const dialogWrapperHeight = $dialogWrapper.value!.offsetHeight;
+
+		isDialogBodyHeightsLessThenVH.value = dialogBodyHeight < dialogWrapperHeight;
+	};
+
+	const dialogWrapperScrollTop = ref();
+	const scrollInDialogWrapper = () => {
+		dialogWrapperScrollTop.value = $dialogWrapper.value.scrollTop;
+	};
+
+	// Пролистан ли чат до конца
+	const isDialogAtBottom = computed(() => dialogWrapperScrollTop.value + $dialogWrapper.value?.offsetHeight + 10 >= $dialogWrapper.value?.scrollHeight);
+
 	/** Нет данных для сообщений */
 	const noMessageToSend = computed(() => !uploadedImages.value.length && !uploadedDocuments.value.length && !voiceMessage.value.length && !messageValue.value?.trim());
 
@@ -71,7 +101,7 @@
 	 */
 	watch(
 		() => openedChatId.value,
-		async () => {
+		async (_, oldVal) => {
 			messageType.value = "text";
 			voiceMessage.value = [];
 			$chatInput.value.cleanLoadedImages();
@@ -79,6 +109,9 @@
 
 			await checkIfDialogBodyHeightsLessThenVH();
 			scrollToDialogWrapperBottom();
+			if (chats.value?.[getChatIndex.value(oldVal)]) {
+				chats.value[getChatIndex.value(oldVal)].isScrolled = false;
+			}
 
 			if (openedChatData.value?.textMessageDraft) {
 				messageValue.value = openedChatData.value?.textMessageDraft;
@@ -87,6 +120,7 @@
 			}
 		}
 	);
+
 	/**
 	 * Подписка на ввод ссобщения
 	 */
@@ -119,17 +153,25 @@
 				scrollToDialogWrapperBottom();
 			}
 			notMyMessagesCurrent = notMyMessages.value;
-			const messagesCount = openedChatData.value.messages?.length;
-
-			// openedChatData.value.dateRangeEnd = moment(openedChatData.value.messages[messagesCount - 1].date).toISOString();
 
 			// Если чат пролистан до конца, тогда пролистать до нового сообщения
-			if (dialogWrapperScrollTop.value + $dialogWrapper.value.offsetHeight + 50 >= $dialogWrapper.value.scrollHeight) {
+			if (isDialogAtBottom.value) {
 				await nextTick();
 				scrollToDialogWrapperBottom();
 			}
 		}
 	);
+
+	// Если чат пролистан до конца, тогда навесить на чат флаг
+	watch(
+		() => isDialogAtBottom.value,
+		newVal => {
+			if (chats.value?.[getChatIndex.value(openedChatId.value)]) {
+				chats.value[getChatIndex.value(openedChatId.value)].isScrolled = newVal ? true : false;
+			}
+		}
+	);
+
 	/** Подписка на загрузку сообщений */
 	watch(
 		() => [uploadedDocuments.value, uploadedImages.value],
@@ -165,45 +207,12 @@
 	onMounted(async () => {
 		await checkIfDialogBodyHeightsLessThenVH();
 		scrollToDialogWrapperBottom();
-		// console.log($dialogWrapper.value.scrollHeight);
-		// setTimeout(() => {
-		// 	console.log($dialogWrapper.value.scrollHeight);
-		// }, 1000);
 		setDialogWidth();
 
 		window.addEventListener("resize", scrollToDialogWrapperBottom);
 		window.addEventListener("resize", setDialogWidth);
 		$dialogWrapper.value.addEventListener("scroll", scrollInDialogWrapper);
 	});
-
-	const dialogWrapperScrollTop = ref();
-	const scrollInDialogWrapper = () => {
-		dialogWrapperScrollTop.value = $dialogWrapper.value.scrollTop;
-	};
-
-	/**
-	 * Проверка высоты блока с сообщениями и скролл к последнему сообщению
-	 */
-	const $dialogWrapperScroll = ref<HTMLDivElement>();
-	const $dialogWrapper = ref<HTMLDivElement>();
-	const $dialog = ref<HTMLDivElement>();
-	provide("dialog", $dialog);
-	const $dialogActions = ref<HTMLDivElement>();
-
-	const isDialogBodyHeightsLessThenVH = ref(true);
-
-	const scrollToDialogWrapperBottom = () => {
-		$dialogWrapper.value!.scrollTop = $dialogWrapper.value!.scrollHeight;
-	};
-
-	const checkIfDialogBodyHeightsLessThenVH = async () => {
-		await nextTick();
-
-		const dialogBodyHeight = $dialogWrapperScroll.value!.offsetHeight;
-		const dialogWrapperHeight = $dialogWrapper.value!.offsetHeight;
-
-		isDialogBodyHeightsLessThenVH.value = dialogBodyHeight < dialogWrapperHeight;
-	};
 
 	/**
 	 * Управление голосовым сообщением
@@ -368,10 +377,11 @@
 	};
 
 	// Звук отправки сообщения
-	const $sendAudio = ref<HTMLAudioElement>(null);
+
 	const playSendMessageAudio = () => {
-		$sendAudio.value.pause();
-		$sendAudio.value.play();
+		const audio = new Audio();
+		audio.src = "/audio/send-msg.wav";
+		audio.play();
 	};
 
 	// Обработчик отправки сообщения
@@ -432,9 +442,10 @@
 
 	// Скролл до элемента
 	const scrollToMessage = async message => {
+		console.log(message);
 		const messageOffsetTop = message.offsetTop;
 		// const scrollPosition = messageOffsetTop - 0.5;
-		const scrollPosition = messageOffsetTop;
+		const scrollPosition = messageOffsetTop > 5 ? messageOffsetTop : 0;
 		await nextTick();
 		$dialogWrapper.value.scrollTo({ top: scrollPosition, behavior: "smooth" });
 	};
@@ -444,6 +455,7 @@
 	const $dialogDate = ref(null);
 	const clickDateHandler = async () => {
 		const message = messagesWithIsoDates.value.find(p => p.date == preparedDay.value.split(".").reverse().join("-"));
+
 		const messageToScroll = $dialogBody.value?.[message.index] as HTMLDivElement;
 		scrollToMessage(messageToScroll);
 	};
@@ -497,8 +509,6 @@
 				const messageToScroll = $dialogBody.value?.[closestMessageToDate.index] as HTMLDivElement;
 
 				if (messageToScroll) {
-					const container = $dialogWrapper.value;
-
 					scrollToMessage(messageToScroll);
 
 					// Добавляем класс активного сообщения
@@ -556,7 +566,7 @@
 			>
 				<div
 					v-for="(messagesSortedByDay, index) in openedChatData?.messages"
-					:key="messagesSortedByDay.date"
+					:key="index"
 					class="dialog__body"
 					ref="$dialogBody"
 					:id="`$dialogBody`"
@@ -639,10 +649,6 @@
 				}"
 				@pointerup.left.stop="handleMessage"
 			>
-				<audio
-					ref="$sendAudio"
-					src="/audio/send-msg.wav"
-				/>
 				<MicrophoneIcon v-if="!isMakingAVoiceMessage && noMessageToSend" />
 
 				<SendMsgIcon v-else />

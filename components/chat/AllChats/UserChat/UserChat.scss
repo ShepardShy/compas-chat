@@ -6,6 +6,7 @@
 	padding: 10px 15px;
 	cursor: pointer;
 	position: relative;
+	transition: 1s ease;
 }
 
 .user__data {
@@ -95,10 +96,14 @@
 	cursor: pointer;
 }
 
+.user__muted {
+	order: 2;
+}
+
 .user__unread-msg {
-	// padding: 0px 5px 2px;
+	order: 3;
 	height: 16px;
-	width: 16px;
+	padding: 0 5px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -115,6 +120,10 @@
 
 .user__chat_open {
 	background-color: #eef3f9;
+}
+
+.user__chat_receive {
+	background-color: #fffbe2;
 }
 
 .user__user-message-last {

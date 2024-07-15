@@ -44,6 +44,8 @@ export const useChatsStore = defineStore("chats", {
 	getters: {
 		chatsWithPinnedUsers: state => state.filteredChats.filter(chat => chat.isPinned),
 		chatsWithoutPinned: state => state.filteredChats.filter(chat => !chat.isPinned),
+		getChat: state => id => state.chats?.find(chat => chat?.id == id),
+		getChatIndex: state => id => state.chats?.findIndex(chat => chat?.id == id),
 		chatsNotMyMessagesCount: state => {
 			return state.chats.reduce((acc, chat) => {
 				acc += chat.messages.filter(message => message.userId != state.userId)?.length;
@@ -108,6 +110,15 @@ export const useChatsStore = defineStore("chats", {
 	},
 
 	actions: {
+		raiseChat(chatId: string | number) {
+			const chatIndex = this.getChatIndex(chatId);
+			const chat = this.getChat(chatId);
+			if (!chat.isPinned) {
+				this.chats.splice(chatIndex, 1);
+				this.chats.unshift(chat);
+			}
+		},
+
 		async togglePinUser(chatId: string | number) {
 			try {
 				this.chats = this.chats.map(chatData => {
@@ -260,13 +271,13 @@ export const useChatsStore = defineStore("chats", {
 		sendTextMessage(message: string, userId: number, chatId: number) {
 			const userData = this.allChatUsers.find(user => user.id === userId);
 			const newMessage = {
-				id: formattedDateToday(),
+				id: new Date().getTime(),
 				userId,
 				type: "text",
 				firstName: userData!.firstName ?? "",
 				secondName: userData!.secondName ?? "",
 				message: message ? message?.replace(/\n/g, "\n") : "",
-				date: formattedDateToday(),
+				date: new Date().toISOString(),
 				isReceived: true,
 				isViewed: false,
 				isUnread: false,

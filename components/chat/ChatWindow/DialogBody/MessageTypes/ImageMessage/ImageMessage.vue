@@ -6,6 +6,7 @@
 	import FansyBoxImage from "~/components/ui/AppFansyBox/FansyBoxImage/FansyBoxImage.vue";
 	import AppFile from "~/components/ui/AppInputs/File/File.vue";
 	import { useSettingsStore } from "~/store/settings";
+	import moment from "moment";
 
 	/**
 	 * Входящие пропсы
@@ -126,7 +127,7 @@
 	 * Вывод времени сообщения
 	 */
 	const messageTime = (): string => {
-		return message.value.date.slice(-5);
+		return moment(message.value.date)?.format("H:mm");
 	};
 
 	/**
@@ -197,7 +198,7 @@
 					class="image-message__info"
 				>
 					<div class="image-message__time">
-						{{ image.date.slice(-5) }}
+						{{ moment(image.date)?.format("H:mm") }}
 					</div>
 					<ViewedMessageIcon
 						v-if="isImageViewed(image) && !otherMessage"
