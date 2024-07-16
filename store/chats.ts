@@ -298,13 +298,13 @@ export const useChatsStore = defineStore("chats", {
 		sendImageMessage(uploadedImages: Array<unknown>, message: string, userId: number, chatId: number) {
 			const userData = this.allChatUsers.find(user => user.id === userId);
 			const newMessage = {
-				id: formattedDateToday(),
+				id: new Date().getTime(),
 				userId,
 				type: "image",
 				firstName: userData!.firstName ?? "",
 				secondName: userData!.secondName ?? "",
 				comment: message ? message?.replace(/\n/g, "\n") : "",
-				date: formattedDateToday(),
+				date: new Date().toISOString(),
 				isReceived: true,
 				isViewed: false,
 				isUnread: false,
@@ -313,7 +313,7 @@ export const useChatsStore = defineStore("chats", {
 						return {
 							url: image.url,
 							fileName: image.fileName,
-							date: formattedDateToday(),
+							date: new Date().toISOString(),
 							isReceived: true,
 							isViewed: false,
 							isUnread: false,
@@ -347,13 +347,13 @@ export const useChatsStore = defineStore("chats", {
 			const userData = this.allChatUsers.find(user => user.id === userId);
 
 			const newMessage = {
-				id: formattedDateToday(),
+				id: new Date().getTime(),
 				userId,
 				type: "file",
 				firstName: userData!.firstName ?? "",
 				secondName: userData!.secondName ?? "",
 				comment: message ? message?.replace(/\n/g, "\n") : "",
-				date: formattedDateToday(),
+				date: new Date().toISOString(),
 				isReceived: true,
 				isViewed: false,
 				isUnread: false,
@@ -363,7 +363,7 @@ export const useChatsStore = defineStore("chats", {
 							url: file.url,
 							fileName: file.name,
 							size: file.size,
-							date: formattedDateToday(),
+							date: new Date().toISOString(),
 							isReceived: true,
 							isViewed: false,
 							isUnread: false,
@@ -388,13 +388,13 @@ export const useChatsStore = defineStore("chats", {
 			const userData = this.allChatUsers.find(user => user.id === userId);
 
 			const newMessage = {
-				id: formattedDateToday(),
+				id: new Date().getTime(),
 				userId,
 				type: "voice",
 				firstName: userData!.firstName ?? "",
 				secondName: userData!.secondName ?? "",
 				comment: message,
-				date: formattedDateToday(),
+				date: new Date().toISOString(),
 				isReceived: true,
 				isViewed: false,
 				isUnread: false,
@@ -402,7 +402,7 @@ export const useChatsStore = defineStore("chats", {
 					...uploadedVoiceMessages.map(file => {
 						return {
 							url: file,
-							date: formattedDateToday(),
+							date: new Date().toISOString(),
 							isReceived: true,
 							isViewed: false,
 							isUnread: false,
@@ -458,17 +458,17 @@ export const useChatsStore = defineStore("chats", {
 						id: 33,
 						type: "message-info",
 						message: `${fullUserName} создал(а) групповой чат`,
-						date: formattedDateToday(),
+						date: new Date().toISOString(),
 					},
 				],
 			};
 
 			if (this.temporalStorageForAddedUsers.length) {
 				newGroupChat.messages.push({
-					id: formattedDateToday() as unknown as number,
+					id: new Date().getTime() as unknown as number,
 					type: "message-info",
 					message: addedUsersMessage,
-					date: formattedDateToday(),
+					date: new Date().toISOString(),
 				});
 			}
 

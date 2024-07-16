@@ -317,7 +317,6 @@
 		emit("update:isResizing", $inputBody.value.style.height !== minHeight);
 
 		const currentMousePosition = event.pageY;
-		const windowHeight = window.innerHeight;
 
 		scrollToDialogBottom();
 
@@ -413,19 +412,6 @@
 		}
 	};
 
-	// Клавиатура safari
-
-	const preventScrollWhenSoftKeyboardFocus = e => {
-		// setTimeout(() => {
-		// 	document.body.style.maxHeight = `${window.visualViewport.height}px`;
-		// 	document.body.style.minHeight = `${window.visualViewport.height}px`;
-		// }, 200);
-	};
-	const preventScrollWhenSoftKeyboardBlur = e => {
-		// document.body.style.maxHeight = `unset`;
-		// document.body.style.minHeight = `unset`;
-	};
-
 	defineExpose({
 		cleanLoadedImages,
 		cleanLoadedDocuments,
@@ -467,6 +453,7 @@
 				v-if="isHeightResizable"
 				ref="$inputBody"
 				:value="inputValue"
+				v-bind="$attrs"
 				class="input__body"
 				@pointerup.left.self="e => (e.target as HTMLInputElement).focus()"
 				:class="{
@@ -480,8 +467,6 @@
 					paddingTop: isSafari ? '11px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
-				@focus="preventScrollWhenSoftKeyboardFocus"
-				@focusout="preventScrollWhenSoftKeyboardBlur"
 				@keydown.enter.prevent.exact="uploadedImages.length > 0 || uploadedDocuments.length > 0 || inputValue.trim().length > 0 ? emit('sendMessage') : 0"
 				@keyup.shift.enter.prevent="newLine"
 				@keyup.ctrl.enter.prevent="newLine"

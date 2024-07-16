@@ -8,7 +8,7 @@ export const chats = [
 		isActive: true,
 		isTyping: false,
 		photo: "/photo.png",
-		isMutedOff: false,
+		isMutedOff: true,
 		position: "Менеджер по работе с клиентами",
 		isGroupChat: false,
 		totalTextMessages: 200,

@@ -1,7 +1,6 @@
 @use "~/assets/styles/_variables.scss" as variables;
 
 .dialog {
-	height: calc(100dvh - 81px);
 	border-top: solid 1px #eeeff1;
 	padding: 0 5px 0 0;
 	background-color: #f7f8fa;
@@ -49,7 +48,6 @@
 }
 
 .dialog__wrapper {
-	transform: translateZ(0);
 	// -webkit-overflow-scrolling: touch;
 	-webkit-overflow-scrolling: auto;
 	overscroll-behavior: contain;
@@ -64,7 +62,7 @@
 
 	&::-webkit-scrollbar {
 		width: 3px;
-		height: 0;
+		height: 3px;
 	}
 
 	&::-webkit-scrollbar-thumb {

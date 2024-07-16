@@ -49,7 +49,7 @@
 	 * Подюклчение стора с настройками
 	 */
 	const settingsStore = useSettingsStore();
-	const { isMobileSize, isChatsShown, isLoading } = storeToRefs(settingsStore);
+	const { isMobileSize, isChatsShown, isLoading, heightWithKeyboard } = storeToRefs(settingsStore);
 
 	/**
 	 * Хук для отслеживания ширины экрана
@@ -113,7 +113,7 @@
 		);
 	}
 
-	// Подсветка нового непрочитанного чата и уведомление
+	// Подсветка нового непрочитанного чата и звуковое уведомление
 	for (let chat of chats.value) {
 		const chatRef = computed(() => getChat.value(chat.id));
 		const chatNotMyMessagesCount = computed(() => getChat.value(chat.id).messages.filter(msg => msg.isUnread));
@@ -123,9 +123,9 @@
 				if (newValCount > oldValCount) {
 					if (!chatRef.value.isMutedOff) {
 						playReceiveMessage();
-						chat.isNewMessage = true;
+						chatRef.value.isNewMessage = true;
 						setTimeout(() => {
-							chat.isNewMessage = false;
+							chatRef.value.isNewMessage = false;
 						}, 1000);
 					}
 				}
@@ -147,6 +147,31 @@
 				date: moment().toISOString(),
 			});
 		}, 10000);
+		// setInterval(() => {
+		// 	chats.value[7].isGroupChat
+		// 		? chats.value[7].messages.push({
+		// 				id: new Date().getTime(),
+		// 				type: "text",
+		// 				firstName: "Женя",
+		// 				secondName: "Иванов",
+		// 				message: "Принимаете заказ?",
+		// 				userId: 2,
+		// 				isReceived: false,
+		// 				isViewed: false,
+		// 				isUnread: true,
+		// 				date: moment().toISOString(),
+		// 		  })
+		// 		: chats.value[7].messages.push({
+		// 				id: new Date().getTime(),
+		// 				type: "text",
+		// 				message: "Принимаете заказ?",
+		// 				userId: 2,
+		// 				isReceived: false,
+		// 				isViewed: false,
+		// 				isUnread: true,
+		// 				date: moment().toISOString(),
+		// 		  });
+		// }, 1000);
 	});
 
 	/**
@@ -155,7 +180,7 @@
 	onMounted(async () => {
 		// chatsStore.$patch(state => (state.filteredChats = state.chats));
 
-		windowHeight.value = `${window.visualViewport.height - 15}px`;
+		// windowHeight.value = `${window.visualViewport.height - 15}px`;
 
 		checkMobileSize();
 		window.addEventListener("resize", checkMobileSize);
@@ -202,61 +227,59 @@
 </script>
 
 <template>
-	<div class="app">
-		<ChatLoader v-if="isLoading" />
+	<ChatLoader v-if="isLoading" />
+
+	<div
+		v-else
+		class="chat"
+	>
+		<AllChats
+			v-if="(width < maxWindowWidthForMobile && isChatsShown) || !isMobileSize"
+			class="chat__users"
+			:class="{
+				chat__users_mobile: isMobileSize,
+			}"
+			:style="{
+				height: heightWithKeyboard,
+			}"
+		/>
+		<ChatWindow
+			v-if="openedChatId && ((isMobileSize && !isChatsShown) || !isMobileSize)"
+			class="chat__window"
+			:class="{
+				chat__window_mobile: isMobileSize,
+			}"
+			:style="{
+				// height: windowHeight,
+			}"
+		/>
+		<Empty
+			class="chat__empty"
+			v-else
+			>Выберите сообщение</Empty
+		>
 
 		<div
-			v-else
-			class="chat"
+			v-if="isAnyModalOpen"
+			class="modal__bg"
+			@click="closeAllModal($event)"
 		>
-			<AllChats
-				v-if="(width < maxWindowWidthForMobile && isChatsShown) || !isMobileSize"
-				class="chat__users"
-				:class="{
-					chat__users_mobile: isMobileSize,
-				}"
-				:style="{
-					height: windowHeight,
-				}"
-			/>
-			<ChatWindow
-				v-if="openedChatId && ((isMobileSize && !isChatsShown) || !isMobileSize)"
-				class="chat__window"
-				:class="{
-					chat__window_mobile: isMobileSize,
-				}"
-				:style="{
-					height: windowHeight,
-				}"
-			/>
-			<Empty
-				class="chat__empty"
-				v-else
-				>Выберите сообщение</Empty
-			>
-
 			<div
-				v-if="isAnyModalOpen"
-				class="modal__bg"
+				class="modal__bg-overlay"
 				@click="closeAllModal($event)"
 			>
 				<div
-					class="modal__bg-overlay"
-					@click="closeAllModal($event)"
-				>
-					<div
-						v-if="!isMobileSize"
-						class="modal__bg-padding"
-					/>
+					v-if="!isMobileSize"
+					class="modal__bg-padding"
+				/>
 
-					<DatePickModal v-if="isDatePickModalOpen" />
-					<AdditionalInfoModal v-if="isAdditionalInfoModalVisible" />
-					<GroupChatCreateEditModal v-if="isGroupChatEditModalOpen && !isAddUserModalOpen" />
-					<GroupChatCreateEditModal v-if="isGroupChatCreateModalOpen && !isAddUserModalOpen" />
-					<GroupAddUserModal v-if="isAddUserModalOpen" />
+				<DatePickModal v-if="isDatePickModalOpen" />
+				<AdditionalInfoModal v-if="isAdditionalInfoModalVisible" />
+				<GroupChatCreateEditModal v-if="isGroupChatEditModalOpen && !isAddUserModalOpen" />
+				<GroupChatCreateEditModal v-if="isGroupChatCreateModalOpen && !isAddUserModalOpen" />
+				<GroupAddUserModal v-if="isAddUserModalOpen" />
 
-					<MessagesTypesModal v-if="isOpenMessageTypeModal" />
-				</div>
+				<MessagesTypesModal v-if="isOpenMessageTypeModal" />
 			</div>
 		</div>
 	</div>

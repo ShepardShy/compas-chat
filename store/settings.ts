@@ -7,6 +7,7 @@ export const useSettingsStore = defineStore("settings", {
 			isChatsShown: true,
 			isLoading: true,
 			chatIdForOpenModal: 0 as undefined | number,
+			heightWithKeyboard: "100dvh" as undefined | number | string,
 		};
 	},
 

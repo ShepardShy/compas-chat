@@ -214,7 +214,7 @@
 				/>
 
 				<div
-					v-if.="unreadMessagesLength && !chatData.isScrolled"
+					v-if="(unreadMessagesLength > 3 && chatData.isScrolled) || (unreadMessagesLength > 0 && !chatData.isScrolled)"
 					class="user__unread-msg"
 				>
 					<span>

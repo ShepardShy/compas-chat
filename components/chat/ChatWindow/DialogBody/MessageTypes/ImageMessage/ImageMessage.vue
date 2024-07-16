@@ -157,12 +157,12 @@
 			:style="{
 				gridTemplateColumns: gridColumn,
 				gridTemplateRows: gridRows,
-				height: isMobileSize ? '285px' : '323px',
+				height: isMobileSize ? '285px' : '333px',
 				borderRadius,
 			}"
 		>
 			<div
-				v-for="(image, idx) in maxImagesToShow"
+				v-for="(image, idx) in message.images"
 				:key="image"
 				class="image-message__image"
 				:class="{
@@ -170,26 +170,21 @@
 				}"
 				:style="{
 					gridRow: (idx === 0 && imageOne) || (idx === 1 && imageTwo) || (idx === 2 && imageThree) || (idx === 3 && imageFour),
+					display: !((idx === 0 && imageOne) || (idx === 1 && imageTwo) || (idx === 2 && imageThree) || (idx === 3 && imageFour)) ? 'none' : 'block',
 				}"
 			>
-				<!-- <AppFile
-					:item="{
-						id: 0,
-						title: 'Фото',
-						key: 'photo',
-						required: false,
-						buttonName: null,
-						value: [
-							{ id: 1700634105674, name: '2.1.svg', url: 'https://opt6.compas.pro/storage/tenantopt6/app/public/files/kRFx3iGTKT5ix5oZwgXzSsYR25Gh1jbxtLgEKS7E.svg', file: 'https://opt6.compas.pro/storage/tenantopt6/app/public/files/kRFx3iGTKT5ix5oZwgXzSsYR25Gh1jbxtLgEKS7E.svg', extension: 'svg', uid: '1700634105674', status: 'success' },
-							{ id: 1703657482946, name: '4.pdf', url: 'https://opt6.compas.pro/storage/tenantopt6/app/public/2401/conversions/gtLzTgAGu90QJ7js8SIf91VeJ1JbgBoZBfegVKjf-thumb.jpg', file: 'https://opt6.compas.pro/storage/tenantopt6/app/public/files/gtLzTgAGu90QJ7js8SIf91VeJ1JbgBoZBfegVKjf.pdf', extension: 'pdf', uid: '1703657482946', status: 'success' },
-						],
-					}"
-					:isReadOnly="true"
-					:isShowFileName="false"
-					:isMultiple="false"
-					:isOneFile="true"
-				/> -->
+				<div
+					v-if="isImagesMoreThenShown && idx === 3"
+					class="image-message__hide-images-length"
+				>
+					<img
+						data-fancybox="gallery"
+						:src="image.url"
+					/>
+					<span>{{ `+${hideImagesLength}` }}</span>
+				</div>
 				<img
+					v-else
 					data-fancybox="gallery"
 					:src="image.url"
 				/>
@@ -208,13 +203,6 @@
 						v-if="isImageReceived(image) && !otherMessage"
 						style="color: #fff"
 					/>
-				</div>
-
-				<div
-					v-else
-					class="image-message__hide-images-length"
-				>
-					{{ `+${hideImagesLength}` }}
 				</div>
 			</div>
 		</div>

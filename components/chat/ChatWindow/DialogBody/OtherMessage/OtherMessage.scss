@@ -6,18 +6,8 @@
 	min-width: 144px;
 	max-width: 431px;
 	position: relative;
-	&::after {
-		content: "";
-		transition: background-color 1s;
-		position: absolute;
-		left: 0;
-		width: calc(var(--dialogWidth) - 5px);
-		top: 0;
-		bottom: 0;
-		height: 100%;
-	}
 	&.other-msg_unread {
-		&::after {
+		& .other-msg__body {
 			background-color: #fffbe2;
 		}
 	}
@@ -60,6 +50,7 @@
 	border-radius: 10px 10px 10px 5px;
 	z-index: 10;
 	margin-left: 5px;
+	transition: background-color 1s ease;
 }
 
 .other-msg__triangle {

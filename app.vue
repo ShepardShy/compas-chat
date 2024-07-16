@@ -1,9 +1,7 @@
 <template>
-	<div>
-		<NuxtLayout>
-			<NuxtPage />
-		</NuxtLayout>
-	</div>
+	<NuxtLayout>
+		<NuxtPage />
+	</NuxtLayout>
 	<Teleport to="body">
 		<AppModal v-if="modals.length > 0" />
 	</Teleport>
@@ -19,10 +17,15 @@
 	provide("modals", modals);
 
 	// Скрытие клавиатуры Safari
-
 	onMounted(() => {
 		document.body.addEventListener("pointerdown", () => {
 			document.body.firstElementChild.tabIndex = 1;
 		});
+	});
+
+	// отключение скрола у body
+	onMounted(() => {
+		document.body.addEventListener("scroll", e => e.preventDefault(), { passive: false });
+		window.screen;
 	});
 </script>

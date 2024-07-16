@@ -10,7 +10,7 @@
 
 	import AppDateInput from "~/components/ui/AppInputs/Date/Date.vue";
 	import type { GroupChatMessageType, MessageType } from "~/types/messages";
-	import { setMessageDay } from "~/composables/chats";
+	import { setMessageDay, clearSelection } from "~/composables/chats";
 	import { useDatePickStore } from "~/store/datePick";
 
 	defineEmits(["sendVoiceMessage"]);
@@ -24,7 +24,7 @@
 	 * Подключение стора с настройками
 	 */
 	const settingsStore = useSettingsStore();
-	const { isMobileSize } = storeToRefs(settingsStore);
+	const { isMobileSize, heightWithKeyboard } = storeToRefs(settingsStore);
 
 	/**
 	 * Тест сообщения
@@ -164,12 +164,13 @@
 
 	// Если чат пролистан до конца, тогда навесить на чат флаг
 	watch(
-		() => isDialogAtBottom.value,
+		() => [isDialogAtBottom.value, openedChatId.value],
 		newVal => {
 			if (chats.value?.[getChatIndex.value(openedChatId.value)]) {
 				chats.value[getChatIndex.value(openedChatId.value)].isScrolled = newVal ? true : false;
 			}
-		}
+		},
+		{ immediate: true }
 	);
 
 	/** Подписка на загрузку сообщений */
@@ -441,13 +442,18 @@
 	};
 
 	// Скролл до элемента
+	const isScrolling = ref(false);
 	const scrollToMessage = async message => {
-		console.log(message);
 		const messageOffsetTop = message.offsetTop;
 		// const scrollPosition = messageOffsetTop - 0.5;
 		const scrollPosition = messageOffsetTop > 5 ? messageOffsetTop : 0;
 		await nextTick();
-		$dialogWrapper.value.scrollTo({ top: scrollPosition, behavior: "smooth" });
+		!isScrolling.value && $dialogWrapper.value.scrollTo({ top: scrollPosition, behavior: "smooth" });
+		isScrolling.value = true;
+
+		setTimeout(() => {
+			isScrolling.value = false;
+		}, 500);
 	};
 
 	// Клик по плавающей дате
@@ -524,13 +530,58 @@
 		},
 		{ deep: true }
 	);
+
+	// Клавиатура safari
+	let fullHeight;
+	onMounted(() => {
+		heightWithKeyboard.value = "100dvh";
+		fullHeight = window.innerHeight;
+		alert(window.innerHeight);
+	});
+	const preventScrollWhenSoftKeyboardFocus = e => {
+		setTimeout(() => {
+			const currentHeight = window.innerHeight;
+			if (fullHeight > currentHeight) {
+				heightWithKeyboard.value = `${fullHeight - currentHeight}px`;
+			}
+			// document.body.style.maxHeight = heightWithKeyboard.value;
+			// document.body.style.minHeight = heightWithKeyboard.value;
+			// document.documentElement.style.maxHeight = heightWithKeyboard.value;
+			// document.documentElement.style.minHeight = heightWithKeyboard.value;
+			window.scrollTo({ top: 0, behavior: "instant" });
+		}, 100);
+	};
+	const preventScrollWhenSoftKeyboardBlur = e => {
+		heightWithKeyboard.value = "100dvh";
+		// document.body.style.maxHeight = heightWithKeyboard.value;
+		// document.body.style.minHeight = heightWithKeyboard.value;
+		// document.documentElement.style.maxHeight = heightWithKeyboard.value;
+		// document.documentElement.style.minHeight = heightWithKeyboard.value;
+	};
+
+	// Отображение клавиатуры на телефоне
+	// function adjustHeight() {
+	// 	alert(1);
+	// 	const windowHeight = window.innerHeight;
+	// 	console.log($dialogWrapper.value);
+
+	// 	$dialogWrapper.value.style.height = `${windowHeight}px`;
+	// 	document.body.style.height = `${windowHeight}px`;
+	// }
+	// window.addEventListener("resize", adjustHeight);
+	// window.addEventListener("orientationchange", adjustHeight);
+
+	// Initial adjustment
+	// onMounted(() => {
+	// 	adjustHeight();
+	// });
 </script>
 
 <template>
 	<div
 		class="dialog"
 		ref="$dialog"
-		:style="`--dialogWidth: ${dialogWidth}`"
+		:style="`--dialogWidth: ${dialogWidth};height: calc(${heightWithKeyboard} - 81px);`"
 		:class="{
 			dialog_mobile: isMobileSize,
 		}"
@@ -617,6 +668,7 @@
 		</div>
 
 		<div
+			@dblclick="clearSelection"
 			ref="$dialogActions"
 			class="dialog__actions"
 			:class="{
@@ -633,6 +685,9 @@
 				v-model:loaded-documents="uploadedDocuments"
 				v-model:is-resizing="isResizing"
 				v-model:dialog-actions-height="dialogActionsHeight"
+				@focus="preventScrollWhenSoftKeyboardFocus"
+				@focusout="preventScrollWhenSoftKeyboardBlur"
+				@blur="preventScrollWhenSoftKeyboardBlur"
 				class="dialog__input"
 				placeholder="Напишите сообщение…"
 				:add-documents="true"

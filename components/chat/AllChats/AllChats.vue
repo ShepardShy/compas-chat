@@ -20,7 +20,7 @@
 	 * Подключение стора с настройками
 	 */
 	const settingsStore = useSettingsStore();
-	const { isMobileSize } = storeToRefs(settingsStore);
+	const { isMobileSize, heightWithKeyboard } = storeToRefs(settingsStore);
 
 	/**
 	 * Значение инпута для поиска чата
@@ -135,7 +135,7 @@
 			class="chats__wrapper"
 			@scroll.passive
 			:style="{
-				height: 'calc(100dvh - 155px)',
+				height: `calc(${heightWithKeyboard} - 155px)`,
 			}"
 		>
 			<ChatsWithPinnedUsers

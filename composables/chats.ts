@@ -38,6 +38,16 @@ export const showModalMenuItemTitle = (_openModalChatData: UserChatType | GroupC
 	}
 };
 
+// отмена выделения
+export function clearSelection() {
+	if (window.getSelection) {
+		window.getSelection().removeAllRanges();
+	} else {
+		// старый IE
+		document.selection.empty();
+	}
+}
+
 export function setCorrectTitle(_quantity: number, _item: DetailedInfoMenuItem) {
 	const _lastDigit = _quantity.toString().slice(-1);
 	if (+_lastDigit === 1) {
