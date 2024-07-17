@@ -124,7 +124,7 @@
 					</div>
 					<div class="file-message__time-size">
 						<div class="file-message__time">
-							{{ file.date.slice(-5) }}
+							{{ moment(message.date)?.format("H:mm") }}
 						</div>
 						<div class="file-message__size">
 							{{ file.size }}

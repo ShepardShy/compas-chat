@@ -536,7 +536,6 @@
 	onMounted(() => {
 		heightWithKeyboard.value = "100dvh";
 		fullHeight = window.innerHeight;
-		alert(window.innerHeight);
 	});
 	const preventScrollWhenSoftKeyboardFocus = e => {
 		setTimeout(() => {
@@ -686,7 +685,6 @@
 				v-model:is-resizing="isResizing"
 				v-model:dialog-actions-height="dialogActionsHeight"
 				@focus="preventScrollWhenSoftKeyboardFocus"
-				@focusout="preventScrollWhenSoftKeyboardBlur"
 				@blur="preventScrollWhenSoftKeyboardBlur"
 				class="dialog__input"
 				placeholder="Напишите сообщение…"

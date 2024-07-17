@@ -1,0 +1,13 @@
+image: node:10.15.3
+pipelines:
+ default:
+  - step:
+     caches:
+      - node
+     name: Installing
+     script:
+      - npm install
+      - npm run build
+      - apt-get update
+      - apt-get -qq install git-ftp
+      - git ftp push --syncroot ./.output/public --user "plusmario_chat" --passwd "H2veB8t*" "https://plusmario.beget.tech"
