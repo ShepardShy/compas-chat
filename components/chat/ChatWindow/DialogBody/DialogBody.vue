@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import { nextTick } from "vue";
-	import { ChatInput, OwnMessage, OtherMessage, VoiceMessageType, MessageDay, MessageInfo, DaySeparator } from "~/components";
+	import { ChatInput, OwnMessage, OtherMessage, VoiceMessageType, MessageDay, MessageInfo, DaySeparator, MessagePhoto } from "~/components";
 
 	import SendMsgIcon from "assets/icons/send-msg-icon.svg";
 	import MicrophoneIcon from "assets/icons/microphone-icon.svg";
@@ -8,7 +8,6 @@
 	import { useChatsStore } from "~/store/chats";
 	import { useSettingsStore } from "~/store/settings";
 
-	import AppDateInput from "~/components/ui/AppInputs/Date/Date.vue";
 	import type { GroupChatMessageType, MessageType } from "~/types/messages";
 	import { setMessageDay, clearSelection } from "~/composables/chats";
 	import { useDatePickStore } from "~/store/datePick";
@@ -73,7 +72,7 @@
 	const isDialogBodyHeightsLessThenVH = ref(true);
 
 	const scrollToDialogWrapperBottom = () => {
-		$dialogWrapper.value!.scrollTop = $dialogWrapper.value!.scrollHeight;
+		$dialogWrapper.value!.scrollTop = $dialogWrapper.value!?.scrollHeight;
 	};
 
 	const checkIfDialogBodyHeightsLessThenVH = async () => {
@@ -535,22 +534,24 @@
 	let fullHeight;
 	onMounted(() => {
 		heightWithKeyboard.value = "100dvh";
-		fullHeight = window.innerHeight;
+		setTimeout(() => {
+			fullHeight = window.visualViewport.height;
+		}, 100);
 	});
 	const preventScrollWhenSoftKeyboardFocus = e => {
-		console.log(12);
-
 		setTimeout(() => {
-			const currentHeight = window.innerHeight;
+			const currentHeight = window.visualViewport.height;
 			if (fullHeight > currentHeight) {
-				heightWithKeyboard.value = `${fullHeight - currentHeight}px`;
+				heightWithKeyboard.value = `${fullHeight - (fullHeight - currentHeight)}px`;
 			}
 			// document.body.style.maxHeight = heightWithKeyboard.value;
 			// document.body.style.minHeight = heightWithKeyboard.value;
 			// document.documentElement.style.maxHeight = heightWithKeyboard.value;
 			// document.documentElement.style.minHeight = heightWithKeyboard.value;
-			window.scrollTo({ top: 0, behavior: "instant" });
-		}, 100);
+			setTimeout(() => {
+				window.scrollTo({ top: 0, behavior: "instant" });
+			});
+		}, 300);
 	};
 	const preventScrollWhenSoftKeyboardBlur = e => {
 		heightWithKeyboard.value = "100dvh";
@@ -635,6 +636,23 @@
 					<DaySeparator />
 
 					<div
+						class="other-msg__photo"
+						:class="{
+							'other-msg__photo_mobile': isMobileSize,
+						}"
+						:style="{
+							backgroundImage: messagesSortedByDay[0]?.photo,
+						}"
+					>
+						<div
+							v-if="!messagesSortedByDay[0]?.photo"
+							class="other-msg__first-name-letter"
+						>
+							{{ messagesSortedByDay[0]?.firstName ? messagesSortedByDay[0]?.firstName[0] : "" }}
+						</div>
+					</div>
+
+					<div
 						v-for="(message, idx) in messagesSortedByDay?.messages"
 						:key="message.id"
 						class="dialog__message"
@@ -662,10 +680,17 @@
 							:last-of-several-msgs="checkIfLastOfSeveralMessages(idx, messagesSortedByDay?.messages)"
 							:first-of-several-msgs="checkIfFirstOfSeveralMessages(idx, messagesSortedByDay?.messages)"
 							:is-show-name="openedChatData.isGroupChat"
+							:dialog-wrapper-scroll-top="dialogWrapperScrollTop"
+							:dialogWidth="dialogWidth"
 						/>
 					</div>
 				</div>
 			</div>
+			<MessagePhoto
+				:date="'Ж'"
+				:dialog-wrapper-scroll-top="dialogWrapperScrollTop"
+				:dialogWidth="dialogWidth"
+			/>
 		</div>
 
 		<div
@@ -716,23 +741,6 @@
 			@pointerup.left.stop="setVoiceMessage(false, true)"
 			@keydown.enter.prevent.exact="$emit('sendVoiceMessage')"
 		/>
-
-		<!-- <AppDateInput
-			style="position: absolute"
-			:item="{
-				id: 0,
-				required: true,
-				substring: null,
-				type: 'date',
-				title: 'Дата',
-				placeholder: '..____,',
-				value: null,
-				key: 'dateKey',
-				focus: true,
-			}"
-			:is-multiple="false"
-			:is-read-only="false"
-		/> -->
 	</div>
 </template>
 

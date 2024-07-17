@@ -14,10 +14,18 @@
 		lastOfSeveralMsgs: boolean;
 		firstOfSeveralMsgs: boolean;
 		isShowName: boolean;
+		dialogWrapperScrollTop: number;
 	}
 
+	/**
+	 * События
+	 */
+	const emit = defineEmits<{
+		(emit: "update:shownDate", value: string): void;
+	}>();
+
 	const props = defineProps<PropsType>();
-	const { message, lastOfSeveralMsgs, firstOfSeveralMsgs, isShowName } = toRefs(props);
+	const { message, lastOfSeveralMsgs, firstOfSeveralMsgs, isShowName, dialogWrapperScrollTop } = toRefs(props);
 
 	/**
 	 * Подклбчение стора с чатами
@@ -84,6 +92,50 @@
 			}, 10);
 		}
 	});
+
+	const $messagePhoto = ref<HTMLDivElement>();
+	const dialogBody = ref();
+	const dialogWrapper = ref();
+	const topPosition = ref();
+
+	onMounted(() => {
+		dialogWrapper.value = $messagePhoto.value.closest(".dialog__wrapper");
+		dialogBody.value = $messagePhoto.value.closest(".dialog__body");
+
+		if (dialogBody.value?.offsetTop < dialogWrapper.value?.offsetTop) {
+			topPosition.value = dialogWrapper.value.offsetTop + "px";
+		} else {
+			topPosition.value = "0";
+		}
+	});
+	watch(
+		() => dialogWrapperScrollTop.value,
+		() => {
+			requestAnimationFrame(setTopPosition);
+		}
+	);
+
+	/**
+	 * Проверяет как далеко скролл сообщений и задает значение для div, который динамически отражает дату
+	 */
+
+	const setTopPosition = () => {
+		const nextDatePosition = dialogBody.value.nextElementSibling?.offsetTop;
+		const currentShownDatePosition = dialogBody.value.offsetTop + 1;
+
+		if (dialogWrapperScrollTop.value > currentShownDatePosition && nextDatePosition && dialogWrapperScrollTop.value < nextDatePosition - 41) {
+			emit("update:shownDate", chatUser.value.photo ? chatUser.value.photo : chatUser?.value.firstName[0]);
+			return;
+		} else if (dialogWrapperScrollTop.value > currentShownDatePosition && +lastDate.value - 41) {
+			emit("update:shownDate", chatUser.value.photo ? chatUser.value.photo : chatUser?.value.firstName[0]);
+		}
+
+		// console.log((dialogWrapperScrollTop.value = nextDatePosition));
+		// if (dialogWrapperScrollTop.value == nextDatePosition) {
+		// 	console.log(1234);
+		// 	emit("update:shownDate", "");
+		// }
+	};
 </script>
 
 <template>
@@ -100,6 +152,7 @@
 	>
 		<div
 			class="other-msg__photo"
+			ref="$messagePhoto"
 			:class="{
 				'other-msg__photo_mobile': isMobileSize,
 			}"
@@ -155,6 +208,6 @@
 	</div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 	@import "OtherMessage";
 </style>

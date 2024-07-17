@@ -26,6 +26,7 @@
 	// white-space: normal;
 	overflow-y: auto;
 	white-space: pre-wrap;
+	position: relative;
 	// &::-webkit-scrollbar {
 	// 	display: none;
 	// }
@@ -67,6 +68,10 @@
 
 .input__body_voice::placeholder {
 	text-align: center;
+	@media (max-width: 440px) {
+		position: relative;
+		left: 20%;
+	}
 }
 
 .input__add-doc-icon,

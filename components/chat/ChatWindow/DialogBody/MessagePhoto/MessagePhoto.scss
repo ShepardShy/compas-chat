@@ -1,0 +1,7 @@
+@use "~/assets/styles/_variables.scss" as variables;
+
+.message__photo {
+	position: sticky;
+	bottom: 1px;
+	left: 25px;
+}

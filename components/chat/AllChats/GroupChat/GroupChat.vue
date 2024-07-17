@@ -39,7 +39,6 @@
 	 */
 	const lastMessage = computed<GroupChatMessageType | {}>(() => {
 		if (chatData.value.messages.length) {
-			console.log(chatData.value.messages[chatData.value.messages.length - 1]);
 			return chatData.value.messages[chatData.value.messages.length - 1];
 		}
 
