@@ -538,6 +538,8 @@
 		fullHeight = window.innerHeight;
 	});
 	const preventScrollWhenSoftKeyboardFocus = e => {
+		console.log(12);
+
 		setTimeout(() => {
 			const currentHeight = window.innerHeight;
 			if (fullHeight > currentHeight) {
