@@ -640,7 +640,7 @@
 							</div>
 						</div> -->
 						<MessagePhoto
-							v-if="checkIfLastOfSeveralMessages(userIndex, userMessages.messages[0].messages) && userMessages.userId != userId"
+							v-if="checkIfLastOfSeveralMessages(userIndex, userMessages.messages[0].messages) && userMessages.userId != userId && userMessages.messages[0].type !== 'message-info'"
 							:date="userMessages.messages[0]?.firstName ? userMessages.messages[0]?.firstName[0] : ''"
 							:dialog-wrapper-scroll-top="dialogWrapperScrollTop"
 							:dialogWidth="dialogWidth"
