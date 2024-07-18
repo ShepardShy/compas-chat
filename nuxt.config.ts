@@ -30,7 +30,7 @@ export default defineNuxtConfig({
 
 	app: {
 		head: {
-			viewport: "initial-scale=1, maximum-scale=1, user-scalable=0",
+			viewport: "width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1, user-scalable=0, interactive-widget=resizes-content",
 		},
 	},
 

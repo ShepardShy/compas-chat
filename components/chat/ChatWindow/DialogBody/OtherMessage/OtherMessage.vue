@@ -93,49 +93,49 @@
 		}
 	});
 
-	const $messagePhoto = ref<HTMLDivElement>();
-	const dialogBody = ref();
-	const dialogWrapper = ref();
-	const topPosition = ref();
+	// const $messagePhoto = ref<HTMLDivElement>();
+	// const dialogBody = ref();
+	// const dialogWrapper = ref();
+	// const topPosition = ref();
 
-	onMounted(() => {
-		dialogWrapper.value = $messagePhoto.value.closest(".dialog__wrapper");
-		dialogBody.value = $messagePhoto.value.closest(".dialog__body");
+	// onMounted(() => {
+	// 	dialogWrapper.value = $messagePhoto.value?.closest(".dialog__wrapper");
+	// 	dialogBody.value = $messagePhoto.value?.closest(".dialog__body");
 
-		if (dialogBody.value?.offsetTop < dialogWrapper.value?.offsetTop) {
-			topPosition.value = dialogWrapper.value.offsetTop + "px";
-		} else {
-			topPosition.value = "0";
-		}
-	});
-	watch(
-		() => dialogWrapperScrollTop.value,
-		() => {
-			requestAnimationFrame(setTopPosition);
-		}
-	);
+	// 	if (dialogBody.value?.offsetTop < dialogWrapper.value?.offsetTop) {
+	// 		topPosition.value = dialogWrapper.value.offsetTop + "px";
+	// 	} else {
+	// 		topPosition.value = "0";
+	// 	}
+	// });
+	// watch(
+	// 	() => dialogWrapperScrollTop.value,
+	// 	() => {
+	// 		requestAnimationFrame(setTopPosition);
+	// 	}
+	// );
 
 	/**
 	 * Проверяет как далеко скролл сообщений и задает значение для div, который динамически отражает дату
 	 */
 
-	const setTopPosition = () => {
-		const nextDatePosition = dialogBody.value.nextElementSibling?.offsetTop;
-		const currentShownDatePosition = dialogBody.value.offsetTop + 1;
+	// const setTopPosition = () => {
+	// 	const nextDatePosition = dialogBody.value?.nextElementSibling?.offsetTop;
+	// 	const currentShownDatePosition = dialogBody.value.offsetTop + 1;
 
-		if (dialogWrapperScrollTop.value > currentShownDatePosition && nextDatePosition && dialogWrapperScrollTop.value < nextDatePosition - 41) {
-			emit("update:shownDate", chatUser.value.photo ? chatUser.value.photo : chatUser?.value.firstName[0]);
-			return;
-		} else if (dialogWrapperScrollTop.value > currentShownDatePosition && +lastDate.value - 41) {
-			emit("update:shownDate", chatUser.value.photo ? chatUser.value.photo : chatUser?.value.firstName[0]);
-		}
+	// 	if (dialogWrapperScrollTop.value > currentShownDatePosition && nextDatePosition && dialogWrapperScrollTop.value < nextDatePosition - 41) {
+	// 		emit("update:shownDate", chatUser.value.photo ? chatUser.value.photo : chatUser?.value.firstName[0]);
+	// 		return;
+	// 	} else if (dialogWrapperScrollTop.value > currentShownDatePosition - 41) {
+	// 		emit("update:shownDate", chatUser.value.photo ? chatUser.value.photo : chatUser?.value.firstName[0]);
+	// 	}
 
-		// console.log((dialogWrapperScrollTop.value = nextDatePosition));
-		// if (dialogWrapperScrollTop.value == nextDatePosition) {
-		// 	console.log(1234);
-		// 	emit("update:shownDate", "");
-		// }
-	};
+	// 	// console.log((dialogWrapperScrollTop.value = nextDatePosition));
+	// 	// if (dialogWrapperScrollTop.value == nextDatePosition) {
+	// 	// 	console.log(1234);
+	// 	// 	emit("update:shownDate", "");
+	// 	// }
+	// };
 </script>
 
 <template>
@@ -150,7 +150,7 @@
 			maxWidth: message.type === 'image' && isMobileSize && '335px',
 		}"
 	>
-		<div
+		<!-- <div
 			class="other-msg__photo"
 			ref="$messagePhoto"
 			:class="{
@@ -166,7 +166,7 @@
 			>
 				{{ chatUser?.firstName ? chatUser?.firstName[0] : "" }}
 			</div>
-		</div>
+		</div> -->
 
 		<div
 			class="other-msg__body"

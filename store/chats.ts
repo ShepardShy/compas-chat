@@ -57,19 +57,34 @@ export const useChatsStore = defineStore("chats", {
 			const messages = chatData?.messages;
 			const preparedMessages: Array<{ date: string; messages: UserChatType | GroupChatType | undefined }> = [];
 
-			for (let i = 0; i < messages?.length; i++) {
-				if (i === 0) {
-					preparedMessages.push({
-						date: messages[i]?.date?.slice(0, 10),
-						messages: [messages[i]],
-					});
-				} else if (messages[i]?.date.slice(0, 10) === preparedMessages[preparedMessages.length - 1].date) {
-					preparedMessages[preparedMessages.length - 1].messages.push(messages[i]);
-				} else {
-					preparedMessages.push({
-						date: messages[i]?.date.slice(0, 10),
-						messages: [messages[i]],
-					});
+			if (messages) {
+				for (let i = 0; i < messages.length; i++) {
+					const messageDate = messages[i]?.date?.slice(0, 10);
+					const userId = messages[i]?.userId;
+
+					if (i === 0) {
+						preparedMessages.push({
+							date: messageDate,
+							messages: [{ userId: userId, messages: [messages[i]] }],
+						});
+					} else {
+						const lastPreparedMessage = preparedMessages[preparedMessages.length - 1];
+
+						if (messageDate === lastPreparedMessage.date) {
+							const userMessages = lastPreparedMessage.messages.find(m => m.userId === userId);
+
+							if (userMessages) {
+								userMessages.messages.push(messages[i]);
+							} else {
+								lastPreparedMessage.messages.push({ userId: userId, messages: [messages[i]] });
+							}
+						} else {
+							preparedMessages.push({
+								date: messageDate,
+								messages: [{ userId: userId, messages: [messages[i]] }],
+							});
+						}
+					}
 				}
 			}
 

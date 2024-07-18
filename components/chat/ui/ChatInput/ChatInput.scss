@@ -69,8 +69,10 @@
 .input__body_voice::placeholder {
 	text-align: center;
 	@media (max-width: 440px) {
+		text-align: left;
 		position: relative;
-		left: 20%;
+		display: inline;
+		left: 50%;
 	}
 }
 

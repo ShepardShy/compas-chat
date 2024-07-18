@@ -44,7 +44,7 @@ h6 {
 #__nuxt,
 #__nuxt > div {
 	height: 100%;
-	overflow: hidden;
+	overflow: clip;
 }
 
 * {
@@ -72,7 +72,7 @@ body {
 	color: variables.$color-black;
 	font-family: PT Sans, sans-serif;
 	overflow: hidden;
-	height: 100dvh;
+	height: 100svh;
 	-webkit-overflow-scrolling: touch;
 	overscroll-behavior: none;
 	overscroll-behavior-block: none;

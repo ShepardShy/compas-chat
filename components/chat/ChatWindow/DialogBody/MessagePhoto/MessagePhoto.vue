@@ -26,25 +26,6 @@
 	const datePickStore = useDatePickStore();
 
 	/**
-	 * Открытие модалки для выбора даты
-	 */
-	const openModalToDatePick = () => {
-		const currentUserData = {
-			lastTimeActive: formattedDateToday(),
-		};
-
-		// chatsStore.$patch(
-		// 	state =>
-		// 		(state.temporalStorageForGroupChat = {
-		// 			...state.temporalStorageForGroupChat,
-		// 			users: [currentUserData],
-		// 		})
-		// );
-		datePickStore.date = date.value;
-		chatsStore.isDatePickModalOpen = true;
-	};
-
-	/**
 	 * Подключение стора с настройками
 	 */
 	const settingsStore = useSettingsStore();
