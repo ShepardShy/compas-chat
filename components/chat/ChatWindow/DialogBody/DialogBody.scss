@@ -76,7 +76,17 @@
 }
 
 .dialog__messages-wrapper {
+	display: grid;
+	grid-template-columns: 36px 1fr;
 	position: relative;
+	margin-left: 25px;
+}
+
+.dialog__photo-wrapper {
+	display: flex;
+	align-items: start;
+	height: 100%;
+	justify-content: flex-start;
 }
 
 .dialog__wrapper_mobile {

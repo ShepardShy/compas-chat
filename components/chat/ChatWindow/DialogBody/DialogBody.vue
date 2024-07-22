@@ -623,60 +623,48 @@
 						v-for="(userMessages, userIndex) in messagesSortedByDay.messages"
 						:key="userIndex"
 					>
-						<!-- <div
-							class="other-msg__photo"
-							:class="{
-								'other-msg__photo_mobile': isMobileSize,
-							}"
-							:style="{
-								backgroundImage: userMessages.messages[0]?.photo,
-							}"
-						>
-							<div
-								v-if="!userMessages.messages[0]?.photo"
-								class="other-msg__first-name-letter"
-							>
-								{{ userMessages.messages[0]?.firstName ? userMessages.messages[0]?.firstName[0] : "" }}
-							</div>
-						</div> -->
-						<MessagePhoto
-							v-if="checkIfLastOfSeveralMessages(userIndex, userMessages.messages[0].messages) && userMessages.userId != userId && userMessages.messages[0].type !== 'message-info'"
-							:date="userMessages.messages[0]?.firstName ? userMessages.messages[0]?.firstName[0] : ''"
-							:dialog-wrapper-scroll-top="dialogWrapperScrollTop"
-							:dialogWidth="dialogWidth"
-						/>
-
-						<div
-							v-for="(message, idx) in userMessages.messages"
-							:key="message.id"
-							class="dialog__message"
-							:class="{ 'message-start': message.userId != userId, 'message-end': message.userId == userId }"
-							:style="{
-								justifyContent: message.type === 'message-info' ? 'center' : message.userId == userId ? 'flex-end' : 'flex-start',
-							}"
-						>
-							<MessageInfo
-								v-if="message.type === 'message-info'"
-								:message="message"
-								:is-next-message-info-message="checkIfLastOfSeveralMessages(idx, userMessages.messages)"
-							/>
-
-							<OwnMessage
-								v-if="message.userId === userId && message?.type !== 'message-info'"
-								:message="message"
-								:last-of-several-msgs="checkIfLastOfSeveralMessages(idx, userMessages.messages)"
-							/>
-
-							<OtherMessage
-								:isFirst="idx == 0"
-								v-if="message.userId !== userId && message?.type !== 'message-info'"
-								:message="message"
-								:last-of-several-msgs="checkIfLastOfSeveralMessages(idx, userMessages.messages)"
-								:first-of-several-msgs="checkIfFirstOfSeveralMessages(idx, userMessages.messages)"
-								:is-show-name="openedChatData.isGroupChat"
+						<div class="dialog__photo-wrapper">
+							<MessagePhoto
+								v-if="checkIfLastOfSeveralMessages(userIndex, userMessages.messages[0].messages) && userMessages.userId != userId && userMessages.messages[0].type !== 'message-info'"
+								:date="userMessages.messages[0]?.firstName ? userMessages.messages[0]?.firstName[0] : ''"
 								:dialog-wrapper-scroll-top="dialogWrapperScrollTop"
 								:dialogWidth="dialogWidth"
 							/>
+						</div>
+
+						<div class="dialog__messages">
+							<div
+								v-for="(message, idx) in userMessages.messages"
+								:key="message.id"
+								class="dialog__message"
+								:class="{ 'message-start': message.userId != userId, 'message-end': message.userId == userId }"
+								:style="{
+									justifyContent: message.type === 'message-info' ? 'center' : message.userId == userId ? 'flex-end' : 'flex-start',
+								}"
+							>
+								<MessageInfo
+									v-if="message.type === 'message-info'"
+									:message="message"
+									:is-next-message-info-message="checkIfLastOfSeveralMessages(idx, userMessages.messages)"
+								/>
+
+								<OwnMessage
+									v-if="message.userId === userId && message?.type !== 'message-info'"
+									:message="message"
+									:last-of-several-msgs="checkIfLastOfSeveralMessages(idx, userMessages.messages)"
+								/>
+
+								<OtherMessage
+									:isFirst="idx == 0"
+									v-if="message.userId !== userId && message?.type !== 'message-info'"
+									:message="message"
+									:last-of-several-msgs="checkIfLastOfSeveralMessages(idx, userMessages.messages)"
+									:first-of-several-msgs="checkIfFirstOfSeveralMessages(idx, userMessages.messages)"
+									:is-show-name="openedChatData.isGroupChat"
+									:dialog-wrapper-scroll-top="dialogWrapperScrollTop"
+									:dialogWidth="dialogWidth"
+								/>
+							</div>
 						</div>
 					</div>
 				</div>

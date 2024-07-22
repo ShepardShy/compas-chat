@@ -4,7 +4,10 @@
 }
 
 .text-msg__message {
-	user-select: text;
+	user-select: none;
+	& span {
+		user-select: text;
+	}
 }
 
 .text-msg__time-and-status {

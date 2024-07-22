@@ -464,7 +464,6 @@
 				:style="{
 					width: width,
 					height: currentInputHeight + 'px',
-					paddingTop: isSafari ? '11px' : '11px',
 				}"
 				@input="onTextareaInput($event)"
 				@keydown.enter.prevent.exact="uploadedImages.length > 0 || uploadedDocuments.length > 0 || inputValue.trim().length > 0 ? emit('sendMessage') : 0"
@@ -486,7 +485,7 @@
 				:style="{
 					width: width,
 					height: currentInputHeight + 'px',
-					paddingTop: isSafari ? '11px' : '11px',
+					paddingTop: isSafari ? '10px' : '10px',
 				}"
 				@input="onTextareaInput($event)"
 			/>

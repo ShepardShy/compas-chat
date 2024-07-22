@@ -1,40 +1,40 @@
-@use './_mixins.scss' as mixins;
+@use "./_mixins.scss" as mixins;
 
 /* MyriadPro */
-@include mixins.font('MyriadPro', normal, 300, '~/assets/fonts/MyriadPro/MyriadPro-Light.otf', 'opentype');
-@include mixins.font('MyriadPro', normal, 400, '~/assets/fonts/MyriadPro/MYRIADPRO-REGULAR.OTF', 'opentype');
-@include mixins.font('MyriadPro', normal, 500, '~/assets/fonts/MyriadPro/MYRIADPRO-COND.OTF', 'opentype');
-@include mixins.font('MyriadPro', italic, 500, '~/assets/fonts/MyriadPro/MYRIADPRO-CONDIT.OTF', 'opentype');
-@include mixins.font('MyriadPro', normal, 600, '~/assets/fonts/MyriadPro/MYRIADPRO-SEMIBOLD.OTF', 'opentype');
-@include mixins.font('MyriadPro', italic, 600, '~/assets/fonts/MyriadPro/MYRIADPRO-SEMIBOLDIT.OTF', 'opentype');
-@include mixins.font('MyriadPro', normal, 700, '~/assets/fonts/MyriadPro/MYRIADPRO-BOLD.OTF', 'opentype');
-@include mixins.font('MyriadPro', italic, 700, '~/assets/fonts/MyriadPro/MYRIADPRO-BOLDCOND.OTF', 'opentype');
-@include mixins.font('MyriadPro', italic, 700, '~/assets/fonts/MyriadPro/MYRIADPRO-BOLDCONDIT.OTF', 'opentype');
+@include mixins.font("MyriadPro", normal, 300, "~/assets/fonts/MyriadPro/MyriadPro-Light.ttf", "truetype");
+@include mixins.font("MyriadPro", normal, 400, "~/assets/fonts/MyriadPro/MYRIADPRO-REGULAR.ttf", "truetype");
+@include mixins.font("MyriadPro", normal, 500, "~/assets/fonts/MyriadPro/MYRIADPRO-COND.ttf", "truetype");
+@include mixins.font("MyriadPro", italic, 500, "~/assets/fonts/MyriadPro/MYRIADPRO-CONDIT.ttf", "truetype");
+@include mixins.font("MyriadPro", normal, 600, "~/assets/fonts/MyriadPro/MYRIADPRO-SEMIBOLD.ttf", "truetype");
+@include mixins.font("MyriadPro", italic, 600, "~/assets/fonts/MyriadPro/MYRIADPRO-SEMIBOLDIT.ttf", "truetype");
+@include mixins.font("MyriadPro", normal, 700, "~/assets/fonts/MyriadPro/MYRIADPRO-BOLD.ttf", "truetype");
+@include mixins.font("MyriadPro", italic, 700, "~/assets/fonts/MyriadPro/MYRIADPRO-BOLDCOND.ttf", "opentype");
+@include mixins.font("MyriadPro", italic, 700, "~/assets/fonts/MyriadPro/MYRIADPRO-BOLDCONDIT.ttf", "truetype");
 
 /* SemiBold */
-@include mixins.font('Verdana', normal, 400, '~/assets/fonts/Verdana/Verdana.ttf', 'truetype');
-@include mixins.font('Verdana', italic, 400, '~/assets/fonts/Verdana/Verdana-Italic.ttf', 'truetype');
-@include mixins.font('Verdana', normal, 600, '~/assets/fonts/Verdana/Verdana-Bold.ttf', 'truetype');
-@include mixins.font('Verdana', italic, 600, '~/assets/fonts/Verdana/Verdana-BoldItalic.ttf', 'truetype');
+@include mixins.font("Verdana", normal, 400, "~/assets/fonts/Verdana/Verdana.ttf", "truetype");
+@include mixins.font("Verdana", italic, 400, "~/assets/fonts/Verdana/Verdana-Italic.ttf", "truetype");
+@include mixins.font("Verdana", normal, 600, "~/assets/fonts/Verdana/Verdana-Bold.ttf", "truetype");
+@include mixins.font("Verdana", italic, 600, "~/assets/fonts/Verdana/Verdana-BoldItalic.ttf", "truetype");
 
 /* SemiBold */
-@include mixins.font('PT Sans', normal, 400, '~/assets/fonts/PT/PT_Sans-Web-Regular.ttf', 'truetype');
-@include mixins.font('PT Sans', italic, 400, '~/assets/fonts/PT/PT_Sans-Web-Italic.ttf', 'truetype');
-@include mixins.font('PT Sans', normal, 700, '~/assets/fonts/PT/PT_Sans-Web-Bold.ttf', 'truetype');
-@include mixins.font('PT Sans', italic, 700, '~/assets/fonts/PT/PT_Sans-Web-BoldItalic.ttf', 'truetype');
+@include mixins.font("PT Sans", normal, 400, "~/assets/fonts/PT/PT_Sans-Web-Regular.ttf", "truetype");
+@include mixins.font("PT Sans", italic, 400, "~/assets/fonts/PT/PT_Sans-Web-Italic.ttf", "truetype");
+@include mixins.font("PT Sans", normal, 700, "~/assets/fonts/PT/PT_Sans-Web-Bold.ttf", "truetype");
+@include mixins.font("PT Sans", italic, 700, "~/assets/fonts/PT/PT_Sans-Web-BoldItalic.ttf", "truetype");
 
 /* VAG */
-@include mixins.font('VAG', normal, 600, '~/assets/fonts/VAG/VAG_Rounded_TL.ttf', 'truetype');
+@include mixins.font("VAG", normal, 600, "~/assets/fonts/VAG/VAG_Rounded_TL.ttf", "truetype");
 
 /* Comfortaa */
-@include mixins.font('Comfortaa', normal, 300, '~/assets/fonts/Comfortaa/static/Comfortaa-Light.ttf', 'truetype');
-@include mixins.font('Comfortaa', normal, 400, '~/assets/fonts/Comfortaa/static/Comfortaa-Regular.ttf', 'truetype');
-@include mixins.font('Comfortaa', normal, 500, '~/assets/fonts/Comfortaa/static/Comfortaa-Medium.ttf', 'truetype');
-@include mixins.font('Comfortaa', normal, 600, '~/assets/fonts/Comfortaa/static/Comfortaa-SemiBold.ttf', 'truetype');
-@include mixins.font('Comfortaa', normal, 700, '~/assets/fonts/Comfortaa/static/Comfortaa-Bold.ttf', 'truetype');
+@include mixins.font("Comfortaa", normal, 300, "~/assets/fonts/Comfortaa/static/Comfortaa-Light.ttf", "truetype");
+@include mixins.font("Comfortaa", normal, 400, "~/assets/fonts/Comfortaa/static/Comfortaa-Regular.ttf", "truetype");
+@include mixins.font("Comfortaa", normal, 500, "~/assets/fonts/Comfortaa/static/Comfortaa-Medium.ttf", "truetype");
+@include mixins.font("Comfortaa", normal, 600, "~/assets/fonts/Comfortaa/static/Comfortaa-SemiBold.ttf", "truetype");
+@include mixins.font("Comfortaa", normal, 700, "~/assets/fonts/Comfortaa/static/Comfortaa-Bold.ttf", "truetype");
 
 /* Montserrat */
-@include mixins.font('Montserrat', normal, 300, '~/assets/fonts/Montserrat/static/Montserrat-Light.ttf', 'truetype');
-@include mixins.font('Montserrat', italic, 300, '~/assets/fonts/Montserrat/static/Montserrat-LightItalic.ttf', 'truetype');
-@include mixins.font('Montserrat', normal, 400, '~/assets/fonts/Montserrat/static/Montserrat-Regular.ttf', 'truetype');
-@include mixins.font('Montserrat', italic, 400, '~/assets/fonts/Montserrat/static/Montserrat-Italic.ttf', 'truetype');
+@include mixins.font("Montserrat", normal, 300, "~/assets/fonts/Montserrat/static/Montserrat-Light.ttf", "truetype");
+@include mixins.font("Montserrat", italic, 300, "~/assets/fonts/Montserrat/static/Montserrat-LightItalic.ttf", "truetype");
+@include mixins.font("Montserrat", normal, 400, "~/assets/fonts/Montserrat/static/Montserrat-Regular.ttf", "truetype");
+@include mixins.font("Montserrat", italic, 400, "~/assets/fonts/Montserrat/static/Montserrat-Italic.ttf", "truetype");
