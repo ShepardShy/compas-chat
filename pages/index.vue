@@ -215,6 +215,8 @@
 	 * @param _event
 	 */
 	const closeAllModal = (_event: MouseEvent) => {
+		console.log(123);
+
 		_event.preventDefault();
 
 		chatsStore.closeAddUserModal();

@@ -52,8 +52,6 @@
 	 * Информация об активности пользователя
 	 */
 	const userActiveDateAndTime = computed(() => {
-		console.log(userData.value);
-
 		if (userData.value?.isActive) {
 			return "В сети";
 		} else {
@@ -111,7 +109,7 @@
 			/>
 			<div class="group-chat-user__info">
 				<div
-					@pointerup.left.stop="modalStore.showModal"
+					@click="modalStore.showModal"
 					class="group-chat-user__name"
 				>
 					{{ userFullName }}
@@ -128,14 +126,14 @@
 				:class="{
 					'action__add-user_active': isInOpenGroup,
 				}"
-				@pointerup.left.stop="toggleInGroup"
+				@click.stop="toggleInGroup"
 			>
 				<CheckIcon class="action__add-user-icon" />
 			</div>
 			<DeleteIcon
 				v-if="isDeleteIcon"
 				class="group-chat-user__delete"
-				@pointerup.left.stop="deleteUserFromGroupBeforeSave"
+				@click.stop="deleteUserFromGroupBeforeSave"
 			/>
 		</div>
 	</div>

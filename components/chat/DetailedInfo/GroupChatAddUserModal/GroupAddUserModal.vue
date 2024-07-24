@@ -230,6 +230,7 @@
 
 <template>
 	<div
+		@click.stop="console.log(1)"
 		class="add-user"
 		:class="{
 			'add-user_mobile': isMobileSize,
@@ -240,18 +241,17 @@
 			:class="{
 				'add-user__modal_mobile': isMobileSize,
 			}"
-			@pointerup.left.stop.stop
 		>
 			<BackIcon
 				class="add-user__back-icon"
-				@pointerup.left.stop="closeModal"
+				@click.stop="closeModal"
 			/>
 
 			<AppH3 class="add-user__title"> Добавить в группу </AppH3>
 
 			<CloseIcon
 				class="add-user__close-icon"
-				@pointerup.left.stop="closeAllModals"
+				@click.stop="closeAllModals"
 			/>
 
 			<ChatInput
@@ -287,7 +287,7 @@
 			<div class="add-user__btns">
 				<AppButton
 					class="add-user__btn"
-					@pointerup.left.stop="saveChanges"
+					@click.stop="saveChanges"
 				>
 					Добавить
 				</AppButton>

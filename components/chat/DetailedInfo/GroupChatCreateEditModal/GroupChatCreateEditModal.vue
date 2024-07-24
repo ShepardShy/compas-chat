@@ -278,11 +278,11 @@
 			:class="{
 				'edit-group__modal_mobile': isMobileSize,
 			}"
-			@pointerup.left.stop
+			@click.stop
 		>
 			<CloseIcon
 				class="edit-group__close-icon"
-				@pointerup.left.stop="closeModal"
+				@click.stop="closeModal"
 			/>
 
 			<AppH3 class="edit-group__title">
@@ -322,7 +322,7 @@
 					</div>
 					<AddUserIcon
 						class="edit-group__add-user"
-						@pointerup.left.stop="openAddUserModal"
+						@click.stop="openAddUserModal"
 					/>
 				</div>
 
@@ -354,7 +354,7 @@
 			<div
 				v-if="!isGroupChatCreateModalOpen"
 				class="edit-group__item edit-group__item_last"
-				@pointerup.left.stop="onClickDeleteChat(deleteMenuItem)"
+				@click.stop="onClickDeleteChat(deleteMenuItem)"
 			>
 				<DeleteIcon />
 
@@ -364,13 +364,13 @@
 			<div class="edit-group__btns">
 				<AppButton
 					class="edit-group__btn"
-					@pointerup.left.stop="saveChanges"
+					@click.stop="saveChanges"
 				>
 					{{ isGroupChatCreateModalOpen ? "Создать" : "Сохранить" }}
 				</AppButton>
 				<AppButton
 					class="edit-group__btn"
-					@pointerup.left.stop="closeModal"
+					@click.stop="closeModal"
 				>
 					Отменить
 				</AppButton>

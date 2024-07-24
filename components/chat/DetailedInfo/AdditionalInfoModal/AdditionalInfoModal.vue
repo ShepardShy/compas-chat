@@ -194,6 +194,7 @@
 
 <template>
 	<div
+		@click.stop
 		class="add-info"
 		:class="{
 			'add-info_mobile': isMobileSize,
@@ -206,26 +207,27 @@
 			}"
 			@pointerup.left.stop
 		>
-			<BackIcon
-				v-if="isMobileSize"
-				class="add-info__back-icon"
-				@pointerup.left.stop="closeModal"
-			/>
+			<div class="add-ingo__title-wrapper">
+				<BackIcon
+					v-if="isMobileSize"
+					class="add-info__back-icon"
+					@pointerup.left.stop="closeModal"
+				/>
+				<AppH3
+					class="add-info__title"
+					:class="{
+						'add-info__title_mobile': isMobileSize,
+					}"
+				>
+					Подробная информация
+				</AppH3>
+			</div>
 
 			<CloseIcon
 				v-if="!isMobileSize"
 				class="add-info__close-icon"
 				@pointerup.left.stop="closeModal"
 			/>
-
-			<AppH3
-				class="add-info__title"
-				:class="{
-					'add-info__title_mobile': isMobileSize,
-				}"
-			>
-				Подробная информация
-			</AppH3>
 
 			<ChatPhoto
 				class="add-info__img"

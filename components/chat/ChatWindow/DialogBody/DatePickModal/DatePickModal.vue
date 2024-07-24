@@ -121,6 +121,7 @@
 
 <template>
 	<div
+		@click.stop
 		class="date-pick"
 		:class="{
 			'date-pick_mobile': isMobileSize,

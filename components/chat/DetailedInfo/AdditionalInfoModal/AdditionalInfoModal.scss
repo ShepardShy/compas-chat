@@ -39,9 +39,9 @@
 
 .add-info__back-icon {
 	height: 25px;
-	position: absolute;
-	top: 25px;
-	left: 10px;
+	// position: absolute;
+	// top: 25px;
+	// left: 10px;
 	cursor: pointer;
 	color: #0584fe;
 	transition: 0.2s all;
@@ -51,17 +51,24 @@
 	color: #1253a2;
 }
 
+.add-ingo__title-wrapper {
+	display: flex;
+	gap: 10px;
+	padding-left: 10px;
+	align-items: center;
+	margin-bottom: 25px;
+}
+
 .add-info__title {
 	font-size: 20px;
 	font-weight: 400;
 	color: variables.$color-black;
-	margin-bottom: 25px;
 	padding-left: 25px;
 	padding-right: 25px;
 }
 
 .add-info__title_mobile {
-	padding-left: 45px;
+	padding-left: 0;
 }
 
 .menu__active {

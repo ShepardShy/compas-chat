@@ -42,6 +42,7 @@
 
 <template>
 	<div
+		@click.stop
 		class="message-type"
 		:class="{
 			'message-type_mobile': isMobileSize,

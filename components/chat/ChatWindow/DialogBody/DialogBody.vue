@@ -199,7 +199,7 @@
 
 	const dialogWidth = ref(`${0}px`);
 	const setDialogWidth = () => {
-		dialogWidth.value = $dialog.value.offsetWidth - 5 + "px";
+		dialogWidth.value = $dialog.value?.offsetWidth - 5 + "px";
 	};
 	/**
 	 * Монтирование компонента
