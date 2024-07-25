@@ -52,6 +52,11 @@ export const useChatsStore = defineStore("chats", {
 				return acc;
 			}, 0);
 		},
+		openedChatDataMessages: (state): UserChatType | GroupChatType | undefined => {
+			const chatData = state.chats.find(chat => chat.id === state.openedChatId);
+			const messages = chatData?.messages;
+			return { messages };
+		},
 		openedChatData: (state): UserChatType | GroupChatType | undefined => {
 			const chatData = state.chats.find(chat => chat.id === state.openedChatId);
 			const messages = chatData?.messages;
@@ -87,11 +92,6 @@ export const useChatsStore = defineStore("chats", {
 					}
 				}
 			}
-
-			console.log({
-				...chatData,
-				messages: preparedMessages,
-			});
 
 			return {
 				...chatData,

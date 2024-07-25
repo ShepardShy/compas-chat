@@ -74,6 +74,7 @@
 		} else {
 			topPosition.value = "0";
 		}
+		setTopPosition();
 	});
 	watch(
 		() => dialogWrapperScrollTop.value,
@@ -97,11 +98,9 @@
 			emit("update:shownDate", date.value);
 		}
 
-		// console.log((dialogWrapperScrollTop.value = nextDatePosition));
-		// if (dialogWrapperScrollTop.value == nextDatePosition) {
-		// 	console.log(1234);
-		// 	emit("update:shownDate", "");
-		// }
+		if (dialogWrapperScrollTop.value == nextDatePosition) {
+			emit("update:shownDate", "");
+		}
 	};
 </script>
 

@@ -43,19 +43,6 @@
 	 */
 	const chatUser = computed<UserChatType>(() => chats.value.find(chat => chat.userId === message.value.userId));
 
-	/***
-	 * Фото пользователя или если его нет заливка гралиентом
-	 */
-	const chatPhoto = computed<string>(() => {
-		if (!lastOfSeveralMsgs.value) return "none";
-
-		if (chatUser.value.photo) {
-			return `url(${chatUser.value.photo})`;
-		} else {
-			return "linear-gradient(to bottom, #71d2fc 2%, #9490ff 100%)";
-		}
-	});
-
 	const modalStore = useModalStore();
 
 	// Просмотр сообщения
@@ -92,50 +79,6 @@
 			}, 10);
 		}
 	});
-
-	// const $messagePhoto = ref<HTMLDivElement>();
-	// const dialogBody = ref();
-	// const dialogWrapper = ref();
-	// const topPosition = ref();
-
-	// onMounted(() => {
-	// 	dialogWrapper.value = $messagePhoto.value?.closest(".dialog__wrapper");
-	// 	dialogBody.value = $messagePhoto.value?.closest(".dialog__body");
-
-	// 	if (dialogBody.value?.offsetTop < dialogWrapper.value?.offsetTop) {
-	// 		topPosition.value = dialogWrapper.value.offsetTop + "px";
-	// 	} else {
-	// 		topPosition.value = "0";
-	// 	}
-	// });
-	// watch(
-	// 	() => dialogWrapperScrollTop.value,
-	// 	() => {
-	// 		requestAnimationFrame(setTopPosition);
-	// 	}
-	// );
-
-	/**
-	 * Проверяет как далеко скролл сообщений и задает значение для div, который динамически отражает дату
-	 */
-
-	// const setTopPosition = () => {
-	// 	const nextDatePosition = dialogBody.value?.nextElementSibling?.offsetTop;
-	// 	const currentShownDatePosition = dialogBody.value.offsetTop + 1;
-
-	// 	if (dialogWrapperScrollTop.value > currentShownDatePosition && nextDatePosition && dialogWrapperScrollTop.value < nextDatePosition - 41) {
-	// 		emit("update:shownDate", chatUser.value.photo ? chatUser.value.photo : chatUser?.value.firstName[0]);
-	// 		return;
-	// 	} else if (dialogWrapperScrollTop.value > currentShownDatePosition - 41) {
-	// 		emit("update:shownDate", chatUser.value.photo ? chatUser.value.photo : chatUser?.value.firstName[0]);
-	// 	}
-
-	// 	// console.log((dialogWrapperScrollTop.value = nextDatePosition));
-	// 	// if (dialogWrapperScrollTop.value == nextDatePosition) {
-	// 	// 	console.log(1234);
-	// 	// 	emit("update:shownDate", "");
-	// 	// }
-	// };
 </script>
 
 <template>
@@ -150,24 +93,6 @@
 			maxWidth: message.type === 'image' && isMobileSize && '335px',
 		}"
 	>
-		<!-- <div
-			class="other-msg__photo"
-			ref="$messagePhoto"
-			:class="{
-				'other-msg__photo_mobile': isMobileSize,
-			}"
-			:style="{
-				backgroundImage: chatPhoto,
-			}"
-		>
-			<div
-				v-if="!chatUser.photo && lastOfSeveralMsgs"
-				class="other-msg__first-name-letter"
-			>
-				{{ chatUser?.firstName ? chatUser?.firstName[0] : "" }}
-			</div>
-		</div> -->
-
 		<div
 			class="other-msg__body"
 			:class="{

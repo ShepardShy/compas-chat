@@ -8,22 +8,12 @@
 	 * Входящие пропсы
 	 */
 	interface PropsType {
-		date: string;
-		dialogWrapperScrollTop: number;
+		firstName: string;
+		photo?: string;
 	}
 
 	const props = defineProps<PropsType>();
-	const { date, dialogWrapperScrollTop } = toRefs(props);
-
-	/**
-	 * События
-	 */
-	const emit = defineEmits<{
-		(emit: "update:shownDate", value: string): void;
-	}>();
-
-	const chatsStore = useChatsStore();
-	const datePickStore = useDatePickStore();
+	const { firstName, photo } = toRefs(props);
 
 	/**
 	 * Подключение стора с настройками
@@ -31,25 +21,29 @@
 	const settingsStore = useSettingsStore();
 	const { isMobileSize } = storeToRefs(settingsStore);
 
-	/** Блок с указанием дня */
-	const $messagePhoto = ref<HTMLDivElement>();
-
-	/**
-	 * Вывод даты сообщений в подготовленном виде
+	/***
+	 * Фото пользователя или если его нет заливка гралиентом
 	 */
-	const preparedDay = computed(() => setMessageDay(date.value));
+	const isHavePhoto = ref(false);
+	const chatPhoto = computed<string>(() => {
+		if (photo.value) {
+			isHavePhoto.value = true;
+			return `url(${photo.value})`;
+		} else {
+			return "linear-gradient(to bottom, #71d2fc 2%, #9490ff 100%)";
+		}
+	});
 </script>
 
 <template>
 	<div
-		ref="$messagePhoto"
 		class="message__photo other-msg__photo"
 		:class="{
 			'other-msg__photo_mobile': isMobileSize,
 		}"
-		style="background-image: linear-gradient(to bottom, #71d2fc 2%, #9490ff 100%)"
+		:style="`background-image: ${chatPhoto}`"
 	>
-		<div class="other-msg__first-name-letter">Ж</div>
+		<div class="other-msg__first-name-letter">{{ !isHavePhoto ? firstName?.[0] : "" }}</div>
 	</div>
 </template>
 

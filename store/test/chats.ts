@@ -300,7 +300,6 @@ export const chats = [
 				secondName: "Иванов",
 				isActive: true,
 				isTyping: false,
-				photo: "/photo.png",
 				position: "Менеджер по работе с клиентами",
 				lastTimeActive: "2024-02-15T15:14:00.000Z",
 			},

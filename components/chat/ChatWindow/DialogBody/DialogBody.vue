@@ -11,6 +11,10 @@
 	import type { GroupChatMessageType, MessageType } from "~/types/messages";
 	import { setMessageDay, clearSelection } from "~/composables/chats";
 	import { useDatePickStore } from "~/store/datePick";
+	import { useModalStore } from "~/store/modal";
+
+	const modalStore = useModalStore();
+	const { showModal } = modalStore;
 
 	defineEmits(["sendVoiceMessage"]);
 
@@ -18,7 +22,7 @@
 	 * Подключение стора с чатами
 	 */
 	const chatsStore = useChatsStore();
-	const { openedChatData, userId, openedChatId, getChatIndex, chats } = storeToRefs(chatsStore);
+	const { openedChatData, openedChatDataMessages, userId, openedChatId, getChatIndex, chats } = storeToRefs(chatsStore);
 	/**
 	 * Подключение стора с настройками
 	 */
@@ -72,7 +76,7 @@
 	const isDialogBodyHeightsLessThenVH = ref(true);
 
 	const scrollToDialogWrapperBottom = () => {
-		$dialogWrapper.value!.scrollTop = $dialogWrapper.value!?.scrollHeight;
+		$dialogWrapper.value ? ($dialogWrapper.value!.scrollTop = $dialogWrapper.value!?.scrollHeight) : "";
 	};
 
 	const checkIfDialogBodyHeightsLessThenVH = async () => {
@@ -141,23 +145,20 @@
 	);
 
 	// Сообщения от собеседника
-	const notMyMessages = computed(() => openedChatData.value.messages?.filter(message => message?.userId != userId.value)?.length);
+	const notMyMessages = computed(() => openedChatDataMessages.value.messages?.filter(message => message?.userId != userId.value)?.length);
 	let notMyMessagesCurrent = notMyMessages.value;
 
 	// Подписка на приход сообщений
 	watch(
 		() => openedChatData.value,
 		async () => {
-			if (notMyMessages.value > notMyMessagesCurrent) {
-				scrollToDialogWrapperBottom();
-			}
-			notMyMessagesCurrent = notMyMessages.value;
-
 			// Если чат пролистан до конца, тогда пролистать до нового сообщения
-			if (isDialogAtBottom.value) {
+			if (isDialogAtBottom.value && notMyMessages.value > notMyMessagesCurrent) {
 				await nextTick();
 				scrollToDialogWrapperBottom();
+				scrollInDialogWrapper();
 			}
+			notMyMessagesCurrent = notMyMessages.value;
 		}
 	);
 
@@ -545,19 +546,11 @@
 			if (fullHeight > currentHeight) {
 				heightWithKeyboard.value = `${fullHeight - (fullHeight - currentHeight)}px`;
 			}
-			// document.body.style.maxHeight = heightWithKeyboard.value;
-			// document.body.style.minHeight = heightWithKeyboard.value;
-			// document.documentElement.style.maxHeight = heightWithKeyboard.value;
-			// document.documentElement.style.minHeight = heightWithKeyboard.value;
 			window.scrollTo({ top: 0, behavior: "instant" });
 		}, 200);
 	};
 	const preventScrollWhenSoftKeyboardBlur = e => {
 		heightWithKeyboard.value = "100svh";
-		// document.body.style.maxHeight = heightWithKeyboard.value;
-		// document.body.style.minHeight = heightWithKeyboard.value;
-		// document.documentElement.style.maxHeight = heightWithKeyboard.value;
-		// document.documentElement.style.minHeight = heightWithKeyboard.value;
 	};
 </script>
 
@@ -573,7 +566,6 @@
 		<div
 			ref="$dialogWrapper"
 			class="dialog__wrapper"
-			:key="`${openedChatId}${openedChatData}`"
 			@scroll.passive
 			:class="{
 				dialog__wrapper_flex: isDialogBodyHeightsLessThenVH,
@@ -581,27 +573,27 @@
 			}"
 		>
 			<div
-				v-if="dialogWrapperScrollTop > 0"
-				@pointerup.left.stop="clickDateHandler"
-				class="dialog__date"
-				ref="$dialogDate"
-				:key="`${openedChatId}${openedChatData}`"
-				:class="{
-					dialog__date_today: preparedDay === 'Сегодня',
-					dialog__date_hide: !shownDate,
-				}"
-				:style="{
-        transform: isMobileSize ? `translateX(calc(-50%))` : `translateX(calc(-50% + 15px))`,
-        opacity: $dialogWrapper!?.offsetHeight < ($dialogWrapperScroll!?.offsetHeight - 42) ? '1' : '0',
-      }"
-			>
-				{{ preparedDay }}
-			</div>
-			<div
 				ref="$dialogWrapperScroll"
 				class="dialog__wrapper-scroll"
-				:key="`${openedChatId}${openedChatData}`"
 			>
+				<div class="dialog__date-wrapper">
+					<div
+						v-if="dialogWrapperScrollTop > 0"
+						@pointerup.left.stop="clickDateHandler"
+						class="dialog__date"
+						ref="$dialogDate"
+						:class="{
+							dialog__date_today: preparedDay === 'Сегодня',
+							dialog__date_hide: !shownDate,
+						}"
+						:style="{
+       						transform: isMobileSize ? `translateX(calc(-50%))` : `translateX(calc(-50% + 15px))`,
+        					opacity: $dialogWrapper!?.offsetHeight < ($dialogWrapperScroll!?.offsetHeight - 42) ? '1' : '0',
+      					}"
+					>
+						{{ preparedDay }}
+					</div>
+				</div>
 				<div
 					v-for="(messagesSortedByDay, index) in openedChatData?.messages"
 					:key="index"
@@ -627,10 +619,10 @@
 					>
 						<div class="dialog__photo-wrapper">
 							<MessagePhoto
+								@click="showModal"
+								:firstName="'users' in openedChatData ? openedChatData.users.find(user => 'userId' in user && user.userId == userMessages.userId).firstName : 'firstName' in openedChatData ? openedChatData.firstName : ''"
+								:photo="'users' in openedChatData ? openedChatData.users.find(user => 'userId' in user && user.userId == userMessages.userId).photo : 'photo' in openedChatData ? openedChatData.photo : ''"
 								v-if="checkIfLastOfSeveralMessages(userIndex, userMessages.messages[0].messages) && userMessages.userId != userId && userMessages.messages[0].type !== 'message-info'"
-								:date="userMessages.messages[0]?.firstName ? userMessages.messages[0]?.firstName[0] : ''"
-								:dialog-wrapper-scroll-top="dialogWrapperScrollTop"
-								:dialogWidth="dialogWidth"
 							/>
 						</div>
 

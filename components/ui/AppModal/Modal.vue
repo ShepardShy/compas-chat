@@ -66,7 +66,7 @@
 		lastModal.isCreate = false;
 
 		if (window.innerWidth <= 660) {
-			window.location.replace(lastModal.link);
+			// window.location.replace(lastModal.link);
 		}
 	};
 
@@ -76,7 +76,7 @@
 
 		if (lastModal) {
 			if (modals.length >= 11 || window.innerWidth <= 660) {
-				window.location.replace(lastModal.link);
+				// window.location.replace(lastModal.link);
 				lastModal.isCreate ? window.history.pushState("", "Title", `/objects/${lastModal.slug}/0`) : window.history.pushState("", "Title", lastModal.link);
 			} else {
 				lastModal.isCreate ? window.history.pushState("", "Title", `/objects/${lastModal.slug}/0`) : window.history.pushState("", "Title", lastModal.link);
