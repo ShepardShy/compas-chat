@@ -88,6 +88,11 @@ export const useChatsStore = defineStore("chats", {
 				}
 			}
 
+			console.log({
+				...chatData,
+				messages: preparedMessages,
+			});
+
 			return {
 				...chatData,
 				messages: preparedMessages,

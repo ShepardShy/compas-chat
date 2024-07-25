@@ -230,7 +230,7 @@
 
 <template>
 	<div
-		@click.stop="console.log(1)"
+		@click.stop
 		class="add-user"
 		:class="{
 			'add-user_mobile': isMobileSize,

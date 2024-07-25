@@ -573,7 +573,7 @@
 		<div
 			ref="$dialogWrapper"
 			class="dialog__wrapper"
-			:key="openedChatId"
+			:key="`${openedChatId}${openedChatData}`"
 			@scroll.passive
 			:class="{
 				dialog__wrapper_flex: isDialogBodyHeightsLessThenVH,
@@ -585,6 +585,7 @@
 				@pointerup.left.stop="clickDateHandler"
 				class="dialog__date"
 				ref="$dialogDate"
+				:key="`${openedChatId}${openedChatData}`"
 				:class="{
 					dialog__date_today: preparedDay === 'Сегодня',
 					dialog__date_hide: !shownDate,
@@ -599,6 +600,7 @@
 			<div
 				ref="$dialogWrapperScroll"
 				class="dialog__wrapper-scroll"
+				:key="`${openedChatId}${openedChatData}`"
 			>
 				<div
 					v-for="(messagesSortedByDay, index) in openedChatData?.messages"

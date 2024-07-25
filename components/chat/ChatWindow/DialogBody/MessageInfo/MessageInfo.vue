@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import type { MessageInfoType } from "~/types/messages";
 	import { useSettingsStore } from "~/store/settings";
+	import moment from "moment";
 
 	// Модалка при нажатии на имя
 
@@ -107,7 +108,7 @@
 			</div>
 		</div>
 		<div class="message-info__date">
-			{{ message.date.slice(-5) }}
+			{{ moment(message.date)?.format("H:mm") }}
 		</div>
 	</div>
 </template>
