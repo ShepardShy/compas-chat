@@ -135,43 +135,18 @@
 
 	// Тестовое новое сообщение
 	onMounted(() => {
-		setInterval(() => {
-			chats.value[0].messages.push({
-				id: new Date().getTime(),
-				type: "text",
-				message: "Принимаете заказ?",
-				userId: 2,
-				isReceived: false,
-				isViewed: false,
-				isUnread: true,
-				date: moment().toISOString(),
-			});
-		}, 10000);
 		// setInterval(() => {
-		// 	chats.value[7].isGroupChat
-		// 		? chats.value[7].messages.push({
-		// 				id: new Date().getTime(),
-		// 				type: "text",
-		// 				firstName: "Женя",
-		// 				secondName: "Иванов",
-		// 				message: "Принимаете заказ?",
-		// 				userId: 2,
-		// 				isReceived: false,
-		// 				isViewed: false,
-		// 				isUnread: true,
-		// 				date: moment().toISOString(),
-		// 		  })
-		// 		: chats.value[7].messages.push({
-		// 				id: new Date().getTime(),
-		// 				type: "text",
-		// 				message: "Принимаете заказ?",
-		// 				userId: 2,
-		// 				isReceived: false,
-		// 				isViewed: false,
-		// 				isUnread: true,
-		// 				date: moment().toISOString(),
-		// 		  });
-		// }, 1000);
+		// 	chats.value[0].messages.push({
+		// 		id: new Date().getTime(),
+		// 		type: "text",
+		// 		message: "Принимаете заказ?",
+		// 		userId: 2,
+		// 		isReceived: false,
+		// 		isViewed: false,
+		// 		isUnread: true,
+		// 		date: moment().toISOString(),
+		// 	});
+		// }, 10000);
 	});
 
 	/**

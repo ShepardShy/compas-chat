@@ -82,8 +82,8 @@
 	const checkIfDialogBodyHeightsLessThenVH = async () => {
 		await nextTick();
 
-		const dialogBodyHeight = $dialogWrapperScroll.value!.offsetHeight;
-		const dialogWrapperHeight = $dialogWrapper.value!.offsetHeight;
+		const dialogBodyHeight = $dialogWrapperScroll.value!?.offsetHeight;
+		const dialogWrapperHeight = $dialogWrapper.value!?.offsetHeight;
 
 		isDialogBodyHeightsLessThenVH.value = dialogBodyHeight < dialogWrapperHeight;
 	};
@@ -177,6 +177,9 @@
 	watch(
 		() => [uploadedDocuments.value, uploadedImages.value],
 		() => {
+			console.log(uploadedDocuments.value, "uploadedDocuments.value");
+			console.log(uploadedImages.value, "uploadedImages.value");
+
 			if (uploadedDocuments.value.length || uploadedImages.value.length) {
 				messageType.value = "text";
 			}
@@ -620,8 +623,8 @@
 						<div class="dialog__photo-wrapper">
 							<MessagePhoto
 								@click="showModal"
-								:firstName="'users' in openedChatData ? openedChatData.users.find(user => 'userId' in user && user.userId == userMessages.userId).firstName : 'firstName' in openedChatData ? openedChatData.firstName : ''"
-								:photo="'users' in openedChatData ? openedChatData.users.find(user => 'userId' in user && user.userId == userMessages.userId).photo : 'photo' in openedChatData ? openedChatData.photo : ''"
+								:firstName="'users' in openedChatData ? openedChatData.users.find(user => 'userId' in user && user.userId == userMessages.userId)?.firstName : 'firstName' in openedChatData ? openedChatData.firstName : ''"
+								:photo="'users' in openedChatData ? openedChatData.users.find(user => 'userId' in user && user.userId == userMessages.userId)?.photo : 'photo' in openedChatData ? openedChatData.photo : ''"
 								v-if="checkIfLastOfSeveralMessages(userIndex, userMessages.messages[0].messages) && userMessages.userId != userId && userMessages.messages[0].type !== 'message-info'"
 							/>
 						</div>

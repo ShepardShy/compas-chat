@@ -256,7 +256,7 @@ export const chats = [
 			{
 				id: 11,
 				type: "file",
-				comment: "",
+				comment: "123",
 				userId: 2,
 				isReceived: true,
 				isViewed: false,
@@ -271,6 +271,42 @@ export const chats = [
 						isViewed: true,
 						isUnread: false,
 						size: "1.2KB",
+					},
+				],
+			},
+			{
+				id: 12,
+				type: "video",
+				comment: "",
+				userId: 2,
+				isReceived: false,
+				isViewed: false,
+				isUnread: false,
+				date: "2024-03-19T15:14:00.000Z",
+				images: [
+					{
+						url: "/video/video.mp4",
+						filename: "video.mp4",
+						date: "2024-03-19T15:14:00.000Z",
+						isReceived: true,
+						isViewed: true,
+						isUnread: false,
+					},
+					{
+						url: "/video/video2.mp4",
+						filename: "video2.mp4",
+						date: "2024-03-19T15:14:00.000Z",
+						isReceived: true,
+						isViewed: true,
+						isUnread: false,
+					},
+					{
+						url: "/video/video.mp4",
+						filename: "video.mp4",
+						date: "2024-03-19T15:14:00.000Z",
+						isReceived: true,
+						isViewed: true,
+						isUnread: false,
 					},
 				],
 			},
@@ -626,27 +662,36 @@ export const chats = [
 		textMessageDraft: "",
 		users: [
 			{
-				id: 2,
+				userId: 1,
+				type: "text",
+				firstName: "Тимур",
+				secondName: "Петров",
+				isActive: true,
+				isTyping: false,
+				lastTimeActive: "2024-02-15T15:00:00.000Z",
+				photo: "/photo.png",
+				position: "Менеджер по работе с клиентами",
+			},
+			{
+				userId: 2,
 				type: "text",
 				firstName: "Илья",
 				secondName: "Петров",
 				isActive: true,
 				isTyping: false,
 				lastTimeActive: "2024-02-15T15:00:00.000Z",
-
 				photo: "/photo.png",
 				position: "Менеджер по работе с клиентами",
 			},
 			{
-				id: 3,
+				userId: 3,
 				type: "text",
 				firstName: "Вася",
 				secondName: "Петров",
 				isActive: false,
 				lastTimeActive: "2024-02-15T15:00:00.000Z",
-
 				isTyping: false,
-				photo: "",
+				// photo: "",
 				position: "Менеджер",
 			},
 		],
@@ -655,6 +700,7 @@ export const chats = [
 		messages: [
 			{
 				id: 1,
+				type: "text",
 				userId: 1,
 				firstName: "Тимур",
 				secondName: "Киселев",
@@ -1369,7 +1415,7 @@ export const chats = [
 		textMessageDraft: "",
 		users: [
 			{
-				id: 2,
+				userId: 2,
 				type: "text",
 				firstName: "Илья",
 				secondName: "Петров",
@@ -1380,7 +1426,7 @@ export const chats = [
 				lastTimeActive: "2024-02-20T14:00:00.000Z",
 			},
 			{
-				id: 3,
+				userId: 3,
 				type: "text",
 				firstName: "Вася",
 				secondName: "Петров",
@@ -1396,6 +1442,7 @@ export const chats = [
 		messages: [
 			{
 				id: 1,
+				type: "text",
 				userId: 1,
 				firstName: "Тимур",
 				secondName: "Киселев",

@@ -34,7 +34,7 @@ export interface MessageType {
 	isViewed: boolean;
 	isUnread: boolean;
 	date: string;
-	type: "text" | "image" | "file" | "voice";
+	type: "text" | "image" | "file" | "voice" | "video";
 	images?: Array<ImageMessageType>;
 	files?: Array<FileMessageType>;
 	voice?: Array<VoiceMessageType>;

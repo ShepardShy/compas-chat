@@ -12,7 +12,6 @@
 	import FileMessagesIcon from "assets/icons/file-messages-icon.svg";
 	import LinkMessagesIcon from "assets/icons/link-messages-icon.svg";
 	import ImageMessagesIcon from "assets/icons/photo-messages-icon.svg";
-	import TextMessagesIcon from "assets/icons/text-messages-icon.svg";
 	import VideoMessagesIcon from "assets/icons/video-messages-icon.svg";
 	import VoiceMessagesIcon from "assets/icons/voice-messages-icon.svg";
 	import DeleteIcon from "assets/icons/delete-icon.svg";
@@ -127,10 +126,6 @@
 				chatsStore.$patch(state => (state.isOpenMessageTypeModal = true));
 				chatsStore.$patch(state => (state.openMessageTypeItem = _item));
 
-				if (_item.action === "text-messages") {
-					chatsStore.getTextMessages();
-				}
-
 				if (_item.action === "images-messages") {
 					chatsStore.getPhotoMessages();
 				}
@@ -181,7 +176,6 @@
 		const iconComponentMap = {
 			"file-messages-icon": FileMessagesIcon,
 			"voice-messages-icon": VoiceMessagesIcon,
-			"text-messages-icon": TextMessagesIcon,
 			"link-messages-icon": LinkMessagesIcon,
 			"images-messages-icon": ImageMessagesIcon,
 			"video-messages-icon": VideoMessagesIcon,
@@ -330,7 +324,6 @@
 					}"
 					style="flex: 0 0 21px"
 				/>
-
 				<div
 					class="details-menu__item-title"
 					:style="{

@@ -1,6 +1,6 @@
 export const testPhotoMessages = [
 	{
-		date: "15.01.2024 15:05",
+		date: "2024-01-15T15:05:00+03:00",
 		messages: [
 			{
 				url: "/image-example.png",
@@ -17,7 +17,7 @@ export const testPhotoMessages = [
 		],
 	},
 	{
-		date: "20.02.2024 15:05",
+		date: "2024-02-20T15:05:00+03:00",
 		messages: [
 			{
 				url: "/image-example.png",

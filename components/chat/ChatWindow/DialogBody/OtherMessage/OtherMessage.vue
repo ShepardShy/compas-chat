@@ -2,7 +2,7 @@
 	import type { GroupChatMessageType, MessageType, UserChatType } from "~/types/messages";
 	import { useChatsStore } from "~/store/chats";
 	import { useSettingsStore } from "~/store/settings";
-	import { TextMessage, ImageMessage, FileMessage } from "~/components";
+	import { TextMessage, ImageMessage, FileMessage, VideoMessage } from "~/components";
 	import VoiceMessage from "~/components/chat/ChatWindow/DialogBody/MessageTypes/VoiceMessage/VoiceMessage.vue";
 	import { useModalStore } from "~/store/modal";
 
@@ -108,6 +108,12 @@
 			</p>
 			<TextMessage
 				v-if="message.type === 'text'"
+				:message="message"
+				:other-message="true"
+			/>
+
+			<VideoMessage
+				v-if="message.type === 'video'"
 				:message="message"
 				:other-message="true"
 			/>

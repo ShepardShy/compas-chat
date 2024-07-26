@@ -70,27 +70,11 @@
 			</div>
 			<ChatInput
 				v-model:input-value="searchInputValue"
-				v-if="dataFromSelectedTypeOfChatMessage?.length != 0"
+				v-if="dataFromSelectedTypeOfChatMessage?.length != 0 && openMessageTypeItem.action == 'file-messages'"
 				placeholder="Найти"
 				class="message-type__search-input"
 			/>
 			<div class="message-type__body">
-				<div
-					v-if="messageType === 'Текстовые сообщения'"
-					class="message-type__text-message"
-				>
-					<TextMessageType
-						v-for="(message, idx) in dataFromSelectedTypeOfChatMessage"
-						:key="message.id"
-						:is-next-message-own="dataFromSelectedTypeOfChatMessage[idx]?.userId === dataFromSelectedTypeOfChatMessage[idx + 1]?.userId"
-						:is-own-message="message.userId === userId"
-						:date="message.date"
-						:text="message.message"
-						:is-new-messages-date="idx === 0 || dataFromSelectedTypeOfChatMessage[idx]?.date?.slice(0, 10) !== dataFromSelectedTypeOfChatMessage[idx - 1]?.date?.slice(0, 10)"
-						:is-next-message-new-date="dataFromSelectedTypeOfChatMessage[idx]?.date?.slice(0, 10) !== dataFromSelectedTypeOfChatMessage[idx + 1]?.date?.slice(0, 10)"
-					/>
-				</div>
-
 				<div
 					v-if="messageType === 'Голосовые сообщения'"
 					class="message-type__voice-message"
@@ -154,6 +138,7 @@
 		position: relative;
 		width: 400px;
 		min-height: 400px;
+		max-height: 600px;
 		z-index: 1100;
 		border-radius: 15px;
 		padding-right: 2px;
