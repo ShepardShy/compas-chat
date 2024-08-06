@@ -315,14 +315,14 @@ export const useChatsStore = defineStore("chats", {
 			});
 		},
 
-		sendImageMessage(uploadedImages: Array<unknown>, message: string, userId: number, chatId: number) {
+		sendImageMessage(uploadedImages: Array<any>, message: string, userId: number, chatId: number) {
 			const userData = this.allChatUsers.find(user => user.id === userId);
 			const newMessage = {
 				id: new Date().getTime(),
 				userId,
 				type: "image",
-				firstName: userData!.firstName ?? "",
-				secondName: userData!.secondName ?? "",
+				firstName: "firstName" in userData ? userData!.firstName ?? "" : "",
+				secondName: "secondName" in userData ? userData!.secondName ?? "" : "",
 				comment: message ? message?.replace(/\n/g, "\n") : "",
 				date: new Date().toISOString(),
 				isReceived: true,
@@ -334,6 +334,7 @@ export const useChatsStore = defineStore("chats", {
 							url: image.url,
 							fileName: image.fileName,
 							date: new Date().toISOString(),
+							type: image.type,
 							isReceived: true,
 							isViewed: false,
 							isUnread: false,

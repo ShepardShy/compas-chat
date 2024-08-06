@@ -143,6 +143,11 @@
 	const isImageReceived = (_image: ImageMessageType) => {
 		return _image.isReceived && !_image.isViewed;
 	};
+
+	// Вычисление типа видео или картинки
+	// const isVideo = computed(() => {
+	// 	const videoExtensions = ["mp4", "webm", "ogg"];
+	// });
 </script>
 
 <template>
@@ -163,7 +168,7 @@
 		>
 			<div
 				v-for="(image, idx) in message.images"
-				:key="image"
+				:key="idx"
 				class="image-message__image"
 				:class="{
 					'image-message__hide-images_last': isImagesMoreThenShown && idx === 3,
@@ -183,6 +188,16 @@
 					/>
 					<span>{{ `+${hideImagesLength}` }}</span>
 				</div>
+				<img
+					v-else-if="image?.type?.includes('image')"
+					data-fancybox="gallery"
+					:src="image.url"
+				/>
+				<video
+					v-else-if="image?.type?.includes('video')"
+					data-fancybox="gallery"
+					:src="image.url"
+				/>
 				<img
 					v-else
 					data-fancybox="gallery"

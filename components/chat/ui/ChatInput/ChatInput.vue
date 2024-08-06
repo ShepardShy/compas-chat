@@ -218,7 +218,9 @@
 			const _fileName = _files[i].name;
 			const _fileSizeKB = `${(_files[i].size / 1024).toFixed(2)}KB`;
 
-			if (_file.type.includes("image") && activeFileType.value == "Фото или видео") {
+			console.log(activeFileType.value);
+
+			if ((_file.type.includes("image") && activeFileType.value == "Фото или видео") || (_file.type.includes("video") && activeFileType.value == "Фото или видео")) {
 				uploadedImages.value = [
 					...uploadedImages.value,
 					{
@@ -226,6 +228,8 @@
 						url: _imageUrl,
 						name: _fileName,
 						size: _fileSizeKB,
+						type: _file.type,
+						isImage: _file.type.includes("image"),
 					},
 				];
 			} else {
@@ -236,6 +240,7 @@
 						url: _imageUrl,
 						name: _fileName,
 						size: _fileSizeKB,
+						type: _file.type,
 						isImage: _file.type.includes("image"),
 					},
 				];

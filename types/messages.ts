@@ -5,6 +5,7 @@ export interface ImageMessageType {
 	isViewed: boolean;
 	isUnread: boolean;
 	fileName: string;
+	type?: string;
 	size: string;
 }
 

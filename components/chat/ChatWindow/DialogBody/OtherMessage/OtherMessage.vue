@@ -112,14 +112,8 @@
 				:other-message="true"
 			/>
 
-			<VideoMessage
-				v-if="message.type === 'video'"
-				:message="message"
-				:other-message="true"
-			/>
-
 			<ImageMessage
-				v-if="message.type === 'image'"
+				v-if="message.type === 'image' || message.type === 'video'"
 				:message="message"
 				:other-message="true"
 			/>

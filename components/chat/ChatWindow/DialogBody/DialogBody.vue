@@ -341,6 +341,8 @@
 	 * Отправить картинку с или без комментария
 	 */
 	const sendImageMessage = async () => {
+		console.log(uploadedImages.value);
+
 		chatsStore.sendImageMessage(uploadedImages.value, messageValue.value, userId.value, openedChatId.value);
 		messageValue.value = "";
 		uploadedImages.value = [];

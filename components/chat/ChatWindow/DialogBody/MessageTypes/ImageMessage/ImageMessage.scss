@@ -38,6 +38,13 @@
 	& img {
 		cursor: pointer;
 	}
+	& video {
+		cursor: pointer;
+		width: 100%;
+		position: relative;
+		height: 100%;
+		object-fit: cover;
+	}
 }
 
 .image-message__hide-images_last .image-message__hide-images-length::before {

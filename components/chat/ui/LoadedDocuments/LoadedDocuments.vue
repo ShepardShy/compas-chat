@@ -8,7 +8,7 @@
 	 * Входящие пропсы
 	 */
 	interface PropsType {
-		uploadedDocuments: Array<unknown>;
+		uploadedDocuments: Array<any>;
 	}
 
 	const props = defineProps<PropsType>();
