@@ -1,45 +1,49 @@
 <script setup lang="ts">
+	import { File } from "~/components";
 	import moment from "moment";
-	import FansyBox from "~/components/ui/AppFansyBox/FansyBox.vue";
 
 	interface PropsType {
-		photoMessages: any[];
+		fileMessages: any[];
 	}
 
 	const props = defineProps<PropsType>();
-	const { photoMessages } = toRefs(props);
+
+	const { fileMessages } = toRefs(props);
 </script>
 
 <template>
 	<div
-		v-for="messagesWithinDay in photoMessages"
-		class="photo-message"
+		v-for="messagesWithinDay in fileMessages"
+		class="file-message"
 	>
-		<div class="photo-message__date">
+		<div class="file-message__date">
 			{{ moment(messagesWithinDay?.date).format("DD.MM.YYYY") }}
 		</div>
 
-		<FansyBox class="photo-message__images-wrapper">
-			<img
+		<div class="file-message__images-wrapper">
+			<File
+				v-for="message in messagesWithinDay.messages"
+				:file="message"
+			/>
+			<!-- <video
 				v-for="message in messagesWithinDay.messages"
 				:key="message.url"
 				:src="message.url"
-				data-fancybox="gallery"
-				class="photo-message__image"
-				alt="photo"
-			/>
-		</FansyBox>
+				class="file-message__image"
+				alt="video"
+			/> -->
+		</div>
 	</div>
 </template>
 
 <style scoped lang="scss">
 	@use "~/assets/styles/_variables.scss" as variables;
 
-	.photo-message {
+	.file-message {
 		padding: 0 25px;
 	}
 
-	.photo-message__date {
+	.file-message__date {
 		text-align: center;
 		margin-bottom: 25px;
 		font-size: 20px;
@@ -47,18 +51,20 @@
 		color: variables.$color-black;
 	}
 
-	.photo-message__images-wrapper {
-		display: grid;
-		grid-gap: 5px;
-		grid-template-columns: repeat(3, 1fr);
+	.file-message__images-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
 	}
 
-	.photo-message__image {
+	.file-message__image {
 		border-radius: 5px;
-		width: 100%;
+		height: 113px;
 		background-repeat: no-repeat;
 		background-position: center center;
 		background-size: cover;
 		cursor: pointer;
+		width: 100%;
+		height: 100%;
 	}
 </style>

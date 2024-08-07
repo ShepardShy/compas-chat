@@ -3,30 +3,30 @@
 	import FansyBox from "~/components/ui/AppFansyBox/FansyBox.vue";
 
 	interface PropsType {
-		photoMessages: any[];
+		videoMessages: any[];
 	}
 
 	const props = defineProps<PropsType>();
-	const { photoMessages } = toRefs(props);
+	const { videoMessages } = toRefs(props);
 </script>
 
 <template>
 	<div
-		v-for="messagesWithinDay in photoMessages"
-		class="photo-message"
+		v-for="messagesWithinDay in videoMessages"
+		class="video-message"
 	>
-		<div class="photo-message__date">
+		<div class="video-message__date">
 			{{ moment(messagesWithinDay?.date).format("DD.MM.YYYY") }}
 		</div>
 
-		<FansyBox class="photo-message__images-wrapper">
-			<img
+		<FansyBox class="video-message__images-wrapper">
+			<video
 				v-for="message in messagesWithinDay.messages"
 				:key="message.url"
 				:src="message.url"
 				data-fancybox="gallery"
-				class="photo-message__image"
-				alt="photo"
+				class="video-message__image"
+				alt="video"
 			/>
 		</FansyBox>
 	</div>
@@ -35,11 +35,12 @@
 <style scoped lang="scss">
 	@use "~/assets/styles/_variables.scss" as variables;
 
-	.photo-message {
+	.video-message {
 		padding: 0 25px;
+		overflow-x: hidden;
 	}
 
-	.photo-message__date {
+	.video-message__date {
 		text-align: center;
 		margin-bottom: 25px;
 		font-size: 20px;
@@ -47,18 +48,20 @@
 		color: variables.$color-black;
 	}
 
-	.photo-message__images-wrapper {
+	.video-message__images-wrapper {
 		display: grid;
 		grid-gap: 5px;
 		grid-template-columns: repeat(3, 1fr);
 	}
 
-	.photo-message__image {
+	.video-message__image {
 		border-radius: 5px;
-		width: 100%;
+		height: 113px;
 		background-repeat: no-repeat;
 		background-position: center center;
 		background-size: cover;
 		cursor: pointer;
+		width: 100%;
+		height: 100%;
 	}
 </style>

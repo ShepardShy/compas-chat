@@ -6,7 +6,7 @@
 	import BackIcon from "~/assets/icons/back-icon.svg";
 	import CloseIcon from "~/assets/icons/close-icon.svg";
 
-	import { VoiceMessageType, TextMessageType, PhotoMessageType, LinkMessageType, ChatInput } from "~/components/";
+	import { VoiceMessageType, TextMessageType, PhotoMessageType, VideoMessageType, FileMessageType, LinkMessageType, ChatInput } from "~/components/";
 
 	import type { MessagesTypesTitleType } from "~/types/messages";
 	import { messagesTypesList } from "~/shared/const";
@@ -79,16 +79,7 @@
 					v-if="messageType === 'Голосовые сообщения'"
 					class="message-type__voice-message"
 				>
-					<VoiceMessageType
-						v-for="message in dataFromSelectedTypeOfChatMessage"
-						:key="message.id"
-						:date="message?.date"
-						:is-received="message?.isReceived"
-						:is-own-message="userId === message.userId"
-						:audio-message="message?.audioMessage"
-						:is-viewed="message?.isViewed"
-						:is-in-voice-messages-list="true"
-					/>
+					<VoiceMessageType :voice-messages="dataFromSelectedTypeOfChatMessage" />
 				</div>
 
 				<div
@@ -96,6 +87,20 @@
 					class="message-type__photo-message"
 				>
 					<PhotoMessageType :photo-messages="dataFromSelectedTypeOfChatMessage" />
+				</div>
+
+				<div
+					v-if="messageType === 'Видео'"
+					class="message-type__photo-message"
+				>
+					<VideoMessageType :video-messages="dataFromSelectedTypeOfChatMessage" />
+				</div>
+
+				<div
+					v-if="messageType === 'Файлы'"
+					class="message-type__photo-message"
+				>
+					<FileMessageType :file-messages="dataFromSelectedTypeOfChatMessage" />
 				</div>
 
 				<div
@@ -153,6 +158,7 @@
 		border: 1px solid transparent;
 		border-radius: 0;
 		height: 100%;
+		max-height: unset;
 
 		position: fixed;
 		top: 0;

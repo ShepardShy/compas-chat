@@ -3,8 +3,6 @@
 	import ViewedMessageIcon from "assets/icons/viewed-message-icon.svg";
 	import ReceivedMessageIcon from "assets/icons/recieved-message-icon.svg";
 	import FansyBox from "~/components/ui/AppFansyBox/FansyBox.vue";
-	import FansyBoxImage from "~/components/ui/AppFansyBox/FansyBoxImage/FansyBoxImage.vue";
-	import AppFile from "~/components/ui/AppInputs/File/File.vue";
 	import { useSettingsStore } from "~/store/settings";
 	import moment from "moment";
 
@@ -183,9 +181,23 @@
 					class="image-message__hide-images-length"
 				>
 					<img
+						v-if="image?.type?.includes('image')"
 						data-fancybox="gallery"
 						:src="image.url"
 					/>
+					<a
+						v-else-if="image?.type?.includes('video')"
+						href="javascript:;"
+						:data-src="`#video${image.url}`"
+						data-fancybox="gallery"
+					>
+						<video :src="image.url"></video>
+						<video
+							:id="`video${image.url}`"
+							:src="image.url"
+							controls
+						></video
+					></a>
 					<span>{{ `+${hideImagesLength}` }}</span>
 				</div>
 				<img
@@ -193,11 +205,19 @@
 					data-fancybox="gallery"
 					:src="image.url"
 				/>
-				<video
+				<a
 					v-else-if="image?.type?.includes('video')"
+					href="javascript:;"
+					:data-src="`#video${image.url}`"
 					data-fancybox="gallery"
-					:src="image.url"
-				/>
+				>
+					<video :src="image.url"></video>
+					<video
+						:id="`video${image.url}`"
+						:src="image.url"
+						controls
+					></video
+				></a>
 				<img
 					v-else
 					data-fancybox="gallery"

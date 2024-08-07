@@ -20,7 +20,7 @@
 		loadedImages?: Array<unknown>;
 		loadedDocuments?: Array<unknown>;
 		isResizing?: boolean;
-		dialogActionsHeight: string;
+		dialogActionsHeight?: string;
 	}
 
 	const props = defineProps<PropsType>();

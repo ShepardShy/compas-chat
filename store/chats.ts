@@ -4,6 +4,9 @@ import { formattedDateToday, setFileSize } from "~/composables/chats";
 import { chats } from "./test/chats";
 import { testTextMessages } from "./test/textMessages";
 import { testPhotoMessages } from "./test/photoMessages";
+import { testVideoMessages } from "./test/videoMessages";
+import { testFileMessages } from "./test/fileMessages";
+import { testVoiceMessages } from "./test/voiceMessages";
 
 export const useChatsStore = defineStore("chats", {
 	state: () => {
@@ -23,7 +26,7 @@ export const useChatsStore = defineStore("chats", {
 
 			openMessageTypeModal: undefined as undefined | MessagesTypesType,
 			isOpenMessageTypeModal: false,
-			dataFromSelectedTypeOfChatMessage: [] as unknown[],
+			dataFromSelectedTypeOfChatMessage: [] as any[],
 
 			temporalStorageForGroupChat: {
 				title: "",
@@ -36,6 +39,9 @@ export const useChatsStore = defineStore("chats", {
 
 			testTextMessages: testTextMessages,
 			testPhotoMessages: testPhotoMessages,
+			testVideoMessages: testVideoMessages,
+			testFileMessages: testFileMessages,
+			testVoiceMessages: testVoiceMessages,
 
 			openMessageTypeItem: null,
 		};
@@ -268,6 +274,18 @@ export const useChatsStore = defineStore("chats", {
 
 		getPhotoMessages() {
 			this.dataFromSelectedTypeOfChatMessage = [...this.testPhotoMessages];
+		},
+
+		getVideoMessages() {
+			this.dataFromSelectedTypeOfChatMessage = [...this.testVideoMessages];
+		},
+
+		getFileMessages() {
+			this.dataFromSelectedTypeOfChatMessage = [...this.testFileMessages];
+		},
+
+		getVoiceMessages() {
+			this.dataFromSelectedTypeOfChatMessage = [...this.testVoiceMessages];
 		},
 
 		closeGroupChatCreateModal() {

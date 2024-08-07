@@ -126,13 +126,20 @@
 				chatsStore.$patch(state => (state.isOpenMessageTypeModal = true));
 				chatsStore.$patch(state => (state.openMessageTypeItem = _item));
 
+				console.log(_item.action, "_item");
+
 				if (_item.action === "images-messages") {
 					chatsStore.getPhotoMessages();
 				}
-
-				// if (item.action === 'voice-messages') {
-				//   usersStore.getVoiceMessages()
-				// }
+				if (_item.action === "video-messages") {
+					chatsStore.getVideoMessages();
+				}
+				if (_item.action === "file-messages") {
+					chatsStore.getFileMessages();
+				}
+				if (_item.action === "voice-messages") {
+					chatsStore.getVoiceMessages();
+				}
 			}
 		}
 	};

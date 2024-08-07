@@ -1,0 +1,86 @@
+@use "~/assets/styles/_variables.scss" as variables;
+
+.file-messages {
+	padding: 10px 15px;
+	max-width: 431px;
+	user-select: text;
+}
+
+.file-messages__mobile {
+	padding: 10px;
+}
+
+.file-message {
+	margin-bottom: 10px;
+	display: flex;
+	gap: 10px;
+	align-items: flex-start;
+}
+
+.file-messages__image {
+	flex: 0 0 64px;
+	height: 64px;
+	user-select: none;
+	object-fit: cover;
+	max-width: 64px;
+	user-select: none;
+}
+
+.file-message__info {
+	padding: 2px 0;
+}
+
+.file-message__title {
+	font-size: 16px;
+	font-weight: 600;
+	color: variables.$color-black;
+	margin-bottom: 5px;
+	max-width: 300px;
+	word-break: break-word;
+}
+
+.file-message__time-size {
+	display: flex;
+	gap: 5px;
+	font-size: 12px;
+	font-weight: 400;
+	color: #8babd8;
+	margin-bottom: 5px;
+}
+
+.file-message__open {
+	position: relative;
+	z-index: 1;
+	display: inline;
+	cursor: pointer;
+	font-size: 16px;
+	font-weight: 400;
+	color: variables.$color-active;
+	transition: 0.2s all;
+	text-decoration: underline;
+}
+
+.file-message__open:hover {
+	text-decoration: none;
+}
+
+.file-messages__comment {
+	font-size: 16px;
+	font-weight: 400;
+	color: variables.$color-black;
+	margin-bottom: 5px;
+}
+
+.file-messages__time-status {
+	display: flex;
+	gap: 5px;
+	align-items: center;
+	justify-content: flex-end;
+	user-select: none;
+}
+
+.file-messages__time {
+	font-size: 12px;
+	font-weight: 400;
+	color: #8f8f8f;
+}

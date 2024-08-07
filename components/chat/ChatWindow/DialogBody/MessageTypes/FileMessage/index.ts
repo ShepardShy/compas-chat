@@ -1,2 +1,3 @@
-import FileMessage from './FileMessage.vue'
-export { FileMessage }
+import FileMessage from "./FileMessage.vue";
+import File from "./components/File/File.vue";
+export { FileMessage, File };

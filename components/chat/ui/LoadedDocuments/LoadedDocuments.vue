@@ -3,6 +3,7 @@
 	import WordDocIcon from "~/assets/icons/word-doc-icon.svg";
 	import AnyDocIcon from "~/assets/icons/any-doc-icon.svg";
 	import DeleteFileIcon from "~/assets/icons/delete-file-icon.svg";
+	import PdfFileIcon from "~/assets/icons/pdf-file-icon.svg";
 
 	/**
 	 * Входящие пропсы
@@ -74,7 +75,7 @@
 				class="document__icon"
 			/>
 
-			<AnyDocIcon
+			<PdfFileIcon
 				v-else-if="document.name.includes('.pdf')"
 				class="document__icon"
 			/>

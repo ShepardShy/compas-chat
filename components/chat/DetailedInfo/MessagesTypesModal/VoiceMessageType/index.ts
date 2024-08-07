@@ -1,2 +1,2 @@
-import VoiceMessageType from './VoiceMessageType.vue'
-export { VoiceMessageType }
+import VoiceMessageType from "./VoiceMessageType.vue";
+export { VoiceMessageType };

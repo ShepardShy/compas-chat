@@ -10,6 +10,10 @@
 	width: 100%;
 }
 
+:global(.fancybox__content) {
+	background: transparent;
+}
+
 .image-message__images {
 	width: 100%;
 	display: grid;
