@@ -3,7 +3,12 @@
 .file-messages {
 	padding: 10px 15px;
 	max-width: 431px;
-	user-select: text;
+	user-select: none;
+}
+
+.file-messages__wrapper {
+	display: inline-block;
+	user-select: none;
 }
 
 .file-messages__mobile {
@@ -69,6 +74,11 @@
 	font-weight: 400;
 	color: variables.$color-black;
 	margin-bottom: 5px;
+	user-select: text;
+	display: inline-block;
+}
+.file-messages__comment-time {
+	user-select: none;
 }
 
 .file-messages__time-status {

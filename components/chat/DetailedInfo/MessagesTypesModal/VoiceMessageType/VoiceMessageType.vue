@@ -23,6 +23,7 @@
 		<div class="voice-message__images-wrapper">
 			<Voice
 				v-for="message in messagesWithinDay.messages"
+				:name="message.name"
 				:src="message.url"
 			/>
 		</div>

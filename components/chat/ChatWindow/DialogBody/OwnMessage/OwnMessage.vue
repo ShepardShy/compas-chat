@@ -2,7 +2,7 @@
 	import type { GroupChatMessageType, MessageType } from "~/types/messages";
 
 	import { useSettingsStore } from "~/store/settings";
-	import { TextMessage, ImageMessage, VoiceMessage, FileMessage, VideoMessage } from "~/components";
+	import { TextMessage, ImageMessage, VoiceMessage, FileMessage } from "~/components";
 
 	/**
 	 * Входящие пропсы

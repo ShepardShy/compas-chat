@@ -104,6 +104,7 @@ export interface GroupChatMessageType {
 	files?: Array<FileMessageType>;
 	voice: Array<VoiceMessageType>;
 	comment?: string;
+	isUnread: boolean;
 	isViewed: boolean;
 	isReceived: boolean;
 }

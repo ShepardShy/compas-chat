@@ -6,7 +6,7 @@
 	import BackIcon from "~/assets/icons/back-icon.svg";
 	import CloseIcon from "~/assets/icons/close-icon.svg";
 
-	import { VoiceMessageType, TextMessageType, PhotoMessageType, VideoMessageType, FileMessageType, LinkMessageType, ChatInput } from "~/components/";
+	import { VoiceMessageType, PhotoMessageType, VideoMessageType, FileMessageType, LinkMessageType, ChatInput } from "~/components/";
 
 	import type { MessagesTypesTitleType } from "~/types/messages";
 	import { messagesTypesList } from "~/shared/const";
@@ -107,7 +107,7 @@
 					v-if="messageType === 'Ссылки'"
 					class="message-type__link-message"
 				>
-					<LinkMessageType :link-message="dataFromSelectedTypeOfChatMessage" />
+					<LinkMessageType :link-messages="dataFromSelectedTypeOfChatMessage" />
 				</div>
 
 				<Empty v-if="dataFromSelectedTypeOfChatMessage?.length == 0">Нет {{ openMessageTypeItem.titleThree }}</Empty>
@@ -123,6 +123,12 @@
 
 <style lang="scss">
 	@use "~/assets/styles/_variables.scss" as variables;
+	.message-type__link-message {
+		display: flex;
+		flex-direction: column;
+		gap: 25px;
+	}
+
 	.message-type {
 		z-index: 1100;
 		position: absolute;

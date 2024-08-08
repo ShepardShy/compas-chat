@@ -2,7 +2,7 @@
 	import type { GroupChatMessageType, MessageType, UserChatType } from "~/types/messages";
 	import { useChatsStore } from "~/store/chats";
 	import { useSettingsStore } from "~/store/settings";
-	import { TextMessage, ImageMessage, FileMessage, VideoMessage } from "~/components";
+	import { TextMessage, ImageMessage, FileMessage } from "~/components";
 	import VoiceMessage from "~/components/chat/ChatWindow/DialogBody/MessageTypes/VoiceMessage/VoiceMessage.vue";
 	import { useModalStore } from "~/store/modal";
 
@@ -41,7 +41,7 @@
 	/***
 	 * Получение данных о о=пользователе открытого чата
 	 */
-	const chatUser = computed<UserChatType>(() => chats.value.find(chat => chat.userId === message.value.userId));
+	const chatUser = computed<UserChatType>(() => (chats as globalThis.ComputedRef<UserChatType[]>).value.find(chat => chat.userId === message.value.userId) as UserChatType);
 
 	const modalStore = useModalStore();
 

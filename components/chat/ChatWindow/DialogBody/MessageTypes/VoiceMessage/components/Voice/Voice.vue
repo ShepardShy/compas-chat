@@ -16,12 +16,19 @@
 		</div>
 		<div class="audio-msg__data">
 			<div
+				v-if="!name"
 				ref="$visualizationContainer"
 				class="audio-msg__columns"
 				:class="{
 					'audio-msg__columns_mobile': isMobileSize,
 				}"
 			/>
+			<p
+				v-else
+				class="audio-msg__name"
+			>
+				{{ name }}
+			</p>
 
 			<div class="audio-msg__info">
 				<div class="audio-msg__length">{{ voiceMessageLength }},</div>
@@ -50,8 +57,12 @@
 			type: String,
 			required: true,
 		},
+		name: {
+			type: String,
+			default: "",
+		},
 	});
-	const { src } = toRefs(props);
+	const { src, name } = toRefs(props);
 
 	// Запуск обновления заливки фона столбиков
 	const onClickStartVoiceMessage = () => {
@@ -110,6 +121,9 @@
 
 	function visualizeAudioData() {
 		const visualizationDiv = $visualizationContainer.value;
+		if (!visualizationDiv) {
+			return;
+		}
 		visualizationDiv.innerHTML = "";
 
 		const barWidth = 3;
@@ -178,17 +192,19 @@
 
 	function updateVisualizationColors() {
 		const visualizationDiv = $visualizationContainer.value;
-		const bars = visualizationDiv.querySelectorAll(".audio-msg__bar div");
+		if (visualizationDiv) {
+			const bars = visualizationDiv.querySelectorAll(".audio-msg__bar div");
 
-		bars.forEach((bar, index) => {
-			if (index <= currentCallNumber.value) {
-				// Закрашиваем столбики, которые уже завершены
-				bar.style.backgroundColor = "#1152a1";
-			} else {
-				// Оставляем незавершенные столбики без цвета
-				bar.style.backgroundColor = "#8babd8";
-			}
-		});
+			bars.forEach((bar, index) => {
+				if (index <= currentCallNumber.value) {
+					// Закрашиваем столбики, которые уже завершены
+					bar.style.backgroundColor = "#1152a1";
+				} else {
+					// Оставляем незавершенные столбики без цвета
+					bar.style.backgroundColor = "#8babd8";
+				}
+			});
+		}
 
 		if (currentCallNumber.value < numBars) {
 			isVoiceMessageShouldBeRestarted = false;

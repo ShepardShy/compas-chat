@@ -1,6 +1,8 @@
 .text-msg {
 	padding: 10px 15px 10px 15px;
 	min-width: 144px;
+	user-select: none;
+	display: inline-block;
 }
 
 .text-msg__message {

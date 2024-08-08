@@ -7,6 +7,7 @@ import { testPhotoMessages } from "./test/photoMessages";
 import { testVideoMessages } from "./test/videoMessages";
 import { testFileMessages } from "./test/fileMessages";
 import { testVoiceMessages } from "./test/voiceMessages";
+import { testLinkMessages } from "./test/linkMessages";
 
 export const useChatsStore = defineStore("chats", {
 	state: () => {
@@ -42,6 +43,7 @@ export const useChatsStore = defineStore("chats", {
 			testVideoMessages: testVideoMessages,
 			testFileMessages: testFileMessages,
 			testVoiceMessages: testVoiceMessages,
+			testLinkMessages: testLinkMessages,
 
 			openMessageTypeItem: null,
 		};
@@ -286,6 +288,10 @@ export const useChatsStore = defineStore("chats", {
 
 		getVoiceMessages() {
 			this.dataFromSelectedTypeOfChatMessage = [...this.testVoiceMessages];
+		},
+
+		getLinkMessages() {
+			this.dataFromSelectedTypeOfChatMessage = [...this.testLinkMessages];
 		},
 
 		closeGroupChatCreateModal() {

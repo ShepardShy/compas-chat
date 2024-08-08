@@ -140,6 +140,9 @@
 				if (_item.action === "voice-messages") {
 					chatsStore.getVoiceMessages();
 				}
+				if (_item.action === "link-messages") {
+					chatsStore.getLinkMessages();
+				}
 			}
 		}
 	};
@@ -225,7 +228,6 @@
 			</div>
 
 			<CloseIcon
-				v-if="!isMobileSize"
 				class="add-info__close-icon"
 				@pointerup.left.stop="closeModal"
 			/>
