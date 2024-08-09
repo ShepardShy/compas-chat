@@ -106,7 +106,7 @@ export const useChatsStore = defineStore("chats", {
 				messages: preparedMessages,
 			};
 		},
-		openModalChatData: (state): UserChatType | GroupChatType | undefined => state.filteredChats.find(chat => chat.id === state.chatIdForOpenModal),
+		openModalChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find(chat => chat.id === state.chatIdForOpenModal),
 		allChatUsers: state => state.chats.filter(chat => !chat.isGroupChat),
 		filteredChats: state => {
 			try {

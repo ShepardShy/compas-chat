@@ -14,7 +14,7 @@
 	 * Подключение стора с сообщениями
 	 */
 	const chatsStore = useChatsStore();
-	const { chatsWithPinnedUsers, chatsWithoutPinned, chats, userId, chatSearch } = storeToRefs(chatsStore);
+	const { chatsWithPinnedUsers, chatsWithoutPinned, chats, userId, chatSearch, temporalStorageForGroupChat } = storeToRefs(chatsStore);
 
 	/**
 	 * Подключение стора с настройками
@@ -61,6 +61,8 @@
 	const openModalToCreateChat = () => {
 		const currentUser: UserChatType = chats.value.find(chat => chat.id === userId.value && !chat.isGroupChat);
 
+		console.log(currentUser);
+
 		const currentUserData = {
 			userId: currentUser.userId,
 			firstName: currentUser.firstName,
@@ -76,6 +78,8 @@
 			state =>
 				(state.temporalStorageForGroupChat = {
 					...state.temporalStorageForGroupChat,
+					title: "",
+					photo: "",
 					users: [currentUserData],
 				})
 		);

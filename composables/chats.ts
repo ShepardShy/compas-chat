@@ -140,7 +140,8 @@ export const formattedDateToday = () => {
 	const minutes = String(todayDate.getMinutes()).padStart(2, "0");
 
 	const formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`;
-	return formattedDate;
+	// return formattedDate;
+	return moment().toISOString();
 };
 
 /**

@@ -22,7 +22,7 @@
 	 * Подключение стора с чатами
 	 */
 	const chatsStore = useChatsStore();
-	const { openedChatData, openedChatDataMessages, userId, openedChatId, getChatIndex, chats } = storeToRefs(chatsStore);
+	const { openedChatData, openedChatDataMessages, userId, openedChatId, getChatIndex, getChat, chats } = storeToRefs(chatsStore);
 	/**
 	 * Подключение стора с настройками
 	 */
@@ -390,6 +390,13 @@
 		audio.play();
 	};
 
+	// Обновление диапазона дат для календаря
+	watchEffect(() => {
+		if (getChat.value(openedChatId.value)?.dateRangeEnd) {
+			getChat.value(openedChatId.value).dateRangeEnd = openedChatDataMessages.value.messages?.[openedChatDataMessages.value.messages?.length - 1]?.date;
+		}
+	});
+
 	// Обработчик отправки сообщения
 	const handleMessage = () => {
 		if (messageType.value === "text" && !noMessageToSend.value) {
@@ -410,7 +417,6 @@
 				sendTextMessage();
 			}
 
-			console.log(openedChatData.value);
 			playSendMessageAudio();
 		} else if (messageType.value === "voice") {
 			if (isMakingAVoiceMessage.value) {

@@ -3,6 +3,7 @@
 	import BackIcon from "assets/icons/back-icon.svg";
 	import CloseIcon from "assets/icons/close-icon.svg";
 	import { ChatInput, GroupChatUser } from "~/components";
+	import moment from "moment";
 
 	import { useChatsStore } from "~/store/chats";
 	import { useSettingsStore } from "~/store/settings";
@@ -170,10 +171,10 @@
 		const preparedMessages = [
 			..._messages,
 			{
-				id: formattedDateToday(),
+				id: moment().toISOString(),
 				type: "message-info",
 				message: deleteMessage,
-				date: formattedDateToday(),
+				date: moment().toISOString(),
 			},
 		];
 
@@ -213,7 +214,7 @@
 				id: 33,
 				type: "message-info",
 				message: addMessage,
-				date: formattedDateToday(),
+				date: moment().toISOString(),
 			},
 		];
 

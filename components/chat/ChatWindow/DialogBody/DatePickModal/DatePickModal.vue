@@ -89,8 +89,6 @@
 		title: "День",
 	});
 	const pickDayHandler = data => {
-		console.log(data.value);
-
 		selectedDate.value = String(data.value);
 		closeDatePickModal();
 	};

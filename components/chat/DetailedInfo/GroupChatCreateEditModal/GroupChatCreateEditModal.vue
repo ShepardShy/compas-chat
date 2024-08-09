@@ -3,6 +3,7 @@
 	import { useChatsStore } from "~/store/chats";
 	import { detailedInfoMenuItems } from "~/shared/const";
 	import type { DetailedInfoMenuItem } from "~/types/messages";
+	import moment from "moment";
 
 	import DeleteIcon from "assets/icons/delete-icon.svg";
 	import CloseIcon from "assets/icons/close-icon.svg";
@@ -233,10 +234,10 @@
 			const deleteMessage = _deletedUsersListArray.length > 1 ? `Удалены из группового чата: ${_deletedUsersList}` : `Удалён из группвого чата: ${_deletedUsersList} `;
 
 			finalMessages.push({
-				id: formattedDateToday(),
+				id: moment().toISOString(),
 				type: "message-info",
 				message: deleteMessage,
-				date: formattedDateToday(),
+				date: moment().toISOString(),
 			});
 		}
 
@@ -255,10 +256,10 @@
 			const addMessage = _addedUsersListArray.length > 1 ? `Добавлены в групповой чат: ${_addedUsersList}` : `Добавлен в групповой чат: ${_addedUsersList}`;
 
 			finalMessages.push({
-				id: formattedDateToday(),
+				id: moment().toISOString(),
 				type: "message-info",
 				message: addMessage,
-				date: formattedDateToday(),
+				date: moment().toISOString(),
 			});
 		}
 
