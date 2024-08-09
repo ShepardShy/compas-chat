@@ -154,7 +154,7 @@
 				<!--        />-->
 				<div
 					class="window__icon-wrapper"
-					@pointerup.left.stop="toggleMenuOpen"
+					@pointerdown.left.stop="toggleMenuOpen"
 				>
 					<MoreIcon
 						:style="{

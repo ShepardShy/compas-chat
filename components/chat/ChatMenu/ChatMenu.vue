@@ -87,6 +87,7 @@
 
 				await chatsStore.$patch(state => (state.temporalStorageForGroupChat = openedChatData.value));
 				chatsStore.$patch(state => (state.isGroupChatEditModalOpen = true));
+				emit("closeChat");
 				break;
 			}
 			case "deleteChat": {

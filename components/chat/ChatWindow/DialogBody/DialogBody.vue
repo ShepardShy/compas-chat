@@ -410,6 +410,7 @@
 				sendTextMessage();
 			}
 
+			console.log(openedChatData.value);
 			playSendMessageAudio();
 		} else if (messageType.value === "voice") {
 			if (isMakingAVoiceMessage.value) {
