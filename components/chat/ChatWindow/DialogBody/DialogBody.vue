@@ -111,7 +111,13 @@
 			$chatInput.value.cleanLoadedDocuments();
 
 			await checkIfDialogBodyHeightsLessThenVH();
-			scrollToDialogWrapperBottom();
+			const unreadMessage = document.querySelector(".other-msg_unreaded");
+			console.log(unreadMessage);
+			if (unreadMessage) {
+				unreadMessage.scrollIntoView();
+			} else {
+				scrollToDialogWrapperBottom();
+			}
 			if (chats.value?.[getChatIndex.value(oldVal)]) {
 				chats.value[getChatIndex.value(oldVal)].isScrolled = false;
 			}
@@ -210,7 +216,12 @@
 	 */
 	onMounted(async () => {
 		await checkIfDialogBodyHeightsLessThenVH();
-		scrollToDialogWrapperBottom();
+		const unreadMessage = document.querySelector(".other-msg_unreaded");
+		if (unreadMessage) {
+			unreadMessage.scrollIntoView({ behavior: "instant" });
+		} else {
+			scrollToDialogWrapperBottom();
+		}
 		setDialogWidth();
 
 		window.addEventListener("resize", scrollToDialogWrapperBottom);
@@ -455,12 +466,12 @@
 
 	// Скролл до элемента
 	const isScrolling = ref(false);
-	const scrollToMessage = async message => {
+	const scrollToMessage = async (message, behavior = "smooth") => {
 		const messageOffsetTop = message.offsetTop;
 		// const scrollPosition = messageOffsetTop - 0.5;
 		const scrollPosition = messageOffsetTop > 5 ? messageOffsetTop : 0;
 		await nextTick();
-		!isScrolling.value && $dialogWrapper.value.scrollTo({ top: scrollPosition, behavior: "smooth" });
+		!isScrolling.value && $dialogWrapper.value.scrollTo({ top: scrollPosition, behavior: behavior as ScrollBehavior });
 		isScrolling.value = true;
 
 		setTimeout(() => {

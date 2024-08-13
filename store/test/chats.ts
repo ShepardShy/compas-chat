@@ -1537,7 +1537,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1547,7 +1547,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1557,7 +1557,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1567,7 +1567,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1577,7 +1577,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1587,7 +1587,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1597,7 +1597,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1607,7 +1607,7 @@ export const chats = [
 				userId: 1,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1617,7 +1617,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1627,7 +1627,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1637,7 +1637,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1647,7 +1647,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1657,7 +1657,7 @@ export const chats = [
 				userId: 1,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1667,7 +1667,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1677,7 +1677,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{
@@ -1687,7 +1687,7 @@ export const chats = [
 				userId: 2,
 				isReceived: true,
 				isViewed: true,
-				isUnread: true,
+				isUnread: false,
 				date: "2024-02-14T15:12:00.000Z",
 			},
 			{

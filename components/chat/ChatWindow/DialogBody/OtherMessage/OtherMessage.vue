@@ -44,6 +44,7 @@
 	const chatUser = computed<UserChatType>(() => (chats as globalThis.ComputedRef<UserChatType[]>).value.find(chat => chat.userId === message.value.userId) as UserChatType);
 
 	const modalStore = useModalStore();
+	const isUnreadMessage = message.value.isUnread;
 
 	// Просмотр сообщения
 
@@ -76,7 +77,7 @@
 		if (message.value.isUnread) {
 			setTimeout(() => {
 				observer.observe($otherMsg.value);
-			}, 10);
+			}, 500);
 		}
 	});
 </script>
@@ -87,6 +88,7 @@
 		ref="$otherMsg"
 		:class="{
 			'other-msg_mobile': isMobileSize,
+			'other-msg_unreaded': isUnreadMessage,
 		}"
 		:style="{
 			marginBottom: lastOfSeveralMsgs ? '25px' : '5px',
