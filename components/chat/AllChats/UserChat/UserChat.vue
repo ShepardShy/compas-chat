@@ -67,7 +67,7 @@
 	/**
 	 * Количество непрочитанных сообщений
 	 */
-	const unreadMessagesLength = computed<number>(() => chatData.value.messages.filter(message => message.isUnread).length);
+	const unreadMessagesLength = computed<number>(() => chatData.value.messages.filter(message => userId.value != message.userId && message.isUnread).length);
 	/**
 	 * Доставлено ли сообщение
 	 */

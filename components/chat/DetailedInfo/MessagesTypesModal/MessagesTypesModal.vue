@@ -175,11 +175,15 @@
 	}
 
 	.message-type__top {
+		display: flex;
+		gap: 10px;
+		padding-left: 10px;
+		align-items: center;
 		margin-bottom: 25px;
 	}
 
 	.message-type__back-icon {
-		position: absolute;
+		// position: absolute;
 		height: 28px;
 		top: 25px;
 		left: 20px;
@@ -200,7 +204,7 @@
 	}
 
 	.message-type__title {
-		padding: 0 69px;
+		// padding: 0 69px;
 		font-size: 20px;
 		font-weight: 400;
 		color: variables.$color-black;

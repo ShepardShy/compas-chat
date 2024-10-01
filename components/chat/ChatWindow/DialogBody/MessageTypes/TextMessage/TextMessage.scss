@@ -9,6 +9,7 @@
 	user-select: none;
 	& span {
 		user-select: text;
+		word-break: break-word;
 	}
 }
 
