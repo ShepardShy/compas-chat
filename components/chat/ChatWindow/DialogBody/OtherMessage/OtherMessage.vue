@@ -59,7 +59,7 @@
 				$otherMsg.value.classList?.add("other-msg_unread");
 				setTimeout(() => {
 					$otherMsg.value?.classList?.remove("other-msg_unread");
-				}, 2000);
+				}, 5000);
 				observer.unobserve(entry.target);
 			}
 		});

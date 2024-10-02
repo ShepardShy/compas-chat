@@ -184,7 +184,7 @@
 
 	.message-type__back-icon {
 		// position: absolute;
-		height: 28px;
+		height: 25px;
 		top: 25px;
 		left: 20px;
 		cursor: pointer;

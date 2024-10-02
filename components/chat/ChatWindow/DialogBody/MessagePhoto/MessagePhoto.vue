@@ -25,9 +25,11 @@
 	 * Фото пользователя или если его нет заливка гралиентом
 	 */
 	const isHavePhoto = ref(false);
+	if (photo.value) {
+		isHavePhoto.value = true;
+	}
 	const chatPhoto = computed<string>(() => {
 		if (photo.value) {
-			isHavePhoto.value = true;
 			return `url(${photo.value})`;
 		} else {
 			return "linear-gradient(to bottom, #71d2fc 2%, #9490ff 100%)";
