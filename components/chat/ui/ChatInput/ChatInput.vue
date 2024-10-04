@@ -264,6 +264,38 @@
 		const lines = inputValue.value ? inputValue.value.split("\n").length - 1 : 0;
 		return 16 * lines;
 	});
+	// const countOfLines = computed(() => {
+	// 	const text = inputValue.value || "";
+	// 	if (!$inputBody.value) return 1;
+	// 	const inputWidth = $inputBody.value?.offsetWidth; // Ширина инпута
+	// 	const canvas = document.createElement("canvas");
+	// 	const context = canvas.getContext("2d");
+
+	// 	console.log(inputWidth, "inputWidth");
+
+	// 	// Устанавливаем шрифт, чтобы он совпадал со стилем инпута
+	// 	const fontStyle = window.getComputedStyle($inputBody.value).font;
+	// 	context.font = fontStyle;
+
+	// 	let currentLineWidth = 0;
+	// 	let totalLines = 1; // начинаем с 1 строки
+
+	// 	// Проходим по каждому символу и вычисляем его ширину
+	// 	for (let i = 0; i < text.length; i++) {
+	// 		const charWidth = context.measureText(text[i]).width;
+	// 		currentLineWidth += charWidth;
+
+	// 		if (currentLineWidth > inputWidth - 64) {
+	// 			totalLines++; // добавляем новую строку
+	// 			currentLineWidth = charWidth; // начинаем новую строку с текущего символа
+	// 		}
+	// 	}
+
+	// 	console.log(currentLineWidth, "currentLineWidth");
+	// 	console.log(totalLines, "totalLines");
+
+	// 	return totalLines;
+	// });
 
 	// Дефолтное значение
 	const local = localStorage.getItem("defaultInputHeight");

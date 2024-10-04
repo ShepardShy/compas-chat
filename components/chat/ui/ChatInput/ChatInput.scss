@@ -131,7 +131,8 @@
 .doc__menu {
 	position: absolute;
 	left: 15px;
-	top: -72px;
+	top: 0;
+	transform: translateY(-100%);
 	border-radius: 5px;
 	box-shadow: 0 0 3px 0 variables.$color-black;
 	background-color: #fff;

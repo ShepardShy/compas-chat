@@ -62,10 +62,10 @@
 		}
 
 		if (message.value?.images?.length <= 2) {
-			return "323px";
+			return "333px";
 		}
 
-		return imagesLength === 3 ? "repeat(2, calc(323px / 2))" : "repeat(3, calc(323px / 3))";
+		return imagesLength === 3 ? "repeat(2, calc(333px / 2))" : "repeat(3, calc(333px / 3))";
 	});
 
 	const imageOne = computed(() => {
