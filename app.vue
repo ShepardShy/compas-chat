@@ -10,6 +10,10 @@
 <script setup lang="ts">
 	import AppModal from "~/components/ui/AppModal/Modal.vue";
 	import { useModalStore } from "~/store/modal";
+	import { useChatsStore } from "~/store/chats";
+
+	const chatsStore = useChatsStore();
+	await chatsStore.loadChats();
 
 	const modalStore = useModalStore();
 	const modals = modalStore.modals;

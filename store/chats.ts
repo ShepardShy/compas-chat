@@ -8,6 +8,7 @@ import { testVideoMessages } from "./test/videoMessages";
 import { testFileMessages } from "./test/fileMessages";
 import { testVoiceMessages } from "./test/voiceMessages";
 import { testLinkMessages } from "./test/linkMessages";
+import { useMyFetch } from "../composables/useMyFetch";
 
 export const useChatsStore = defineStore("chats", {
 	state: () => {
@@ -138,6 +139,14 @@ export const useChatsStore = defineStore("chats", {
 	},
 
 	actions: {
+		async loadChats() {
+			const res = await useMyFetch("api/chat/groups", {
+				method: "GET",
+			});
+			console.log(this.chats, "chats");
+			console.log(res.data, "data123123123");
+		},
+
 		raiseChat(chatId: string | number) {
 			const chatIndex = this.getChatIndex(chatId);
 			const chat = this.getChat(chatId);
