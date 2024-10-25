@@ -151,7 +151,7 @@
 	);
 
 	// Сообщения от собеседника
-	const notMyMessages = computed(() => openedChatDataMessages.value.messages?.filter(message => message?.userId != userId.value)?.length);
+	const notMyMessages = computed(() => openedChatDataMessages.value.messages?.filter((message) => message?.userId != userId.value)?.length);
 	let notMyMessagesCurrent = notMyMessages.value;
 
 	// Подписка на приход сообщений
@@ -171,7 +171,7 @@
 	// Если чат пролистан до конца, тогда навесить на чат флаг
 	watch(
 		() => [isDialogAtBottom.value, openedChatId.value],
-		newVal => {
+		(newVal) => {
 			if (chats.value?.[getChatIndex.value(openedChatId.value)]) {
 				chats.value[getChatIndex.value(openedChatId.value)].isScrolled = newVal ? true : false;
 			}
@@ -276,7 +276,7 @@
 
 				startTime = new Date().getTime();
 
-				mediaRecorder.ondataavailable = e => {
+				mediaRecorder.ondataavailable = (e) => {
 					chunks.push(e.data);
 				};
 
@@ -296,7 +296,7 @@
 
 	// stop mic
 	function stopAudioOnly(stream) {
-		stream?.getTracks()?.forEach(track => {
+		stream?.getTracks()?.forEach((track) => {
 			if (track.readyState == "live" && track.kind === "audio") {
 				track.stop();
 			}
@@ -483,7 +483,7 @@
 
 	const $dialogDate = ref(null);
 	const clickDateHandler = async () => {
-		const message = messagesWithIsoDates.value.find(p => p.date == preparedDay.value.split(".").reverse().join("-"));
+		const message = messagesWithIsoDates.value.find((p) => p.date == preparedDay.value.split(".").reverse().join("-"));
 
 		const messageToScroll = $dialogBody.value?.[message.index] as HTMLDivElement;
 		scrollToMessage(messageToScroll);
@@ -507,7 +507,7 @@
 	// Ближайшая дата к массиву дат
 
 	const findClosest = (list, date = new Date().toLocaleDateString("en-GB")) => {
-		const parseDate = date => Date.parse(date);
+		const parseDate = (date) => Date.parse(date);
 		const findDate = parseDate(date);
 
 		return list.reduce(
@@ -562,7 +562,7 @@
 			fullHeight = window.visualViewport.height;
 		}, 100);
 	});
-	const preventScrollWhenSoftKeyboardFocus = async e => {
+	const preventScrollWhenSoftKeyboardFocus = async (e) => {
 		await nextTick();
 		setTimeout(() => {
 			const currentHeight = window.visualViewport.height;
@@ -572,7 +572,7 @@
 			window.scrollTo({ top: 0, behavior: "instant" });
 		}, 200);
 	};
-	const preventScrollWhenSoftKeyboardBlur = e => {
+	const preventScrollWhenSoftKeyboardBlur = (e) => {
 		heightWithKeyboard.value = "100svh";
 	};
 </script>
@@ -643,8 +643,20 @@
 						<div class="dialog__photo-wrapper">
 							<MessagePhoto
 								@click="showModal"
-								:firstName="'users' in openedChatData ? openedChatData.users.find(user => 'userId' in user && user.userId == userMessages.userId)?.firstName : 'firstName' in openedChatData ? openedChatData.firstName : ''"
-								:photo="'users' in openedChatData ? openedChatData.users.find(user => 'userId' in user && user.userId == userMessages.userId)?.photo : 'photo' in openedChatData ? openedChatData.photo : ''"
+								:firstName="
+									'users' in openedChatData
+										? openedChatData.users.find((user) => 'userId' in user && user.userId == userMessages.userId)?.firstName
+										: 'firstName' in openedChatData
+										? openedChatData.firstName
+										: ''
+								"
+								:photo="
+									'users' in openedChatData
+										? openedChatData.users.find((user) => 'userId' in user && user.userId == userMessages.userId)?.photo
+										: 'photo' in openedChatData
+										? openedChatData.photo
+										: ''
+								"
 								v-if="checkIfLastOfSeveralMessages(userIndex, userMessages.messages[0].messages) && userMessages.userId != userId && userMessages.messages[0].type !== 'message-info'"
 							/>
 						</div>
@@ -652,7 +664,7 @@
 						<div class="dialog__messages">
 							<div
 								v-for="(message, idx) in userMessages.messages"
-								:key="message.id"
+								:key="openedChatId"
 								class="dialog__message"
 								:class="{ 'message-start': message.userId != userId, 'message-end': message.userId == userId }"
 								:style="{

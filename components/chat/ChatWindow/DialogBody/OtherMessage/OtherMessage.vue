@@ -41,7 +41,7 @@
 	/***
 	 * Получение данных о о=пользователе открытого чата
 	 */
-	const chatUser = computed<UserChatType>(() => (chats as globalThis.ComputedRef<UserChatType[]>).value.find(chat => chat.userId === message.value.userId) as UserChatType);
+	const chatUser = computed<UserChatType>(() => (chats as globalThis.ComputedRef<UserChatType[]>).value.find((chat) => chat.userId === message.value.userId) as UserChatType);
 
 	const modalStore = useModalStore();
 	const isUnreadMessage = message.value.isUnread;
@@ -53,7 +53,7 @@
 
 	// Создаем callback-функцию, которая будет вызываться при пересечении
 	const callback = (entries, observer) => {
-		entries.forEach(entry => {
+		entries.forEach((entry) => {
 			if (entry.isIntersecting) {
 				message.value.isUnread = false;
 				observer.unobserve(entry.target);
@@ -74,7 +74,7 @@
 			$otherMsg.value.classList?.add("other-msg_unread");
 			setTimeout(() => {
 				$otherMsg.value?.classList?.remove("other-msg_unread");
-			}, 5000);
+			}, 2000);
 			setTimeout(() => {
 				observer.observe($otherMsg.value);
 			}, 500);

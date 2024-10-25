@@ -14,6 +14,7 @@
 
 	const chatsStore = useChatsStore();
 	await chatsStore.loadChats();
+	// await chatsStore.createChat();
 
 	const modalStore = useModalStore();
 	const modals = modalStore.modals;
@@ -29,7 +30,7 @@
 
 	// отключение скрола у body
 	onMounted(() => {
-		document.body.addEventListener("scroll", e => e.preventDefault(), { passive: false });
+		document.body.addEventListener("scroll", (e) => e.preventDefault(), { passive: false });
 		window.screen;
 	});
 </script>

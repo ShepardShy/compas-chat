@@ -51,23 +51,23 @@ export const useChatsStore = defineStore("chats", {
 	},
 
 	getters: {
-		chatsWithPinnedUsers: state => state.filteredChats.filter(chat => chat.isPinned),
-		chatsWithoutPinned: state => state.filteredChats.filter(chat => !chat.isPinned),
-		getChat: state => id => state.chats?.find(chat => chat?.id == id),
-		getChatIndex: state => id => state.chats?.findIndex(chat => chat?.id == id),
-		chatsNotMyMessagesCount: state => {
+		chatsWithPinnedUsers: (state) => state.filteredChats.filter((chat) => chat.isPinned),
+		chatsWithoutPinned: (state) => state.filteredChats.filter((chat) => !chat.isPinned),
+		getChat: (state) => (id) => state.chats?.find((chat) => chat?.id == id),
+		getChatIndex: (state) => (id) => state.chats?.findIndex((chat) => chat?.id == id),
+		chatsNotMyMessagesCount: (state) => {
 			return state.chats.reduce((acc, chat) => {
-				acc += chat.messages.filter(message => message.userId != state.userId)?.length;
+				acc += chat.messages.filter((message) => message.userId != state.userId)?.length;
 				return acc;
 			}, 0);
 		},
 		openedChatDataMessages: (state): UserChatType | GroupChatType | undefined => {
-			const chatData = state.chats.find(chat => chat.id === state.openedChatId);
+			const chatData = state.chats.find((chat) => chat.id === state.openedChatId);
 			const messages = chatData?.messages;
 			return { messages };
 		},
 		openedChatData: (state): UserChatType | GroupChatType | undefined => {
-			const chatData = state.chats.find(chat => chat.id === state.openedChatId);
+			const chatData = state.chats.find((chat) => chat.id === state.openedChatId);
 			const messages = chatData?.messages;
 			const preparedMessages: Array<{ date: string; messages: UserChatType | GroupChatType | undefined }> = [];
 
@@ -85,7 +85,7 @@ export const useChatsStore = defineStore("chats", {
 						const lastPreparedMessage = preparedMessages[preparedMessages.length - 1];
 
 						if (messageDate === lastPreparedMessage.date) {
-							const userMessages = lastPreparedMessage.messages.find(m => m.userId === userId);
+							const userMessages = lastPreparedMessage.messages.find((m) => m.userId === userId);
 
 							if (userMessages) {
 								userMessages.messages.push(messages[i]);
@@ -107,9 +107,9 @@ export const useChatsStore = defineStore("chats", {
 				messages: preparedMessages,
 			};
 		},
-		openModalChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find(chat => chat.id === state.chatIdForOpenModal),
-		allChatUsers: state => state.chats.filter(chat => !chat.isGroupChat),
-		filteredChats: state => {
+		openModalChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find((chat) => chat.id === state.chatIdForOpenModal),
+		allChatUsers: (state) => state.chats.filter((chat) => !chat.isGroupChat),
+		filteredChats: (state) => {
 			try {
 				if (!state.chatSearch) {
 					return [...state.chats];
@@ -119,8 +119,9 @@ export const useChatsStore = defineStore("chats", {
 
 				// Поиск по имени и фамилии
 				const chatsWithNames = [
-					...state.chats.filter(chatData => {
-						const isChatNameIncludes = l(chatData?.firstName)?.includes(l(state.chatSearch)) || l(chatData?.secondName)?.includes(l(state.chatSearch)) || l(chatData?.title)?.includes(l(state.chatSearch));
+					...state.chats.filter((chatData) => {
+						const isChatNameIncludes =
+							l(chatData?.firstName)?.includes(l(state.chatSearch)) || l(chatData?.secondName)?.includes(l(state.chatSearch)) || l(chatData?.title)?.includes(l(state.chatSearch));
 						if (isChatNameIncludes) {
 							return true;
 						}
@@ -139,11 +140,28 @@ export const useChatsStore = defineStore("chats", {
 	},
 
 	actions: {
+		async loadUsers() {
+			const { data: users } = await useMyFetch("api/chat/users", {
+				method: "GET",
+			});
+			console.log(users.value, "users12312312");
+		},
+
 		async loadChats() {
 			const res = await useMyFetch("api/chat/groups", {
 				method: "GET",
 			});
-			console.log(this.chats, "chats");
+			console.log(res.data, "data123123123");
+		},
+
+		async createChat() {
+			const res = await useMyFetch("api/chat/groups", {
+				method: "POST",
+				body: {
+					name: "chat123",
+					users: ["130"],
+				},
+			});
 			console.log(res.data, "data123123123");
 		},
 
@@ -158,7 +176,7 @@ export const useChatsStore = defineStore("chats", {
 
 		async togglePinUser(chatId: string | number) {
 			try {
-				this.chats = this.chats.map(chatData => {
+				this.chats = this.chats.map((chatData) => {
 					if (chatData.id == chatId) {
 						return {
 							...chatData,
@@ -175,7 +193,7 @@ export const useChatsStore = defineStore("chats", {
 
 		async toggleUserMuted(chatId: string | number) {
 			try {
-				this.chats = this.chats.map(chatData => {
+				this.chats = this.chats.map((chatData) => {
 					if (chatData.id == chatId) {
 						return {
 							...chatData,
@@ -194,7 +212,7 @@ export const useChatsStore = defineStore("chats", {
 
 		async deleteChat(chatId: string | number) {
 			try {
-				this.chats = this.chats.filter(chat => chat.id !== chatId);
+				this.chats = this.chats.filter((chat) => chat.id !== chatId);
 				this.openedChatId = this.chats[0].id ?? undefined;
 			} catch (e) {
 				console.log(e);
@@ -202,9 +220,9 @@ export const useChatsStore = defineStore("chats", {
 		},
 
 		async addToGroup(userId: number, groupId: number) {
-			const userData = this.chats.find(chat => chat.id === userId && !chat.isGroupChat);
+			const userData = this.chats.find((chat) => chat.id === userId && !chat.isGroupChat);
 
-			this.chats = this.chats.map(chat => {
+			this.chats = this.chats.map((chat) => {
 				if (!chat.isGroupChat) {
 					return chat;
 				}
@@ -221,7 +239,7 @@ export const useChatsStore = defineStore("chats", {
 		},
 
 		async removeFromGroup(userId: number, groupId: number) {
-			this.chats = this.chats.map(chat => {
+			this.chats = this.chats.map((chat) => {
 				if (!chat.isGroupChat) {
 					return chat;
 				}
@@ -229,7 +247,7 @@ export const useChatsStore = defineStore("chats", {
 				if (chat.id === groupId) {
 					return {
 						...chat,
-						users: (chat as GroupChatType).users.filter(user => userId !== user.id),
+						users: (chat as GroupChatType).users.filter((user) => userId !== user.id),
 					};
 				} else {
 					return chat;
@@ -262,7 +280,7 @@ export const useChatsStore = defineStore("chats", {
 		},
 
 		updateGroupChat(newChatData: GroupChatType) {
-			this.chats = this.chats.map(chat => {
+			this.chats = this.chats.map((chat) => {
 				if (!chat.isGroupChat) {
 					return chat;
 				}
@@ -322,7 +340,7 @@ export const useChatsStore = defineStore("chats", {
 		},
 
 		sendTextMessage(message: string, userId: number, chatId: number) {
-			const userData = this.allChatUsers.find(user => user.id === userId);
+			const userData = this.allChatUsers.find((user) => user.id === userId);
 			const newMessage = {
 				id: new Date().getTime(),
 				userId,
@@ -336,7 +354,7 @@ export const useChatsStore = defineStore("chats", {
 				isUnread: false,
 			};
 
-			this.chats = this.chats.map(chat => {
+			this.chats = this.chats.map((chat) => {
 				if (chat.id === chatId) {
 					return {
 						...chat,
@@ -349,7 +367,7 @@ export const useChatsStore = defineStore("chats", {
 		},
 
 		sendImageMessage(uploadedImages: Array<any>, message: string, userId: number, chatId: number) {
-			const userData = this.allChatUsers.find(user => user.id === userId);
+			const userData = this.allChatUsers.find((user) => user.id === userId);
 			const newMessage = {
 				id: new Date().getTime(),
 				userId,
@@ -362,7 +380,7 @@ export const useChatsStore = defineStore("chats", {
 				isViewed: false,
 				isUnread: false,
 				images: [
-					...uploadedImages.map(image => {
+					...uploadedImages.map((image) => {
 						return {
 							url: image.url,
 							fileName: image.fileName,
@@ -376,7 +394,7 @@ export const useChatsStore = defineStore("chats", {
 				],
 			};
 
-			this.chats = this.chats.map(chat => {
+			this.chats = this.chats.map((chat) => {
 				if (chat.id === chatId) {
 					return {
 						...chat,
@@ -398,7 +416,7 @@ export const useChatsStore = defineStore("chats", {
 			userId: number,
 			chatId: number
 		) {
-			const userData = this.allChatUsers.find(user => user.id === userId);
+			const userData = this.allChatUsers.find((user) => user.id === userId);
 
 			const newMessage = {
 				id: new Date().getTime(),
@@ -412,7 +430,7 @@ export const useChatsStore = defineStore("chats", {
 				isViewed: false,
 				isUnread: false,
 				files: [
-					...uploadedFiles.map(file => {
+					...uploadedFiles.map((file) => {
 						return {
 							url: file.url,
 							fileName: file.name,
@@ -426,7 +444,7 @@ export const useChatsStore = defineStore("chats", {
 				],
 			};
 
-			this.chats = this.chats.map(chat => {
+			this.chats = this.chats.map((chat) => {
 				if (chat.id === chatId) {
 					return {
 						...chat,
@@ -439,7 +457,7 @@ export const useChatsStore = defineStore("chats", {
 		},
 
 		sendVoiceMessage(uploadedVoiceMessages: string[], message: string, userId: number, chatId: number) {
-			const userData = this.allChatUsers.find(user => user.id === userId);
+			const userData = this.allChatUsers.find((user) => user.id === userId);
 
 			const newMessage = {
 				id: new Date().getTime(),
@@ -453,7 +471,7 @@ export const useChatsStore = defineStore("chats", {
 				isViewed: false,
 				isUnread: false,
 				voice: [
-					...uploadedVoiceMessages.map(file => {
+					...uploadedVoiceMessages.map((file) => {
 						return {
 							url: file,
 							date: new Date().toISOString(),
@@ -465,7 +483,7 @@ export const useChatsStore = defineStore("chats", {
 				],
 			};
 
-			this.chats = this.chats.map(chat => {
+			this.chats = this.chats.map((chat) => {
 				if (chat.id === chatId) {
 					return {
 						...chat,
@@ -478,10 +496,10 @@ export const useChatsStore = defineStore("chats", {
 		},
 
 		createGroupChat() {
-			const currentUser: UserChatType = this.chats.find(chat => chat.id === this.userId && !chat.isGroupChat);
+			const currentUser: UserChatType = this.chats.find((chat) => chat.id === this.userId && !chat.isGroupChat);
 			const fullUserName = currentUser.firstName ? currentUser.firstName + " " + currentUser.secondName : currentUser.secondName;
 
-			const _addedUsersListArray = this.temporalStorageForAddedUsers.map(user => {
+			const _addedUsersListArray = this.temporalStorageForAddedUsers.map((user) => {
 				if (user.firstName) {
 					return user.firstName + " " + user.secondName;
 				} else {
@@ -534,7 +552,7 @@ export const useChatsStore = defineStore("chats", {
 		},
 
 		saveTextMessageDraft(chatId: number, textMessageDraft: string) {
-			this.chats = this.chats.map(chat => {
+			this.chats = this.chats.map((chat) => {
 				if (chat.id === chatId) {
 					return {
 						...chat,

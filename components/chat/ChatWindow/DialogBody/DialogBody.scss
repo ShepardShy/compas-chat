@@ -54,16 +54,16 @@
 
 .dialog__wrapper {
 	// -webkit-overflow-scrolling: touch;
-	-webkit-overflow-scrolling: auto;
-	overscroll-behavior: contain;
+	// -webkit-overflow-scrolling: auto;
+	// overscroll-behavior: contain;
 	user-select: none;
 	// flex: 1 1 auto;
 	// margin-bottom: 35px;
 	position: relative;
 	overflow-y: auto;
 	padding-right: 45px;
-	-webkit-overflow-scrolling: touch;
-	overscroll-behavior-block: none;
+	// -webkit-overflow-scrolling: touch;
+	// overscroll-behavior-block: none;
 
 	&::-webkit-scrollbar {
 		width: 3px;
