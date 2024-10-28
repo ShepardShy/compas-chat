@@ -49,7 +49,7 @@
 		substring: null,
 		title: "Год",
 	});
-	const pickYearHandler = data => {
+	const pickYearHandler = (data) => {
 		date.value = new Date(date.value.setFullYear(data.value));
 		datePickDay.value = {
 			...datePickDay.value,
@@ -69,7 +69,7 @@
 		substring: null,
 		title: "Месяц",
 	});
-	const pickMonthHandler = data => {
+	const pickMonthHandler = (data) => {
 		date.value = new Date(date.value.setMonth(data.value));
 		datePickDay.value = {
 			...datePickDay.value,
@@ -88,7 +88,7 @@
 		substring: null,
 		title: "День",
 	});
-	const pickDayHandler = data => {
+	const pickDayHandler = (data) => {
 		selectedDate.value = String(data.value);
 		closeDatePickModal();
 	};
@@ -136,7 +136,7 @@
 				<AppH3 class="date-pick__title">Дата</AppH3>
 				<CloseIcon
 					class="date-pick__close-icon"
-					@pointerup.left.stop="closeDatePickModal"
+					@click.stop="closeDatePickModal"
 				/>
 			</div>
 			<UiAppInputsDate

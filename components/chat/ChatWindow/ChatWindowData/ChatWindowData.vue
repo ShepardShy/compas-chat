@@ -19,6 +19,13 @@
 	const modalStore = useModalStore();
 
 	/**
+	 * События компонента
+	 */
+	const emit = defineEmits<{
+		(emit: "closeChat"): void;
+	}>();
+
+	/**
 	 * Если чат групповой - заголовок, иначе полное имя пользователя
 	 */
 	const userFullName = computed<string>(() => {
@@ -45,6 +52,19 @@
 			return `${_totalChatUsers} участников`;
 		}
 	});
+
+	// Открытие модалки пользователя
+
+	const openUser = async () => {
+		chatsStore.$patch((state) => (state.chatIdForOpenModal = openedChatData.value.id));
+
+		await nextTick();
+		await chatsStore.$patch((state) => (state.temporalStorageForGroupChat = openedChatData.value));
+
+		chatsStore.$patch((state) => (state.isDetailedInfoModalOpen = true));
+
+		emit("closeChat");
+	};
 </script>
 
 <template>
@@ -74,7 +94,7 @@
 
 				<div
 					class="user__name"
-					@pointerup.left.stop="!openedChatData.isGroupChat && modalStore.showModal()"
+					@pointerup.left.stop="!openedChatData.isGroupChat && openUser()"
 					:class="{
 						'user__name_is-group': openedChatData.isGroupChat,
 					}"

@@ -27,6 +27,11 @@ export const chatMenuItems: ChatMenuType[] = [
 		action: "muteChat",
 	},
 	{
+		title: "Перейти на портал пользователя",
+		icon: "",
+		action: "openPortal",
+	},
+	{
 		title: "Удалить чат",
 		icon: "",
 		action: "deleteChat",
@@ -35,9 +40,41 @@ export const chatMenuItems: ChatMenuType[] = [
 
 export const inputFilesTypes: string[] | string = ["Фото или видео", "Файл"];
 
-export const imagesTypes = ["image/jpeg", "image/png", "image/jpg", "image/webp", "image/bmp", "image/gif", "video/x-flv", "video/mp4", "application/x-mpegURL", "video/MP2T", "video/3gpp", "video/quicktime", "video/x-msvideo", "video/x-ms-wmv"];
+export const imagesTypes = [
+	"image/jpeg",
+	"image/png",
+	"image/jpg",
+	"image/webp",
+	"image/bmp",
+	"image/gif",
+	"video/x-flv",
+	"video/mp4",
+	"application/x-mpegURL",
+	"video/MP2T",
+	"video/3gpp",
+	"video/quicktime",
+	"video/x-msvideo",
+	"video/x-ms-wmv",
+];
 
-export const docTypes = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/mp3", "application/txt", "application/pptx", "application/mp4", "image/jpeg", "image/png", "image/jpg", "image/webp", "image/svg", "image/bmp", "image/gif", "image/svg+xml"];
+export const docTypes = [
+	"application/pdf",
+	"application/msword",
+	"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+	"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+	"application/mp3",
+	"application/txt",
+	"application/pptx",
+	"application/mp4",
+	"image/jpeg",
+	"image/png",
+	"image/jpg",
+	"image/webp",
+	"image/svg",
+	"image/bmp",
+	"image/gif",
+	"image/svg+xml",
+];
 
 export const detailedInfoMenuItems: DetailedInfoMenuItem[] = [
 	{

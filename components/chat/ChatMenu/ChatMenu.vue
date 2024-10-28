@@ -6,6 +6,7 @@
 	import PinIcon from "~/assets/icons/pin-icon.svg";
 	import type { ChatMenuType } from "~/types/messages";
 	import { useSettingsStore } from "~/store/settings";
+	import { useModalStore } from "~/store/modal";
 
 	/**
 	 * Входящие пропсы
@@ -33,6 +34,7 @@
 	 */
 	const settingsStore = useSettingsStore();
 	const { isMobileSize } = storeToRefs(settingsStore);
+	const modalStore = useModalStore();
 	/**
 	 * Подключение стора с чатами
 	 */
@@ -54,7 +56,7 @@
 		if (isGroupChat.value) {
 			return chatMenuItems;
 		} else {
-			return chatMenuItems.filter(menuItems => menuItems.action !== "editChat");
+			return chatMenuItems.filter((menuItems) => menuItems.action !== "editChat");
 		}
 	});
 	/**
@@ -65,34 +67,38 @@
 		activeMenuItem.value = _menuItem.title;
 
 		switch (_menuItem.action) {
+			case "openPortal": {
+				await modalStore.showModal();
+				break;
+			}
 			case "pinChat": {
 				await chatsStore.togglePinUser(chatId.value!);
 				break;
 			}
 			case "detailedChatInfo": {
-				chatsStore.$patch(state => (state.chatIdForOpenModal = chatId.value));
+				chatsStore.$patch((state) => (state.chatIdForOpenModal = chatId.value));
 
 				await nextTick();
-				await chatsStore.$patch(state => (state.temporalStorageForGroupChat = openedChatData.value));
+				await chatsStore.$patch((state) => (state.temporalStorageForGroupChat = openedChatData.value));
 
-				chatsStore.$patch(state => (state.isDetailedInfoModalOpen = true));
+				chatsStore.$patch((state) => (state.isDetailedInfoModalOpen = true));
 
 				emit("closeChat");
 				break;
 			}
 			case "editChat": {
-				await chatsStore.$patch(state => (state.chatIdForOpenModal = chatId.value));
+				await chatsStore.$patch((state) => (state.chatIdForOpenModal = chatId.value));
 
 				await nextTick();
 
-				await chatsStore.$patch(state => (state.temporalStorageForGroupChat = openedChatData.value));
-				chatsStore.$patch(state => (state.isGroupChatEditModalOpen = true));
+				await chatsStore.$patch((state) => (state.temporalStorageForGroupChat = openedChatData.value));
+				chatsStore.$patch((state) => (state.isGroupChatEditModalOpen = true));
 				emit("closeChat");
 				break;
 			}
 			case "deleteChat": {
 				await chatsStore.deleteChat(chatId.value!);
-				settingsStore.$patch(state => (state.isChatsShown = true));
+				settingsStore.$patch((state) => (state.isChatsShown = true));
 				emit("closeChat");
 				break;
 			}

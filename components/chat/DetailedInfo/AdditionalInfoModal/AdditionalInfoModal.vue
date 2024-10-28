@@ -49,7 +49,7 @@
 	/**
 	 * Является ли чат групповым
 	 */
-	const isGroupChat = computed(() => [...chats.value].find(chat => chat.id === chatIdForOpenModal.value).isGroupChat);
+	const isGroupChat = computed(() => [...chats.value].find((chat) => chat.id === chatIdForOpenModal.value).isGroupChat);
 	/**
 	 * Полное имя пользователя чата или заголосов группового чата
 	 */
@@ -67,7 +67,7 @@
 	/**
 	 * Элементы меню для усправления чатом (звук и закрепление)
 	 */
-	const chatMenuValues = computed(() => chatMenuItems.filter(item => item.action === "pinChat" || item.action === "muteChat"));
+	const chatMenuValues = computed(() => chatMenuItems.filter((item) => item.action === "pinChat" || item.action === "muteChat" || item.action === "openPortal"));
 	/**
 	 * Элементы для меню типов чата без Удаления
 	 */
@@ -97,6 +97,10 @@
 				await chatsStore.togglePinUser(openModalChatData.value.id!);
 				break;
 			}
+			case "openPortal": {
+				await modalStore.showModal();
+				break;
+			}
 		}
 	};
 	/**
@@ -122,9 +126,9 @@
 
 			default: {
 				detailedMenuActiveDataType.value = _item.action;
-				chatsStore.$patch(state => (state.openMessageTypeModal = _item.action));
-				chatsStore.$patch(state => (state.isOpenMessageTypeModal = true));
-				chatsStore.$patch(state => (state.openMessageTypeItem = _item));
+				chatsStore.$patch((state) => (state.openMessageTypeModal = _item.action));
+				chatsStore.$patch((state) => (state.isOpenMessageTypeModal = true));
+				chatsStore.$patch((state) => (state.openMessageTypeItem = _item));
 
 				console.log(_item.action, "_item");
 
@@ -167,7 +171,7 @@
 	 * Открыть модалку Добавить в групповой чат
 	 */
 	const openAddUserModal = () => {
-		chatsStore.$patch(state => (state.isAddUserModalOpen = true));
+		chatsStore.$patch((state) => (state.isAddUserModalOpen = true));
 	};
 
 	/**
@@ -182,7 +186,7 @@
 	 * Отрисовать типы сообщений
 	 * @param _icon
 	 */
-	const getIconComponent = _icon => {
+	const getIconComponent = (_icon) => {
 		const iconComponentMap = {
 			"file-messages-icon": FileMessagesIcon,
 			"voice-messages-icon": VoiceMessagesIcon,

@@ -134,7 +134,7 @@ export interface GroupChatType {
 export interface ChatMenuType {
 	title: string;
 	icon: string;
-	action: "detailedChatInfo" | "editChat" | "pinChat" | "muteChat" | "deleteChat";
+	action: "detailedChatInfo" | "editChat" | "pinChat" | "muteChat" | "deleteChat" | "openPortal";
 	alternativeTitle?: string;
 }
 
