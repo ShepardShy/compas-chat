@@ -165,6 +165,15 @@ export const useChatsStore = defineStore("chats", {
 			console.log(res.data, "data123123123");
 		},
 
+		async openUser(id: number){
+			this.$patch((state) => (state.chatIdForOpenModal = id ?? this.openedChatId));
+
+			await nextTick();
+			await this.$patch((state) => (state.temporalStorageForGroupChat = this.openedChatData));
+
+			this.$patch((state) => (state.isDetailedInfoModalOpen = true));
+		},
+
 		raiseChat(chatId: string | number) {
 			const chatIndex = this.getChatIndex(chatId);
 			const chat = this.getChat(chatId);

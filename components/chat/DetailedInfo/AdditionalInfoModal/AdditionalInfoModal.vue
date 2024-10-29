@@ -98,7 +98,7 @@
 				break;
 			}
 			case "openPortal": {
-				await modalStore.showModal();
+				await navigateTo("https://opt6.compas.pro/objects/users/1", { external: true });
 				break;
 			}
 		}

@@ -95,6 +95,8 @@
 	 * Удалить пользователя до сохранения
 	 */
 	const deleteUserFromGroupBeforeSave = () => emit("delete-user");
+	console.log(userData.value,'userData.value');
+	
 </script>
 
 <template>
@@ -109,7 +111,7 @@
 			/>
 			<div class="group-chat-user__info">
 				<div
-					@click="modalStore.showModal"
+					@click="chatsStore.openUser(userData.userId)"
 					class="group-chat-user__name"
 				>
 					{{ userFullName }}
