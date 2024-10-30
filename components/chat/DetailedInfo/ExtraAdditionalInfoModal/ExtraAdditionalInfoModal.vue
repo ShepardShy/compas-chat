@@ -31,15 +31,12 @@
 	 * Подключение стора с чатами
 	 */
 	const chatsStore = useChatsStore();
-	const { openModalChatData, openExtraModalChatData, chats, chatIdForOpenModal, chatIdForOpenExtraModal, isExtraDetailedInfoModalOpen } = storeToRefs(chatsStore);
+	const { openModalChatData, chats, chatIdForOpenModal } = storeToRefs(chatsStore);
 	/**
 	 * Подключение стора с настройками
 	 */
 	const settingsStore = useSettingsStore();
 	const { isMobileSize } = storeToRefs(settingsStore);
-
-	// Данные модалки
-	const modalChatData = computed(() => openExtraModalChatData.value ?? openModalChatData.value);
 
 	/** Открыто ли приложение в сафари */
 	const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -52,19 +49,19 @@
 	/**
 	 * Является ли чат групповым
 	 */
-	const isGroupChat = computed(() => [...chats.value].find((chat) => chat.id === (chatIdForOpenExtraModal.value ?? chatIdForOpenModal.value)).isGroupChat);
+	const isGroupChat = computed(() => [...chats.value].find((chat) => chat.id === chatIdForOpenModal.value).isGroupChat);
 	/**
 	 * Полное имя пользователя чата или заголосов группового чата
 	 */
 	const chatFullName = computed<string>(() => {
 		if (isGroupChat.value) {
-			return modalChatData.value?.title;
+			return openModalChatData.value?.title;
 		}
 
-		if (modalChatData.value.firstName) {
-			return modalChatData.value?.firstName + " " + modalChatData.value?.secondName;
+		if (openModalChatData.value.firstName) {
+			return openModalChatData.value?.firstName + " " + openModalChatData.value?.secondName;
 		} else {
-			return modalChatData.value?.secondName;
+			return openModalChatData.value?.secondName;
 		}
 	});
 	/**
@@ -93,11 +90,11 @@
 	const onClickDoAction = async (_menuItem: ChatMenuType) => {
 		switch (_menuItem.action) {
 			case "muteChat": {
-				await chatsStore.toggleUserMuted(modalChatData.value.id!);
+				await chatsStore.toggleUserMuted(openModalChatData.value.id!);
 				break;
 			}
 			case "pinChat": {
-				await chatsStore.togglePinUser(modalChatData.value.id!);
+				await chatsStore.togglePinUser(openModalChatData.value.id!);
 				break;
 			}
 			case "openPortal": {
@@ -111,24 +108,8 @@
 	 */
 	const closeModal = () => {
 		chatsStore.closeDetailedModal();
-		chatsStore.closeExtraDetailedModal();
 		chatsStore.closeAddUserModal();
 		chatsStore.clearChatIdForOpenModal();
-		chatsStore.clearChatIdForExtraOpenModal();
-	};
-	/**
-	 * Закрыть все модалки
-	 */
-	const backModal = () => {
-		if (!isExtraDetailedInfoModalOpen.value) {
-			chatsStore.closeDetailedModal();
-			chatsStore.closeExtraDetailedModal();
-			chatsStore.closeAddUserModal();
-			chatsStore.clearChatIdForOpenModal();
-			return;
-		}
-		chatsStore.closeExtraDetailedModal();
-		chatsStore.clearChatIdForExtraOpenModal();
 	};
 	/**
 	 * Открыть модалку для просмотра выбранного типа сообщения или удалить чат
@@ -137,7 +118,7 @@
 	const onClickDetailedInfoMenuItem = async (_item: DetailedInfoMenuItem) => {
 		switch (_item.action) {
 			case "delete-messages": {
-				await chatsStore.deleteChat(modalChatData.value!.id);
+				await chatsStore.deleteChat(openModalChatData.value!.id);
 				chatsStore.clearChatIdForOpenModal();
 				chatsStore.closeDetailedModal();
 				break;
@@ -174,9 +155,9 @@
 	 * Всего участников в групповом чате
 	 */
 	const groupChatUsersTotal = computed(() => {
-		if (!modalChatData.value?.users) return;
+		if (!openModalChatData.value?.users) return;
 
-		const totalUsers = modalChatData.value?.users?.length;
+		const totalUsers = openModalChatData.value?.users?.length;
 		const lastDigit = totalUsers.toString().slice(-1);
 		if (+lastDigit === 1) {
 			return totalUsers + " " + "участник";
@@ -198,7 +179,7 @@
 	 * @param _itemAction
 	 */
 	const isMenuItemNotMutedOrPinned = (_itemAction: "muteChat" | "pinChat") => {
-		return (_itemAction == "muteChat" && !modalChatData.value.isMutedOff) || (_itemAction == "pinChat" && !modalChatData.value.isPinned);
+		return (_itemAction == "muteChat" && !openModalChatData.value.isMutedOff) || (_itemAction == "pinChat" && !openModalChatData.value.isPinned);
 	};
 
 	/**
@@ -236,9 +217,8 @@
 		>
 			<div class="add-ingo__title-wrapper">
 				<BackIcon
-					v-if="isMobileSize || isExtraDetailedInfoModalOpen"
 					class="add-info__back-icon"
-					@pointerup.left.stop="backModal"
+					@pointerup.left.stop="closeModal"
 				/>
 				<AppH3
 					class="add-info__title"
@@ -257,10 +237,10 @@
 
 			<ChatPhoto
 				class="add-info__img"
-				:chat-id="modalChatData.id"
-				:is-pinned="modalChatData.isPinned"
-				:is-active="modalChatData.isActive"
-				:photo="modalChatData.photo"
+				:chat-id="openModalChatData.id"
+				:is-pinned="openModalChatData.isPinned"
+				:is-active="openModalChatData.isActive"
+				:photo="openModalChatData.photo"
 				:chat-name="chatFullName"
 				:is-group-chat="isGroupChat"
 				:is-detailed-menu="true"
@@ -270,7 +250,7 @@
 				v-if="!isGroupChat"
 				class="menu__active"
 			>
-				{{ modalChatData.isActive ? "В сети" : "Не в сети" }}
+				{{ openModalChatData.isActive ? "В сети" : "Не в сети" }}
 			</div>
 
 			<div
@@ -292,7 +272,7 @@
 				v-if="!isGroupChat"
 				class="menu__position"
 			>
-				{{ modalChatData.position ?? "" }}
+				{{ openModalChatData.position ?? "" }}
 			</div>
 
 			<div
@@ -319,12 +299,12 @@
 					}"
 				>
 					<MuteOffIcon
-						v-if="item.action == 'muteChat' && modalChatData.isMutedOff"
+						v-if="item.action == 'muteChat' && openModalChatData.isMutedOff"
 						class="menu__item-img"
 					/>
 
 					<PinIcon
-						v-if="item.action == 'pinChat' && modalChatData.isPinned"
+						v-if="item.action == 'pinChat' && openModalChatData.isPinned"
 						class="menu__item-img"
 					/>
 				</div>
@@ -362,7 +342,7 @@
 						paddingTop: isSafari ? '2px' : '0',
 					}"
 				>
-					{{ showModalMenuItemTitle(modalChatData, item) }}
+					{{ showModalMenuItemTitle(openModalChatData, item) }}
 				</div>
 			</div>
 
@@ -384,7 +364,7 @@
 				</div>
 				<div class="details-menu__group-users">
 					<GroupChatUser
-						v-for="user in modalChatData.users"
+						v-for="user in openModalChatData.users"
 						:key="user.id"
 						:user-data="user"
 					/>
@@ -398,7 +378,7 @@
 			>
 				<DeleteIcon />
 
-				<div>{{ showModalMenuItemTitle(modalChatData, lastDetailedInfoMenuItem) }}</div>
+				<div>{{ showModalMenuItemTitle(openModalChatData, lastDetailedInfoMenuItem) }}</div>
 			</div>
 		</div>
 		<div
@@ -409,5 +389,5 @@
 </template>
 
 <style scoped lang="scss">
-	@import "./AdditionalInfoModal";
+	@import "./ExtraAdditionalInfoModal";
 </style>

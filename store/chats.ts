@@ -20,7 +20,9 @@ export const useChatsStore = defineStore("chats", {
 			chatSearch: "" as string,
 
 			chatIdForOpenModal: undefined as undefined | number,
+			chatIdForOpenExtraModal: undefined as undefined | number,
 			isDetailedInfoModalOpen: false,
+			isExtraDetailedInfoModalOpen: false,
 			isAddUserModalOpen: false,
 			isGroupChatEditModalOpen: false,
 			isGroupChatCreateModalOpen: false,
@@ -108,6 +110,7 @@ export const useChatsStore = defineStore("chats", {
 			};
 		},
 		openModalChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find((chat) => chat.id === state.chatIdForOpenModal),
+		openExtraModalChatData: (state): UserChatType | GroupChatType | undefined => state.chats.find((chat) => chat.id === state.chatIdForOpenExtraModal),
 		allChatUsers: (state) => state.chats.filter((chat) => !chat.isGroupChat),
 		filteredChats: (state) => {
 			try {
@@ -165,13 +168,23 @@ export const useChatsStore = defineStore("chats", {
 			console.log(res.data, "data123123123");
 		},
 
-		async openUser(id: number){
-			this.$patch((state) => (state.chatIdForOpenModal = id ?? this.openedChatId));
+		async openUser(id: number, extra?: boolean) {
+			console.log(id);
+
+			if (extra) {
+				this.$patch((state) => (state.chatIdForOpenExtraModal = id ?? this.openedChatId));
+			} else {
+				this.$patch((state) => (state.chatIdForOpenModal = id ?? this.openedChatId));
+			}
 
 			await nextTick();
 			await this.$patch((state) => (state.temporalStorageForGroupChat = this.openedChatData));
 
-			this.$patch((state) => (state.isDetailedInfoModalOpen = true));
+			if (extra) {
+				this.$patch((state) => (state.isExtraDetailedInfoModalOpen = true));
+			} else {
+				this.$patch((state) => (state.isDetailedInfoModalOpen = true));
+			}
 		},
 
 		raiseChat(chatId: string | number) {
@@ -267,9 +280,16 @@ export const useChatsStore = defineStore("chats", {
 		clearChatIdForOpenModal() {
 			this.chatIdForOpenModal = undefined;
 		},
+		clearChatIdForExtraOpenModal() {
+			this.chatIdForOpenExtraModal = undefined;
+		},
 
 		closeDetailedModal() {
 			this.isDetailedInfoModalOpen = false;
+		},
+
+		closeExtraDetailedModal() {
+			this.isExtraDetailedInfoModalOpen = false;
 		},
 
 		closeAddUserModal() {

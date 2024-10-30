@@ -1,4 +1,5 @@
 export * from './AdditionalInfoModal'
+export * from './ExtraAdditionalInfoModal'
 export * from './MessagesTypesModal'
 export * from './GroupChatCreateEditModal'
 export * from './GroupChatUser'

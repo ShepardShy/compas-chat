@@ -4,7 +4,7 @@
 	import { useRoute, useRouter } from "vue-router";
 	import { ERouteName } from "~/shared/routes";
 
-	import { AllChats, ChatWindow, ChatLoader, GroupAddUserModal, AdditionalInfoModal, GroupChatCreateEditModal, MessagesTypesModal, DatePickModal } from "~/components";
+	import { AllChats, ChatWindow, ChatLoader, GroupAddUserModal, AdditionalInfoModal, GroupChatCreateEditModal, MessagesTypesModal, DatePickModal, ExtraAdditionalInfoModal } from "~/components";
 
 	import { useChatsStore } from "~/store/chats";
 	import { useSettingsStore } from "~/store/settings";
@@ -43,7 +43,21 @@
 	 * Подюклчение стора с сообщениями
 	 */
 	const chatsStore = useChatsStore();
-	const { isAddUserModalOpen, isDetailedInfoModalOpen, isGroupChatEditModalOpen, isGroupChatCreateModalOpen, isOpenMessageTypeModal, isDatePickModalOpen, chats, openedChatId, openedChatData, chatsNotMyMessagesCount, filteredChats, getChat } = storeToRefs(chatsStore);
+	const {
+		isAddUserModalOpen,
+		isDetailedInfoModalOpen,
+		isExtraDetailedInfoModalOpen,
+		isGroupChatEditModalOpen,
+		isGroupChatCreateModalOpen,
+		isOpenMessageTypeModal,
+		isDatePickModalOpen,
+		chats,
+		openedChatId,
+		openedChatData,
+		chatsNotMyMessagesCount,
+		filteredChats,
+		getChat,
+	} = storeToRefs(chatsStore);
 	const { raiseChat } = chatsStore;
 	/**
 	 * Подюклчение стора с настройками
@@ -60,14 +74,23 @@
 	 * Открыта ли любая моадка
 	 */
 	const isAnyModalOpen = computed(() => {
-		return isAddUserModalOpen.value || isDetailedInfoModalOpen.value || isGroupChatEditModalOpen.value || isOpenMessageTypeModal.value || isGroupChatCreateModalOpen.value || isDatePickModalOpen.value;
+		return (
+			isAddUserModalOpen.value || isDetailedInfoModalOpen.value || isGroupChatEditModalOpen.value || isOpenMessageTypeModal.value || isGroupChatCreateModalOpen.value || isDatePickModalOpen.value
+		);
 	});
 
 	/**
 	 * Показывать ли модалку с дополнительной информацией
 	 */
 	const isAdditionalInfoModalVisible = computed(() => {
-		return isDetailedInfoModalOpen.value && !isAddUserModalOpen.value && !isGroupChatEditModalOpen.value && !isGroupChatCreateModalOpen.value && !isOpenMessageTypeModal.value && !isDatePickModalOpen.value;
+		return (
+			isDetailedInfoModalOpen.value &&
+			!isAddUserModalOpen.value &&
+			!isGroupChatEditModalOpen.value &&
+			!isGroupChatCreateModalOpen.value &&
+			!isOpenMessageTypeModal.value &&
+			!isDatePickModalOpen.value
+		);
 	});
 	/**
 	 * Высота блока на весь экран
@@ -116,7 +139,7 @@
 	// Подсветка нового непрочитанного чата и звуковое уведомление
 	for (let chat of chats.value) {
 		const chatRef = computed(() => getChat.value(chat.id));
-		const chatNotMyMessagesCount = computed(() => getChat.value(chat.id).messages.filter(msg => msg.isUnread));
+		const chatNotMyMessagesCount = computed(() => getChat.value(chat.id).messages.filter((msg) => msg.isUnread));
 		watch(
 			() => chatNotMyMessagesCount.value,
 			(newValCount, oldValCount) => {
@@ -160,11 +183,11 @@
 		checkMobileSize();
 		window.addEventListener("resize", checkMobileSize);
 
-		settingsStore.$patch(state => (state.isLoading = false));
+		settingsStore.$patch((state) => (state.isLoading = false));
 
 		if (route.query?.chatId) {
 			isChatsShown.value = false;
-			await chatsStore.$patch(state => (state.openedChatId = +route.query.chatId));
+			await chatsStore.$patch((state) => (state.openedChatId = +route.query.chatId));
 		} else {
 			isChatsShown.value = true;
 		}
@@ -182,7 +205,7 @@
 	 * Превышает ли ширина экрана максимальную ширина экрана допустимая для мобилбной версии
 	 */
 	const checkMobileSize = () => {
-		settingsStore.$patch(state => (state.isMobileSize = window.innerWidth < maxWindowWidthForMobile));
+		settingsStore.$patch((state) => (state.isMobileSize = window.innerWidth < maxWindowWidthForMobile));
 		windowHeight.value = `${window.visualViewport.height}px`;
 	};
 	/**
@@ -248,11 +271,12 @@
 					class="modal__bg-padding"
 				/>
 
-				<DatePickModal v-if="isDatePickModalOpen" />
-				<AdditionalInfoModal v-if="isAdditionalInfoModalVisible" />
-				<GroupChatCreateEditModal v-if="isGroupChatEditModalOpen && !isAddUserModalOpen" />
-				<GroupChatCreateEditModal v-if="isGroupChatCreateModalOpen && !isAddUserModalOpen" />
-				<GroupAddUserModal v-if="isAddUserModalOpen" />
+				<DatePickModal v-if="isDatePickModalOpen && !isExtraDetailedInfoModalOpen" />
+				<AdditionalInfoModal v-if="isAdditionalInfoModalVisible && !isExtraDetailedInfoModalOpen" />
+				<GroupChatCreateEditModal v-if="isGroupChatEditModalOpen && !isAddUserModalOpen && !isExtraDetailedInfoModalOpen" />
+				<GroupChatCreateEditModal v-if="isGroupChatCreateModalOpen && !isAddUserModalOpen && !isExtraDetailedInfoModalOpen" />
+				<GroupAddUserModal v-if="isAddUserModalOpen && !isExtraDetailedInfoModalOpen" />
+				<AdditionalInfoModal v-if="isExtraDetailedInfoModalOpen" />
 
 				<MessagesTypesModal v-if="isOpenMessageTypeModal" />
 			</div>

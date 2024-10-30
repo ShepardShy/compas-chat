@@ -66,7 +66,7 @@
 			return false;
 		}
 
-		return allChatDataLocal.value?.users.map(user => user.id).includes(userData.value.id);
+		return allChatDataLocal.value?.users.map((user) => user.id).includes(userData.value.id);
 	});
 
 	/**
@@ -95,8 +95,7 @@
 	 * Удалить пользователя до сохранения
 	 */
 	const deleteUserFromGroupBeforeSave = () => emit("delete-user");
-	console.log(userData.value,'userData.value');
-	
+	console.log(userData.value, "userData.value");
 </script>
 
 <template>
@@ -111,7 +110,7 @@
 			/>
 			<div class="group-chat-user__info">
 				<div
-					@click="chatsStore.openUser(userData.userId)"
+					@click="chatsStore.openUser(userData.userId, true)"
 					class="group-chat-user__name"
 				>
 					{{ userFullName }}

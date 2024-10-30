@@ -14,6 +14,11 @@
 			border-bottom: 10px solid #fffbe2;
 		}
 	}
+	&.other-msg_transition {
+		& .other-msg__body {
+			transition: background-color 1s ease;
+		}
+	}
 }
 
 .other-msg_mobile {
@@ -50,10 +55,10 @@
 	min-width: 144px;
 	box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
 	background-color: #fff;
-	border-radius: 10px 10px 10px 5px;
+	border-radius: 5px 10px 10px 5px;
 	z-index: 10;
 	margin-left: 11px;
-	transition: background-color 1s ease;
+	// transition: background-color 1s ease;
 }
 
 .other-msg__triangle {

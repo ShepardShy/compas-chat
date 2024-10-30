@@ -1,13 +1,18 @@
 <script setup lang="ts">
 	import type { MessageInfoType } from "~/types/messages";
 	import { useSettingsStore } from "~/store/settings";
+	import { useChatsStore } from "~/store/chats";
 	import moment from "moment";
 
 	// Модалка при нажатии на имя
 
 	import { useModalStore } from "~/store/modal";
 
-	const modalStore = useModalStore();
+	/**
+	 * Подклбчение стора с чатами
+	 */
+	const chatsStore = useChatsStore();
+	const { chats } = storeToRefs(chatsStore);
 
 	/**
 	 * Входящие пропсы
@@ -30,7 +35,7 @@
 	const messageNames = computed(() => {
 		if (message.value.message.includes("создал")) {
 			const messageArray = message.value.message.split(" ");
-			const idx = messageArray.findIndex(i => i.includes("создал"));
+			const idx = messageArray.findIndex((i) => i.includes("создал"));
 			return messageArray.slice(0, idx).join(" ");
 		}
 
@@ -49,7 +54,7 @@
 	const messageText = computed(() => {
 		if (message.value.message.includes("создал")) {
 			const messageArray = message.value.message.split(" ");
-			const idx = messageArray.findIndex(i => i.includes("создал"));
+			const idx = messageArray.findIndex((i) => i.includes("создал"));
 			return messageArray.slice(idx).join(" ");
 		}
 
@@ -91,7 +96,7 @@
 				<span
 					v-if="!Array.isArray(messageNames)"
 					class="message-info__user"
-					@pointerup.left.stop="modalStore.showModal"
+					@pointerup.left.stop="chatsStore.openUser(user?.userId)"
 				>
 					{{ messageNames }}
 				</span>
@@ -100,7 +105,7 @@
 						v-for="(user, idx) in messageNames"
 						:key="user.userId"
 						class="message-info__user"
-						@pointerup.left.stop="modalStore.showModal"
+						@pointerup.left.stop="chatsStore.openUser(user?.userId)"
 					>
 						{{ idx !== messageNames.length - 1 ? user + ", " : user }}
 					</span>

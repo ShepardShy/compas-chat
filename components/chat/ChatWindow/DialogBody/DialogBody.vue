@@ -112,7 +112,6 @@
 
 			await checkIfDialogBodyHeightsLessThenVH();
 			const unreadMessage = document.querySelector(".other-msg_unreaded");
-			console.log(unreadMessage);
 			if (unreadMessage) {
 				unreadMessage.scrollIntoView();
 			} else {
@@ -642,7 +641,7 @@
 					>
 						<div class="dialog__photo-wrapper">
 							<MessagePhoto
-								@click="showModal"
+								@click="() => chatsStore.openUser(userMessages?.userId)"
 								:firstName="
 									'users' in openedChatData
 										? openedChatData.users.find((user) => 'userId' in user && user.userId == userMessages.userId)?.firstName

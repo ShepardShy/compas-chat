@@ -15,7 +15,6 @@
 	import GroupChatUser from "~/components/chat/DetailedInfo/GroupChatUser/GroupChatUser.vue";
 	import ChatInput from "~/components/chat/ui/ChatInput/ChatInput.vue";
 	import AppButton from "~/components/ui/AppButton/AppButton.vue";
-	import { formattedDateToday } from "~/composables/chats";
 
 	/**
 	 * Подключение стора с чатами
@@ -81,7 +80,9 @@
 	 */
 	const chatUsers = computed(() => {
 		if (userSearchValue.value) {
-			return temporalStorageForGroupChat.value?.users.filter(user => user.firstName.toLowerCase().includes(userSearchValue.value.toLowerCase()) || user.secondName.toLowerCase().includes(userSearchValue.value.toLowerCase()));
+			return temporalStorageForGroupChat.value?.users.filter(
+				(user) => user.firstName.toLowerCase().includes(userSearchValue.value.toLowerCase()) || user.secondName.toLowerCase().includes(userSearchValue.value.toLowerCase())
+			);
 		}
 
 		return temporalStorageForGroupChat.value?.users;
@@ -106,14 +107,14 @@
 		groupUsers.value = temporalStorageForGroupChat.value.users;
 
 		if (temporalStorageForDeletedUsers.value.length) {
-			const _deletedUsersId = temporalStorageForDeletedUsers.value.map(user => user.id);
-			groupUsers.value = temporalStorageForGroupChat.value.users.filter(user => !_deletedUsersId.includes(user.id));
+			const _deletedUsersId = temporalStorageForDeletedUsers.value.map((user) => user.id);
+			groupUsers.value = temporalStorageForGroupChat.value.users.filter((user) => !_deletedUsersId.includes(user.id));
 		}
 
 		if (temporalStorageForAddedUsers.value.length) {
-			const _addedUsersId = temporalStorageForAddedUsers.value.map(user => user.id);
+			const _addedUsersId = temporalStorageForAddedUsers.value.map((user) => user.id);
 			const allChatUsersSavedLocal = [...temporalStorageForGroupChat.value.users];
-			const _currentUsersId = allChatUsersSavedLocal.map(user => user.id);
+			const _currentUsersId = allChatUsersSavedLocal.map((user) => user.id);
 
 			for (let i = 0; i < _addedUsersId.length; i++) {
 				if (!_currentUsersId.includes(_addedUsersId[i])) {
@@ -134,8 +135,8 @@
 		chatsStore.clearTemporalStorageForNewGroupChat();
 		chatsStore.clearChatIdForOpenModal();
 
-		chatsStore.$patch(state => (state.temporalStorageForDeletedUsers = []));
-		chatsStore.$patch(state => (state.temporalStorageForAddedUsers = []));
+		chatsStore.$patch((state) => (state.temporalStorageForDeletedUsers = []));
+		chatsStore.$patch((state) => (state.temporalStorageForAddedUsers = []));
 	};
 
 	/**
@@ -155,7 +156,7 @@
 	 * Открыть модалку для добавления удаления пользователей
 	 */
 	const openAddUserModal = () => {
-		chatsStore.$patch(state => (state.isAddUserModalOpen = true));
+		chatsStore.$patch((state) => (state.isAddUserModalOpen = true));
 	};
 	/**
 	 * Удалить пользователя из локального хранилиша данных
@@ -169,9 +170,9 @@
 	 * @param userId
 	 */
 	const updateTemporalStorageForGroupChat = async (userId?: number) => {
-		const _userToDelete = temporalStorageForGroupChat.value?.users.find(user => user.userId === userId);
+		const _userToDelete = temporalStorageForGroupChat.value?.users.find((user) => user.userId === userId);
 
-		const actualUsers = userId ? temporalStorageForGroupChat.value?.users.filter(user => user.userId != userId) : temporalStorageForGroupChat.value?.users;
+		const actualUsers = userId ? temporalStorageForGroupChat.value?.users.filter((user) => user.userId != userId) : temporalStorageForGroupChat.value?.users;
 
 		await chatsStore.updateTemporalStorageForGroupChat({
 			...temporalStorageForGroupChat.value,
@@ -181,7 +182,7 @@
 		});
 
 		if (userId) {
-			await chatsStore.$patch(state => (state.temporalStorageForDeletedUsers = [...state.temporalStorageForDeletedUsers, _userToDelete]));
+			await chatsStore.$patch((state) => (state.temporalStorageForDeletedUsers = [...state.temporalStorageForDeletedUsers, _userToDelete]));
 		}
 	};
 
@@ -197,8 +198,8 @@
 				messages: addMessagesAboutDeletesAndAddedUsers(),
 			});
 
-			await chatsStore.$patch(state => (state.temporalStorageForDeletedUsers = []));
-			await chatsStore.$patch(state => (state.temporalStorageForAddeUsers = []));
+			await chatsStore.$patch((state) => (state.temporalStorageForDeletedUsers = []));
+			await chatsStore.$patch((state) => (state.temporalStorageForAddeUsers = []));
 
 			chatsStore.clearTemporalStorageForNewGroupChat();
 			chatsStore.closeGroupChatEditModal();
@@ -207,7 +208,7 @@
 		}
 
 		await updateTemporalStorageForGroupChat();
-		settingsStore.$patch(state => (state.isChatsShown = false));
+		settingsStore.$patch((state) => (state.isChatsShown = false));
 		chatsStore.createGroupChat();
 	};
 
@@ -221,7 +222,7 @@
 		// Сообщение об удалении
 
 		if (temporalStorageForDeletedUsers.value.length) {
-			const _deletedUsersListArray = temporalStorageForDeletedUsers.value.map(user => {
+			const _deletedUsersListArray = temporalStorageForDeletedUsers.value.map((user) => {
 				if (user?.firstName) {
 					return user.firstName + " " + user?.secondName;
 				} else {
@@ -243,7 +244,7 @@
 
 		// Сообщение о добавлении
 		if (temporalStorageForAddedUsers.value.length) {
-			const _addedUsersListArray = temporalStorageForAddedUsers.value.map(user => {
+			const _addedUsersListArray = temporalStorageForAddedUsers.value.map((user) => {
 				if (user?.firstName) {
 					return user.firstName + " " + user?.secondName;
 				} else {

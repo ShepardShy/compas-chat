@@ -58,8 +58,14 @@
 				message.value.isUnread = false;
 				$otherMsg.value.classList?.add("other-msg_unread");
 				setTimeout(() => {
+					$otherMsg.value.classList?.add("other-msg_transition");
+				}, 10);
+				setTimeout(() => {
 					$otherMsg.value?.classList?.remove("other-msg_unread");
-				}, 2000);
+					setTimeout(() => {
+						$otherMsg.value?.classList?.remove("other-msg_transition");
+					}, 1000);
+				}, 1500);
 				observer.unobserve(entry.target);
 			}
 		});
@@ -102,7 +108,7 @@
 			}"
 		>
 			<p
-				@pointerup.left.stop="() => modalStore.showModal()"
+				@pointerup.left.stop="() => chatsStore.openUser(chatUser?.userId)"
 				v-if="firstOfSeveralMsgs && isShowName"
 				class="other-msg__name"
 			>

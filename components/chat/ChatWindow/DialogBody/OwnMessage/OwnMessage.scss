@@ -1,27 +1,27 @@
 .own-msg {
-  max-width: 431px;
-  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
-  background-color: #dcebfc;
-  border-radius: 10px 10px 5px 10px;
-  z-index: 10;
-  margin-right: 5px;
+	max-width: 431px;
+	box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
+	background-color: #dcebfc;
+	border-radius: 10px 5px 5px 10px;
+	z-index: 10;
+	margin-right: 5px;
 }
 
 .own-msg_mobile {
-  max-width: 285px;
-  margin-right: 14px;
+	max-width: 285px;
+	margin-right: 14px;
 }
 
 .own-msg__triangle {
-  position: relative;
+	position: relative;
 }
 
 .own-msg__triangle::before {
-  content: '';
-  position: absolute;
-  border-bottom: 10px solid #dcebfc;
-  border-right: 10px solid transparent;
-  bottom: 0;
-  right: -5px;
-  z-index: 20;
+	content: "";
+	position: absolute;
+	border-bottom: 10px solid #dcebfc;
+	border-right: 10px solid transparent;
+	bottom: 0;
+	right: -5px;
+	z-index: 20;
 }
