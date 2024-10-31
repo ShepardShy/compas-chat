@@ -68,7 +68,12 @@
 
 		switch (_menuItem.action) {
 			case "openPortal": {
-				await modalStore.showModal();
+				await navigateTo("https://opt6.compas.pro/objects/users/1", {
+					external: true,
+					open: {
+						target: "_blank",
+					},
+				});
 				break;
 			}
 			case "pinChat": {

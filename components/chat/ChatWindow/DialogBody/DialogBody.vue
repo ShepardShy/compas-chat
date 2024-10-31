@@ -700,7 +700,6 @@
 		</div>
 
 		<div
-			@dblclick="clearSelection"
 			ref="$dialogActions"
 			class="dialog__actions"
 			:class="{

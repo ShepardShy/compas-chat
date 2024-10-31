@@ -14,11 +14,6 @@
 			border-bottom: 10px solid #fffbe2;
 		}
 	}
-	&.other-msg_transition {
-		& .other-msg__body {
-			transition: background-color 1s ease;
-		}
-	}
 }
 
 .other-msg_mobile {
@@ -58,7 +53,7 @@
 	border-radius: 5px 10px 10px 5px;
 	z-index: 10;
 	margin-left: 11px;
-	// transition: background-color 1s ease;
+	transition: background-color 1.5s ease;
 }
 
 .other-msg__triangle {

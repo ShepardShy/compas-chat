@@ -56,16 +56,6 @@
 		entries.forEach((entry) => {
 			if (entry.isIntersecting) {
 				message.value.isUnread = false;
-				$otherMsg.value.classList?.add("other-msg_unread");
-				setTimeout(() => {
-					$otherMsg.value.classList?.add("other-msg_transition");
-				}, 10);
-				setTimeout(() => {
-					$otherMsg.value?.classList?.remove("other-msg_unread");
-					setTimeout(() => {
-						$otherMsg.value?.classList?.remove("other-msg_transition");
-					}, 1000);
-				}, 1500);
 				observer.unobserve(entry.target);
 			}
 		});
@@ -95,6 +85,7 @@
 		:class="{
 			'other-msg_mobile': isMobileSize,
 			'other-msg_unreaded': isUnreadMessage,
+			'other-msg_unread': message.isUnread,
 		}"
 		:style="{
 			marginBottom: lastOfSeveralMsgs ? '25px' : '5px',
