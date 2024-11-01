@@ -580,7 +580,7 @@
 	<div
 		class="dialog"
 		ref="$dialog"
-		:style="`--dialogWidth: ${dialogWidth};height: calc(${heightWithKeyboard} - 81px);`"
+		:style="`--dialogWidth: ${dialogWidth};height: calc(${heightWithKeyboard});`"
 		:class="{
 			dialog_mobile: isMobileSize,
 		}"

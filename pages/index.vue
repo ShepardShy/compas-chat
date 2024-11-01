@@ -4,7 +4,7 @@
 	import { useRoute, useRouter } from "vue-router";
 	import { ERouteName } from "~/shared/routes";
 
-	import { AllChats, ChatWindow, ChatLoader, GroupAddUserModal, AdditionalInfoModal, GroupChatCreateEditModal, MessagesTypesModal, DatePickModal, ExtraAdditionalInfoModal } from "~/components";
+	import { AllChats, ChatWindow, ChatLoader, GroupAddUserModal, AdditionalInfoModal, GroupChatCreateEditModal, MessagesTypesModal, DatePickModal } from "~/components";
 
 	import { useChatsStore } from "~/store/chats";
 	import { useSettingsStore } from "~/store/settings";

@@ -3,22 +3,13 @@
 .dialog {
 	border-top: solid 1px #eeeff1;
 	padding: 0 5px 0 0;
-	background-color: #f7f8fa;
 	display: flex;
 	flex-direction: column;
 	position: relative;
 	overflow-y: auto;
 	justify-content: end;
 	// margin-top: calc(-1 * (100vh - (190% - 65px)));
-	background-image: url("/icons/chatBg.svg");
-	&::before {
-		content: "";
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		background: linear-gradient(152deg, #b20006 10%, #006d52 91%);
-		opacity: 0.19;
-	}
+	background-image: url("/icons/chatBg.svg"), radial-gradient(circle at 32% 35%, #bce0d1, #84a7ee 95%);
 }
 
 .dialog__date-wrapper {
@@ -31,7 +22,7 @@
 	cursor: pointer;
 	position: sticky;
 	user-select: none;
-	top: 10px;
+	top: 90px;
 	left: 50%;
 	width: 110px;
 	text-align: center;
@@ -39,7 +30,7 @@
 	padding: 10px 0;
 	border-radius: 10px;
 	box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.03);
-	border: solid 1px #eeeff1;
+	border: solid 1px #95b5c3;
 	font-size: 16px;
 	font-weight: 400;
 	color: variables.$color-dark-grey;
@@ -71,6 +62,7 @@
 	position: relative;
 	overflow-y: auto;
 	padding-right: 45px;
+	scroll-padding-bottom: 90px;
 	// -webkit-overflow-scrolling: touch;
 	// overscroll-behavior-block: none;
 
@@ -117,6 +109,8 @@
 .dialog__wrapper-scroll {
 	position: relative;
 	flex: 1 1 auto;
+	padding-top: 80px;
+	padding-bottom: 90px;
 }
 
 .dialog__body {
@@ -143,9 +137,14 @@
 	gap: 10px;
 	align-items: flex-end;
 	justify-content: center;
-	background-color: #f7f8fa;
 	z-index: 1;
 	margin-right: -5px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 1200;
+	background-color: rgba(255, 255, 255, 0.85);
 	&:has(.files) {
 		padding-top: 20px;
 	}
