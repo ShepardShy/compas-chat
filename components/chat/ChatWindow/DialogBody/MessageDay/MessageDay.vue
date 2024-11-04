@@ -94,7 +94,7 @@
 		if (dialogWrapperScrollTop.value > currentShownDatePosition && nextDatePosition && dialogWrapperScrollTop.value < nextDatePosition - 41) {
 			emit("update:shownDate", date.value);
 			return;
-		} else if (dialogWrapperScrollTop.value > currentShownDatePosition && +lastDate.value - 41) {
+		} else if (dialogWrapperScrollTop.value + 80 > currentShownDatePosition && +lastDate.value - 41) {
 			emit("update:shownDate", date.value);
 		}
 

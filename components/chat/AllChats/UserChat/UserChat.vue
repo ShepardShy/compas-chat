@@ -67,7 +67,7 @@
 	/**
 	 * Количество непрочитанных сообщений
 	 */
-	const unreadMessagesLength = computed<number>(() => chatData.value.messages.filter(message => userId.value != message.userId && message.isUnread).length);
+	const unreadMessagesLength = computed<number>(() => chatData.value.messages.filter((message) => userId.value != message.userId && message.isUnread).length);
 	/**
 	 * Доставлено ли сообщение
 	 */
@@ -92,8 +92,8 @@
 	const onMouseClickUserChat = (_event: MouseEvent) => {
 		if (_event.button === 0) {
 			// при нажатии ПКМ открыть чат
-			settingsStore.$patch(state => (state.isChatsShown = false));
-			chatsStore.$patch(state => (state.openedChatId = chatData.value.id));
+			settingsStore.$patch((state) => (state.isChatsShown = false));
+			chatsStore.$patch((state) => (state.openedChatId = chatData.value.id));
 		}
 	};
 </script>
@@ -214,7 +214,7 @@
 				/>
 
 				<div
-					v-if="(unreadMessagesLength > 3 && chatData.isScrolled) || (unreadMessagesLength > 0 && !chatData.isScrolled)"
+					v-if="(unreadMessagesLength > 0 && chatData.isScrolled) || (unreadMessagesLength > 0 && !chatData.isScrolled)"
 					class="user__unread-msg"
 				>
 					<span>

@@ -149,12 +149,12 @@
 				intervalToUpdateInputHeight = setInterval(() => {
 					if ($files.value?.offsetHeight) {
 						clearInterval(intervalToUpdateInputHeight);
-						emit("update:dialogActionsHeight", `0 0 ${$files.value.offsetHeight + currentInputHeight}px`);
+						emit("update:dialogActionsHeight", `${$files.value.offsetHeight + currentInputHeight + 50}px`);
 					}
 
 					if ($inputBody.value?.offsetHeight > minHeight) {
 						clearInterval(intervalToUpdateInputHeight);
-						emit("update:dialogActionsHeight", `0 0 ${currentInputHeight}px`);
+						emit("update:dialogActionsHeight", `${currentInputHeight + 50}px`);
 					}
 				}, 100);
 			} else {
@@ -182,7 +182,7 @@
 		uploadedImages.value = loadedImages.value;
 		uploadedDocuments.value = loadedDocuments.value;
 
-		window.addEventListener("pointerdown", event => {
+		window.addEventListener("pointerdown", (event) => {
 			if (isFilesTypesMenuOpen.value && !(event.target as HTMLUnknownElement).closest(".doc__menu") && !(event.target as HTMLUnknownElement).closest(".input__add-doc-icon")) {
 				isFilesTypesMenuOpen.value = false;
 			}
@@ -333,14 +333,18 @@
 		_event.preventDefault();
 		isHeightResizing = true;
 
+		console.log(123);
+
 		inputHeightWhenStartResizing = currentInputHeight;
 
 		$inputResizeIcon.value.style.cursor = "grabbing";
 		$inputBody.value.style.height = `${currentInputHeight}px`;
 		startPosition = $inputBody.value.getBoundingClientRect().top;
 
-		window.addEventListener("mousemove", keepInputHeightResizing);
-		window.addEventListener("mouseup", stopInputHeightResizing);
+		window.addEventListener("pointerup", () => console.log("pointerup"));
+
+		window.addEventListener("pointermove", keepInputHeightResizing);
+		window.addEventListener("pointerup", stopInputHeightResizing);
 	};
 
 	const dialog: globalThis.Ref<HTMLDivElement> = inject("dialog");
@@ -364,7 +368,7 @@
 		defaultInputHeight = currentInputHeight;
 		$inputBody.value.style.height = `${currentInputHeight}px`;
 
-		emit("update:dialogActionsHeight", `0 0 ${currentInputHeight}px`);
+		emit("update:dialogActionsHeight", `${currentInputHeight + 50}px`);
 	};
 
 	// Завершение изменение высоты инпута
@@ -373,15 +377,15 @@
 
 		$inputResizeIcon.value.style.cursor = "grab";
 
-		window.removeEventListener("mousemove", keepInputHeightResizing);
-		window.removeEventListener("mouseup", stopInputHeightResizing);
+		window.removeEventListener("pointermove", keepInputHeightResizing);
+		window.removeEventListener("pointerup", stopInputHeightResizing);
 	};
 
 	/**
 	 * Задает border-radius для первого и последнего элемента меню выбора типо загружаемых документов
 	 * @param _itemIdx
 	 */
-	const setBorderRadiusForFirstAndLastItem = _itemIdx => {
+	const setBorderRadiusForFirstAndLastItem = (_itemIdx) => {
 		if (_itemIdx == 0) {
 			return "5px 5px 0 0";
 		} else if (inputFilesTypes.length - 1 == _itemIdx) {
@@ -395,16 +399,26 @@
 	 * Подгонять высоту инпута при вводе на мобилке
 	 */
 	function autoResizeTextarea() {
-		currentInputHeight = Math.min(Math.max(minHeight, +defaultInputHeight), maxInputHeight);
-		emit("update:dialogActionsHeight", `0 0 ${currentInputHeight}px`);
-		$inputBody.value?.scrollTop ? ($inputBody.value.scrollTop = $inputBody.value.scrollHeight) : 0;
+		if (!$inputBody.value) return;
+
+		// Сбросить высоту перед измерением scrollHeight
+		$inputBody.value.style.height = "40px";
+		// Установить высоту textarea в соответствии с новым scrollHeight
+
+		currentInputHeight = Math.min(Math.max(+defaultInputHeight, $inputBody.value.scrollHeight > 50 ? $inputBody.value.scrollHeight + 4 : $inputBody.value.scrollHeight), maxInputHeight);
+		$inputBody.value.style.height = currentInputHeight;
+
+		$input.value.style.height = currentInputHeight;
 	}
 
 	// Перенос строки у инпута
-	const newLine = e => {
+	const newLine = (e) => {
 		let caret = e.target.selectionStart;
 		e.target.setRangeText("\n", caret, caret, "end");
 		onTextareaInput(e);
+
+		// Прокрутить textarea до конца
+		$inputBody.value.scrollTop = $inputBody.value.scrollHeight;
 	};
 
 	/**
@@ -413,9 +427,9 @@
 	const onTextareaInput = (_event: Event) => {
 		emit("update:inputValue", (<HTMLTextAreaElement>_event.target).value);
 
-		// if (isHeightResizable?.value) {
-		// 	autoResizeTextarea();
-		// }
+		if (isHeightResizable?.value) {
+			autoResizeTextarea();
+		}
 	};
 
 	/**
@@ -439,13 +453,9 @@
 		if ($inputBody.value) {
 			// emit("update:dialogActionsHeight", "0 0 90px");
 
-			// $inputBody.value.style.height = `${minHeight}px`;
-			// $input.value.style.height = `${minHeight}px`;
-			// currentInputHeight = minHeight;
-
-			currentInputHeight = Math.min(Math.max(minHeight, +defaultInputHeight), maxInputHeight);
+			autoResizeTextarea();
 			$inputBody.value.style.height = `${currentInputHeight}px`;
-			emit("update:dialogActionsHeight", `0 0 ${currentInputHeight}px`);
+			emit("update:dialogActionsHeight", `${currentInputHeight + 50}px`);
 		}
 	};
 
@@ -531,7 +541,7 @@
 				v-if="isHeightResizable && !isMobileSize"
 				ref="$inputResizeIcon"
 				class="input__resize-window"
-				@mousedown.prevent="startInputHeightResizing($event)"
+				@pointerdown.prevent="startInputHeightResizing($event)"
 			>
 				<div class="input__resize-window-line" />
 				<div class="input__resize-window-line" />

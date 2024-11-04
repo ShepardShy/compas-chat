@@ -62,7 +62,7 @@
 	 */
 	const $chatInput = ref();
 	/** Высота области с инпутом */
-	const dialogActionsHeight = ref("0 0 90px");
+	const dialogActionsHeight = ref("90px");
 
 	/**
 	 * Проверка высоты блока с сообщениями и скролл к последнему сообщению
@@ -200,8 +200,8 @@
 	watch(
 		() => dialogActionsHeight.value,
 		async () => {
-			await nextTick();
-			scrollToDialogWrapperBottom();
+			// await nextTick();
+			// scrollToDialogWrapperBottom();
 		},
 		{ deep: true }
 	);
@@ -597,6 +597,9 @@
 			<div
 				ref="$dialogWrapperScroll"
 				class="dialog__wrapper-scroll"
+				:style="{
+					paddingBottom: dialogActionsHeight,
+				}"
 			>
 				<div class="dialog__date-wrapper">
 					<div
@@ -656,6 +659,7 @@
 										? openedChatData.photo
 										: ''
 								"
+								:dialogActionsHeight
 								v-if="checkIfLastOfSeveralMessages(userIndex, userMessages.messages[0].messages) && userMessages.userId != userId && userMessages.messages[0].type !== 'message-info'"
 							/>
 						</div>
@@ -704,9 +708,6 @@
 			class="dialog__actions"
 			:class="{
 				dialog__actions_mobile: isMobileSize,
-			}"
-			:style="{
-				flex: dialogActionsHeight,
 			}"
 		>
 			<ChatInput

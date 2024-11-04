@@ -10,10 +10,11 @@
 	interface PropsType {
 		firstName: string;
 		photo?: string;
+		dialogActionsHeight: string;
 	}
 
 	const props = defineProps<PropsType>();
-	const { firstName, photo } = toRefs(props);
+	const { firstName, photo, dialogActionsHeight } = toRefs(props);
 
 	/**
 	 * Подключение стора с настройками
@@ -43,7 +44,7 @@
 		:class="{
 			'other-msg__photo_mobile': isMobileSize,
 		}"
-		:style="`background-image: ${chatPhoto}`"
+		:style="`background-image: ${chatPhoto}; bottom: calc(${dialogActionsHeight} + 5px);`"
 	>
 		<div class="other-msg__first-name-letter">{{ !isHavePhoto ? firstName?.[0] : "" }}</div>
 	</div>
