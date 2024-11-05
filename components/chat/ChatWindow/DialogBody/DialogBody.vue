@@ -467,10 +467,9 @@
 	const isScrolling = ref(false);
 	const scrollToMessage = async (message, behavior = "smooth") => {
 		const messageOffsetTop = message.offsetTop;
-		// const scrollPosition = messageOffsetTop - 0.5;
 		const scrollPosition = messageOffsetTop > 5 ? messageOffsetTop : 0;
 		await nextTick();
-		!isScrolling.value && $dialogWrapper.value.scrollTo({ top: scrollPosition, behavior: behavior as ScrollBehavior });
+		!isScrolling.value && $dialogWrapper.value.scrollTo({ top: scrollPosition - 80, behavior: behavior as ScrollBehavior });
 		isScrolling.value = true;
 
 		setTimeout(() => {
@@ -695,6 +694,7 @@
 									:is-show-name="openedChatData.isGroupChat"
 									:dialog-wrapper-scroll-top="dialogWrapperScrollTop"
 									:dialogWidth="dialogWidth"
+									:dialogActionsHeight
 								/>
 							</div>
 						</div>

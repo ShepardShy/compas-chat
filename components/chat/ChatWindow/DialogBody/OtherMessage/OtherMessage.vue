@@ -15,6 +15,7 @@
 		firstOfSeveralMsgs: boolean;
 		isShowName: boolean;
 		dialogWrapperScrollTop: number;
+		dialogActionsHeight: string;
 	}
 
 	/**
@@ -25,7 +26,7 @@
 	}>();
 
 	const props = defineProps<PropsType>();
-	const { message, lastOfSeveralMsgs, firstOfSeveralMsgs, isShowName, dialogWrapperScrollTop } = toRefs(props);
+	const { message, lastOfSeveralMsgs, firstOfSeveralMsgs, isShowName, dialogWrapperScrollTop, dialogActionsHeight } = toRefs(props);
 
 	/**
 	 * Подклбчение стора с чатами
@@ -55,23 +56,41 @@
 	const callback = (entries, observer) => {
 		entries.forEach((entry) => {
 			if (entry.isIntersecting) {
-				message.value.isUnread = false;
+				setTimeout(() => {
+					message.value.isUnread = false;
+				}, 500);
 				observer.unobserve(entry.target);
 			}
 		});
 	};
 
-	// Создаем экземпляр IntersectionObserver с указанным callback
-	const observer = new IntersectionObserver(callback, {
-		root: null, // null означает, что будем использовать viewport как область видимости
-		rootMargin: "0px",
-		threshold: 0.1, // Процент видимости элемента, при котором будет вызван callback (0.1 = 10%)
-	});
+	let observer;
+
+	watch(
+		() => dialogActionsHeight.value,
+		() => {
+			if (message.value.isUnread && observer) {
+				observer.unobserve($otherMsg.value);
+				observer = new IntersectionObserver(callback, {
+					root: null, // null означает, что будем использовать viewport как область видимости
+					rootMargin: `0px 0px -${dialogActionsHeight.value} 0px`,
+					threshold: 0.6, // Процент видимости элемента, при котором будет вызван callback (0.1 = 10%)
+				});
+				observer.observe($otherMsg.value);
+			}
+		}
+	);
 
 	// Начинаем наблюдение за элементом
 	onMounted(() => {
 		if (message.value.isUnread) {
 			setTimeout(() => {
+				// Создаем экземпляр IntersectionObserver с указанным callback
+				observer = new IntersectionObserver(callback, {
+					root: null, // null означает, что будем использовать viewport как область видимости
+					rootMargin: `0px 0px -${dialogActionsHeight.value} 0px`,
+					threshold: 0.6, // Процент видимости элемента, при котором будет вызван callback (0.1 = 10%)
+				});
 				observer.observe($otherMsg.value);
 			}, 500);
 		}

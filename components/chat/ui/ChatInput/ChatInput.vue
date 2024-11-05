@@ -149,12 +149,17 @@
 				intervalToUpdateInputHeight = setInterval(() => {
 					if ($files.value?.offsetHeight) {
 						clearInterval(intervalToUpdateInputHeight);
-						emit("update:dialogActionsHeight", `${$files.value.offsetHeight + currentInputHeight + 50}px`);
+						console.log($files.value, "$files.value");
+						console.log($files.value.offsetHeight, "$files.value");
+						console.log(currentInputHeight, "currentInputHeight");
+						console.log(`${$files.value.offsetHeight + currentInputHeight + 75}px`);
+						emit("update:dialogActionsHeight", `${$files.value.offsetHeight + currentInputHeight + 75}px`);
 					}
 
 					if ($inputBody.value?.offsetHeight > minHeight) {
 						clearInterval(intervalToUpdateInputHeight);
-						emit("update:dialogActionsHeight", `${currentInputHeight + 50}px`);
+						console.log(currentInputHeight + 50);
+						emit("update:dialogActionsHeight", `${$files.value.offsetHeight + currentInputHeight + 75}px`);
 					}
 				}, 100);
 			} else {
