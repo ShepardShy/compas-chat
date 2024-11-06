@@ -409,6 +409,8 @@
 
 	// Обработчик отправки сообщения
 	const handleMessage = () => {
+		console.log(123);
+
 		if (messageType.value === "text" && !noMessageToSend.value) {
 			/** Если смешанная отправка фото и доков, то текст сообщения дублируется */
 			let temporalStorageForTextMessage;
@@ -429,6 +431,8 @@
 
 			playSendMessageAudio();
 		} else if (messageType.value === "voice") {
+			console.log(1231231);
+
 			if (isMakingAVoiceMessage.value) {
 				setVoiceMessage(false);
 			} else {

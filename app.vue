@@ -14,6 +14,7 @@
 
 	const chatsStore = useChatsStore();
 	await chatsStore.loadChats();
+	await chatsStore.loadUsers();
 	// await chatsStore.createChat();
 
 	const modalStore = useModalStore();
