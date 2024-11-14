@@ -11,7 +11,7 @@
 	justify-content: end;
 	// margin-top: calc(-1 * (100vh - (190% - 65px)));
 	background-image: url("/icons/chatBg.svg"), radial-gradient(circle at 32% 35%, #bce0d1, #84a7ee 95%);
-	overscroll-behavior: contain;
+	overscroll-behavior-x: contain;
 	-webkit-overflow-scrolling: touch;
 	overscroll-behavior-block: none;
 }
@@ -67,7 +67,7 @@
 	overflow-x: hidden;
 	padding-right: 45px;
 	scroll-padding-bottom: 90px;
-	overscroll-behavior: contain;
+	overscroll-behavior-x: contain;
 	-webkit-overflow-scrolling: touch;
 	overscroll-behavior-block: none;
 
