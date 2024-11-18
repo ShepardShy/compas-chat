@@ -136,6 +136,7 @@
 }
 
 .dialog__actions {
+	backdrop-filter: blur(7px);
 	padding: 25px 45px 25px 25px;
 	display: grid;
 	grid-template-columns: 1fr 40px;

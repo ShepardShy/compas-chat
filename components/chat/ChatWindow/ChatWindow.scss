@@ -11,6 +11,7 @@
 }
 
 .window__top {
+	backdrop-filter: blur(7px);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
