@@ -558,24 +558,62 @@
 
 	// Клавиатура safari
 	let fullHeight;
+
 	onMounted(() => {
-		heightWithKeyboard.value = "100svh";
-		setTimeout(() => {
-			fullHeight = window.visualViewport.height;
-		}, 100);
+		fullHeight = window.visualViewport.height;
+		heightWithKeyboard.value = `${fullHeight}px`;
+
+		// Обработчик изменения размеров viewport
+		window.visualViewport.addEventListener("resize", adjustForKeyboard);
+		window.visualViewport.addEventListener("scroll", preventPageScroll);
+
+		// Отключаем прокрутку при загрузке
+		preventScroll();
 	});
-	const preventScrollWhenSoftKeyboardFocus = async (e) => {
-		await nextTick();
+
+	onBeforeUnmount(() => {
+		// Убираем обработчики
 		setTimeout(() => {
-			const currentHeight = window.visualViewport.height;
-			if (fullHeight > currentHeight) {
-				heightWithKeyboard.value = `${fullHeight - (fullHeight - currentHeight)}px`;
-			}
-			window.scrollTo({ top: 0, behavior: "instant" });
-		}, 200);
+			window.visualViewport.removeEventListener("resize", adjustForKeyboard);
+			window.visualViewport.removeEventListener("scroll", preventPageScroll);
+		}, 1000);
+	});
+
+	const adjustForKeyboard = () => {
+		const currentHeight = window.visualViewport.height;
+
+		if (fullHeight > currentHeight) {
+			// Клавиатура открыта, устанавливаем корректную высоту
+			heightWithKeyboard.value = `${currentHeight}px`;
+
+			// Отключаем скроллинг
+			preventScroll();
+		} else {
+			// Клавиатура закрыта
+			heightWithKeyboard.value = "100svh";
+			restoreScroll();
+		}
 	};
-	const preventScrollWhenSoftKeyboardBlur = (e) => {
-		heightWithKeyboard.value = "100svh";
+
+	// Отключение прокрутки
+	const preventScroll = () => {
+		document.body.style.overflow = "hidden";
+		document.documentElement.style.overflow = "hidden";
+		document.body.style.height = `${window.visualViewport.height}px`;
+		document.documentElement.style.height = `${window.visualViewport.height}px`;
+	};
+
+	// Восстановление прокрутки
+	const restoreScroll = () => {
+		document.body.style.overflow = "";
+		document.documentElement.style.overflow = "";
+		document.body.style.height = "";
+		document.documentElement.style.height = "";
+	};
+
+	// Обработчик для предотвращения прокрутки
+	const preventPageScroll = () => {
+		window.scrollTo(0, 0); // Всегда фиксируем страницу в верхней части
 	};
 </script>
 
@@ -710,6 +748,7 @@
 		<div
 			ref="$dialogActions"
 			class="dialog__actions"
+			@pointerup.left.stop="setVoiceMessage(false, true)"
 			:class="{
 				dialog__actions_mobile: isMobileSize,
 			}"

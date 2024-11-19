@@ -67,13 +67,16 @@
 	padding-left: 48px;
 }
 
-.input__body_voice::placeholder {
-	text-align: center;
-	@media (max-width: 440px) {
-		text-align: left;
-		position: relative;
-		display: inline;
-		left: 50%;
+.input__body_voice {
+	cursor: pointer;
+	&::placeholder {
+		text-align: center;
+		@media (max-width: 440px) {
+			text-align: left;
+			position: relative;
+			display: inline;
+			left: 50%;
+		}
 	}
 }
 
