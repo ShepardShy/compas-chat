@@ -67,9 +67,10 @@
 	overflow-x: hidden;
 	padding-right: 45px;
 	scroll-padding-bottom: 90px;
-	overscroll-behavior-x: none;
+	// overscroll-behavior-x: none;
 	-webkit-overflow-scrolling: touch;
-	overscroll-behavior-block: none;
+	overscroll-behavior-inline: none;
+	// overscroll-behavior-block: none;
 
 	&::-webkit-scrollbar {
 		width: 3px;

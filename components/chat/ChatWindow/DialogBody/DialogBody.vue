@@ -236,6 +236,8 @@
 	let doNotSaveVoiceMessage = false;
 
 	const setVoiceMessage = async (isStarted: boolean, cleanMessage: boolean = false) => {
+		console.log(123);
+
 		if (cleanMessage) {
 			doNotSaveVoiceMessage = true;
 		}
@@ -748,7 +750,7 @@
 		<div
 			ref="$dialogActions"
 			class="dialog__actions"
-			@pointerup.left.stop="setVoiceMessage(false, true)"
+			@pointerup.left="isMakingAVoiceMessage ? setVoiceMessage(false, true) : 0"
 			:class="{
 				dialog__actions_mobile: isMobileSize,
 			}"
@@ -760,8 +762,6 @@
 				v-model:loaded-documents="uploadedDocuments"
 				v-model:is-resizing="isResizing"
 				v-model:dialog-actions-height="dialogActionsHeight"
-				@focus="preventScrollWhenSoftKeyboardFocus"
-				@blur="preventScrollWhenSoftKeyboardBlur"
 				class="dialog__input"
 				placeholder="Напишите сообщение…"
 				:add-documents="true"

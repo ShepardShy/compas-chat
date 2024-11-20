@@ -93,8 +93,8 @@
 	 */
 	const openAllChats = () => {
 		openedChatId.value = null;
-		settingsStore.$patch(state => (state.isChatsShown = true));
-		settingsStore.$patch(state => (state.chatIdForOpenModal = undefined));
+		settingsStore.$patch((state) => (state.isChatsShown = true));
+		settingsStore.$patch((state) => (state.chatIdForOpenModal = undefined));
 	};
 </script>
 

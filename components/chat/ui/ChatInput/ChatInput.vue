@@ -360,7 +360,7 @@
 	// Изменение высоты инпута
 	const keepInputHeightResizing = (event: MouseEvent) => {
 		if (!isHeightResizing) return;
-		emit("update:isResizing", $inputBody.value.style.height !== minHeight);
+		emit("update:isResizing", $inputBody.value?.style?.height !== minHeight);
 
 		const currentMousePosition = event.pageY;
 
@@ -371,7 +371,7 @@
 		currentInputHeight = Math.min(Math.max(minHeight, newHeight), maxInputHeight);
 		localStorage.setItem("defaultInputHeight", String(currentInputHeight));
 		defaultInputHeight = currentInputHeight;
-		$inputBody.value.style.height = `${currentInputHeight}px`;
+		if ($inputBody.value?.style?.height) $inputBody.value.style.height = `${currentInputHeight}px`;
 
 		emit("update:dialogActionsHeight", `${currentInputHeight + 50}px`);
 	};
@@ -546,7 +546,7 @@
 				v-if="isHeightResizable && !isMobileSize"
 				ref="$inputResizeIcon"
 				class="input__resize-window"
-				@pointerdown.prevent="startInputHeightResizing($event)"
+				@pointerdown="startInputHeightResizing($event)"
 			>
 				<div class="input__resize-window-line" />
 				<div class="input__resize-window-line" />
