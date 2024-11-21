@@ -145,7 +145,7 @@
 			}
 
 			await nextTick();
-			scrollToDialogWrapperBottom();
+			// scrollToDialogWrapperBottom();
 		}
 	);
 

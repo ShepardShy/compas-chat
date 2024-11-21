@@ -147,14 +147,14 @@ export const useChatsStore = defineStore("chats", {
 			const { data: users } = await useMyFetch("api/chat/users", {
 				method: "GET",
 			});
-			console.log(users.value, "users12312312");
+			console.log(users.value, "loadUsers");
 		},
 
 		async loadChats() {
 			const res = await useMyFetch("api/chat/groups", {
 				method: "GET",
 			});
-			console.log(res.data, "data123123123");
+			console.log(res.data.value, "loadChats");
 		},
 
 		async createChat() {
@@ -162,10 +162,10 @@ export const useChatsStore = defineStore("chats", {
 				method: "POST",
 				body: {
 					name: "chat123",
-					users: ["130"],
+					users: ["129"],
 				},
 			});
-			console.log(res.data, "data123123123");
+			console.log(res.data, "createChat123");
 		},
 
 		async openUser(id: number, extra?: boolean) {
